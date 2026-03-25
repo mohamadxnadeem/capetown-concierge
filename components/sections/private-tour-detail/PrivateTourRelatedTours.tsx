@@ -6,6 +6,15 @@ import Link from "next/link";
 import Button from "../../common/Button";
 import { RelatedTour } from "./types";
 
+function normalizeUsdPrice(price?: string | number) {
+  if (!price) return "";
+
+  return String(price)
+    .replace(/^From\s+R/i, "From $")
+    .replace(/^R/i, "$")
+    .replace(/\s+R(?=\d)/gi, " $");
+}
+
 function shimmer(w: number, h: number) {
   return `
     <svg width="${w}" height="${h}" xmlns="http://www.w3.org/2000/svg">
@@ -26,6 +35,8 @@ const toBase64 = (str: string) =>
   typeof window === "undefined"
     ? Buffer.from(str).toString("base64")
     : window.btoa(str);
+
+/* ===== styles unchanged ===== */
 
 const SectionHeader = styled.div`
   max-width: 760px;
@@ -71,7 +82,6 @@ const OfferTitle = styled.h3`
   margin: 0 0 10px;
   color: ${({ theme }) => theme.colors.heading};
   font-size: 1.45rem;
-  line-height: 1.2;
 `;
 
 const OfferText = styled.p`
@@ -117,7 +127,6 @@ const CardTitle = styled.h3`
   margin: 0 0 10px;
   color: ${({ theme }) => theme.colors.heading};
   font-size: 1.2rem;
-  line-height: 1.2;
 `;
 
 const Price = styled.div`
@@ -163,11 +172,7 @@ export default function PrivateTourRelatedTours({
           itinerary.
         </OfferText>
 
-        <OfferCta
-          href={bundleWhatsappLink}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
+        <OfferCta href={bundleWhatsappLink} target="_blank">
           <Button as="span">Get 3-Tour Offer on WhatsApp</Button>
         </OfferCta>
       </OfferCard>
@@ -193,7 +198,11 @@ export default function PrivateTourRelatedTours({
 
             <CardBody>
               <CardTitle>{item.title}</CardTitle>
-              {item.price ? <Price>{item.price}</Price> : null}
+
+              {item.price ? (
+                <Price>{normalizeUsdPrice(item.price)}</Price>
+              ) : null}
+
               <CardText>
                 {item.description ||
                   "Discover another premium private tour experience in Cape Town."}

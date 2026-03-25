@@ -108,7 +108,19 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
           <NavLink href="/" onClick={onClose}>
             Home
           </NavLink>
-          <NavLink href="/chauffeur-services" onClick={onClose}>
+          <NavLink href="/best-activities-to-do-in-cape-town" onClick={onClose}>
+            Experiences
+          </NavLink>
+
+            <NavLink href="/best-wine-farms-in-cape-town" onClick={onClose}>
+              Wine Farms
+            </NavLink>
+
+            <NavLink href="/7-day-cape-town-itinerary" onClick={onClose}>
+              7 Day Itinerary
+            </NavLink>
+
+          {/* <NavLink href="/chauffeur-services" onClick={onClose}>
             Chauffeur Services
           </NavLink>
           <NavLink href="/tours" onClick={onClose}>
@@ -122,7 +134,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
           </NavLink>
           <NavLink href="/portal" onClick={onClose}>
             Portal Login
-          </NavLink>
+          </NavLink> */}
         </Nav>
 
         <FooterNote>

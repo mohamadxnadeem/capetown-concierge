@@ -1,9 +1,13 @@
 import type { Metadata } from "next";
+import Script from "next/script";
+
 import { brand } from "../lib/brand";
 import StyledComponentsRegistry from "../lib/styled-components-registry";
 import Providers from "./providers";
 import Header from "../components/common/Header";
 import Footer from "../components/common/Footer";
+import ScrollTracking from "../components/tracking/ScrollTracking";
+import EngagementTracking from "../components/tracking/EngagementTracking";
 
 export const metadata: Metadata = {
   title: brand.name,
@@ -20,11 +24,45 @@ export default function RootLayout({
       <body>
         <StyledComponentsRegistry>
           <Providers>
+            <ScrollTracking />
+            <EngagementTracking />
             <Header />
             {children}
             <Footer />
           </Providers>
         </StyledComponentsRegistry>
+
+        {/* Google Analytics / Google tag */}
+        <Script
+          src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`}
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            window.gtag = gtag;
+            gtag('js', new Date());
+            gtag('config', '${process.env.NEXT_PUBLIC_GA_ID}');
+          `}
+        </Script>
+
+        {/* Meta Pixel */}
+        <Script id="meta-pixel" strategy="afterInteractive">
+          {`
+            !function(f,b,e,v,n,t,s)
+            {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+            n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+            if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+            n.queue=[];t=b.createElement(e);t.async=!0;
+            t.src=v;s=b.getElementsByTagName(e)[0];
+            s.parentNode.insertBefore(t,s)}(window, document,'script',
+            'https://connect.facebook.net/en_US/fbevents.js');
+
+            fbq('init', '${process.env.NEXT_PUBLIC_META_PIXEL_ID}');
+            fbq('track', 'PageView');
+          `}
+        </Script>
       </body>
     </html>
   );

@@ -2,6 +2,8 @@
 
 import Link from "next/link";
 import styled from "styled-components";
+import Container from "../../common/Container"; // ✅ ADD THIS
+import { trackWhatsAppClick } from "../../../lib/tracking";
 
 type Props = {
   title: string;
@@ -137,28 +139,41 @@ export default function ChauffeurHero({
 }: Props) {
   return (
     <Hero $image={image}>
-      <HeroInner>
-        <Eyebrow>Private Chauffeur Vehicle</Eyebrow>
-        <HeroTitle>{title}</HeroTitle>
-        <HeroText>{description}</HeroText>
+      <Container> {/* ✅ THIS FIXES YOUR PROBLEM */}
+        <HeroInner>
+          <Eyebrow>Private Chauffeur Vehicle</Eyebrow>
+          <HeroTitle>{title}</HeroTitle>
+          <HeroText>{description}</HeroText>
 
-        <HeroMeta>
-          {vehicleType ? <HeroMetaItem>{vehicleType}</HeroMetaItem> : null}
-          {seats ? <HeroMetaItem>{seats} Seats</HeroMetaItem> : null}
-          {luggage ? <HeroMetaItem>{luggage} Luggage</HeroMetaItem> : null}
-          {priceText ? <HeroMetaItem>{priceText}</HeroMetaItem> : null}
-        </HeroMeta>
+          <HeroMeta>
+            {vehicleType && <HeroMetaItem>{vehicleType}</HeroMetaItem>}
+            {seats && <HeroMetaItem>{seats} Seats</HeroMetaItem>}
+            {luggage && <HeroMetaItem>{luggage} Luggage</HeroMetaItem>}
+            {priceText && <HeroMetaItem>{priceText}</HeroMetaItem>}
+          </HeroMeta>
 
-        <HeroButtons>
-          <PrimaryButton href={whatsappLink} target="_blank" rel="noopener noreferrer">
-            Book on WhatsApp
-          </PrimaryButton>
+          <HeroButtons>
+            <PrimaryButton
+              href={whatsappLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() =>
+                trackWhatsAppClick({
+                  source: "chauffeur_hero",
+                  label: "Book on WhatsApp",
+                  vehicle: title,
+                })
+              }
+            >
+              Book on WhatsApp
+            </PrimaryButton>
 
-          <SecondaryButton href="/chauffeur-services">
-            View More Vehicles
-          </SecondaryButton>
-        </HeroButtons>
-      </HeroInner>
+            <SecondaryButton href="/chauffeur-services">
+              View More Vehicles
+            </SecondaryButton>
+          </HeroButtons>
+        </HeroInner>
+      </Container>
     </Hero>
   );
 }

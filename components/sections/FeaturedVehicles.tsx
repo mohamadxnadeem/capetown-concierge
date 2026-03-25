@@ -1,8 +1,9 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
-import { useRef } from "react";
-import styled from "styled-components";
+import { useRef, useState } from "react";
+import styled, { keyframes } from "styled-components";
 import Container from "../common/Container";
 
 type VehicleItem = {
@@ -20,6 +21,24 @@ type FeaturedVehiclesProps = {
   description?: string;
   items?: VehicleItem[];
 };
+
+function normalizeUsdPrice(price?: string) {
+  if (!price) return "";
+
+  return price
+    .replace(/^From\s+R/i, "From $")
+    .replace(/^R/i, "$")
+    .replace(/\s+R(?=\d)/gi, " $");
+}
+
+const shimmer = keyframes`
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+`;
 
 const Wrapper = styled.section`
   padding: 72px 0;
@@ -147,15 +166,43 @@ const Card = styled(Link)`
   }
 `;
 
-const CardImage = styled.div<{ $image?: string }>`
+const CardImageWrap = styled.div`
+  position: relative;
   height: 260px;
-  background: ${({ $image }) =>
-    $image
-      ? `linear-gradient(to top, rgba(0,0,0,0.22), rgba(0,0,0,0.06)), url(${$image})`
-      : `linear-gradient(135deg, rgba(11, 91, 51, 0.18), rgba(6, 62, 35, 0.1))`};
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  overflow: hidden;
+  background: linear-gradient(135deg, rgba(11, 91, 51, 0.18), rgba(6, 62, 35, 0.1));
+`;
+
+const ImageOverlay = styled.div`
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.22), rgba(0, 0, 0, 0.06));
+`;
+
+const ShimmerLayer = styled.div`
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+  background: linear-gradient(135deg, rgba(11, 91, 51, 0.12), rgba(6, 62, 35, 0.06));
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -150%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0) 0%,
+      rgba(255, 255, 255, 0.55) 50%,
+      rgba(255, 255, 255, 0) 100%
+    );
+    animation: ${shimmer} 1.4s infinite;
+  }
 `;
 
 const CardContent = styled.div`
@@ -243,6 +290,33 @@ const EmptyState = styled.div`
   box-shadow: ${({ theme }) => theme.shadows.soft};
 `;
 
+function VehicleImageCard({
+  image,
+  title,
+}: {
+  image?: string;
+  title: string;
+}) {
+  const [loaded, setLoaded] = useState(false);
+
+  return (
+    <CardImageWrap>
+      {!loaded && <ShimmerLayer />}
+      {image ? (
+        <Image
+          src={image}
+          alt={title}
+          fill
+          sizes="(max-width: 768px) 85vw, (max-width: 1200px) 48vw, 32vw"
+          style={{ objectFit: "cover" }}
+          onLoad={() => setLoaded(true)}
+        />
+      ) : null}
+      <ImageOverlay />
+    </CardImageWrap>
+  );
+}
+
 export default function FeaturedVehicles({
   eyebrow = "Featured Vehicles",
   title = "Travel Cape Town in Comfort and Style",
@@ -298,11 +372,14 @@ export default function FeaturedVehicles({
           <Slider ref={sliderRef}>
             {items.map((item, index) => (
               <Card key={`${item.title}-${index}`} href={item.href}>
-                <CardImage $image={item.image} />
+                <VehicleImageCard image={item.image} title={item.title} />
+
                 <CardContent>
                   <MetaRow>
                     {item.seats ? <MetaBadge>{item.seats} Seats</MetaBadge> : null}
-                    {item.price ? <MetaBadge>{item.price}</MetaBadge> : null}
+                    {item.price ? (
+                      <MetaBadge>{normalizeUsdPrice(item.price)}</MetaBadge>
+                    ) : null}
                   </MetaRow>
 
                   <CardTitle>{item.title}</CardTitle>

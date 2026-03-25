@@ -2,6 +2,7 @@
 
 import styled from "styled-components";
 import Button from "../../common/Button";
+import { trackWhatsAppClick } from "../../../lib/tracking";
 
 const CTASection = styled.section`
   padding: 84px 0;
@@ -64,11 +65,31 @@ export default function PrivateTourCta({ whatsappLink }: Props) {
         </CTAText>
 
         <CTAButtons>
-          <CTAAnchor href={whatsappLink} target="_blank" rel="noopener noreferrer">
+          <CTAAnchor
+            href={whatsappLink}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() =>
+              trackWhatsAppClick({
+                source: "private_tour_cta",
+                label: "Book This Tour",
+              })
+            }
+          >
             <Button as="span">Book This Tour</Button>
           </CTAAnchor>
 
-          <CTAAnchor href={whatsappLink} target="_blank" rel="noopener noreferrer">
+          <CTAAnchor
+            href={whatsappLink}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() =>
+              trackWhatsAppClick({
+                source: "private_tour_cta",
+                label: "Chat on WhatsApp",
+              })
+            }
+          >
             <Button as="span" $variant="secondary">
               Chat on WhatsApp
             </Button>

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import styled from "styled-components";
 import Button from "../common/Button";
+import { trackWhatsAppClick } from "../../lib/tracking";
 
 type HeroBannerProps = {
   eyebrow?: string;
@@ -97,6 +98,8 @@ export default function HeroBanner({
   secondaryCtaHref = "/chauffeur-services",
   image,
 }: HeroBannerProps) {
+  const isWhatsApp = primaryCtaHref.includes("wa.me");
+
   return (
     <Wrapper $image={image}>
       <Content>
@@ -106,7 +109,17 @@ export default function HeroBanner({
           <Description>{description}</Description>
 
           <ButtonRow>
-            <StyledLink href={primaryCtaHref}>
+            <StyledLink
+              href={primaryCtaHref}
+              onClick={() => {
+                if (isWhatsApp) {
+                  trackWhatsAppClick({
+                    source: "homepage_hero",
+                    label: primaryCtaLabel,
+                  });
+                }
+              }}
+            >
               <Button as="span">{primaryCtaLabel}</Button>
             </StyledLink>
 

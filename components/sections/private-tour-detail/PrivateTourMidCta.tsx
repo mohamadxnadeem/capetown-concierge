@@ -2,6 +2,7 @@
 
 import styled from "styled-components";
 import Button from "../../common/Button";
+import { trackWhatsAppClick } from "../../../lib/tracking";
 
 const Wrapper = styled.div`
   margin-top: 34px;
@@ -47,7 +48,18 @@ export default function PrivateTourMidCta({
         stops, and vehicle.
       </Text>
 
-      <CTA href={whatsappLink} target="_blank" rel="noopener noreferrer">
+      <CTA
+        href={whatsappLink}
+        target="_blank"
+        rel="noopener noreferrer"
+        onClick={() =>
+          trackWhatsAppClick({
+            source: "private_tour_mid_cta",
+            label: "Check Availability",
+            tour: tourTitle,
+          })
+        }
+      >
         <Button as="span">Check Availability on WhatsApp</Button>
       </CTA>
     </Wrapper>

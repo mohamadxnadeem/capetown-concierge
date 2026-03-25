@@ -2,6 +2,7 @@
 
 import styled from "styled-components";
 import Button from "../../common/Button";
+import { trackWhatsAppClick } from "../../../lib/tracking";
 
 const Bar = styled.div`
   position: fixed;
@@ -69,7 +70,18 @@ export default function PrivateTourStickyBar({
         <Subtext>{priceText || "Private tour"} • Check availability now</Subtext>
       </Copy>
 
-      <CTAAnchor href={whatsappLink} target="_blank" rel="noopener noreferrer">
+      <CTAAnchor
+        href={whatsappLink}
+        target="_blank"
+        rel="noopener noreferrer"
+        onClick={() =>
+          trackWhatsAppClick({
+            source: "private_tour_sticky_bar",
+            label: "Book on WhatsApp",
+            tour: title,
+          })
+        }
+      >
         <Button as="span">Book on WhatsApp</Button>
       </CTAAnchor>
     </Bar>

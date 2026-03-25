@@ -25,6 +25,11 @@ import ChauffeurRelatedVehicles from "./ChauffeurRelatedVehicles";
 import ChauffeurFinalCta from "./ChauffeurFinalCta";
 import ChauffeurStickyBar from "./ChauffeurStickyBar";
 
+import TestimonialsSection from "../testimonials/TestimonialsSection";
+import TestimonialsCta from "../testimonials/TestimonialsCta";
+
+
+
 type Props = {
   car: Car;
   relatedVehicles: RelatedVehicle[];
@@ -145,11 +150,23 @@ export default function ChauffeurDetailView({ car, relatedVehicles }: Props) {
         </Section>
       )}
 
+        <TestimonialsSection />
+            
+              <TestimonialsCta />
+
+               <Section>
+        <Container>
+          <ChauffeurDiscountTable baseRate={baseRate} />
+        </Container>
+      </Section>
+
       <Section>
         <Container>
           <ChauffeurFeatures features={features} />
         </Container>
       </Section>
+
+
 
       <Section>
         <Container>
@@ -157,19 +174,11 @@ export default function ChauffeurDetailView({ car, relatedVehicles }: Props) {
         </Container>
       </Section>
 
-      <Section>
-        <Container>
-          <ChauffeurDiscountTable baseRate={baseRate} />
-        </Container>
-      </Section>
+     
 
       <ChauffeurFinalCta title={safeTitle} whatsappLink={mainWhatsAppLink} />
 
-      <Section>
-        <Container>
-          <ChauffeurReviews reviews={genericReviews} />
-        </Container>
-      </Section>
+     
 
       <Section>
         <Container>

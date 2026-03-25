@@ -2,8 +2,11 @@ import HeroBanner from "../components/sections/HeroBanner";
 import ServicesOverview from "../components/sections/ServicesOverview";
 import FeaturedVehicles from "../components/sections/FeaturedVehicles";
 import WhyChooseUs from "../components/sections/WhyChooseUs";
-import Testimonials from "../components/sections/Testimonials";
 import FeaturedExperiences from "../components/sections/FeaturedExperiences";
+import TestimonialsSection from "../components/sections/testimonials/TestimonialsSection";
+import TestimonialsCta from "../components/sections/testimonials/TestimonialsCta";
+
+
 
 const homepageServices = [
   {
@@ -255,13 +258,17 @@ export default async function HomePage() {
         image="/images/hero-car.jpg"
       />
 
-      <ServicesOverview services={homepageServices} />
+      {/* <ServicesOverview services={homepageServices} /> */}
+
+      <TestimonialsSection />
+
+      <TestimonialsCta />
+
 
       <FeaturedVehicles items={featuredVehicleItems} />
 
       <WhyChooseUs items={trustItems} />
 
-      <Testimonials items={testimonialItems} />
 
       <FeaturedExperiences items={featuredExperienceItems} />
     </>

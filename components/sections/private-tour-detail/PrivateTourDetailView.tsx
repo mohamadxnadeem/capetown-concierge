@@ -19,6 +19,11 @@ import PrivateTourFaq from "./PrivateTourFaq";
 import PrivateTourRelatedTours from "./PrivateTourRelatedTours";
 import PrivateTourCta from "./PrivateTourCta";
 import PrivateTourStickyBar from "./PrivateTourStickyBar";
+import TestimonialsSection from "../testimonials/TestimonialsSection";
+import TestimonialsCta from "../testimonials/TestimonialsCta";
+
+
+
 import {
   Experience,
   FAQItem,
@@ -41,7 +46,7 @@ function formatPriceRange(
   currency?: string
 ) {
   if (!priceFrom && !priceTo) return "";
-  const symbol = currency === "ZAR" || !currency ? "R" : `${currency} `;
+  const symbol = "$";
   if (priceFrom && priceTo) return `From ${symbol}${priceFrom} - ${symbol}${priceTo}`;
   if (priceFrom) return `From ${symbol}${priceFrom}`;
   return `${symbol}${priceTo}`;
@@ -155,11 +160,13 @@ export default function PrivateTourDetailView({
         </Container>
       </Section>
 
-      <Section>
+       
+
+      {/* <Section>
         <Container>
-          <PrivateTourWhatToExpect body={experience.body} />
+          <PrivateTourWhatToExpect />
         </Container>
-      </Section>
+      </Section> */}
 
       <Section>
         <Container>
@@ -169,12 +176,16 @@ export default function PrivateTourDetailView({
             stops={stops}
           />
 
-          <PrivateTourMidCta
+          {/* <PrivateTourMidCta
             tourTitle={safeTourTitle}
             whatsappLink={midCtaWhatsappLink}
-          />
+          /> */}
         </Container>
       </Section>
+
+       <TestimonialsSection />
+      
+        <TestimonialsCta />
 
       <Section>
         <Container>
@@ -188,11 +199,7 @@ export default function PrivateTourDetailView({
         </Container>
       </Section>
 
-      <Section>
-        <Container>
-          <PrivateTourReviews reviews={reviewItems} />
-        </Container>
-      </Section>
+      
 
       <Section>
         <Container>

@@ -1,6 +1,7 @@
 "use client";
 
 import styled from "styled-components";
+import { trackWhatsAppClick } from "../../../lib/tracking";
 
 type Props = {
   title: string;
@@ -75,7 +76,18 @@ export default function ChauffeurStickyBar({
         </StickySubtext>
       </StickyCopy>
 
-      <Button href={whatsappLink} target="_blank" rel="noopener noreferrer">
+      <Button
+        href={whatsappLink}
+        target="_blank"
+        rel="noopener noreferrer"
+        onClick={() =>
+          trackWhatsAppClick({
+            source: "chauffeur_sticky_bar",
+            label: "Book",
+            vehicle: title,
+          })
+        }
+      >
         Book
       </Button>
     </StickyBar>

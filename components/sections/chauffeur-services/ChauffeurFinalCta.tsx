@@ -1,6 +1,7 @@
 "use client";
 
 import styled from "styled-components";
+import { trackWhatsAppClick } from "../../../lib/tracking";
 
 type Props = {
   title: string;
@@ -56,7 +57,18 @@ export default function ChauffeurFinalCta({ title, whatsappLink }: Props) {
           chauffeur option for your Cape Town travel plans.
         </FinalCtaText>
 
-        <PrimaryButton href={whatsappLink} target="_blank" rel="noopener noreferrer">
+        <PrimaryButton
+          href={whatsappLink}
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={() =>
+            trackWhatsAppClick({
+              source: "chauffeur_final_cta",
+              label: "Book on WhatsApp",
+              vehicle: title,
+            })
+          }
+        >
           Book on WhatsApp
         </PrimaryButton>
       </FinalCtaInner>
