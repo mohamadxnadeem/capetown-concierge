@@ -6,8 +6,6 @@ import FeaturedExperiences from "../components/sections/FeaturedExperiences";
 import TestimonialsSection from "../components/sections/testimonials/TestimonialsSection";
 import TestimonialsCta from "../components/sections/testimonials/TestimonialsCta";
 
-
-
 const homepageServices = [
   {
     title: "Chauffeur Services",
@@ -112,6 +110,22 @@ type ExperienceApiItem = {
   experience: Experience;
 };
 
+type FeaturedExperienceItem = {
+  title: string;
+  description: string;
+  href: string;
+  image: string;
+};
+
+type FeaturedVehicleItem = {
+  title: string;
+  description: string;
+  href: string;
+  image: string;
+  seats?: number;
+  price?: string;
+};
+
 function stripHtml(html: string) {
   return html.replace(/<[^>]*>/g, "").replace(/\s+/g, " ").trim();
 }
@@ -127,7 +141,7 @@ function formatPrice(price?: string | number) {
   return `R${price}`;
 }
 
-async function getFeaturedExperiences() {
+async function getFeaturedExperiences(): Promise<FeaturedExperienceItem[]> {
   try {
     const response = await fetch(
       "https://web-production-1ab9.up.railway.app/api/experiences/all/",
@@ -170,14 +184,16 @@ async function getFeaturedExperiences() {
           image: featuredPhoto,
         };
       })
-      .filter(Boolean);
+      .filter(
+        (item): item is FeaturedExperienceItem => item !== null
+      );
   } catch (error) {
     console.error("Error loading featured experiences:", error);
     return [];
   }
 }
 
-async function getFeaturedVehicles() {
+async function getFeaturedVehicles(): Promise<FeaturedVehicleItem[]> {
   try {
     const response = await fetch(
       "https://web-production-1ab9.up.railway.app/api/cars-for-hire/all/",
@@ -232,7 +248,9 @@ async function getFeaturedVehicles() {
           price: formatPrice(car.price),
         };
       })
-      .filter(Boolean);
+      .filter(
+        (item): item is FeaturedVehicleItem => item !== null
+      );
   } catch (error) {
     console.error("Error loading vehicles:", error);
     return [];
@@ -264,11 +282,9 @@ export default async function HomePage() {
 
       <TestimonialsCta />
 
-
       <FeaturedVehicles items={featuredVehicleItems} />
 
       <WhyChooseUs items={trustItems} />
-
 
       <FeaturedExperiences items={featuredExperienceItems} />
     </>
