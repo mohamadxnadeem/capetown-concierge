@@ -68,27 +68,6 @@ const trustItems = [
   },
 ];
 
-const testimonialItems = [
-  {
-    name: "James R.",
-    subtitle: "London, UK",
-    quote:
-      "An exceptional experience from start to finish. The vehicle was immaculate, communication was seamless, and the service felt truly premium throughout our stay in Cape Town.",
-  },
-  {
-    name: "Sophie & Daniel",
-    subtitle: "Dubai, UAE",
-    quote:
-      "We booked airport transfers and a private full-day tour, and everything was handled beautifully. Professional, punctual, and very polished. Highly recommended.",
-  },
-  {
-    name: "Nadia K.",
-    subtitle: "Johannesburg, South Africa",
-    quote:
-      "Cape Town Concierge made our trip effortless. The attention to detail, comfort, and local insight gave us a much more elevated experience than standard transport services.",
-  },
-];
-
 type ExperiencePhoto = {
   id: number;
   cover_photos: string;
@@ -156,37 +135,38 @@ async function getFeaturedExperiences(): Promise<FeaturedExperienceItem[]> {
 
     const data: ExperienceApiItem[] = await response.json();
 
-    return data
-      .map((item) => {
-        const experience = item?.experience || item;
+    const mapped: Array<FeaturedExperienceItem | null> = data.map((item) => {
+      const experience = item?.experience || item;
 
-        if (!experience?.title) return null;
+      if (!experience?.title) return null;
 
-        const featuredPhoto =
-          experience.cover_photos?.find((photo) => photo.is_featured)
-            ?.cover_photos ||
-          experience.cover_photos?.[0]?.cover_photos ||
-          "";
+      const featuredPhoto =
+        experience.cover_photos?.find((photo) => photo.is_featured)
+          ?.cover_photos ||
+        experience.cover_photos?.[0]?.cover_photos ||
+        "";
 
-        const plainTextBody = stripHtml(experience.body || "");
-        const description =
-          experience.short_description ||
-          experience.highlight ||
-          truncateText(plainTextBody, 140) ||
-          "Discover a premium private tour in Cape Town.";
+      const plainTextBody = stripHtml(experience.body || "");
+      const description =
+        experience.short_description ||
+        experience.highlight ||
+        truncateText(plainTextBody, 140) ||
+        "Discover a premium private tour in Cape Town.";
 
-        return {
-          title: experience.title,
-          description,
-          href: experience.slug
-            ? `/private-tours/${experience.slug}`
-            : "/private-tours",
-          image: featuredPhoto,
-        };
-      })
-      .filter(
-        (item): item is FeaturedExperienceItem => item !== null
-      );
+      return {
+        title: experience.title,
+        description,
+        href: experience.slug
+          ? `/private-tours/${experience.slug}`
+          : "/private-tours",
+        image: featuredPhoto,
+      };
+    });
+
+    return mapped.filter(
+      (item: FeaturedExperienceItem | null): item is FeaturedExperienceItem =>
+        item !== null
+    );
   } catch (error) {
     console.error("Error loading featured experiences:", error);
     return [];
@@ -208,14 +188,14 @@ async function getFeaturedVehicles(): Promise<FeaturedVehicleItem[]> {
 
     const data = await response.json();
 
-    const sourceArray = Array.isArray(data)
+    const sourceArray: any[] = Array.isArray(data)
       ? data
       : Array.isArray(data?.results)
       ? data.results
       : [];
 
-    return sourceArray
-      .map((item: any) => {
+    const mapped: Array<FeaturedVehicleItem | null> = sourceArray.map(
+      (item: any) => {
         const car = item?.car || item;
 
         if (!car?.title) return null;
@@ -247,10 +227,13 @@ async function getFeaturedVehicles(): Promise<FeaturedVehicleItem[]> {
           seats: car.number_of_seats,
           price: formatPrice(car.price),
         };
-      })
-      .filter(
-        (item): item is FeaturedVehicleItem => item !== null
-      );
+      }
+    );
+
+    return mapped.filter(
+      (item: FeaturedVehicleItem | null): item is FeaturedVehicleItem =>
+        item !== null
+    );
   } catch (error) {
     console.error("Error loading vehicles:", error);
     return [];
@@ -279,7 +262,6 @@ export default async function HomePage() {
       {/* <ServicesOverview services={homepageServices} /> */}
 
       <TestimonialsSection />
-
       <TestimonialsCta />
 
       <FeaturedVehicles items={featuredVehicleItems} />
