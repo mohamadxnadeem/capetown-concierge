@@ -3,7 +3,7 @@ import { ActivityItem, ServiceItem, TravelerTypeItem } from "./types";
 export const activities: ActivityItem[] = [
   {
     title: "Table Mountain",
-    image: "/images/activities/table-mountain.jpg",
+    image: "/images/activities/tablemountain.jpg",
     description:
       "One of Cape Town’s most iconic experiences, with panoramic views over the city, ocean, and mountains. It is one of the first things most visitors want to do.",
     bestFor: "First-time visitors, couples, photographers",
@@ -12,7 +12,7 @@ export const activities: ActivityItem[] = [
   },
   {
     title: "Cape Peninsula Tour",
-    image: "/images/activities/cape-peninsula.jpg",
+    image: "/images/activities/capepoint.jpg",
     description:
       "A full scenic day covering dramatic coastlines, Cape Point, the Cape of Good Hope, Chapman’s Peak Drive, and unforgettable viewpoints along the route.",
     bestFor: "First-time visitors, couples, families",
@@ -21,7 +21,7 @@ export const activities: ActivityItem[] = [
   },
   {
     title: "Boulders Beach Penguins",
-    image: "/images/activities/boulders-beach.jpg",
+    image: "/images/activities/boulders.jpg",
     description:
       "A unique wildlife experience where you can see African penguins up close in one of the Cape’s most memorable beach settings.",
     bestFor: "Families, couples, wildlife lovers",
@@ -30,7 +30,7 @@ export const activities: ActivityItem[] = [
   },
   {
     title: "Cape of Good Hope & Cape Point",
-    image: "/images/activities/cape-point.jpg",
+    image: "/images/activities/capeofgoodhope.jpg",
     description:
       "Enjoy rugged cliffs, ocean scenery, and one of the Cape’s most famous landmarks as part of a dramatic and scenic private day experience.",
     bestFor: "Nature lovers, couples, explorers",
@@ -48,7 +48,7 @@ export const activities: ActivityItem[] = [
   },
   {
     title: "Chapman’s Peak Drive",
-    image: "/images/activities/chapmans-peak.jpg",
+    image: "/images/activities/chapmans.jpg",
     description:
       "One of the world’s most scenic coastal drives, with dramatic mountain and ocean views that are best enjoyed without the stress of driving yourself.",
     bestFor: "Couples, photographers, luxury travellers",
@@ -64,15 +64,15 @@ export const activities: ActivityItem[] = [
     idealBooking:
       "Perfect with private chauffeur transfers before and after the flight.",
   },
-  {
-    title: "Private Yacht Charter",
-    image: "/images/activities/yacht-charter.jpg",
-    description:
-      "Take in Cape Town’s coastline from the water with a private yacht experience designed for sunsets, celebrations, and relaxed luxury.",
-    bestFor: "Couples, groups, celebrations",
-    idealBooking:
-      "Best paired with private chauffeur transfers and a custom itinerary.",
-  },
+  // {
+  //   title: "Private Yacht Charter",
+  //   image: "/images/activities/yacht-charter.jpg",
+  //   description:
+  //     "Take in Cape Town’s coastline from the water with a private yacht experience designed for sunsets, celebrations, and relaxed luxury.",
+  //   bestFor: "Couples, groups, celebrations",
+  //   idealBooking:
+  //     "Best paired with private chauffeur transfers and a custom itinerary.",
+  // },
   {
     title: "Safari Day Trip",
     image: "/images/activities/safari.jpg",
@@ -84,7 +84,7 @@ export const activities: ActivityItem[] = [
   },
   {
     title: "Camps Bay & Clifton",
-    image: "/images/activities/camps-bay.jpg",
+    image: "/images/activities/campsbay.jpg",
     description:
       "Relax along Cape Town’s most famous beach strip with stylish restaurants, ocean views, palm-lined roads, and unforgettable sunsets.",
     bestFor: "Couples, lifestyle travellers, groups",
@@ -102,7 +102,7 @@ export const activities: ActivityItem[] = [
   },
   {
     title: "Fine Dining Experiences",
-    image: "/images/activities/fine-dining.jpg",
+    image: "/images/activities/finedining.jpg",
     description:
       "Cape Town is one of the best food cities in the world, making luxury dining a standout experience for couples and premium travellers.",
     bestFor: "Couples, luxury travellers, food lovers",

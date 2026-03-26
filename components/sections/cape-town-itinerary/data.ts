@@ -4,7 +4,7 @@ export const itineraryDays: ItineraryDay[] = [
   {
     day: "Day 1",
     title: "Arrival, Hotel Check-In & Atlantic Seaboard Sunset",
-    image: "/images/itinerary/day-1-arrival.jpg",
+    image: "/images/activities/campsbay.jpg",
     description:
       "Start your Cape Town trip with a smooth airport pickup, private transfer to your hotel, and a relaxed afternoon around the V&A Waterfront, Clifton, or Camps Bay before sunset.",
     highlights: ["Airport pickup", "Hotel transfer", "V&A Waterfront", "Camps Bay sunset"],
@@ -14,7 +14,7 @@ export const itineraryDays: ItineraryDay[] = [
   {
     day: "Day 2",
     title: "Cape Peninsula Private Tour",
-    image: "/images/itinerary/day-2-peninsula.jpg",
+    image: "/images/activities/capepoint.jpg",
     description:
       "Spend the day exploring one of Cape Town’s most iconic scenic routes, including Chapman’s Peak Drive, Cape Point, the Cape of Good Hope, and Boulders Beach penguins.",
     highlights: ["Chapman’s Peak", "Cape Point", "Cape of Good Hope", "Penguins"],
@@ -24,7 +24,7 @@ export const itineraryDays: ItineraryDay[] = [
   {
     day: "Day 3",
     title: "Wine Farms in Stellenbosch or Franschhoek",
-    image: "/images/itinerary/day-3-wine.jpg",
+    image: "/images/wine/graff.jpg",
     description:
       "Enjoy a premium Winelands experience with wine tastings, mountain views, and lunch at some of the Cape’s most beautiful estates.",
     highlights: ["Wine tasting", "Luxury estates", "Lunch stop", "Scenic countryside"],
@@ -34,7 +34,7 @@ export const itineraryDays: ItineraryDay[] = [
   {
     day: "Day 4",
     title: "Table Mountain, City & Culture",
-    image: "/images/itinerary/day-4-city.jpg",
+    image: "/images/activities/tablemountain.jpg",
     description:
       "Take in Table Mountain, the Bo-Kaap, and selected city highlights while keeping the day relaxed and tailored around your pace.",
     highlights: ["Table Mountain", "Bo-Kaap", "City highlights", "Local culture"],
@@ -44,7 +44,7 @@ export const itineraryDays: ItineraryDay[] = [
   {
     day: "Day 5",
     title: "Beach, Leisure & Scenic Lifestyle Day",
-    image: "/images/itinerary/day-5-beach.jpg",
+    image: "/images/activities/beach.jpg",
     description:
       "Slow the pace down with a lifestyle day around Camps Bay, Clifton, cafés, beach views, and scenic coastal stops.",
     highlights: ["Clifton", "Camps Bay", "Coastal drive", "Relaxed luxury"],
@@ -54,7 +54,7 @@ export const itineraryDays: ItineraryDay[] = [
   {
     day: "Day 6",
     title: "Luxury Add-On or Safari Experience",
-    image: "/images/itinerary/day-6-luxury.jpg",
+    image: "/images/activities/safari.jpg",
     description:
       "Choose a premium experience such as a helicopter ride, yacht charter, or safari day trip depending on how adventurous or luxurious you want the trip to feel.",
     highlights: ["Helicopter ride", "Yacht charter", "Safari option", "Luxury add-on"],
@@ -64,7 +64,7 @@ export const itineraryDays: ItineraryDay[] = [
   {
     day: "Day 7",
     title: "Final Morning, Last Stops & Departure",
-    image: "/images/itinerary/day-7-departure.jpg",
+    image: "/images/activities/capetown.jpg",
     description:
       "Use your final day for a relaxed breakfast, some last-minute shopping, or one final scenic stop before your private airport transfer.",
     highlights: ["Final stop", "Shopping", "Relaxed morning", "Airport transfer"],

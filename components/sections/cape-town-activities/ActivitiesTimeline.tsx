@@ -2,9 +2,30 @@
 
 import styled from "styled-components";
 import Button from "../../common/Button";
+import SmartImage from "../../common/SmartImage";
 import { trackWhatsAppClick } from "../../../lib/tracking";
-import { Anchor, Container, Section, SectionHeader, SectionText, SectionTitle, StyledLink, whatsappLink } from "./shared";
-import { ActivityItem } from "./types";
+import {
+  Anchor,
+  Container,
+  Section,
+  SectionHeader,
+  SectionText,
+  SectionTitle,
+  StyledLink,
+  whatsappLink,
+} from "./shared";
+
+type ActivityItem = {
+  title: string;
+  image: string;
+  description: string;
+  bestFor: string;
+  idealBooking: string;
+};
+
+type Props = {
+  activities: ActivityItem[];
+};
 
 const ActivitiesList = styled.div`
   display: flex;
@@ -74,11 +95,10 @@ const ActivityInner = styled.div`
   }
 `;
 
-const ActivityImage = styled.div<{ $image: string }>`
+const ActivityImageWrap = styled.div`
+  position: relative;
   min-height: 260px;
-  background:
-    linear-gradient(to top, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.04)),
-    url(${({ $image }) => $image}) center/cover no-repeat;
+  background: linear-gradient(135deg, rgba(11, 91, 51, 0.12), rgba(6, 62, 35, 0.06));
 `;
 
 const ActivityContent = styled.div`
@@ -156,9 +176,48 @@ const RowActions = styled.div`
   gap: 12px;
 `;
 
-type Props = {
-  activities: ActivityItem[];
-};
+function getActivityAltText(title: string) {
+  const key = title.toLowerCase();
+
+  if (key.includes("table mountain")) {
+    return "Table Mountain in Cape Town with panoramic city and ocean views";
+  }
+  if (key.includes("cape peninsula")) {
+    return "Cape Peninsula scenic coastal drive near Cape Town";
+  }
+  if (key.includes("boulders")) {
+    return "African penguins at Boulders Beach in Cape Town";
+  }
+  if (key.includes("good hope") || key.includes("cape point")) {
+    return "Cape Point and Cape of Good Hope coastal scenery near Cape Town";
+  }
+  if (key.includes("winelands") || key.includes("stellenbosch") || key.includes("franschhoek")) {
+    return "Cape Winelands vineyards near Stellenbosch and Franschhoek";
+  }
+  if (key.includes("chapman")) {
+    return "Chapmans Peak scenic coastal drive in Cape Town";
+  }
+  if (key.includes("helicopter")) {
+    return "Helicopter experience over Cape Town coastline and Table Mountain";
+  }
+  if (key.includes("yacht")) {
+    return "Private yacht charter experience in Cape Town";
+  }
+  if (key.includes("safari")) {
+    return "Safari day trip experience near Cape Town";
+  }
+  if (key.includes("camps bay") || key.includes("clifton")) {
+    return "Camps Bay and Clifton beach lifestyle experience in Cape Town";
+  }
+  if (key.includes("kirstenbosch")) {
+    return "Kirstenbosch Botanical Gardens in Cape Town";
+  }
+  if (key.includes("fine dining") || key.includes("restaurant")) {
+    return "Fine dining experience in Cape Town";
+  }
+
+  return `${title} private experience in Cape Town`;
+}
 
 export default function ActivitiesTimeline({ activities }: Props) {
   return (
@@ -168,8 +227,8 @@ export default function ActivitiesTimeline({ activities }: Props) {
           <SectionTitle>Top Experiences Worth Adding to Your Itinerary</SectionTitle>
           <SectionText>
             These are some of the best activities to do in Cape Town for
-            first-time visitors, couples, families, and luxury travellers. Each
-            one can be enjoyed as part of a private chauffeur-driven day
+            first-time visitors, couples, families, and luxury travellers.
+            Each one can be enjoyed as part of a private chauffeur-driven day
             experience or a custom multi-day itinerary.
           </SectionText>
         </SectionHeader>
@@ -184,7 +243,13 @@ export default function ActivitiesTimeline({ activities }: Props) {
 
               <ActivityCard>
                 <ActivityInner>
-                  <ActivityImage $image={activity.image} />
+                  <ActivityImageWrap>
+                    <SmartImage
+                      src={activity.image}
+                      alt={getActivityAltText(activity.title)}
+                      sizes="(max-width: 768px) 100vw, 360px"
+                    />
+                  </ActivityImageWrap>
 
                   <ActivityContent>
                     <MobileStep>Experience {index + 1}</MobileStep>
@@ -217,9 +282,9 @@ export default function ActivitiesTimeline({ activities }: Props) {
                         <Button as="span">Plan This Experience</Button>
                       </Anchor>
 
-                      <StyledLink href="/private-tours">
+                      <StyledLink href="/chauffeur-services">
                         <Button as="span" $variant="secondary">
-                          View Private Tours
+                          View Chauffeur Options
                         </Button>
                       </StyledLink>
                     </RowActions>

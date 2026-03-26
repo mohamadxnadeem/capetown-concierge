@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRef } from "react";
 import styled from "styled-components";
 import Container from "../common/Container";
+import SmartImage from "../common/SmartImage";
 
 type ExperienceItem = {
   title: string;
@@ -136,6 +137,7 @@ const Card = styled(Link)`
   border: 1px solid ${({ theme }) => theme.colors.border};
   box-shadow: ${({ theme }) => theme.shadows.soft};
   transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  text-decoration: none;
 
   &:hover {
     transform: translateY(-4px);
@@ -144,15 +146,10 @@ const Card = styled(Link)`
   }
 `;
 
-const CardImage = styled.div<{ $image?: string }>`
+const CardImageWrap = styled.div`
+  position: relative;
   height: 260px;
-  background: ${({ $image }) =>
-    $image
-      ? `linear-gradient(to top, rgba(0,0,0,0.22), rgba(0,0,0,0.06)), url(${$image})`
-      : `linear-gradient(135deg, rgba(11, 91, 51, 0.18), rgba(6, 62, 35, 0.1))`};
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  background: linear-gradient(135deg, rgba(11, 91, 51, 0.18), rgba(6, 62, 35, 0.1));
 `;
 
 const CardContent = styled.div`
@@ -234,6 +231,40 @@ const EmptyState = styled.div`
   box-shadow: ${({ theme }) => theme.shadows.soft};
 `;
 
+function getExperienceAltText(title: string) {
+  const key = title.toLowerCase();
+
+  if (key.includes("cape peninsula")) {
+    return "Cape Peninsula private tour with scenic coastal views near Cape Town";
+  }
+  if (key.includes("wine") || key.includes("winelands") || key.includes("stellenbosch") || key.includes("franschhoek")) {
+    return "Cape Winelands private wine tour near Cape Town";
+  }
+  if (key.includes("table mountain")) {
+    return "Table Mountain private tour experience in Cape Town";
+  }
+  if (key.includes("city")) {
+    return "Private Cape Town city tour experience";
+  }
+  if (key.includes("cape point") || key.includes("good hope")) {
+    return "Cape Point and Cape of Good Hope private tour near Cape Town";
+  }
+  if (key.includes("penguin") || key.includes("boulders")) {
+    return "Boulders Beach penguin private tour near Cape Town";
+  }
+  if (key.includes("helicopter")) {
+    return "Helicopter tour experience over Cape Town";
+  }
+  if (key.includes("yacht")) {
+    return "Private yacht experience in Cape Town";
+  }
+  if (key.includes("safari")) {
+    return "Safari day trip from Cape Town";
+  }
+
+  return `${title} private tour experience in Cape Town`;
+}
+
 export default function FeaturedExperiences({
   eyebrow = "Private Tours",
   title = "Explore Signature Private Tours in Cape Town",
@@ -289,7 +320,16 @@ export default function FeaturedExperiences({
           <Slider ref={sliderRef}>
             {items.map((item, index) => (
               <Card key={`${item.title}-${index}`} href={item.href}>
-                <CardImage $image={item.image} />
+                <CardImageWrap>
+                  {item.image ? (
+                    <SmartImage
+                      src={item.image}
+                      alt={getExperienceAltText(item.title)}
+                      sizes="(max-width: 768px) 85vw, (max-width: 1200px) 48vw, 32vw"
+                    />
+                  ) : null}
+                </CardImageWrap>
+
                 <CardContent>
                   <Badge>Private Tour</Badge>
                   <CardTitle>{item.title}</CardTitle>

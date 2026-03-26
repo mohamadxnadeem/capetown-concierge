@@ -2,6 +2,7 @@
 
 import styled from "styled-components";
 import Button from "../../common/Button";
+import SmartImage from "../../common/SmartImage";
 import { trackWhatsAppClick } from "../../../lib/tracking";
 import {
   Anchor,
@@ -80,11 +81,14 @@ const Inner = styled.div`
   }
 `;
 
-const Image = styled.div<{ $src: string }>`
+const ImageWrap = styled.div`
+  position: relative;
   min-height: 240px;
-  background:
-    linear-gradient(to top, rgba(0, 0, 0, 0.2), transparent),
-    url(${({ $src }) => $src}) center/cover no-repeat;
+  background: linear-gradient(
+    135deg,
+    rgba(11, 91, 51, 0.12),
+    rgba(6, 62, 35, 0.06)
+  );
 `;
 
 const Content = styled.div`
@@ -153,6 +157,34 @@ type Props = {
   items: ItineraryDay[];
 };
 
+function getItineraryAltText(day: string, title: string) {
+  const key = `${day} ${title}`.toLowerCase();
+
+  if (key.includes("arrival") || key.includes("atlantic seaboard") || key.includes("camps bay")) {
+    return "Cape Town arrival day with Atlantic Seaboard and Camps Bay sunset";
+  }
+  if (key.includes("cape peninsula") || key.includes("cape point") || key.includes("good hope")) {
+    return "Cape Peninsula private tour with Cape Point and scenic coastal views";
+  }
+  if (key.includes("wine") || key.includes("stellenbosch") || key.includes("franschhoek")) {
+    return "Cape Winelands wine tasting day in Stellenbosch and Franschhoek";
+  }
+  if (key.includes("table mountain") || key.includes("bo-kaap") || key.includes("city")) {
+    return "Table Mountain and Cape Town city experience on a private itinerary";
+  }
+  if (key.includes("beach") || key.includes("coastal") || key.includes("leisure")) {
+    return "Beach and coastal lifestyle day in Cape Town";
+  }
+  if (key.includes("helicopter") || key.includes("yacht") || key.includes("safari") || key.includes("luxury")) {
+    return "Luxury add-on experience on a 7 day Cape Town itinerary";
+  }
+  if (key.includes("departure") || key.includes("airport transfer") || key.includes("final morning")) {
+    return "Cape Town departure day with private airport transfer";
+  }
+
+  return `${title} on a 7 day Cape Town itinerary`;
+}
+
 export default function ItineraryTimeline({ items }: Props) {
   return (
     <Section>
@@ -176,7 +208,13 @@ export default function ItineraryTimeline({ items }: Props) {
 
               <Card>
                 <Inner>
-                  <Image $src={item.image} />
+                  <ImageWrap>
+                    <SmartImage
+                      src={item.image}
+                      alt={getItineraryAltText(item.day, item.title)}
+                      sizes="(max-width: 768px) 100vw, 360px"
+                    />
+                  </ImageWrap>
 
                   <Content>
                     <DayBadge>{item.day}</DayBadge>

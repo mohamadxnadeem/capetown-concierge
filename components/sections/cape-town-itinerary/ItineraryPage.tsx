@@ -1,6 +1,8 @@
 "use client";
 
 import AvailableVehicles from "../shared/AvailableVehicles";
+import TestimonialsSection from "../testimonials/TestimonialsSection";
+import TestimonialsCta from "../testimonials/TestimonialsCta";
 import { itineraryDays, itineraryFaqItems } from "./data";
 import ItineraryAddOns from "./ItineraryAddOns";
 import ItineraryFaq from "./ItineraryFaq";
@@ -14,10 +16,15 @@ export default function ItineraryPage() {
     <PageWrap>
       <ItineraryHero />
       <ItineraryTimeline items={itineraryDays} />
+      <TestimonialsSection />
+      <TestimonialsCta />
 
       <AvailableVehicles title="7 Day Cape Town Itinerary" />
 
       <ItineraryAddOns />
+
+      
+
       <ItineraryFaq items={itineraryFaqItems} />
       <ItineraryFinalCta />
     </PageWrap>

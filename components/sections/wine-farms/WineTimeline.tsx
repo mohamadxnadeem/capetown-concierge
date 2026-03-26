@@ -2,6 +2,7 @@
 
 import styled from "styled-components";
 import Button from "../../common/Button";
+import SmartImage from "../../common/SmartImage";
 import {
   Anchor,
   Container,
@@ -12,6 +13,15 @@ import {
   SectionText,
 } from "./shared";
 import { trackWhatsAppClick } from "../../../lib/tracking";
+
+type WineFarmItem = {
+  title: string;
+  image: string;
+  description: string;
+  bestFor: string;
+  ideal: string;
+  tags?: string[];
+};
 
 const List = styled.div`
   display: flex;
@@ -78,11 +88,14 @@ const Inner = styled.div`
   }
 `;
 
-const Image = styled.div<{ $src: string }>`
+const ImageWrap = styled.div`
+  position: relative;
   min-height: 240px;
-  background:
-    linear-gradient(to top, rgba(0, 0, 0, 0.2), transparent),
-    url(${({ $src }) => $src}) center/cover no-repeat;
+  background: linear-gradient(
+    135deg,
+    rgba(11, 91, 51, 0.12),
+    rgba(6, 62, 35, 0.06)
+  );
 `;
 
 const Content = styled.div`
@@ -112,7 +125,7 @@ const Badge = styled.div`
 `;
 
 const Text = styled.p`
-  margin-bottom: 16px;
+  margin: 0 0 16px;
   color: ${({ theme }) => theme.colors.textMuted};
   line-height: 1.8;
 `;
@@ -124,23 +137,87 @@ const Recommendation = styled.div`
   border: 1px solid ${({ theme }) => theme.colors.border};
   margin-bottom: 16px;
   font-size: 0.9rem;
+  color: ${({ theme }) => theme.colors.textMuted};
+  line-height: 1.7;
 `;
 
-export default function WineTimeline({ items }: any) {
+const TagGrid = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 18px;
+`;
+
+const Tag = styled.div`
+  display: inline-flex;
+  align-items: center;
+  min-height: 30px;
+  padding: 0 10px;
+  border-radius: 999px;
+  background: rgba(11, 91, 51, 0.06);
+  border: 1px solid rgba(11, 91, 51, 0.12);
+  color: ${({ theme }) => theme.colors.heading};
+  font-size: 0.76rem;
+  font-weight: 700;
+`;
+
+type Props = {
+  items: WineFarmItem[];
+};
+
+function getWineFarmAltText(title: string) {
+  const key = title.toLowerCase();
+
+  if (key.includes("delaire") || key.includes("graff")) {
+    return "Delaire Graff Estate vineyard and luxury wine experience in Stellenbosch near Cape Town";
+  }
+  if (key.includes("babylonstoren")) {
+    return "Babylonstoren wine farm and gardens in the Cape Winelands near Cape Town";
+  }
+  if (key.includes("boschendal")) {
+    return "Boschendal wine estate and picnic setting in the Cape Winelands near Cape Town";
+  }
+  if (key.includes("tokara")) {
+    return "Tokara Wine Estate vineyard views in Stellenbosch near Cape Town";
+  }
+  if (key.includes("groot constantia")) {
+    return "Groot Constantia historic wine estate near Cape Town";
+  }
+  if (key.includes("waterford")) {
+    return "Waterford Estate wine tasting experience in Stellenbosch near Cape Town";
+  }
+  if (key.includes("vredenheim") || key.includes("wild cat")) {
+    return "Vredenheim wine estate and wild cat experience near Cape Town";
+  }
+  if (key.includes("spier")) {
+    return "Spier Wine Farm in the Cape Winelands near Cape Town";
+  }
+  if (key.includes("postcard")) {
+    return "Postcard Cafe vineyard views and wine stop in Stellenbosch near Cape Town";
+  }
+  if (key.includes("lanzerac")) {
+    return "Lanzerac Wine Estate luxury wine tasting in Stellenbosch near Cape Town";
+  }
+
+  return `${title} wine farm in the Cape Winelands near Cape Town`;
+}
+
+export default function WineTimeline({ items }: Props) {
   return (
     <Section>
       <Container>
         <SectionHeader>
-          <SectionTitle>Best Wine Estates to Visit</SectionTitle>
+          <SectionTitle>Top 10 Wine Farms in Cape Town</SectionTitle>
           <SectionText>
-            These are some of the top wine farms in Stellenbosch and Franschhoek,
-            offering a mix of luxury experiences, scenic views, and unforgettable
-            wine tastings.
+            Explore some of the best wine farms near Cape Town, whether you are
+            looking for the most romantic estates, family-friendly options,
+            scenic lunch spots, or premium luxury tastings in Stellenbosch,
+            Franschhoek, and Constantia.
           </SectionText>
         </SectionHeader>
 
         <List>
-          {items.map((item: any, index: number) => (
+          {items.map((item, index) => (
             <Row key={item.title}>
               <ProgressColumn>
                 <Rail />
@@ -149,14 +226,30 @@ export default function WineTimeline({ items }: any) {
 
               <Card>
                 <Inner>
-                  <Image $src={item.image} />
+                  <ImageWrap>
+                    <SmartImage
+                      src={item.image}
+                      alt={getWineFarmAltText(item.title)}
+                      sizes="(max-width: 768px) 100vw, 360px"
+                    />
+                  </ImageWrap>
 
                   <Content>
-                    <Title>{item.title}</Title>
+                    <Title>
+                      {index + 1}. {item.title}
+                    </Title>
 
                     <BadgeRow>
                       <Badge>{item.bestFor}</Badge>
                     </BadgeRow>
+
+                    {item.tags?.length ? (
+                      <TagGrid>
+                        {item.tags.map((tag) => (
+                          <Tag key={tag}>{tag}</Tag>
+                        ))}
+                      </TagGrid>
+                    ) : null}
 
                     <Text>{item.description}</Text>
 
@@ -172,6 +265,7 @@ export default function WineTimeline({ items }: any) {
                         trackWhatsAppClick({
                           source: "wine_list",
                           label: item.title,
+                          tour: item.title,
                         })
                       }
                     >

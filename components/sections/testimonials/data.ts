@@ -157,7 +157,7 @@ export const testimonials = [
   },
   {
     name: "Yasir",
-    image: "/images/testimonials/yasir.png",
+    image: "/images/testimonials/yaasir.png",
     review:
       "Top quality service and very smooth logistics. Highly recommended.",
   },

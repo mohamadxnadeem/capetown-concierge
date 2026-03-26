@@ -123,11 +123,11 @@ export default function HeroBanner({
               <Button as="span">{primaryCtaLabel}</Button>
             </StyledLink>
 
-            <StyledLink href={secondaryCtaHref}>
+            {/* <StyledLink href={secondaryCtaHref}>
               <Button as="span" $variant="secondary">
                 {secondaryCtaLabel}
               </Button>
-            </StyledLink>
+            </StyledLink> */}
           </ButtonRow>
         </Inner>
       </Content>
