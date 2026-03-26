@@ -12,17 +12,15 @@ declare module "styled-components" {
       backgroundSoft: string;
       border: string;
     };
-
     breakpoints: {
       sm: string;
       md: string;
       lg: string;
     };
-
     radius: {
+      md: string;
       lg: string;
     };
-
     shadows: {
       soft: string;
       card: string;
