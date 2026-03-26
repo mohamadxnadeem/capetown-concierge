@@ -16,3 +16,9 @@ export type FaqItem = {
   question: string;
   answer: string;
 };
+
+export type ServiceItem = {
+  title: string;
+  description: string;
+  href: string;
+};
