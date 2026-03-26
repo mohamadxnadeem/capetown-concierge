@@ -157,28 +157,57 @@ type Props = {
   items: ItineraryDay[];
 };
 
-function getItineraryAltText(day: string, title: string) {
+function getItineraryAltText(day: string | number, title: string) {
   const key = `${day} ${title}`.toLowerCase();
 
-  if (key.includes("arrival") || key.includes("atlantic seaboard") || key.includes("camps bay")) {
+  if (
+    key.includes("arrival") ||
+    key.includes("atlantic seaboard") ||
+    key.includes("camps bay")
+  ) {
     return "Cape Town arrival day with Atlantic Seaboard and Camps Bay sunset";
   }
-  if (key.includes("cape peninsula") || key.includes("cape point") || key.includes("good hope")) {
+  if (
+    key.includes("cape peninsula") ||
+    key.includes("cape point") ||
+    key.includes("good hope")
+  ) {
     return "Cape Peninsula private tour with Cape Point and scenic coastal views";
   }
-  if (key.includes("wine") || key.includes("stellenbosch") || key.includes("franschhoek")) {
+  if (
+    key.includes("wine") ||
+    key.includes("stellenbosch") ||
+    key.includes("franschhoek")
+  ) {
     return "Cape Winelands wine tasting day in Stellenbosch and Franschhoek";
   }
-  if (key.includes("table mountain") || key.includes("bo-kaap") || key.includes("city")) {
+  if (
+    key.includes("table mountain") ||
+    key.includes("bo-kaap") ||
+    key.includes("city")
+  ) {
     return "Table Mountain and Cape Town city experience on a private itinerary";
   }
-  if (key.includes("beach") || key.includes("coastal") || key.includes("leisure")) {
+  if (
+    key.includes("beach") ||
+    key.includes("coastal") ||
+    key.includes("leisure")
+  ) {
     return "Beach and coastal lifestyle day in Cape Town";
   }
-  if (key.includes("helicopter") || key.includes("yacht") || key.includes("safari") || key.includes("luxury")) {
+  if (
+    key.includes("helicopter") ||
+    key.includes("yacht") ||
+    key.includes("safari") ||
+    key.includes("luxury")
+  ) {
     return "Luxury add-on experience on a 7 day Cape Town itinerary";
   }
-  if (key.includes("departure") || key.includes("airport transfer") || key.includes("final morning")) {
+  if (
+    key.includes("departure") ||
+    key.includes("airport transfer") ||
+    key.includes("final morning")
+  ) {
     return "Cape Town departure day with private airport transfer";
   }
 
@@ -222,7 +251,7 @@ export default function ItineraryTimeline({ items }: Props) {
                     <Text>{item.description}</Text>
 
                     <Highlights>
-                      {item.highlights.map((highlight) => (
+                      {item.highlights.map((highlight: string) => (
                         <Highlight key={highlight}>{highlight}</Highlight>
                       ))}
                     </Highlights>

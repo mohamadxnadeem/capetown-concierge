@@ -1,5 +1,13 @@
 export type ItineraryDay = {
-  day: number;
+  day: string;
+  title: string;
+  image: string;
+  description: string;
+  highlights: string[];
+  bestBookedAs: string;
+};
+
+export type AddOnItem = {
   title: string;
   description: string;
 };

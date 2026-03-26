@@ -28,6 +28,7 @@ export type Experience = {
   price_to?: string;
   currency?: string;
   cover_photos?: ExperiencePhoto[];
+  images?: ExperiencePhoto[];
   stops?: ExperienceStop[];
 };
 
@@ -35,6 +36,9 @@ export type FAQItem = {
   question: string;
   answer: string;
 };
+
+export type FaqItem = FAQItem;
+
 export type TourVehicle = {
   title: string;
   image?: string;
@@ -42,8 +46,17 @@ export type TourVehicle = {
   description?: string;
   price?: string;
 };
+
 export type ReviewItem = {
   quote: string;
   name: string;
   subtitle: string;
+};
+
+export type RelatedTour = {
+  title: string;
+  href: string;
+  image?: string;
+  description?: string;
+  price?: string;
 };
