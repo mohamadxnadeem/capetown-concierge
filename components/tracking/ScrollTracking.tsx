@@ -4,15 +4,15 @@ import { useEffect } from "react";
 
 declare global {
   interface Window {
-    gtag?: (...args: any[]) => void;
-    fbq?: (...args: any[]) => void;
+    gtag?: (...args: unknown[]) => void;
+    fbq?: (...args: unknown[]) => void;
   }
 }
 
 export default function ScrollTracking() {
   useEffect(() => {
-    let fired50 = false;
-    let fired75 = false;
+    let hasTracked50 = false;
+    let hasTracked90 = false;
 
     const handleScroll = () => {
       const scrollTop = window.scrollY;
@@ -21,27 +21,33 @@ export default function ScrollTracking() {
 
       if (docHeight <= 0) return;
 
-      const percentScrolled = (scrollTop / docHeight) * 100;
+      const percent = (scrollTop / docHeight) * 100;
 
-      if (!fired50 && percentScrolled >= 50) {
-        fired50 = true;
-        window.gtag?.("event", "scroll_50", {
+      if (!hasTracked50 && percent >= 50) {
+        hasTracked50 = true;
+
+        window.gtag?.("event", "scroll_depth", {
           event_category: "engagement",
-          event_label: "50_percent_scroll",
+          event_label: "50_percent",
+          value: 50,
         });
-        window.fbq?.("trackCustom", "Scroll50", {
+
+        window.fbq?.("trackCustom", "ScrollDepth", {
           percent: 50,
         });
       }
 
-      if (!fired75 && percentScrolled >= 75) {
-        fired75 = true;
-        window.gtag?.("event", "scroll_75", {
+      if (!hasTracked90 && percent >= 90) {
+        hasTracked90 = true;
+
+        window.gtag?.("event", "scroll_depth", {
           event_category: "engagement",
-          event_label: "75_percent_scroll",
+          event_label: "90_percent",
+          value: 90,
         });
-        window.fbq?.("trackCustom", "Scroll75", {
-          percent: 75,
+
+        window.fbq?.("trackCustom", "ScrollDepth", {
+          percent: 90,
         });
       }
     };

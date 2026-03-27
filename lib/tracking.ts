@@ -1,7 +1,7 @@
 declare global {
   interface Window {
-    gtag?: (...args: any[]) => void;
-    fbq?: (...args: any[]) => void;
+    gtag?: (...args: unknown[]) => void;
+    fbq?: (...args: unknown[]) => void;
   }
 }
 
@@ -11,6 +11,8 @@ type WhatsAppTrackingParams = {
   vehicle?: string;
   tour?: string;
 };
+
+const META_LEAD_VALUE_ZAR = 3000;
 
 export function trackWhatsAppClick({
   source,
@@ -37,15 +39,32 @@ export function trackWhatsAppClick({
   });
 
   // Google Ads conversion
-  window.gtag?.("event", "conversion", {
-    send_to: process.env.NEXT_PUBLIC_GOOGLE_ADS_SEND_TO,
+  if (process.env.NEXT_PUBLIC_GOOGLE_ADS_SEND_TO) {
+    window.gtag?.("event", "conversion", {
+      send_to: process.env.NEXT_PUBLIC_GOOGLE_ADS_SEND_TO,
+      event_callback: () => {
+        // reserved for future use if you want callback-based redirect handling
+      },
+    });
+  }
+
+  // Meta standard lead event
+  window.fbq?.("track", "Lead", {
+    ...cleanPayload,
+    value: META_LEAD_VALUE_ZAR,
+    currency: "ZAR",
   });
 
-  // Meta Pixel event
-  window.fbq?.("track", "Lead", cleanPayload);
-
-  // Optional custom Meta event for cleaner debugging
+  // Custom Meta event for debugging / segmentation
   window.fbq?.("trackCustom", "WhatsAppClick", cleanPayload);
+
+  // Higher intent custom Meta event
+  window.fbq?.("trackCustom", "HighIntentLead", {
+    ...cleanPayload,
+    intent: "whatsapp_click",
+    value: META_LEAD_VALUE_ZAR,
+    currency: "ZAR",
+  });
 }
 
 export {};
