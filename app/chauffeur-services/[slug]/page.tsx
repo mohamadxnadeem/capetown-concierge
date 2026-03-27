@@ -34,8 +34,8 @@ type Car = {
 };
 
 type CarsApiItem = {
-  car: Car;
-};
+  car?: Car;
+} & Partial<Car>;
 
 type RelatedVehicle = {
   title: string;
@@ -52,7 +52,7 @@ type PageProps = {
   }>;
 };
 
-const SITE_URL = "https://www.capetown-concierge.co.za";
+const SITE_URL = "https://capetown-concierge.co.za";
 
 function formatPrice(
   price?: string | number,
@@ -64,7 +64,9 @@ function formatPrice(
   if (price !== undefined && price !== null && price !== "") {
     return `From ${symbol}${price}`;
   }
-  if (priceFrom && priceTo) return `From ${symbol}${priceFrom} - ${symbol}${priceTo}`;
+  if (priceFrom && priceTo) {
+    return `From ${symbol}${priceFrom} - ${symbol}${priceTo}`;
+  }
   if (priceFrom) return `From ${symbol}${priceFrom}`;
   if (priceTo) return `${symbol}${priceTo}`;
   return "";
@@ -96,7 +98,9 @@ async function getAllVehicles(): Promise<CarsApiItem[]> {
 }
 
 function normalizeCars(items: CarsApiItem[]): Car[] {
-  return items.map((item) => item?.car || item).filter((car) => car?.title);
+  return items
+    .map((item) => item?.car || item)
+    .filter((car): car is Car => Boolean(car?.title));
 }
 
 function getVehicleBySlug(cars: Car[], slug: string) {
@@ -114,10 +118,15 @@ function getPrimaryImage(car: Car) {
   );
 }
 
+function getVehicleImageAlt(car: Car) {
+  const name = car.title || "Luxury chauffeur vehicle";
+  return `Luxury ${name} chauffeur service in Cape Town for VIP transport and private travel`;
+}
+
 function getPageTitle(car: Car) {
   return (
     car.meta_title ||
-    `${car.title || "Chauffeur Vehicle"} | Cape Town Chauffeur Service`
+    `${car.title || "Chauffeur Vehicle"} Chauffeur Service Cape Town | Cape Town Concierge`
   );
 }
 
@@ -126,7 +135,17 @@ function getPageDescription(car: Car) {
     car.meta_description ||
     car.short_description ||
     car.highlight ||
+    car.chauffeur_service_text ||
     "Premium chauffeur-driven vehicles in Cape Town for airport transfers, private touring, and executive travel."
+  );
+}
+
+function getShortVehicleDescription(car: Car) {
+  return (
+    car.short_description ||
+    car.highlight ||
+    truncateText(car.body, 180) ||
+    `Premium ${car.title || "chauffeur vehicle"} in Cape Town for private travel, airport transfers, and chauffeur-driven experiences.`
   );
 }
 
@@ -145,6 +164,40 @@ function mapRelatedVehicles(cars: Car[], currentSlug: string): RelatedVehicle[] 
       price: formatPrice(car.price, car.price_from, car.price_to, car.currency),
       href: `/chauffeur-services/${car.slug}`,
     }));
+}
+
+function buildVehicleFaqs(car: Car, formattedPrice: string) {
+  const name = car.title || "this luxury vehicle";
+  const seats = car.number_of_seats ? `${car.number_of_seats}` : "multiple";
+  const luggage = car.luggage_capacity ? `${car.luggage_capacity}` : "ample";
+
+  return [
+    {
+      question: `What is included when booking ${name} in Cape Town?`,
+      answer:
+        "Bookings are designed around a premium chauffeur-driven experience, including the vehicle, a professional driver, and flexible private travel tailored to your itinerary.",
+    },
+    {
+      question: `Is ${name} suitable for airport transfers in Cape Town?`,
+      answer:
+        "Yes, this vehicle is ideal for premium airport transfers, offering a polished arrival and departure experience with comfort, luggage space, and professional service.",
+    },
+    {
+      question: `How many passengers can ${name} accommodate?`,
+      answer: `${name} is suitable for up to ${seats} passengers and offers ${luggage} luggage space depending on travel requirements.`,
+    },
+    {
+      question: `Can I book ${name} for a full-day private chauffeur service?`,
+      answer:
+        "Yes, this vehicle can be booked for full-day private chauffeur service in Cape Town, including city travel, meetings, scenic routes, wine tours, and custom day itineraries.",
+    },
+    {
+      question: `What is the price for ${name} chauffeur service in Cape Town?`,
+      answer: formattedPrice
+        ? `${name} chauffeur service pricing typically starts ${formattedPrice.toLowerCase()}. Final pricing depends on route, duration, and itinerary requirements.`
+        : "Pricing depends on route, duration, and itinerary requirements. Contact us for availability and a tailored quote.",
+    },
+  ];
 }
 
 export async function generateMetadata({
@@ -170,13 +223,31 @@ export async function generateMetadata({
     title,
     description,
     alternates: { canonical: canonicalUrl },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+        "max-video-preview": -1,
+      },
+    },
     openGraph: {
       title,
       description,
       url: canonicalUrl,
       siteName: "Cape Town Concierge",
       type: "article",
-      images: image ? [{ url: image, alt: car.title || "Chauffeur vehicle" }] : [],
+      images: image
+        ? [
+            {
+              url: image,
+              alt: getVehicleImageAlt(car),
+            },
+          ]
+        : [],
     },
     twitter: {
       card: "summary_large_image",
@@ -198,6 +269,115 @@ export default async function ChauffeurServiceDetailPage({ params }: PageProps) 
   }
 
   const relatedVehicles = mapRelatedVehicles(vehicles, slug);
+  const image = getPrimaryImage(car);
+  const canonicalUrl = `${SITE_URL}/chauffeur-services/${slug}`;
+  const pageTitle = getPageTitle(car);
+  const pageDescription = getPageDescription(car);
+  const formattedPrice = formatPrice(
+    car.price,
+    car.price_from,
+    car.price_to,
+    car.currency
+  );
+  const vehicleFaqs = buildVehicleFaqs(car, formattedPrice);
 
-  return <ChauffeurDetailView car={car} relatedVehicles={relatedVehicles} />;
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Product",
+        name: car.title || "Luxury Chauffeur Vehicle",
+        image: image ? [image] : [],
+        description: getShortVehicleDescription(car),
+        brand: {
+          "@type": "Brand",
+          name: "Cape Town Concierge",
+        },
+        category: car.category || car.vehicle_type || "Luxury Chauffeur Vehicle",
+        url: canonicalUrl,
+        ...(formattedPrice
+          ? {
+              offers: {
+                "@type": "Offer",
+                priceCurrency: car.currency || "ZAR",
+                price: car.price || car.price_from || car.price_to || undefined,
+                availability: "https://schema.org/InStock",
+                url: canonicalUrl,
+              },
+            }
+          : {}),
+      },
+      {
+        "@type": "Service",
+        name: `${car.title || "Luxury Vehicle"} Chauffeur Service Cape Town`,
+        serviceType: "Private Chauffeur Service",
+        provider: {
+          "@type": "Organization",
+          name: "Cape Town Concierge",
+          url: SITE_URL,
+        },
+        areaServed: {
+          "@type": "City",
+          name: "Cape Town",
+        },
+        image: image ? [image] : [],
+        description:
+          car.chauffeur_service_text || getShortVehicleDescription(car),
+        url: canonicalUrl,
+      },
+      {
+        "@type": "FAQPage",
+        mainEntity: vehicleFaqs.map((item) => ({
+          "@type": "Question",
+          name: item.question,
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: item.answer,
+          },
+        })),
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          {
+            "@type": "ListItem",
+            position: 1,
+            name: "Home",
+            item: SITE_URL,
+          },
+          {
+            "@type": "ListItem",
+            position: 2,
+            name: "Chauffeur Services",
+            item: `${SITE_URL}/chauffeur-services`,
+          },
+          {
+            "@type": "ListItem",
+            position: 3,
+            name: car.title || "Vehicle",
+            item: canonicalUrl,
+          },
+        ],
+      },
+      {
+        "@type": "WebPage",
+        name: pageTitle,
+        description: pageDescription,
+        url: canonicalUrl,
+        image: image ? [image] : [],
+      },
+    ],
+  };
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(structuredData),
+        }}
+      />
+      <ChauffeurDetailView car={car} relatedVehicles={relatedVehicles} />
+    </>
+  );
 }

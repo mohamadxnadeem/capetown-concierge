@@ -1,9 +1,9 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import styled from "styled-components";
 import Button from "../common/Button";
-import { trackWhatsAppClick } from "../../lib/tracking";
 
 type HeroBannerProps = {
   eyebrow?: string;
@@ -14,22 +14,36 @@ type HeroBannerProps = {
   secondaryCtaLabel?: string;
   secondaryCtaHref?: string;
   image: string;
+  imageAlt?: string;
 };
 
-const Wrapper = styled.section<{ $image: string }>`
+const Wrapper = styled.section`
   position: relative;
   width: 100%;
   min-height: calc(100vh - 82px);
+  overflow: hidden;
+`;
 
-  background-image: ${({ $image }) =>
-    `linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.45) 40%, rgba(0,0,0,0.15) 70%), url(${$image})`};
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+const ImageLayer = styled.div`
+  position: absolute;
+  inset: 0;
+`;
+
+const Overlay = styled.div`
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.75) 0%,
+    rgba(0, 0, 0, 0.45) 40%,
+    rgba(0, 0, 0, 0.15) 70%
+  );
 `;
 
 const Content = styled.div`
   position: absolute;
+  z-index: 2;
   bottom: 0;
   left: 0;
   width: 100%;
@@ -97,11 +111,24 @@ export default function HeroBanner({
   secondaryCtaLabel = "Explore Services",
   secondaryCtaHref = "/chauffeur-services",
   image,
+  imageAlt = "Luxury chauffeur fleet in Cape Town including premium private transport vehicles",
 }: HeroBannerProps) {
-  const isWhatsApp = primaryCtaHref.includes("wa.me");
-
   return (
-    <Wrapper $image={image}>
+    <Wrapper>
+      <ImageLayer>
+        <Image
+          src={image}
+          alt={imageAlt}
+          fill
+          priority
+          quality={90}
+          sizes="100vw"
+          style={{ objectFit: "cover" }}
+        />
+      </ImageLayer>
+
+      <Overlay />
+
       <Content>
         <Inner>
           <Eyebrow>{eyebrow}</Eyebrow>
@@ -109,25 +136,15 @@ export default function HeroBanner({
           <Description>{description}</Description>
 
           <ButtonRow>
-            <StyledLink
-              href={primaryCtaHref}
-              onClick={() => {
-                if (isWhatsApp) {
-                  trackWhatsAppClick({
-                    source: "homepage_hero",
-                    label: primaryCtaLabel,
-                  });
-                }
-              }}
-            >
+            <StyledLink href={primaryCtaHref}>
               <Button as="span">{primaryCtaLabel}</Button>
             </StyledLink>
 
-            {/* <StyledLink href={secondaryCtaHref}>
+            <StyledLink href={secondaryCtaHref}>
               <Button as="span" $variant="secondary">
                 {secondaryCtaLabel}
               </Button>
-            </StyledLink> */}
+            </StyledLink>
           </ButtonRow>
         </Inner>
       </Content>

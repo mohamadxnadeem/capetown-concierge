@@ -5,6 +5,7 @@ import TestimonialsSection from "../testimonials/TestimonialsSection";
 import TestimonialsCta from "../testimonials/TestimonialsCta";
 import { itineraryDays, itineraryFaqItems } from "./data";
 import ItineraryAddOns from "./ItineraryAddOns";
+import ItineraryAuthoritySection from "./ItineraryAuthoritySection";
 import ItineraryFaq from "./ItineraryFaq";
 import ItineraryFinalCta from "./ItineraryFinalCta";
 import ItineraryHero from "./ItineraryHero";
@@ -16,10 +17,14 @@ export default function ItineraryPage() {
     <PageWrap>
       <ItineraryHero />
       <ItineraryTimeline items={itineraryDays} />
+      <ItineraryAuthoritySection />
       <TestimonialsSection />
       <TestimonialsCta />
-
       <AvailableVehicles title="7 Day Cape Town Itinerary" />
+
+
+      
+
 
       <ItineraryAddOns />
 

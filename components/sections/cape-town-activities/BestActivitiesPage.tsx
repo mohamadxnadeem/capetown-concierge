@@ -31,14 +31,15 @@ type Experience = {
 };
 
 type ExperienceApiItem = {
-  experience: Experience;
-};
+  experience?: Experience;
+} & Partial<Experience>;
 
 type FeaturedExperienceItem = {
   title: string;
   description: string;
   href: string;
   image: string;
+  alt: string;
 };
 
 function stripHtml(html: string) {
@@ -73,7 +74,7 @@ export default function BestActivitiesPage() {
         const data: ExperienceApiItem[] = await response.json();
 
         const items = data
-          .map((item) => {
+          .map((item: ExperienceApiItem) => {
             const experience = item?.experience || item;
 
             if (!experience?.title) return null;
@@ -98,9 +99,10 @@ export default function BestActivitiesPage() {
                 ? `/private-tours/${experience.slug}`
                 : "/private-tours",
               image: featuredPhoto,
+              alt: `Private ${experience.title} in Cape Town with Professional Driver`,
             };
           })
-          .filter(Boolean) as FeaturedExperienceItem[];
+          .filter((item): item is FeaturedExperienceItem => item !== null);
 
         setFeaturedExperienceItems(items);
       } catch (error) {
@@ -117,13 +119,17 @@ export default function BestActivitiesPage() {
       <ActivitiesHero />
 
       <ActivitiesTimeline activities={activities} />
-      <TestimonialsSection />
 
-      <FeaturedExperiences items={featuredExperienceItems} />
-
-      <TestimonialsCta />
+      <FeaturedExperiences
+        title="Best Private Tours & Experiences in Cape Town"
+        description="Discover some of the most popular private experiences in Cape Town, from scenic coastal routes and Cape Peninsula highlights to wine tours, luxury activities, and curated chauffeur-driven days."
+        items={featuredExperienceItems}
+      />
 
       <ActivitiesTravellerTypes items={travelerTypes} />
+
+      <TestimonialsSection />
+      <TestimonialsCta />
 
       <ActivitiesFinalCta />
     </PageWrap>

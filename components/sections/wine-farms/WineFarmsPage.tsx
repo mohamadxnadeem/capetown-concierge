@@ -18,20 +18,17 @@ export default function WineFarmsPage() {
     <PageWrap>
       <WineHero />
       <WineTimeline items={wineFarms} />
-
       <TestimonialsSection />
       <TestimonialsCta />
       <AvailableVehicles title="Private Wine Tour in Cape Town" />
-      
+
       <WineRegions />
       <WineByTravelStyle />
       <WineServices />
 
       
-      <TestimonialsSection />
-      <TestimonialsCta />
-      <AvailableVehicles title="Private Wine Tour in Cape Town" />
 
+      
 
       <WineFaq items={wineFaqItems} />
       <WineFinalCta />

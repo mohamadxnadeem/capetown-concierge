@@ -11,6 +11,7 @@ type VehicleItem = {
   description: string;
   href: string;
   image?: string;
+  alt?: string;
   seats?: number;
   price?: string;
 };
@@ -290,12 +291,18 @@ const EmptyState = styled.div`
   box-shadow: ${({ theme }) => theme.shadows.soft};
 `;
 
+function getVehicleAltText(title: string) {
+  return `Luxury ${title} Chauffeur Service Cape Town - VIP Transport`;
+}
+
 function VehicleImageCard({
   image,
   title,
+  alt,
 }: {
   image?: string;
   title: string;
+  alt?: string;
 }) {
   const [loaded, setLoaded] = useState(false);
 
@@ -305,7 +312,7 @@ function VehicleImageCard({
       {image ? (
         <Image
           src={image}
-          alt={title}
+          alt={alt || getVehicleAltText(title)}
           fill
           sizes="(max-width: 768px) 85vw, (max-width: 1200px) 48vw, 32vw"
           style={{ objectFit: "cover" }}
@@ -372,7 +379,11 @@ export default function FeaturedVehicles({
           <Slider ref={sliderRef}>
             {items.map((item, index) => (
               <Card key={`${item.title}-${index}`} href={item.href}>
-                <VehicleImageCard image={item.image} title={item.title} />
+                <VehicleImageCard
+                  image={item.image}
+                  title={item.title}
+                  alt={item.alt}
+                />
 
                 <CardContent>
                   <MetaRow>

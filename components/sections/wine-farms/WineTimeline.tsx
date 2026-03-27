@@ -169,7 +169,7 @@ function getWineFarmAltText(title: string) {
   const key = title.toLowerCase();
 
   if (key.includes("delaire") || key.includes("graff")) {
-    return "Delaire Graff Estate vineyard and luxury wine experience in Stellenbosch near Cape Town";
+    return "Delaire Graff Estate luxury wine farm in Stellenbosch near Cape Town with vineyard views and fine dining";
   }
   if (key.includes("babylonstoren")) {
     return "Babylonstoren wine farm and gardens in the Cape Winelands near Cape Town";
@@ -181,7 +181,7 @@ function getWineFarmAltText(title: string) {
     return "Tokara Wine Estate vineyard views in Stellenbosch near Cape Town";
   }
   if (key.includes("groot constantia")) {
-    return "Groot Constantia historic wine estate near Cape Town";
+    return "Groot Constantia historic wine estate near Cape Town in Constantia";
   }
   if (key.includes("waterford")) {
     return "Waterford Estate wine tasting experience in Stellenbosch near Cape Town";
@@ -193,7 +193,7 @@ function getWineFarmAltText(title: string) {
     return "Spier Wine Farm in the Cape Winelands near Cape Town";
   }
   if (key.includes("postcard")) {
-    return "Postcard Cafe vineyard views and wine stop in Stellenbosch near Cape Town";
+    return "Postcard Cafe vineyard views and scenic lunch stop in Stellenbosch near Cape Town";
   }
   if (key.includes("lanzerac")) {
     return "Lanzerac Wine Estate luxury wine tasting in Stellenbosch near Cape Town";
@@ -209,10 +209,11 @@ export default function WineTimeline({ items }: Props) {
         <SectionHeader>
           <SectionTitle>Top 10 Wine Farms in Cape Town</SectionTitle>
           <SectionText>
-            Explore some of the best wine farms near Cape Town, whether you are
-            looking for the most romantic estates, family-friendly options,
-            scenic lunch spots, or premium luxury tastings in Stellenbosch,
-            Franschhoek, and Constantia.
+            Explore some of the best wine farms near Cape Town, from luxury
+            Stellenbosch estates and Franschhoek favourites to family-friendly
+            vineyards and scenic lunch stops. This guide helps you choose the
+            right wine farms for a private chauffeur-driven wine tour in the
+            Cape Winelands.
           </SectionText>
         </SectionHeader>
 
@@ -245,7 +246,7 @@ export default function WineTimeline({ items }: Props) {
 
                     {item.tags?.length ? (
                       <TagGrid>
-                        {item.tags.map((tag) => (
+                        {item.tags.map((tag: string) => (
                           <Tag key={tag}>{tag}</Tag>
                         ))}
                       </TagGrid>

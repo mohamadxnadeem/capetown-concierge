@@ -11,6 +11,7 @@ type ExperienceItem = {
   description: string;
   href: string;
   image?: string;
+  alt?: string;
 };
 
 type FeaturedExperiencesProps = {
@@ -232,37 +233,7 @@ const EmptyState = styled.div`
 `;
 
 function getExperienceAltText(title: string) {
-  const key = title.toLowerCase();
-
-  if (key.includes("cape peninsula")) {
-    return "Cape Peninsula private tour with scenic coastal views near Cape Town";
-  }
-  if (key.includes("wine") || key.includes("winelands") || key.includes("stellenbosch") || key.includes("franschhoek")) {
-    return "Cape Winelands private wine tour near Cape Town";
-  }
-  if (key.includes("table mountain")) {
-    return "Table Mountain private tour experience in Cape Town";
-  }
-  if (key.includes("city")) {
-    return "Private Cape Town city tour experience";
-  }
-  if (key.includes("cape point") || key.includes("good hope")) {
-    return "Cape Point and Cape of Good Hope private tour near Cape Town";
-  }
-  if (key.includes("penguin") || key.includes("boulders")) {
-    return "Boulders Beach penguin private tour near Cape Town";
-  }
-  if (key.includes("helicopter")) {
-    return "Helicopter tour experience over Cape Town";
-  }
-  if (key.includes("yacht")) {
-    return "Private yacht experience in Cape Town";
-  }
-  if (key.includes("safari")) {
-    return "Safari day trip from Cape Town";
-  }
-
-  return `${title} private tour experience in Cape Town`;
+  return `Private ${title} in Cape Town with Professional Driver`;
 }
 
 export default function FeaturedExperiences({
@@ -324,7 +295,7 @@ export default function FeaturedExperiences({
                   {item.image ? (
                     <SmartImage
                       src={item.image}
-                      alt={getExperienceAltText(item.title)}
+                      alt={item.alt || getExperienceAltText(item.title)}
                       sizes="(max-width: 768px) 85vw, (max-width: 1200px) 48vw, 32vw"
                     />
                   ) : null}
