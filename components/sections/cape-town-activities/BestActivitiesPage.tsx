@@ -131,7 +131,7 @@ export default function BestActivitiesPage() {
       <TestimonialsSection />
       <TestimonialsCta />
 
-      <ActivitiesFinalCta />
+      {/* <ActivitiesFinalCta /> */}
     </PageWrap>
   );
 }

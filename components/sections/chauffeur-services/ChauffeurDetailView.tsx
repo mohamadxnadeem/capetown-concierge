@@ -251,7 +251,7 @@ export default function ChauffeurDetailView({ car, relatedVehicles }: Props) {
         whatsappLink={mainWhatsAppLink}
       />
 
-      <Section>
+      {/* <Section>
         <Container>
           <ChauffeurWhatToExpect
             html={bodyHtml}
@@ -262,7 +262,7 @@ export default function ChauffeurDetailView({ car, relatedVehicles }: Props) {
             }
           />
         </Container>
-      </Section>
+      </Section> */}
 
       {!!galleryImages.length && (
         <Section>
