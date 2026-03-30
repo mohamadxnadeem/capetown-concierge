@@ -369,11 +369,11 @@ export default function ChauffeurDetailView({ car, relatedVehicles }: Props) {
         </Container>
       </AuthoritySection>
 
-      <Section>
+      {/* <Section>
         <Container>
           <ChauffeurDiscountTable baseRate={baseRate} />
         </Container>
-      </Section>
+      </Section> */}
 
       <Section>
         <Container>
