@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import styled from "styled-components";
-import Container from "../../common/Container"; // ✅ ADD THIS
+import Container from "../../common/Container";
 import { trackWhatsAppClick } from "../../../lib/tracking";
 
 type Props = {
@@ -55,10 +55,27 @@ const Eyebrow = styled.div`
   margin-bottom: 16px;
 `;
 
-const HeroTitle = styled.h1`
+/*
+ * CHANGED: h1 → p
+ *
+ * The real H1 for this page is <AuthorityTitle> in ChauffeurDetailView,
+ * which renders the full SEO keyword e.g.
+ * "Range Rover Sport Chauffeur Service Cape Town"
+ *
+ * This hero element is a visual display title only — it shows the short
+ * vehicle name ("Range Rover Sport") for aesthetic impact at the top of
+ * the page. Making it a <p> with identical styling means:
+ *   - Visitors see no difference whatsoever
+ *   - Google sees exactly one <h1> per page (the SEO keyword below the hero)
+ *   - Heading hierarchy is clean: h1 → h2 → h2 → ...
+ *
+ * Font size, weight, colour and spacing are all preserved exactly.
+ */
+const HeroTitle = styled.p`
   margin: 0 0 16px;
   color: white;
   font-size: 2.5rem;
+  font-weight: 700;
   line-height: 1.03;
 
   @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
@@ -139,10 +156,13 @@ export default function ChauffeurHero({
 }: Props) {
   return (
     <Hero $image={image}>
-      <Container> {/* ✅ THIS FIXES YOUR PROBLEM */}
+      <Container>
         <HeroInner>
           <Eyebrow>Private Chauffeur Vehicle</Eyebrow>
+
+          {/* Renders as <p> — visual title only, NOT the page H1 */}
           <HeroTitle>{title}</HeroTitle>
+
           <HeroText>{description}</HeroText>
 
           <HeroMeta>
