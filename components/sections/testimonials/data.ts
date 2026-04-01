@@ -83,12 +83,12 @@ export const testimonials = [
     review:
       "Beautiful trip and very well organised. Highly recommended.",
   },
-  {
-    name: "Michael",
-    image: "/images/testimonials/michael.jpg",
-    review:
-      "Top class service and very professional throughout. Great experience.",
-  },
+  // {
+  //   name: "Michael",
+  //   image: "/images/testimonials/michael.jpg",
+  //   review:
+  //     "Top class service and very professional throughout. Great experience.",
+  // },
   {
     name: "Moz",
     image: "/images/testimonials/moz.png",

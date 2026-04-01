@@ -72,7 +72,18 @@ function formatPrice(
   return "";
 }
 
-function truncateText(text?: string, maxLength = 140) {
+function getNumericPriceValue(
+  price?: string | number,
+  priceFrom?: string | number,
+  priceTo?: string | number
+): string | number | undefined {
+  if (price !== undefined && price !== null && price !== "") return price;
+  if (priceFrom !== undefined && priceFrom !== null && priceFrom !== "") return priceFrom;
+  if (priceTo !== undefined && priceTo !== null && priceTo !== "") return priceTo;
+  return undefined;
+}
+
+function truncateText(text?: string, maxLength = 155) {
   if (!text) return "";
   if (text.length <= maxLength) return text;
   return `${text.slice(0, maxLength).trim()}...`;
@@ -123,29 +134,59 @@ function getVehicleImageAlt(car: Car) {
   return `Luxury ${name} chauffeur service in Cape Town for VIP transport and private travel`;
 }
 
+function getFormattedDailyRate(car: Car) {
+  return formatPrice(car.price, car.price_from, car.price_to, car.currency);
+}
+
+function getMetaFriendlyRate(car: Car) {
+  const value = getFormattedDailyRate(car);
+  if (!value) return "";
+  return value.replace(/^From\s+/i, "");
+}
+
 function getPageTitle(car: Car) {
+  const name = car.title || "Luxury Vehicle";
+
   return (
     car.meta_title ||
-    `${car.title || "Chauffeur Vehicle"} Chauffeur Service Cape Town | Cape Town Concierge`
+    `${name} | VIP Chauffeur Hire Cape Town`
   );
 }
 
 function getPageDescription(car: Car) {
-  return (
-    car.meta_description ||
+  if (car.meta_description) return car.meta_description;
+
+  const name = car.title || "Luxury vehicle";
+  const rate = getMetaFriendlyRate(car);
+  const seats = car.number_of_seats ? ` Up to ${car.number_of_seats} seats.` : "";
+  const luggage = car.luggage_capacity
+    ? ` Ideal for ${car.luggage_capacity} luggage pieces.`
+    : "";
+
+  const premiumDescription = rate
+    ? `${name} VIP chauffeur hire in Cape Town from ${rate} per day. Perfect for airport transfers, executive travel, private tours, and luxury day hire.${seats}${luggage}`
+    : `${name} VIP chauffeur hire in Cape Town for airport transfers, executive travel, private tours, and luxury day hire.${seats}${luggage}`;
+
+  return truncateText(
     car.short_description ||
-    car.highlight ||
-    car.chauffeur_service_text ||
-    "Premium chauffeur-driven vehicles in Cape Town for airport transfers, private touring, and executive travel."
+      car.highlight ||
+      car.chauffeur_service_text ||
+      premiumDescription,
+    155
   );
 }
 
 function getShortVehicleDescription(car: Car) {
+  const name = car.title || "chauffeur vehicle";
+  const rate = getFormattedDailyRate(car);
+
   return (
     car.short_description ||
     car.highlight ||
     truncateText(car.body, 180) ||
-    `Premium ${car.title || "chauffeur vehicle"} in Cape Town for private travel, airport transfers, and chauffeur-driven experiences.`
+    (rate
+      ? `${name} chauffeur hire in Cape Town ${rate.toLowerCase()} for airport transfers, private travel, and VIP transport.`
+      : `Premium ${name} in Cape Town for private travel, airport transfers, and chauffeur-driven experiences.`)
   );
 }
 
@@ -279,6 +320,11 @@ export default async function ChauffeurServiceDetailPage({ params }: PageProps) 
     car.price_to,
     car.currency
   );
+  const numericPrice = getNumericPriceValue(
+    car.price,
+    car.price_from,
+    car.price_to
+  );
   const vehicleFaqs = buildVehicleFaqs(car, formattedPrice);
 
   const structuredData = {
@@ -295,12 +341,12 @@ export default async function ChauffeurServiceDetailPage({ params }: PageProps) 
         },
         category: car.category || car.vehicle_type || "Luxury Chauffeur Vehicle",
         url: canonicalUrl,
-        ...(formattedPrice
+        ...(numericPrice
           ? {
               offers: {
                 "@type": "Offer",
                 priceCurrency: car.currency || "ZAR",
-                price: car.price || car.price_from || car.price_to || undefined,
+                price: numericPrice,
                 availability: "https://schema.org/InStock",
                 url: canonicalUrl,
               },
@@ -309,7 +355,7 @@ export default async function ChauffeurServiceDetailPage({ params }: PageProps) 
       },
       {
         "@type": "Service",
-        name: `${car.title || "Luxury Vehicle"} Chauffeur Service Cape Town`,
+        name: `${car.title || "Luxury Vehicle"} VIP Chauffeur Hire Cape Town`,
         serviceType: "Private Chauffeur Service",
         provider: {
           "@type": "Organization",

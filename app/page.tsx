@@ -419,7 +419,7 @@ export default async function HomePage() {
         primaryCtaHref="/contact"
         secondaryCtaLabel="Explore Services"
         secondaryCtaHref="/chauffeur-services"
-        image="/images/hero-car.jpg"
+        image="/images/car.jpg"
         imageAlt="Luxury chauffeur fleet in Cape Town featuring premium private transport vehicles"
       />
 
