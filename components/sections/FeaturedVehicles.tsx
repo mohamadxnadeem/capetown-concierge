@@ -23,14 +23,6 @@ type FeaturedVehiclesProps = {
   items?: VehicleItem[];
 };
 
-function normalizeUsdPrice(price?: string) {
-  if (!price) return "";
-
-  return price
-    .replace(/^From\s+R/i, "From $")
-    .replace(/^R/i, "$")
-    .replace(/\s+R(?=\d)/gi, " $");
-}
 
 const shimmer = keyframes`
   0% {
@@ -389,7 +381,7 @@ export default function FeaturedVehicles({
                   <MetaRow>
                     {item.seats ? <MetaBadge>{item.seats} Seats</MetaBadge> : null}
                     {item.price ? (
-                      <MetaBadge>{normalizeUsdPrice(item.price)}</MetaBadge>
+                      <MetaBadge>{item.price}</MetaBadge>
                     ) : null}
                   </MetaRow>
 

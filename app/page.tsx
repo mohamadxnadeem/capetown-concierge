@@ -446,7 +446,7 @@ export default async function HomePage() {
         title="Luxury Chauffeur Services in Cape Town"
         description="Premium airport transfers, private chauffeur services, and curated travel experiences designed for clients who value comfort, elegance, and reliability."
         primaryCtaLabel="Book Your Ride"
-        primaryCtaHref="/chauffeur-services"
+        primaryCtaHref="https://wa.me/27636746131?text=Hi%2C%20I%27d%20like%20to%20book%20a%20luxury%20chauffeur%20or%20private%20tour%20in%20Cape%20Town.%20Please%20can%20you%20assist%3F"
         secondaryCtaLabel="Explore Services"
         secondaryCtaHref="/chauffeur-services"
         image="/images/car.jpg"

@@ -102,12 +102,20 @@ const StyledLink = styled(Link)`
   display: inline-flex;
 `;
 
+const StyledAnchor = styled.a`
+  display: inline-flex;
+`;
+
+function isExternal(href: string) {
+  return href.startsWith("http://") || href.startsWith("https://") || href.startsWith("//");
+}
+
 export default function HeroBanner({
   eyebrow = "Luxury Travel in Cape Town",
   title,
   description,
   primaryCtaLabel = "Book Now",
-  primaryCtaHref = "/contact",
+  primaryCtaHref = "/chauffeur-services",
   secondaryCtaLabel = "Explore Services",
   secondaryCtaHref = "/chauffeur-services",
   image,
@@ -136,15 +144,15 @@ export default function HeroBanner({
           <Description>{description}</Description>
 
           <ButtonRow>
-            <StyledLink href={primaryCtaHref}>
-              <Button as="span">{primaryCtaLabel}</Button>
-            </StyledLink>
-
-            {/* <StyledLink href={secondaryCtaHref}>
-              <Button as="span" $variant="secondary">
-                {secondaryCtaLabel}
-              </Button>
-            </StyledLink> */}
+            {isExternal(primaryCtaHref) ? (
+              <StyledAnchor href={primaryCtaHref} target="_blank" rel="noopener noreferrer">
+                <Button as="span">{primaryCtaLabel}</Button>
+              </StyledAnchor>
+            ) : (
+              <StyledLink href={primaryCtaHref}>
+                <Button as="span">{primaryCtaLabel}</Button>
+              </StyledLink>
+            )}
           </ButtonRow>
         </Inner>
       </Content>

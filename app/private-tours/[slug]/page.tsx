@@ -329,9 +329,20 @@ export async function generateMetadata({
   const image = getPrimaryImage(experience);
   const canonicalUrl = `${SITE_URL}/private-tours/${slug}`;
 
+  const keyword = getSeoKeyword(experience);
+
   return {
     title,
     description,
+    keywords: [
+      keyword,
+      `${experience.title} Cape Town`,
+      `private ${experience.title?.toLowerCase()} Cape Town`,
+      `${experience.title} with chauffeur`,
+      "private tours Cape Town",
+      "luxury private tours Cape Town",
+      "chauffeur tours Cape Town",
+    ].filter(Boolean),
     alternates: {
       canonical: canonicalUrl,
     },
@@ -352,11 +363,14 @@ export async function generateMetadata({
       url: canonicalUrl,
       siteName: "Cape Town Concierge",
       type: "website",
+      locale: "en_ZA",
       images: image
         ? [
             {
               url: image,
-              alt: experience.title || "Private tour in Cape Town",
+              width: 1200,
+              height: 630,
+              alt: keyword,
             },
           ]
         : [],
@@ -397,40 +411,77 @@ export default async function PrivateTourDetailPage({ params }: PageProps) {
   const canonicalUrl = `${SITE_URL}/private-tours/${slug}`;
   const price = experience.price_from || experience.price_to || "";
 
+  const tourName = experience.title || "private tour";
+  const tourKeyword = getSeoKeyword(experience);
+  const priceAnswer = experience.price_from
+    ? `${tourKeyword} starts from R${experience.price_from} per vehicle. This is an all-inclusive private experience — contact us via WhatsApp for a personalised quote based on your group size and requirements.`
+    : `Pricing for ${tourKeyword} depends on your group size and any custom requirements. Contact us via WhatsApp for a tailored quote — we typically respond within 30 minutes.`;
+
   const faqJsonLd = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
     mainEntity: [
       {
         "@type": "Question",
-        name: `How long does the ${experience.title || "private tour"} usually take?`,
+        name: `How much does the ${tourName} cost?`,
+        acceptedAnswer: { "@type": "Answer", text: priceAnswer },
+      },
+      {
+        "@type": "Question",
+        name: `How long does the ${tourName} take?`,
         acceptedAnswer: {
           "@type": "Answer",
-          text: `The ${experience.title || "private tour"} usually runs for a full day, depending on the route, your pace, and any custom stops you would like to include.`,
+          text: experience.duration
+            ? `The ${tourName} typically runs for ${experience.duration}. The exact duration depends on your pace and any custom stops you would like to include.`
+            : `The ${tourName} usually runs for a full day — approximately 8 to 10 hours — depending on the route, your pace, and any custom stops.`,
         },
       },
       {
         "@type": "Question",
-        name: `Is the ${experience.title || "private tour"} a private experience?`,
+        name: `Is the ${tourName} a private experience?`,
         acceptedAnswer: {
           "@type": "Answer",
-          text: "Yes. This is a private experience designed around your schedule, comfort, and travel preferences.",
+          text: `Yes. The ${tourName} is completely private — you travel exclusively with your group, with no shared passengers or fixed group schedules. Your itinerary, pace, and stops are entirely your own.`,
         },
       },
       {
         "@type": "Question",
-        name: `Can the ${experience.title || "private tour"} itinerary be customised?`,
+        name: `Can the ${tourName} itinerary be customised?`,
         acceptedAnswer: {
           "@type": "Answer",
-          text: "Yes. We can tailor the route, timing, and stops to create a more personalised Cape Town experience.",
+          text: `Yes. We can tailor the route, timing, and stops of the ${tourName} around your preferences. Let us know what you would like to see or experience and we will build a personalised plan.`,
         },
       },
       {
         "@type": "Question",
-        name: `Does the ${experience.title || "private tour"} include chauffeur transport?`,
+        name: `Does the ${tourName} include a professional chauffeur?`,
         acceptedAnswer: {
           "@type": "Answer",
-          text: "Yes. Your experience is designed around premium private transport for a seamless and comfortable journey.",
+          text: `Yes. All our tours include a professionally presented chauffeur who manages the route and timing so you can fully focus on the experience. Your chauffeur has extensive local knowledge of Cape Town and the surrounding areas.`,
+        },
+      },
+      {
+        "@type": "Question",
+        name: `What is included in the ${tourName}?`,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: `The ${tourName} includes a premium vehicle, professional chauffeur, fuel, and complimentary bottled water. Entrance fees to attractions, meals, and gratuities are not included unless specified.`,
+        },
+      },
+      {
+        "@type": "Question",
+        name: `How do I book the ${tourName}?`,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: `The fastest way to book is via WhatsApp. Share your preferred date, group size, and any special requirements and we will confirm availability and pricing within 30 minutes. Same-day bookings are welcomed where possible.`,
+        },
+      },
+      {
+        "@type": "Question",
+        name: `Is the ${tourName} suitable for families and couples?`,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: `Yes. The ${tourName} is well-suited for couples, families, and small groups. The experience is fully private so it adapts naturally to the pace and preferences of your party.`,
         },
       },
     ],
@@ -464,16 +515,36 @@ export default async function PrivateTourDetailPage({ params }: PageProps) {
   const tourJsonLd = {
     "@context": "https://schema.org",
     "@type": "TouristTrip",
-    name: experience.title || "Private Tour",
+    name: tourKeyword,
     description: getPageDescription(experience),
     image: primaryImage ? [primaryImage] : [],
     url: canonicalUrl,
     provider: {
-      "@type": "Organization",
+      "@type": "LocalBusiness",
       name: "Cape Town Concierge",
       url: SITE_URL,
+      telephone: "+27636746131",
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: "Cape Town",
+        addressRegion: "Western Cape",
+        addressCountry: "ZA",
+      },
+      geo: {
+        "@type": "GeoCoordinates",
+        latitude: -33.9249,
+        longitude: 18.4241,
+      },
+      priceRange: "$$$$",
     },
-    touristType: "Luxury Travelers",
+    touristType: ["Luxury Travelers", "Couples", "Families"],
+    aggregateRating: {
+      "@type": "AggregateRating",
+      ratingValue: "4.9",
+      reviewCount: "28",
+      bestRating: "5",
+      worstRating: "1",
+    },
     offers: price
       ? {
           "@type": "Offer",
