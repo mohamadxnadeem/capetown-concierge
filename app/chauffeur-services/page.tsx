@@ -1,6 +1,97 @@
 import type { Metadata } from "next";
 import ChauffeurServicesPage from "../../components/sections/chauffeur-services/ChauffeurServicesPage";
 
+type CarPhoto = {
+  cover_photos?: string;
+  is_featured?: boolean;
+};
+
+type CarItem = {
+  title?: string;
+  slug?: string;
+  short_description?: string;
+  highlight?: string;
+  body?: string;
+  cover_photos?: CarPhoto[];
+  images?: CarPhoto[];
+  number_of_seats?: number;
+  price?: string | number;
+};
+
+type CarsApiItem = {
+  car?: CarItem;
+} & Partial<CarItem>;
+
+export type FeaturedVehicleItem = {
+  title: string;
+  description: string;
+  href: string;
+  image: string;
+  alt: string;
+  seats?: number;
+  price?: string;
+};
+
+function stripHtml(html: string) {
+  return html.replace(/<[^>]*>/g, "").replace(/\s+/g, " ").trim();
+}
+
+function truncateText(text: string, maxLength: number) {
+  if (!text) return "";
+  if (text.length <= maxLength) return text;
+  return `${text.slice(0, maxLength).trim()}...`;
+}
+
+function formatPrice(price?: string | number) {
+  if (price === undefined || price === null || price === "") return "";
+  return `R${price}`;
+}
+
+async function getVehicles(): Promise<FeaturedVehicleItem[]> {
+  try {
+    const response = await fetch(
+      "https://web-production-1ab9.up.railway.app/api/cars-for-hire/all/",
+      { next: { revalidate: 3600 } }
+    );
+    if (!response.ok) return [];
+    const data = await response.json();
+    const sourceArray: CarsApiItem[] = Array.isArray(data)
+      ? data
+      : Array.isArray(data?.results)
+      ? data.results
+      : [];
+    return (
+      sourceArray.map((item: CarsApiItem) => {
+        const car = item?.car || item;
+        if (!car?.title) return null;
+        const imageArray = car.cover_photos || car.images || [];
+        const featuredPhoto =
+          imageArray.find((photo: CarPhoto) => photo?.is_featured)?.cover_photos ||
+          imageArray[0]?.cover_photos ||
+          "";
+        return {
+          title: car.title,
+          description:
+            car.short_description ||
+            car.highlight ||
+            truncateText(stripHtml(car.body || ""), 140) ||
+            "Luxury chauffeur vehicle available for private travel in Cape Town.",
+          href:
+            typeof car.slug === "string" && car.slug.trim()
+              ? `/chauffeur-services/${car.slug.trim()}`
+              : "/chauffeur-services",
+          image: featuredPhoto,
+          alt: `Luxury ${car.title} Chauffeur Service Cape Town - VIP Transport`,
+          seats: car.number_of_seats,
+          price: formatPrice(car.price),
+        };
+      }) as Array<FeaturedVehicleItem | null>
+    ).filter((item): item is FeaturedVehicleItem => item !== null);
+  } catch {
+    return [];
+  }
+}
+
 const SITE_URL = "https://capetown-concierge.co.za";
 
 export const metadata: Metadata = {
@@ -46,7 +137,8 @@ export const metadata: Metadata = {
   },
 };
 
-export default function ChauffeurServicesLandingPage() {
+export default async function ChauffeurServicesLandingPage() {
+  const vehicles = await getVehicles();
   const structuredData = {
     "@context": "https://schema.org",
     "@graph": [
@@ -149,7 +241,7 @@ export default function ChauffeurServicesLandingPage() {
           __html: JSON.stringify(structuredData),
         }}
       />
-      <ChauffeurServicesPage />
+      <ChauffeurServicesPage vehicles={vehicles} />
     </>
   );
 }

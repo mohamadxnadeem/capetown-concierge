@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import HeroBanner from "../HeroBanner";
 import FeaturedVehicles from "../FeaturedVehicles";
 import TestimonialsSection from "../testimonials/TestimonialsSection";
@@ -12,27 +11,6 @@ import {
   buildWhatsAppLink,
 } from "../../../lib/whatsapp";
 
-type CarPhoto = {
-  cover_photos?: string;
-  is_featured?: boolean;
-};
-
-type CarItem = {
-  title?: string;
-  slug?: string;
-  short_description?: string;
-  highlight?: string;
-  body?: string;
-  cover_photos?: CarPhoto[];
-  images?: CarPhoto[];
-  number_of_seats?: number;
-  price?: string | number;
-};
-
-type CarsApiItem = {
-  car?: CarItem;
-} & Partial<CarItem>;
-
 type FeaturedVehicleItem = {
   title: string;
   description: string;
@@ -42,21 +20,6 @@ type FeaturedVehicleItem = {
   seats?: number;
   price?: string;
 };
-
-function stripHtml(html: string) {
-  return html.replace(/<[^>]*>/g, "").replace(/\s+/g, " ").trim();
-}
-
-function truncateText(text: string, maxLength: number) {
-  if (!text) return "";
-  if (text.length <= maxLength) return text;
-  return `${text.slice(0, maxLength).trim()}...`;
-}
-
-function formatPrice(price?: string | number) {
-  if (price === undefined || price === null || price === "") return "";
-  return `R${price}`;
-}
 
 const PageWrap = styled.main`
   background: ${({ theme }) => theme.colors.background};
@@ -366,75 +329,7 @@ const serviceFaqs = [
   },
 ];
 
-function isFeaturedVehicleItem(
-  item: FeaturedVehicleItem | null
-): item is FeaturedVehicleItem {
-  return item !== null;
-}
-
-export default function ChauffeurServicesPage() {
-  const [vehicles, setVehicles] = useState<FeaturedVehicleItem[]>([]);
-
-  useEffect(() => {
-    async function loadVehicles() {
-      try {
-        const response = await fetch(
-          "https://web-production-1ab9.up.railway.app/api/cars-for-hire/all/",
-          { cache: "no-store" }
-        );
-
-        if (!response.ok) {
-          throw new Error("Failed to fetch vehicles");
-        }
-
-        const data = await response.json();
-
-        const sourceArray: CarsApiItem[] = Array.isArray(data)
-          ? data
-          : Array.isArray(data?.results)
-          ? data.results
-          : [];
-
-        const mapped: Array<FeaturedVehicleItem | null> = sourceArray.map(
-          (item: CarsApiItem) => {
-            const car = item?.car || item;
-            if (!car?.title) return null;
-
-            const imageArray = car.cover_photos || car.images || [];
-            const featuredPhoto =
-              imageArray.find((photo: CarPhoto) => photo?.is_featured)
-                ?.cover_photos ||
-              imageArray[0]?.cover_photos ||
-              "";
-
-            return {
-              title: car.title,
-              description:
-                car.short_description ||
-                car.highlight ||
-                truncateText(stripHtml(car.body || ""), 140) ||
-                "Luxury chauffeur vehicle available for private travel in Cape Town.",
-              href:
-                typeof car.slug === "string" && car.slug.trim()
-                  ? `/chauffeur-services/${car.slug.trim()}`
-                  : "/chauffeur-services",
-              image: featuredPhoto,
-              alt: `Luxury ${car.title} Chauffeur Service Cape Town - VIP Transport`,
-              seats: car.number_of_seats,
-              price: formatPrice(car.price),
-            };
-          }
-        );
-
-        setVehicles(mapped.filter(isFeaturedVehicleItem));
-      } catch (error) {
-        console.error("Error loading vehicles:", error);
-        setVehicles([]);
-      }
-    }
-
-    loadVehicles();
-  }, []);
+export default function ChauffeurServicesPage({ vehicles = [] }: { vehicles?: FeaturedVehicleItem[] }) {
 
   const whatsappLink = buildWhatsAppLink(
     buildGeneralWhatsAppMessage("booking a chauffeur service in Cape Town")
@@ -447,7 +342,7 @@ export default function ChauffeurServicesPage() {
         title="Chauffeur Service in Cape Town"
         description="Book a luxury chauffeur service in Cape Town for airport transfers, executive travel, private driver hire, and bespoke day planning with premium vehicles and professional service."
         primaryCtaLabel="Book Chauffeur Service"
-        primaryCtaHref="/contact"
+        primaryCtaHref="https://wa.me/27636746131?text=Hi%2C%20I%27d%20like%20to%20book%20a%20chauffeur%20service%20in%20Cape%20Town.%20Please%20can%20you%20assist%3F"
         secondaryCtaLabel="View Fleet"
         secondaryCtaHref="#chauffeur-fleet"
         image="/images/hero-car.jpg"
