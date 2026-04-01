@@ -116,7 +116,7 @@ async function getVehicles(): Promise<FeaturedVehicleItem[]> {
       ? data.results
       : [];
 
-    return items
+    return (items
       .map((item) => {
         const car = item?.car || item;
         if (!car?.title) return null;
@@ -140,7 +140,7 @@ async function getVehicles(): Promise<FeaturedVehicleItem[]> {
           seats: car.number_of_seats,
           price: car.price ? `R${car.price}` : undefined,
         };
-      })
+      }) as Array<FeaturedVehicleItem | null>)
       .filter((item): item is FeaturedVehicleItem => item !== null);
   } catch {
     return [];
