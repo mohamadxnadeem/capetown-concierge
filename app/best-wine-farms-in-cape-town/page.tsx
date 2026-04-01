@@ -67,11 +67,11 @@ export default function BestWineFarmsInCapeTownPage() {
         image: [`${SITE_URL}/images/wine/graff.jpg`],
         author: {
           "@type": "Organization",
-          name: "WhyCapeTown",
+          name: "Cape Town Concierge",
         },
         publisher: {
           "@type": "Organization",
-          name: "WhyCapeTown",
+          name: "Cape Town Concierge",
           logo: {
             "@type": "ImageObject",
             url: `${SITE_URL}/images/logo.png`,

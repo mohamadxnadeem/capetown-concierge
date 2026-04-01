@@ -63,11 +63,11 @@ export default function SevenDayCapeTownItineraryPage() {
         image: [`${SITE_URL}/images/itinerary/cape-point.jpg`],
         author: {
           "@type": "Organization",
-          name: "WhyCapeTown",
+          name: "Cape Town Concierge",
         },
         publisher: {
           "@type": "Organization",
-          name: "WhyCapeTown",
+          name: "Cape Town Concierge",
           logo: {
             "@type": "ImageObject",
             url: `${SITE_URL}/images/logo.png`,

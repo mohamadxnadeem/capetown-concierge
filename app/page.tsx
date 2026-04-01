@@ -403,7 +403,7 @@ export default async function HomePage() {
         name: "Private Chauffeur Services",
         provider: {
           "@type": "Organization",
-          name: "WhyCapeTown",
+          name: "Cape Town Concierge",
           url: SITE_URL,
         },
         areaServed: {
@@ -419,7 +419,7 @@ export default async function HomePage() {
         name: "Custom Cape Town Tours",
         provider: {
           "@type": "Organization",
-          name: "WhyCapeTown",
+          name: "Cape Town Concierge",
           url: SITE_URL,
         },
         areaServed: {

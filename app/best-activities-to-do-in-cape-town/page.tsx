@@ -61,11 +61,11 @@ export default function BestActivitiesToDoInCapeTownPage() {
         image: [`${SITE_URL}/images/activities/table-mountain.jpg`],
         author: {
           "@type": "Organization",
-          name: "WhyCapeTown",
+          name: "Cape Town Concierge",
         },
         publisher: {
           "@type": "Organization",
-          name: "WhyCapeTown",
+          name: "Cape Town Concierge",
           logo: {
             "@type": "ImageObject",
             url: `${SITE_URL}/images/logo.png`,
