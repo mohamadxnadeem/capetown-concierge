@@ -83,7 +83,7 @@ function formatPrice(
   priceTo?: string | number,
   currency?: string
 ) {
-  const symbol = currency === "ZAR" || !currency ? "$" : `${currency} `;
+  const symbol = currency === "ZAR" || !currency ? "R" : `${currency} `;
   if (price !== undefined && price !== null && price !== "") {
     return `From ${symbol}${price}`;
   }

@@ -32,7 +32,7 @@ export const metadata: Metadata = {
     description:
       "Explore the top wine farms in Cape Town including Delaire Graff, Babylonstoren, Boschendal, and more. Plan your private wine tour with a chauffeur.",
     url: `${SITE_URL}/best-wine-farms-in-cape-town`,
-    siteName: "WhyCapeTown",
+    siteName: "Cape Town Concierge",
     type: "article",
     images: [
       {

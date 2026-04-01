@@ -28,11 +28,11 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "Luxury Chauffeur Service & Private Tours Cape Town | WhyCapeTown",
+    title: "Luxury Chauffeur Service & Private Tours Cape Town | Cape Town Concierge",
     description:
       "Book the #1 rated luxury chauffeur service and private tours in Cape Town. Premium airport transfers, bespoke itineraries, and a 5-star fleet including Mercedes V-Class and BMW X5. All-inclusive, professional, and reliable.",
     url: SITE_URL,
-    siteName: "WhyCapeTown",
+    siteName: "Cape Town Concierge",
     type: "website",
     images: [
       {
@@ -45,7 +45,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Luxury Chauffeur Service & Private Tours Cape Town | WhyCapeTown",
+    title: "Luxury Chauffeur Service & Private Tours Cape Town | Cape Town Concierge",
     description:
       "Book the #1 rated luxury chauffeur service and private tours in Cape Town. Premium airport transfers, bespoke itineraries, and a 5-star fleet including Mercedes V-Class and BMW X5.",
     images: [`${SITE_URL}/images/hero-car.jpg`],
@@ -166,9 +166,7 @@ async function getFeaturedExperiences(): Promise<FeaturedExperienceItem[]> {
   try {
     const response = await fetch(
       "https://web-production-1ab9.up.railway.app/api/experiences/all/",
-      {
-        cache: "no-store",
-      }
+      { next: { revalidate: 3600 } }
     );
 
     if (!response.ok) {
@@ -219,9 +217,7 @@ async function getFeaturedVehicles(): Promise<FeaturedVehicleItem[]> {
   try {
     const response = await fetch(
       "https://web-production-1ab9.up.railway.app/api/cars-for-hire/all/",
-      {
-        cache: "no-store",
-      }
+      { next: { revalidate: 3600 } }
     );
 
     if (!response.ok) {
@@ -292,20 +288,54 @@ export default async function HomePage() {
     "@graph": [
       {
         "@type": "Organization",
-        name: "WhyCapeTown",
+        name: "Cape Town Concierge",
         url: SITE_URL,
+        logo: `${SITE_URL}/images/logo.png`,
+        telephone: "+27636746131",
+        email: "zaid@capetown-concierge.co.za",
+        description:
+          "Luxury chauffeur services, private tours, airport transfers, and curated travel experiences in Cape Town.",
+        sameAs: [
+          "https://www.facebook.com/capetownconcierge",
+        ],
+      },
+      {
+        "@type": "LocalBusiness",
+        "@id": `${SITE_URL}/#localbusiness`,
+        name: "Cape Town Concierge",
+        url: SITE_URL,
+        telephone: "+27636746131",
+        email: "zaid@capetown-concierge.co.za",
+        priceRange: "$$$$",
+        image: `${SITE_URL}/images/hero-car.jpg`,
         logo: `${SITE_URL}/images/logo.png`,
         description:
           "Luxury chauffeur services, private tours, airport transfers, and curated travel experiences in Cape Town.",
+        address: {
+          "@type": "PostalAddress",
+          addressLocality: "Cape Town",
+          addressRegion: "Western Cape",
+          addressCountry: "ZA",
+        },
+        geo: {
+          "@type": "GeoCoordinates",
+          latitude: -33.9249,
+          longitude: 18.4241,
+        },
+        areaServed: [
+          { "@type": "City", name: "Cape Town" },
+          { "@type": "State", name: "Western Cape" },
+        ],
+        serviceType: ["Private Chauffeur Service", "Private Tours", "Airport Transfers"],
       },
       {
         "@type": "WebSite",
-        name: "WhyCapeTown",
+        name: "Cape Town Concierge",
         url: SITE_URL,
       },
       {
         "@type": "WebPage",
-        name: "Luxury Chauffeur Service & Private Tours Cape Town | WhyCapeTown",
+        name: "Luxury Chauffeur Service & Private Tours Cape Town | Cape Town Concierge",
         url: SITE_URL,
         description:
           "Book the #1 rated luxury chauffeur service and private tours in Cape Town. Premium airport transfers, bespoke itineraries, and a 5-star fleet including Mercedes V-Class and BMW X5. All-inclusive, professional, and reliable.",
@@ -416,7 +446,7 @@ export default async function HomePage() {
         title="Luxury Chauffeur Services in Cape Town"
         description="Premium airport transfers, private chauffeur services, and curated travel experiences designed for clients who value comfort, elegance, and reliability."
         primaryCtaLabel="Book Your Ride"
-        primaryCtaHref="/contact"
+        primaryCtaHref="/chauffeur-services"
         secondaryCtaLabel="Explore Services"
         secondaryCtaHref="/chauffeur-services"
         image="/images/car.jpg"

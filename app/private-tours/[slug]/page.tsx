@@ -97,7 +97,7 @@ type PageProps = {
   }>;
 };
 
-const SITE_URL = "https://www.capetown-concierge.co.za";
+const SITE_URL = "https://capetown-concierge.co.za";
 
 function formatPriceRange(
   priceFrom?: string | number,
@@ -141,9 +141,7 @@ function truncateText(text?: string, maxLength = 140) {
 async function getAllExperiences(): Promise<ExperienceListItem[]> {
   const response = await fetch(
     "https://web-production-1ab9.up.railway.app/api/experiences/all/",
-    {
-      cache: "no-store",
-    }
+    { next: { revalidate: 3600 } }
   );
 
   if (!response.ok) {
@@ -156,9 +154,7 @@ async function getAllExperiences(): Promise<ExperienceListItem[]> {
 async function getAllVehicles(): Promise<CarsApiItem[]> {
   const response = await fetch(
     "https://web-production-1ab9.up.railway.app/api/cars-for-hire/all/",
-    {
-      cache: "no-store",
-    }
+    { next: { revalidate: 3600 } }
   );
 
   if (!response.ok) {
@@ -183,9 +179,7 @@ async function getExperienceDetails(
 ): Promise<ExperienceDetailResponse | Experience> {
   const response = await fetch(
     `https://web-production-1ab9.up.railway.app/api/experiences/${id}/details/`,
-    {
-      cache: "no-store",
-    }
+    { next: { revalidate: 3600 } }
   );
 
   if (!response.ok) {
@@ -211,19 +205,31 @@ function getPrimaryImage(experience: Experience) {
   );
 }
 
+function getSeoKeyword(experience: Experience): string {
+  const name = experience.title || "Private Tour";
+  return `${name} Cape Town`;
+}
+
 function getPageTitle(experience: Experience) {
-  return (
-    experience.meta_title ||
-    `${experience.title || "Private Tour"} | Cape Town Concierge`
-  );
+  if (experience.meta_title) return experience.meta_title;
+  const keyword = getSeoKeyword(experience);
+  const priceStr =
+    experience.price_from
+      ? ` | From R${experience.price_from}`
+      : "";
+  return `${keyword} | Private Chauffeur Tour${priceStr} | Cape Town Concierge`;
 }
 
 function getPageDescription(experience: Experience) {
-  return (
-    experience.meta_description ||
+  if (experience.meta_description) return experience.meta_description;
+  const keyword = getSeoKeyword(experience);
+  const base =
     experience.short_description ||
     experience.highlight ||
-    "Luxury private tours in Cape Town with premium chauffeur-led experiences."
+    `${keyword} — a fully private, chauffeur-driven experience.`;
+  return truncateText(
+    `${base} Private, bespoke, and tailored to your pace. Book via WhatsApp.`,
+    155
   );
 }
 
@@ -284,6 +290,14 @@ function mapVehicles(items: CarsApiItem[]): TourVehicle[] {
     });
 }
 
+export async function generateStaticParams() {
+  const data = await getAllExperiences();
+  return data
+    .map((item) => item?.experience?.slug)
+    .filter((slug): slug is string => Boolean(slug))
+    .map((slug) => ({ slug }));
+}
+
 export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
@@ -301,6 +315,7 @@ export async function generateMetadata({
           index: true,
           follow: true,
           "max-image-preview": "large",
+          "max-snippet": -1,
         },
       },
     };
@@ -327,6 +342,8 @@ export async function generateMetadata({
         index: true,
         follow: true,
         "max-image-preview": "large",
+        "max-snippet": -1,
+        "max-video-preview": -1,
       },
     },
     openGraph: {
@@ -334,7 +351,7 @@ export async function generateMetadata({
       description,
       url: canonicalUrl,
       siteName: "Cape Town Concierge",
-      type: "article",
+      type: "website",
       images: image
         ? [
             {

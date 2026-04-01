@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     description:
       "A complete 7 day Cape Town itinerary including private tours, wine routes, scenic drives, and luxury experiences.",
     url: `${SITE_URL}/7-day-cape-town-itinerary`,
-    siteName: "WhyCapeTown",
+    siteName: "Cape Town Concierge",
     type: "article",
     images: [
       {

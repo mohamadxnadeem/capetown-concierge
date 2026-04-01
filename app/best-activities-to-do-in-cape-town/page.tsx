@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   description:
     "Discover the best activities to do in Cape Town, from Table Mountain and Cape Point to wine tours, helicopter rides, safaris, and private chauffeur-driven experiences. Plan the perfect Cape Town itinerary with luxury transport and curated experiences.",
   alternates: {
-    canonical: `${SITE_URL}/best-activities-in-cape-town`,
+    canonical: `${SITE_URL}/best-activities-to-do-in-cape-town`,
   },
   robots: {
     index: true,
@@ -27,8 +27,8 @@ export const metadata: Metadata = {
       "Best Activities to Do in Cape Town (2026 Guide) | Private Tours & Chauffeur",
     description:
       "Explore top Cape Town activities including Table Mountain, Cape Peninsula, wine tours, helicopter rides, and chauffeur-driven private experiences.",
-    url: `${SITE_URL}/best-activities-in-cape-town`,
-    siteName: "WhyCapeTown",
+    url: `${SITE_URL}/best-activities-to-do-in-cape-town`,
+    siteName: "Cape Town Concierge",
     type: "article",
     images: [
       {
@@ -73,7 +73,7 @@ export default function BestActivitiesToDoInCapeTownPage() {
         },
         mainEntityOfPage: {
           "@type": "WebPage",
-          "@id": `${SITE_URL}/best-activities-in-cape-town`,
+          "@id": `${SITE_URL}/best-activities-to-do-in-cape-town`,
         },
       },
       {
@@ -134,7 +134,7 @@ export default function BestActivitiesToDoInCapeTownPage() {
             "@type": "ListItem",
             position: 2,
             name: "Best Activities in Cape Town",
-            item: `${SITE_URL}/best-activities-in-cape-town`,
+            item: `${SITE_URL}/best-activities-to-do-in-cape-town`,
           },
         ],
       },
