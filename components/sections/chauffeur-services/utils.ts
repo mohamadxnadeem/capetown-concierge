@@ -23,7 +23,7 @@ export function getPrimaryImage(car: Car) {
 
 export function formatCurrency(amount: number) {
   if (!amount || Number.isNaN(amount)) return "";
-  return `$${amount.toFixed(0)}`;
+  return `R${amount.toFixed(0)}`;
 }
 
 export function formatPrice(
@@ -32,11 +32,11 @@ export function formatPrice(
   priceTo?: string | number
 ) {
   if (price !== undefined && price !== null && price !== "") {
-    return `From $${price}`;
+    return `From R${price}`;
   }
-  if (priceFrom && priceTo) return `From $${priceFrom} - $${priceTo}`;
-  if (priceFrom) return `From $${priceFrom}`;
-  if (priceTo) return `$${priceTo}`;
+  if (priceFrom && priceTo) return `From R${priceFrom} - R${priceTo}`;
+  if (priceFrom) return `From R${priceFrom}`;
+  if (priceTo) return `R${priceTo}`;
   return "";
 }
 
@@ -89,7 +89,7 @@ export function buildFaqs(vehicleTitle: string, seoKeyword?: string): FaqItem[] 
     // Q1: primary keyword in the question — strongest FAQ schema trigger
     {
       question: `How much does ${kw} cost?`,
-      answer: `${kw} starts from $500 per vehicle per day. This includes your professional chauffeur, fuel, and complimentary bottled water. Airport entrance fees and national park entry are not included in the base rate. Message us on WhatsApp for a tailored quote based on your exact route and itinerary.`,
+      answer: `Pricing for ${kw} depends on your route, duration, and itinerary. Contact us via WhatsApp for availability and a personalised quote — we typically respond within 30 minutes.`,
     },
 
     // Q2: airport transfer — high search volume
