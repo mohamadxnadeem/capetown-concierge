@@ -10,6 +10,7 @@ import {
   buildGeneralWhatsAppMessage,
   buildWhatsAppLink,
 } from "../../../lib/whatsapp";
+import { trackWhatsAppClick } from "../../../lib/tracking";
 
 type FeaturedVehicleItem = {
   title: string;
@@ -488,7 +489,12 @@ export default function ChauffeurServicesPage({ vehicles = [] }: { vehicles?: Fe
           </FinalText>
 
           <ButtonRow>
-            <Anchor href={whatsappLink} target="_blank" rel="noopener noreferrer">
+            <Anchor
+              href={whatsappLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => trackWhatsAppClick({ source: "chauffeur_services_cta", label: "Check Availability" })}
+            >
               <Button as="span">Check Availability</Button>
             </Anchor>
           </ButtonRow>

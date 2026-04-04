@@ -1,6 +1,7 @@
 "use client";
 
 import styled from "styled-components";
+import { trackWhatsAppClick } from "../../lib/tracking";
 
 const WHATSAPP =
   "https://wa.me/27636746131?text=Hey%2C%20I%27d%20like%20to%20make%20a%20booking.%20Please%20can%20you%20assist%3F";
@@ -70,6 +71,19 @@ const WhatsAppButton = styled.a`
   }
 `;
 
+const ResponseBadge = styled.div`
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 16px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: rgba(11, 91, 51, 0.08);
+  color: ${({ theme }) => theme.colors.primary};
+  font-size: 0.82rem;
+  font-weight: 700;
+`;
+
 const Divider = styled.div`
   margin: 28px 0;
   border-top: 1px solid ${({ theme }) => theme.colors.border};
@@ -105,9 +119,16 @@ export default function ContactContent() {
           message.
         </Body>
 
-        <WhatsAppButton href={WHATSAPP} target="_blank" rel="noopener noreferrer">
+        <WhatsAppButton
+          href={WHATSAPP}
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={() => trackWhatsAppClick({ source: "contact_page", label: "Chat on WhatsApp" })}
+        >
           💬&nbsp; Chat on WhatsApp
         </WhatsAppButton>
+
+        <ResponseBadge>⚡ We typically respond within 30 minutes</ResponseBadge>
 
         <Divider />
 

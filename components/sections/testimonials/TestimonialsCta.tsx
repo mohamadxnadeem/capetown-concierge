@@ -62,10 +62,10 @@ export default function TestimonialsCta() {
         </Text>
 
         <TrustRow>
+          <TrustItem>⭐ 4.9 Rated</TrustItem>
           <TrustItem>Private Chauffeur</TrustItem>
           <TrustItem>Custom Itinerary</TrustItem>
-          <TrustItem>Luxury Experiences</TrustItem>
-          <TrustItem>Local Expertise</TrustItem>
+          <TrustItem>Responds in 30 min</TrustItem>
         </TrustRow>
 
         <Anchor

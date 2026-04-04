@@ -83,12 +83,12 @@ export default function ChauffeurStickyBar({
         onClick={() =>
           trackWhatsAppClick({
             source: "chauffeur_sticky_bar",
-            label: "Book",
+            label: "Book Now",
             vehicle: title,
           })
         }
       >
-        Book
+        Book Now
       </Button>
     </StickyBar>
   );
