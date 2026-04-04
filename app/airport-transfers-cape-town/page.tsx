@@ -38,9 +38,9 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "Airport Transfers Cape Town | Luxury Private Chauffeur Service",
+    title: "Cape Town Airport Transfers — Private, No Shared Rides",
     description:
-      "Professional airport transfers in Cape Town. Meet & greet at arrivals, luxury vehicles, 24/7 availability. Book via WhatsApp.",
+      "Meet & greet at arrivals. Your driver waits for you, handles luggage, and gets you to your destination in comfort. Book via WhatsApp in under 2 minutes.",
     url: `${SITE_URL}/airport-transfers-cape-town`,
     siteName: "Cape Town Concierge",
     type: "website",
@@ -49,15 +49,15 @@ export const metadata: Metadata = {
         url: `${SITE_URL}/images/hero-car.jpg`,
         width: 1200,
         height: 630,
-        alt: "Luxury airport transfer Cape Town with professional chauffeur service",
+        alt: "Cape Town airport transfer — private chauffeur meets you at arrivals",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Airport Transfers Cape Town | Luxury Private Chauffeur",
+    title: "Cape Town Airport Transfers — Private, No Shared Rides",
     description:
-      "Meet & greet airport transfers in Cape Town. Luxury vehicles, professional drivers, 24/7. Book via WhatsApp.",
+      "Meet & greet at arrivals. Your driver waits for you, handles luggage, and gets you to your destination in comfort. Book via WhatsApp in under 2 minutes.",
     images: [`${SITE_URL}/images/hero-car.jpg`],
   },
 };

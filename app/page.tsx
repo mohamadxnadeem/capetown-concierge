@@ -28,9 +28,9 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "Luxury Chauffeur Service & Private Tours Cape Town | Cape Town Concierge",
+    title: "Cape Town's Top Private Chauffeur & Tour Service",
     description:
-      "Book the #1 rated luxury chauffeur service and private tours in Cape Town. Premium airport transfers, bespoke itineraries, and a 5-star fleet including Mercedes V-Class and BMW X5. All-inclusive, professional, and reliable.",
+      "Airport transfers, private day tours, and bespoke chauffeur-driven experiences across Cape Town. Professional, discreet, and available on demand. Book via WhatsApp.",
     url: SITE_URL,
     siteName: "Cape Town Concierge",
     type: "website",
@@ -39,15 +39,15 @@ export const metadata: Metadata = {
         url: `${SITE_URL}/images/hero-car.jpg`,
         width: 1200,
         height: 630,
-        alt: "Luxury chauffeur service Cape Town with premium private travel experience",
+        alt: "Cape Town private chauffeur service — luxury vehicles and bespoke tours",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Luxury Chauffeur Service & Private Tours Cape Town | Cape Town Concierge",
+    title: "Cape Town's Top Private Chauffeur & Tour Service",
     description:
-      "Book the #1 rated luxury chauffeur service and private tours in Cape Town. Premium airport transfers, bespoke itineraries, and a 5-star fleet including Mercedes V-Class and BMW X5.",
+      "Airport transfers, private day tours, and bespoke chauffeur-driven experiences across Cape Town. Professional, discreet, and available on demand. Book via WhatsApp.",
     images: [`${SITE_URL}/images/hero-car.jpg`],
   },
 };

@@ -26,9 +26,9 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "Private Tours Cape Town | Luxury Chauffeur-Driven Experiences",
+    title: "Private Tours in Cape Town — Fully Tailored, Chauffeur-Driven",
     description:
-      "Explore Cape Town with a private chauffeur. Cape Peninsula, Winelands, Table Mountain, and fully bespoke day tours for luxury travellers.",
+      "Cape Peninsula, Winelands, Table Mountain, and more. Every tour is private, flexible, and designed around you. No shared groups. Book via WhatsApp.",
     url: `${SITE_URL}/private-tours`,
     siteName: "Cape Town Concierge",
     type: "website",
@@ -37,15 +37,15 @@ export const metadata: Metadata = {
         url: `${SITE_URL}/images/hero-car.jpg`,
         width: 1200,
         height: 630,
-        alt: "Private tours in Cape Town with luxury chauffeur-driven transport",
+        alt: "Private tours Cape Town — luxury chauffeur-driven experiences",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Private Tours Cape Town | Luxury Chauffeur-Driven Experiences",
+    title: "Private Tours in Cape Town — Fully Tailored, Chauffeur-Driven",
     description:
-      "Cape Peninsula, Winelands, and bespoke private tours in Cape Town with a professional chauffeur.",
+      "Cape Peninsula, Winelands, Table Mountain, and more. Every tour is private, flexible, and designed around you. No shared groups. Book via WhatsApp.",
     images: [`${SITE_URL}/images/hero-car.jpg`],
   },
 };

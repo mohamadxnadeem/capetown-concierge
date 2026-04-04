@@ -233,6 +233,20 @@ function getPageDescription(experience: Experience) {
   );
 }
 
+function getSocialTitle(experience: Experience) {
+  const name = experience.title || "Private Tour";
+  return `${name} — Private Chauffeur Tour in Cape Town`;
+}
+
+function getSocialDescription(experience: Experience) {
+  const hook =
+    experience.short_description ||
+    experience.highlight ||
+    `A fully private, chauffeur-driven ${experience.title || "tour"} in Cape Town tailored entirely to your pace.`;
+  const clean = hook.length > 115 ? `${hook.slice(0, 115).trim()}...` : hook;
+  return `${clean} Book privately via WhatsApp — we respond in 30 min.`;
+}
+
 function mapRelatedTours(
   allExperiences: ExperienceListItem[],
   currentSlug: string
@@ -326,6 +340,8 @@ export async function generateMetadata({
 
   const title = getPageTitle(experience);
   const description = getPageDescription(experience);
+  const socialTitle = getSocialTitle(experience);
+  const socialDescription = getSocialDescription(experience);
   const image = getPrimaryImage(experience);
   const canonicalUrl = `${SITE_URL}/private-tours/${slug}`;
 
@@ -358,8 +374,8 @@ export async function generateMetadata({
       },
     },
     openGraph: {
-      title,
-      description,
+      title: socialTitle,
+      description: socialDescription,
       url: canonicalUrl,
       siteName: "Cape Town Concierge",
       type: "website",
@@ -370,15 +386,15 @@ export async function generateMetadata({
               url: image,
               width: 1200,
               height: 630,
-              alt: keyword,
+              alt: socialTitle,
             },
           ]
         : [],
     },
     twitter: {
       card: "summary_large_image",
-      title,
-      description,
+      title: socialTitle,
+      description: socialDescription,
       images: image ? [image] : [],
     },
   };
