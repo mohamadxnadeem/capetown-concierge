@@ -105,7 +105,7 @@ async function getAllExperiences(): Promise<FeaturedExperienceItem[]> {
     if (!res.ok) return [];
     const data: ExperienceApiItem[] = await res.json();
 
-    return data
+    return (data
       .map((item) => {
         const exp = item?.experience || item;
         if (!exp?.title) return null;
@@ -130,7 +130,7 @@ async function getAllExperiences(): Promise<FeaturedExperienceItem[]> {
           alt: `Private ${exp.title} Cape Town with professional chauffeur`,
           price: tourPrices[exp.title.toLowerCase()] ?? undefined,
         };
-      })
+      }) as Array<FeaturedExperienceItem | null>)
       .filter((item): item is FeaturedExperienceItem => item !== null);
   } catch {
     return [];
