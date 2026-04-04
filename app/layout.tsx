@@ -10,6 +10,7 @@ import ScrollTracking from "../components/tracking/ScrollTracking";
 import EngagementTracking from "../components/tracking/EngagementTracking";
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://capetown-concierge.co.za"),
   title: brand.name,
   description: brand.tagline,
 };
