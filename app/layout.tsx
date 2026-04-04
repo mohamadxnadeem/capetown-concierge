@@ -6,6 +6,7 @@ import StyledComponentsRegistry from "../lib/styled-components-registry";
 import Providers from "./providers";
 import Header from "../components/common/Header";
 import Footer from "../components/common/Footer";
+import FloatingWhatsApp from "../components/common/FloatingWhatsApp";
 import ScrollTracking from "../components/tracking/ScrollTracking";
 import EngagementTracking from "../components/tracking/EngagementTracking";
 
@@ -19,6 +20,74 @@ const gaId = process.env.NEXT_PUBLIC_GA_ID;
 const metaPixelId = process.env.NEXT_PUBLIC_META_PIXEL_ID;
 const googleAdsId = process.env.NEXT_PUBLIC_GOOGLE_ADS_ID;
 
+const localBusinessSchema = {
+  "@context": "https://schema.org",
+  "@type": ["LocalBusiness", "TouristInformationCenter"],
+  name: "Cape Town Concierge",
+  url: "https://capetown-concierge.co.za",
+  logo: "https://capetown-concierge.co.za/images/logo.svg",
+  image: "https://capetown-concierge.co.za/images/hero-car.jpg",
+  description:
+    "Cape Town Concierge offers luxury private chauffeur services, bespoke private tours, and premium airport transfers across Cape Town and the Western Cape.",
+  telephone: "+27636746131",
+  email: "info@capetown-concierge.co.za",
+  priceRange: "$$$$",
+  currenciesAccepted: "ZAR",
+  paymentAccepted: "Cash, EFT, Credit Card",
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: "Cape Town",
+    addressRegion: "Western Cape",
+    postalCode: "8001",
+    addressCountry: "ZA",
+  },
+  geo: {
+    "@type": "GeoCoordinates",
+    latitude: -33.9249,
+    longitude: 18.4241,
+  },
+  areaServed: [
+    "Cape Town",
+    "Cape Peninsula",
+    "Stellenbosch",
+    "Franschhoek",
+    "Western Cape",
+  ],
+  hasOfferCatalog: {
+    "@type": "OfferCatalog",
+    name: "Private Tours & Chauffeur Services",
+    itemListElement: [
+      {
+        "@type": "Offer",
+        itemOffered: {
+          "@type": "Service",
+          name: "Private Chauffeur Service Cape Town",
+          url: "https://capetown-concierge.co.za/chauffeur-services",
+        },
+      },
+      {
+        "@type": "Offer",
+        itemOffered: {
+          "@type": "Service",
+          name: "Private Tours Cape Town",
+          url: "https://capetown-concierge.co.za/private-tours",
+        },
+      },
+      {
+        "@type": "Offer",
+        itemOffered: {
+          "@type": "Service",
+          name: "Airport Transfers Cape Town",
+          url: "https://capetown-concierge.co.za/airport-transfers-cape-town",
+        },
+      },
+    ],
+  },
+  sameAs: [
+    "https://wa.me/27636746131",
+  ],
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -27,6 +96,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}
+        />
         <StyledComponentsRegistry>
           <Providers>
             <ScrollTracking />
@@ -34,6 +107,7 @@ export default function RootLayout({
             <Header />
             {children}
             <Footer />
+            <FloatingWhatsApp />
           </Providers>
         </StyledComponentsRegistry>
 

@@ -91,6 +91,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified: new Date(),
       priority: 0.85,
     },
+    {
+      url: `${SITE_URL}/contact`,
+      lastModified: new Date(),
+      priority: 0.6,
+    },
   ];
 
   const vehicleRoutes: MetadataRoute.Sitemap = vehicleSlugs.map((slug) => ({
