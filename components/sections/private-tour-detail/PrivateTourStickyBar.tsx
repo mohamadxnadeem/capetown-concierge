@@ -55,19 +55,14 @@ const CTAAnchor = styled.a`
 type Props = {
   title: string;
   whatsappLink: string;
-  priceText?: string;
 };
 
-export default function PrivateTourStickyBar({
-  title,
-  whatsappLink,
-  priceText,
-}: Props) {
+export default function PrivateTourStickyBar({ title, whatsappLink }: Props) {
   return (
     <Bar>
       <Copy>
         <Title>{title}</Title>
-        <Subtext>{priceText || "Private tour"} • Check availability now</Subtext>
+        <Subtext>Private tour • Check availability now</Subtext>
       </Copy>
 
       <CTAAnchor

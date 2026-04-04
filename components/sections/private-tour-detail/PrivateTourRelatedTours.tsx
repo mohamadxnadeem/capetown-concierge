@@ -6,15 +6,6 @@ import Link from "next/link";
 import Button from "../../common/Button";
 import { RelatedTour } from "./types";
 
-function normalizeUsdPrice(price?: string | number) {
-  if (!price) return "";
-
-  return String(price)
-    .replace(/^From\s+R/i, "From $")
-    .replace(/^R/i, "$")
-    .replace(/\s+R(?=\d)/gi, " $");
-}
-
 function shimmer(w: number, h: number) {
   return `
     <svg width="${w}" height="${h}" xmlns="http://www.w3.org/2000/svg">
@@ -129,12 +120,6 @@ const CardTitle = styled.h3`
   font-size: 1.2rem;
 `;
 
-const Price = styled.div`
-  margin-bottom: 12px;
-  color: ${({ theme }) => theme.colors.primary};
-  font-weight: 700;
-`;
-
 const CardText = styled.p`
   margin: 0 0 18px;
   color: ${({ theme }) => theme.colors.textMuted};
@@ -198,10 +183,6 @@ export default function PrivateTourRelatedTours({
 
             <CardBody>
               <CardTitle>{item.title}</CardTitle>
-
-              {item.price ? (
-                <Price>{normalizeUsdPrice(item.price)}</Price>
-              ) : null}
 
               <CardText>
                 {item.description ||

@@ -1,6 +1,88 @@
 import type { Metadata } from "next";
 import BestActivitiesPage from "../../components/sections/cape-town-activities/BestActivitiesPage";
 
+type ExperiencePhoto = {
+  id: number;
+  cover_photos: string;
+  is_featured: boolean;
+  order: number;
+};
+
+type Experience = {
+  id: number;
+  title: string;
+  slug?: string;
+  short_description?: string;
+  highlight?: string;
+  body?: string;
+  cover_photos?: ExperiencePhoto[];
+};
+
+type ExperienceApiItem = {
+  experience?: Experience;
+} & Partial<Experience>;
+
+type FeaturedExperienceItem = {
+  title: string;
+  description: string;
+  href: string;
+  image: string;
+  alt: string;
+};
+
+function stripHtml(html: string) {
+  return html.replace(/<[^>]*>/g, "").replace(/\s+/g, " ").trim();
+}
+
+function truncateText(text: string, maxLength: number) {
+  if (!text) return "";
+  if (text.length <= maxLength) return text;
+  return `${text.slice(0, maxLength).trim()}...`;
+}
+
+async function getFeaturedExperiences(): Promise<FeaturedExperienceItem[]> {
+  try {
+    const response = await fetch(
+      "https://web-production-1ab9.up.railway.app/api/experiences/all/",
+      { next: { revalidate: 3600 } }
+    );
+
+    if (!response.ok) throw new Error("Failed to fetch experiences");
+
+    const data: ExperienceApiItem[] = await response.json();
+
+    return (data.map((item: ExperienceApiItem) => {
+      const experience = item?.experience || item;
+      if (!experience?.title) return null;
+
+      const featuredPhoto =
+        experience.cover_photos?.find((photo) => photo.is_featured)?.cover_photos ||
+        experience.cover_photos?.[0]?.cover_photos ||
+        "";
+
+      const plainTextBody = stripHtml(experience.body || "");
+      const description =
+        experience.short_description ||
+        experience.highlight ||
+        truncateText(plainTextBody, 140) ||
+        "Discover a premium private tour in Cape Town.";
+
+      return {
+        title: experience.title,
+        description,
+        href: experience.slug ? `/private-tours/${experience.slug}` : "/private-tours",
+        image: featuredPhoto,
+        alt: `Private ${experience.title} in Cape Town with Professional Driver`,
+      };
+    }) as Array<FeaturedExperienceItem | null>).filter(
+      (item): item is FeaturedExperienceItem => item !== null
+    );
+  } catch (error) {
+    console.error("Error loading featured experiences:", error);
+    return [];
+  }
+}
+
 const SITE_URL = "https://capetown-concierge.co.za";
 
 export const metadata: Metadata = {
@@ -49,7 +131,8 @@ export const metadata: Metadata = {
   },
 };
 
-export default function BestActivitiesToDoInCapeTownPage() {
+export default async function BestActivitiesToDoInCapeTownPage() {
+  const featuredExperiences = await getFeaturedExperiences();
   const structuredData = {
     "@context": "https://schema.org",
     "@graph": [
@@ -150,7 +233,7 @@ export default function BestActivitiesToDoInCapeTownPage() {
         }}
       />
 
-      <BestActivitiesPage />
+      <BestActivitiesPage featuredExperiences={featuredExperiences} />
     </>
   );
 }

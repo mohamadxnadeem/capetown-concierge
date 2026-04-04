@@ -40,18 +40,6 @@ const Section = styled.section`
   padding: 64px 0;
 `;
 
-function formatPriceRange(
-  priceFrom?: string,
-  priceTo?: string,
-  currency?: string
-) {
-  if (!priceFrom && !priceTo) return "";
-  const symbol = "$";
-  if (priceFrom && priceTo) return `From ${symbol}${priceFrom} - ${symbol}${priceTo}`;
-  if (priceFrom) return `From ${symbol}${priceFrom}`;
-  return `${symbol}${priceTo}`;
-}
-
 const faqItems: FAQItem[] = [
   {
     question: "How long does the Cape Peninsula private tour take?",
@@ -128,12 +116,6 @@ export default function PrivateTourDetailView({
     )
   );
 
-  const priceText = formatPriceRange(
-    experience.price_from,
-    experience.price_to,
-    experience.currency
-  );
-
   const stops = [...(experience.stops || [])].sort((a, b) => a.order - b.order);
 
   return (
@@ -155,7 +137,6 @@ export default function PrivateTourDetailView({
             highlight={experience.highlight}
             duration={experience.duration}
             location={experience.location}
-            priceText={priceText}
           />
         </Container>
       </Section>
@@ -220,7 +201,6 @@ export default function PrivateTourDetailView({
       <PrivateTourStickyBar
         title={safeTourTitle}
         whatsappLink={whatsappLink}
-        priceText={priceText}
       />
     </PageWrap>
   );
