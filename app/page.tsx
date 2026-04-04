@@ -147,7 +147,8 @@ function truncateText(text: string, maxLength: number) {
 
 function formatPrice(price?: string | number) {
   if (price === undefined || price === null || price === "") return "";
-  return `R${price}`;
+  const clean = String(price).replace(/^\$\s*|^USD\s*/i, "").trim();
+  return clean ? `R${clean}` : "";
 }
 
 function isFeaturedExperienceItem(

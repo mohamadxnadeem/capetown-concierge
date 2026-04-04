@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import HeroBanner from "../../components/sections/HeroBanner";
 import WhyChooseUs from "../../components/sections/WhyChooseUs";
 import FeaturedVehicles from "../../components/sections/FeaturedVehicles";
+import FaqSection from "../../components/sections/FaqSection";
 import TestimonialsSection from "../../components/sections/testimonials/TestimonialsSection";
 import TestimonialsCta from "../../components/sections/testimonials/TestimonialsCta";
 
@@ -319,6 +320,43 @@ export default async function AirportTransfersCapeTownPage() {
       />
 
       <WhyChooseUs items={whyItems} />
+
+      <FaqSection
+        eyebrow="Airport Transfer FAQ"
+        title="Common Questions About Airport Transfers in Cape Town"
+        items={[
+          {
+            question: "Where will my driver meet me at Cape Town International Airport?",
+            answer:
+              "Your chauffeur will be waiting in the arrivals hall with a name board. Exact meeting point details are included in your booking confirmation.",
+          },
+          {
+            question: "What happens if my flight is delayed?",
+            answer:
+              "We track your flight in real time. If your flight is delayed, your chauffeur will adjust their arrival time accordingly — at no extra charge.",
+          },
+          {
+            question: "How far is Cape Town Airport from the city centre?",
+            answer:
+              "Cape Town International Airport is approximately 20km from the city centre, typically a 20–30 minute drive depending on traffic.",
+          },
+          {
+            question: "Is payment required upfront?",
+            answer:
+              "Yes, payment is confirmed at the time of booking. Your quoted price is fixed and inclusive — no surprises on the day.",
+          },
+          {
+            question: "Can I book a return airport transfer at the same time?",
+            answer:
+              "Yes. When you message us on WhatsApp, let us know your outbound and return flight details and we'll arrange both transfers together.",
+          },
+          {
+            question: "Do you offer child seats?",
+            answer:
+              "Yes, child seats can be arranged on request. Please mention this when making your booking so we can prepare the right vehicle.",
+          },
+        ]}
+      />
     </>
   );
 }

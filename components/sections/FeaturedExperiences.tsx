@@ -12,6 +12,7 @@ type ExperienceItem = {
   href: string;
   image?: string;
   alt?: string;
+  price?: string;
 };
 
 type FeaturedExperiencesProps = {
@@ -302,7 +303,7 @@ export default function FeaturedExperiences({
                 </CardImageWrap>
 
                 <CardContent>
-                  <Badge>Private Tour</Badge>
+                  <Badge>{item.price ? `From ${item.price}` : "Private Tour"}</Badge>
                   <CardTitle>{item.title}</CardTitle>
                   <CardText>{item.description}</CardText>
 

@@ -76,6 +76,14 @@ type FeaturedExperienceItem = {
   href: string;
   image: string;
   alt: string;
+  price?: string;
+};
+
+const tourPrices: Record<string, string> = {
+  "cape peninsula private tour": "R1,800 per person",
+  "city and table mountain tour": "R1,200 per person",
+  "romantic stellenbosch winelands experience": "R1,500 per person",
+  "sunset safari day trip": "R2,200 per person",
 };
 
 function stripHtml(html: string) {
@@ -120,6 +128,7 @@ async function getAllExperiences(): Promise<FeaturedExperienceItem[]> {
           href: exp.slug ? `/private-tours/${exp.slug}` : "/private-tours",
           image: featuredPhoto,
           alt: `Private ${exp.title} Cape Town with professional chauffeur`,
+          price: tourPrices[exp.title.toLowerCase()] ?? undefined,
         };
       })
       .filter((item): item is FeaturedExperienceItem => item !== null);
