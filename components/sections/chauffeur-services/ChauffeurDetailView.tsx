@@ -307,7 +307,7 @@ export default function ChauffeurDetailView({
     "Travel Cape Town in comfort with a premium chauffeur-driven vehicle designed for polished, private, and reliable service.";
 
   const heroImage = getPrimaryImage(car);
-  const priceText = formatPrice(car.price, car.price_from, car.price_to);
+  const priceText = formatPrice(car.price);
 
   const mainWhatsAppLink = buildWhatsAppLink(
     `Hey, I'm interested in booking the ${safeTitle}. Please can you share pricing and availability?`
