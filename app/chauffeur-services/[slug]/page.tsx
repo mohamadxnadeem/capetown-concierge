@@ -77,23 +77,10 @@ function getSeoKeyword(car: Car): string {
 // ─────────────────────────────────────────────
 // PRICE HELPERS (unchanged)
 // ─────────────────────────────────────────────
-function formatPrice(
-  price?: string | number,
-  priceFrom?: string | number,
-  priceTo?: string | number,
-  currency?: string
-) {
-  function toUsd(val: string | number) {
-    const num = Number(String(val).replace(/[^0-9.]/g, ""));
-    return isNaN(num) || num === 0 ? String(val) : `${Math.round(num / 18.5)}`;
-  }
-  if (price !== undefined && price !== null && price !== "") {
-    return `From $${toUsd(price)} per day`;
-  }
-  if (priceFrom && priceTo) return `From $${toUsd(priceFrom)} per day`;
-  if (priceFrom) return `From $${toUsd(priceFrom)} per day`;
-  if (priceTo) return `From $${toUsd(priceTo)} per day`;
-  return "";
+function formatPrice(price?: string | number) {
+  if (price === undefined || price === null || price === "") return "";
+  const num = Number(String(price).replace(/[^0-9.]/g, ""));
+  return isNaN(num) || num === 0 ? "" : `From $${Math.round(num)} per day`;
 }
 
 function getNumericPriceValue(
@@ -158,7 +145,7 @@ function getVehicleImageAlt(car: Car) {
 }
 
 function getFormattedDailyRate(car: Car) {
-  return formatPrice(car.price, car.price_from, car.price_to, car.currency);
+  return formatPrice(car.price);
 }
 
 function getMetaFriendlyRate(car: Car) {
@@ -226,7 +213,7 @@ function mapRelatedVehicles(cars: Car[], currentSlug: string): RelatedVehicle[] 
         truncateText(car.body, 120) ||
         "Premium chauffeur-driven vehicle for Cape Town travel.",
       seats: car.number_of_seats,
-      price: formatPrice(car.price, car.price_from, car.price_to, car.currency),
+      price: formatPrice(car.price),
       href: `/chauffeur-services/${car.slug}`,
     }));
 }
@@ -394,8 +381,8 @@ export default async function ChauffeurServiceDetailPage({ params }: PageProps) 
   const pageTitle = getPageTitle(car);
   const pageDescription = getPageDescription(car);
   const keyword = getSeoKeyword(car);
-  const formattedPrice = formatPrice(car.price, car.price_from, car.price_to, car.currency);
-  const numericPrice = getNumericPriceValue(car.price, car.price_from, car.price_to);
+  const formattedPrice = formatPrice(car.price);
+  const numericPrice = car.price;
   const vehicleFaqs = buildVehicleFaqs(car, formattedPrice);
 
   // ─────────────────────────────────────────────

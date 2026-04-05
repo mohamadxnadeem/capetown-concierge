@@ -119,15 +119,10 @@ function formatPriceRange(
   return `$${zarToUsd(priceTo!)}`;
 }
 
-function formatVehiclePrice(
-  price?: string | number,
-  priceFrom?: string | number,
-  priceTo?: string | number,
-) {
-  if (price !== undefined && price !== null && price !== "") {
-    return `From $${zarToUsd(price)}`;
-  }
-  return formatPriceRange(priceFrom, priceTo);
+function formatVehiclePrice(price?: string | number) {
+  if (price === undefined || price === null || price === "") return "";
+  const num = Number(String(price).replace(/[^0-9.]/g, ""));
+  return isNaN(num) || num === 0 ? "" : `From $${Math.round(num)} per day`;
 }
 
 function truncateText(text?: string, maxLength = 140) {
@@ -292,11 +287,7 @@ function mapVehicles(items: CarsApiItem[]): TourVehicle[] {
         image: featuredPhoto,
         seats: car.number_of_seats,
         description,
-        price: formatVehiclePrice(
-          car.price,
-          car.price_from,
-          car.price_to
-        ),
+        price: formatVehiclePrice(car.price),
       };
     });
 }

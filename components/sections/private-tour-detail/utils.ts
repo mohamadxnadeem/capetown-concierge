@@ -24,26 +24,13 @@ export function getPrimaryImage(experience: Experience) {
 
 export function formatCurrency(amount: number) {
   if (!amount || Number.isNaN(amount)) return "";
-  const usd = Math.round(amount / 18.5);
-  return `$${usd}`;
+  return `$${Math.round(amount)}`;
 }
 
-export function formatPrice(
-  price?: string | number,
-  priceFrom?: string | number,
-  priceTo?: string | number
-) {
-  function toUsd(val: string | number) {
-    const num = Number(String(val).replace(/[^0-9.]/g, ""));
-    return isNaN(num) || num === 0 ? String(val) : `${Math.round(num / 18.5)}`;
-  }
-  if (price !== undefined && price !== null && price !== "") {
-    return `From $${toUsd(price)}`;
-  }
-  if (priceFrom && priceTo) return `From $${toUsd(priceFrom)} - $${toUsd(priceTo)}`;
-  if (priceFrom) return `From $${toUsd(priceFrom)}`;
-  if (priceTo) return `$${toUsd(priceTo)}`;
-  return "";
+export function formatPrice(price?: string | number) {
+  if (price === undefined || price === null || price === "") return "";
+  const num = Number(String(price).replace(/[^0-9.]/g, ""));
+  return isNaN(num) || num === 0 ? "" : `From $${Math.round(num)} per day`;
 }
 
 export function normalizeUsdPrice(price?: string) {

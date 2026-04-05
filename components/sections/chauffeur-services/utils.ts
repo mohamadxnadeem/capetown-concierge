@@ -23,26 +23,13 @@ export function getPrimaryImage(car: Car) {
 
 export function formatCurrency(amount: number) {
   if (!amount || Number.isNaN(amount)) return "";
-  const usd = Math.round(amount / 18.5);
-  return `$${usd}`;
+  return `$${Math.round(amount)}`;
 }
 
-export function formatPrice(
-  price?: string | number,
-  priceFrom?: string | number,
-  priceTo?: string | number
-) {
-  function toUsd(val: string | number) {
-    const num = Number(String(val).replace(/[^0-9.]/g, ""));
-    return isNaN(num) || num === 0 ? String(val) : `${Math.round(num / 18.5)}`;
-  }
-  if (price !== undefined && price !== null && price !== "") {
-    return `From $${toUsd(price)} per day`;
-  }
-  if (priceFrom && priceTo) return `From $${toUsd(priceFrom)} per day`;
-  if (priceFrom) return `From $${toUsd(priceFrom)} per day`;
-  if (priceTo) return `From $${toUsd(priceTo)} per day`;
-  return "";
+export function formatPrice(price?: string | number) {
+  if (price === undefined || price === null || price === "") return "";
+  const num = Number(String(price).replace(/[^0-9.]/g, ""));
+  return isNaN(num) || num === 0 ? "" : `From $${Math.round(num)} per day`;
 }
 
 export function getBaseDailyRate(
@@ -164,7 +151,7 @@ export function getSeoKeyword(car: Car): string {
 export function getVehicleMetaTitle(car: Car): string {
   if (car.meta_title) return car.meta_title;
   const keyword = getSeoKeyword(car);
-  const rate = formatPrice(car.price, car.price_from, car.price_to);
+  const rate = formatPrice(car.price);
   const rateStr = rate ? ` | ${rate}` : "";
   return `${keyword}${rateStr} | Cape Town Concierge`;
 }
@@ -177,7 +164,7 @@ export function getVehicleMetaTitle(car: Car): string {
 export function getVehicleMetaDescription(car: Car): string {
   if (car.meta_description) return car.meta_description;
   const keyword = getSeoKeyword(car);
-  const rate = formatPrice(car.price, car.price_from, car.price_to);
+  const rate = formatPrice(car.price);
   const rateStr = rate ? ` ${rate}/day.` : "";
   const seats = car.number_of_seats ? ` ${car.number_of_seats} seats.` : "";
   const raw = `${keyword} — private airport transfers, full-day tours & Cape Town hire.${rateStr}${seats} Professional chauffeur. Book via WhatsApp.`;

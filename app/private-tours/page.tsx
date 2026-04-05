@@ -84,7 +84,7 @@ function formatApiPrice(price?: string | number): string | undefined {
   if (!price && price !== 0) return undefined;
   const num = Number(String(price).replace(/[^0-9.]/g, ""));
   if (isNaN(num) || num === 0) return undefined;
-  return `From $${Math.round(num / 18.5)} per day`;
+  return `From $${Math.round(num)} per day`;
 }
 
 function stripHtml(html: string) {
