@@ -5,6 +5,7 @@ import { useRef } from "react";
 import styled from "styled-components";
 import Container from "../common/Container";
 import SmartImage from "../common/SmartImage";
+import Money from "../common/Money";
 
 type ExperienceItem = {
   title: string;
@@ -12,7 +13,7 @@ type ExperienceItem = {
   href: string;
   image?: string;
   alt?: string;
-  price?: string;
+  priceUsd?: number;
 };
 
 type FeaturedExperiencesProps = {
@@ -303,7 +304,7 @@ export default function FeaturedExperiences({
                 </CardImageWrap>
 
                 <CardContent>
-                  <Badge>{item.price ? `From ${item.price}` : "Private Tour"}</Badge>
+                  <Badge>{item.priceUsd ? <Money usd={item.priceUsd} /> : "Private Tour"}</Badge>
                   <CardTitle>{item.title}</CardTitle>
                   <CardText>{item.description}</CardText>
 

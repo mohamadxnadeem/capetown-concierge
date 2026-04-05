@@ -90,6 +90,7 @@ type Experience = {
   highlight?: string;
   body?: string;
   cover_photos?: ExperiencePhoto[];
+  price?: string | number;
 };
 
 type ExperienceApiItem = {
@@ -102,6 +103,7 @@ type FeaturedExperienceItem = {
   href: string;
   image: string;
   alt: string;
+  priceUsd?: number;
 };
 
 type CarPhoto = {
@@ -132,7 +134,7 @@ type FeaturedVehicleItem = {
   image: string;
   alt: string;
   seats?: number;
-  price?: string;
+  priceUsd?: number;
 };
 
 function stripHtml(html: string) {
@@ -143,14 +145,6 @@ function truncateText(text: string, maxLength: number) {
   if (!text) return "";
   if (text.length <= maxLength) return text;
   return `${text.slice(0, maxLength).trim()}...`;
-}
-
-function formatPrice(price?: string | number) {
-  if (price === undefined || price === null || price === "") return "";
-  const clean = String(price).replace(/^\$\s*|^USD\s*|^R\s*/i, "").trim();
-  const num = Number(clean.replace(/[^0-9.]/g, ""));
-  if (isNaN(num) || num === 0) return "";
-  return `From $${Math.round(num)} per day`;
 }
 
 function isFeaturedExperienceItem(
@@ -197,6 +191,10 @@ async function getFeaturedExperiences(): Promise<FeaturedExperienceItem[]> {
           truncateText(plainTextBody, 140) ||
           "Discover a premium private tour in Cape Town.";
 
+        const expPriceUsd = experience.price
+          ? Number(String(experience.price).replace(/[^0-9.]/g, "")) || undefined
+          : undefined;
+
         return {
           title: experience.title,
           description,
@@ -205,6 +203,7 @@ async function getFeaturedExperiences(): Promise<FeaturedExperienceItem[]> {
             : "/private-tours",
           image: featuredPhoto,
           alt: `Private ${experience.title} in Cape Town with Professional Driver`,
+          priceUsd: expPriceUsd,
         };
       }
     );
@@ -261,6 +260,10 @@ async function getFeaturedVehicles(): Promise<FeaturedVehicleItem[]> {
             ? `/chauffeur-services/${car.slug.trim()}`
             : "/chauffeur-services";
 
+        const carPriceUsd = car.price
+          ? Number(String(car.price).replace(/[^0-9.]/g, "")) || undefined
+          : undefined;
+
         return {
           title: car.title,
           description,
@@ -268,7 +271,7 @@ async function getFeaturedVehicles(): Promise<FeaturedVehicleItem[]> {
           image: featuredPhoto,
           alt: `Luxury ${car.title} Chauffeur Service Cape Town - VIP Transport`,
           seats: car.number_of_seats,
-          price: formatPrice(car.price),
+          priceUsd: carPriceUsd,
         };
       }
     );

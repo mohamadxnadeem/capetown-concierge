@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRef, useState } from "react";
 import styled, { keyframes } from "styled-components";
 import Container from "../common/Container";
+import Money from "../common/Money";
 
 type VehicleItem = {
   title: string;
@@ -13,7 +14,7 @@ type VehicleItem = {
   image?: string;
   alt?: string;
   seats?: number;
-  price?: string;
+  priceUsd?: number;
 };
 
 type FeaturedVehiclesProps = {
@@ -380,8 +381,8 @@ export default function FeaturedVehicles({
                 <CardContent>
                   <MetaRow>
                     {item.seats ? <MetaBadge>{item.seats} Seats</MetaBadge> : null}
-                    {item.price ? (
-                      <MetaBadge>{item.price}</MetaBadge>
+                    {item.priceUsd ? (
+                      <MetaBadge><Money usd={item.priceUsd} /></MetaBadge>
                     ) : null}
                   </MetaRow>
 

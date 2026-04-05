@@ -12,6 +12,7 @@ import {
   buildWhatsAppLink,
 } from "../../lib/whatsapp";
 import { trackWhatsAppClick } from "../../lib/tracking";
+import CurrencySelector from "./CurrencySelector";
 
 const headerWhatsappLink = buildWhatsAppLink(
   buildGeneralWhatsAppMessage("booking a private chauffeur or tour in Cape Town")
@@ -159,6 +160,8 @@ export default function Header() {
             </Logo>
 
             <RightSide>
+              <CurrencySelector />
+
               <MobileWhatsApp
                 href={headerWhatsappLink}
                 target="_blank"
