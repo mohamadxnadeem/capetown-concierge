@@ -37,11 +37,11 @@ export function formatPrice(
     return isNaN(num) || num === 0 ? String(val) : `${Math.round(num / 18.5)}`;
   }
   if (price !== undefined && price !== null && price !== "") {
-    return `From $${toUsd(price)}`;
+    return `From $${toUsd(price)} per day`;
   }
-  if (priceFrom && priceTo) return `From $${toUsd(priceFrom)} - $${toUsd(priceTo)}`;
-  if (priceFrom) return `From $${toUsd(priceFrom)}`;
-  if (priceTo) return `$${toUsd(priceTo)}`;
+  if (priceFrom && priceTo) return `From $${toUsd(priceFrom)} per day`;
+  if (priceFrom) return `From $${toUsd(priceFrom)} per day`;
+  if (priceTo) return `From $${toUsd(priceTo)} per day`;
   return "";
 }
 

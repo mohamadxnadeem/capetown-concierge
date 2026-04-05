@@ -150,7 +150,7 @@ function formatPrice(price?: string | number) {
   const clean = String(price).replace(/^\$\s*|^USD\s*|^R\s*/i, "").trim();
   const num = Number(clean.replace(/[^0-9.]/g, ""));
   if (isNaN(num) || num === 0) return clean ? `$${clean}` : "";
-  return `From $${Math.round(num / 18.5)}`;
+  return `From $${Math.round(num / 18.5)} per day`;
 }
 
 function isFeaturedExperienceItem(
