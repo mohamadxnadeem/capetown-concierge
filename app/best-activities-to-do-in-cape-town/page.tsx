@@ -16,6 +16,8 @@ type Experience = {
   highlight?: string;
   body?: string;
   cover_photos?: ExperiencePhoto[];
+  price_from?: string | number;
+  price_to?: string | number;
 };
 
 type ExperienceApiItem = {
@@ -28,7 +30,20 @@ type FeaturedExperienceItem = {
   href: string;
   image: string;
   alt: string;
+  price?: string;
 };
+
+function zarToUsd(val: string | number): string {
+  const num = Number(String(val).replace(/[^0-9.]/g, ""));
+  return isNaN(num) || num === 0 ? String(val) : `${Math.round(num / 18.5)}`;
+}
+
+function formatApiPrice(priceFrom?: string | number, priceTo?: string | number): string | undefined {
+  if (priceFrom && priceTo) return `From $${zarToUsd(priceFrom)} - $${zarToUsd(priceTo)}`;
+  if (priceFrom) return `From $${zarToUsd(priceFrom)}`;
+  if (priceTo) return `$${zarToUsd(priceTo)}`;
+  return undefined;
+}
 
 function stripHtml(html: string) {
   return html.replace(/<[^>]*>/g, "").replace(/\s+/g, " ").trim();
@@ -73,6 +88,7 @@ async function getFeaturedExperiences(): Promise<FeaturedExperienceItem[]> {
         href: experience.slug ? `/private-tours/${experience.slug}` : "/private-tours",
         image: featuredPhoto,
         alt: `Private ${experience.title} in Cape Town with Professional Driver`,
+        price: formatApiPrice(experience.price_from, experience.price_to),
       };
     }) as Array<FeaturedExperienceItem | null>).filter(
       (item): item is FeaturedExperienceItem => item !== null

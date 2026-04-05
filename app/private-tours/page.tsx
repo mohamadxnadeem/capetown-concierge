@@ -64,6 +64,9 @@ type Experience = {
   highlight?: string;
   body?: string;
   cover_photos?: ExperiencePhoto[];
+  price_from?: string | number;
+  price_to?: string | number;
+  currency?: string;
 };
 
 type ExperienceApiItem = {
@@ -79,12 +82,17 @@ type FeaturedExperienceItem = {
   price?: string;
 };
 
-const tourPrices: Record<string, string> = {
-  "cape peninsula private tour": "$95 per person",
-  "city and table mountain tour": "$65 per person",
-  "romantic stellenbosch winelands experience": "$80 per person",
-  "sunset safari day trip": "$120 per person",
-};
+function zarToUsd(val: string | number): string {
+  const num = Number(String(val).replace(/[^0-9.]/g, ""));
+  return isNaN(num) || num === 0 ? String(val) : `${Math.round(num / 18.5)}`;
+}
+
+function formatApiPrice(priceFrom?: string | number, priceTo?: string | number): string | undefined {
+  if (priceFrom && priceTo) return `From $${zarToUsd(priceFrom)} - $${zarToUsd(priceTo)}`;
+  if (priceFrom) return `From $${zarToUsd(priceFrom)}`;
+  if (priceTo) return `$${zarToUsd(priceTo)}`;
+  return undefined;
+}
 
 function stripHtml(html: string) {
   return html.replace(/<[^>]*>/g, "").replace(/\s+/g, " ").trim();
@@ -128,7 +136,7 @@ async function getAllExperiences(): Promise<FeaturedExperienceItem[]> {
           href: exp.slug ? `/private-tours/${exp.slug}` : "/private-tours",
           image: featuredPhoto,
           alt: `Private ${exp.title} Cape Town with professional chauffeur`,
-          price: tourPrices[exp.title.toLowerCase()] ?? undefined,
+          price: formatApiPrice(exp.price_from, exp.price_to),
         };
       }) as Array<FeaturedExperienceItem | null>)
       .filter((item): item is FeaturedExperienceItem => item !== null);
