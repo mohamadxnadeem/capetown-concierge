@@ -8,9 +8,9 @@ import {
 } from "../../lib/whatsapp";
 
 const pulse = keyframes`
-  0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.5); }
-  70% { box-shadow: 0 0 0 12px rgba(37, 211, 102, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
+  0% { box-shadow: 0 0 0 0 rgba(11, 91, 51, 0.5); }
+  70% { box-shadow: 0 0 0 12px rgba(11, 91, 51, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(11, 91, 51, 0); }
 `;
 
 const Wrap = styled.a`
@@ -23,18 +23,18 @@ const Wrap = styled.a`
   gap: 10px;
   padding: 12px 18px 12px 14px;
   border-radius: 999px;
-  background: #25d366;
+  background: linear-gradient(135deg, #0b5b33 0%, #063e23 100%);
   color: #fff;
   font-weight: 700;
   font-size: 0.92rem;
   text-decoration: none;
-  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.22);
+  box-shadow: 0 6px 24px rgba(6, 62, 35, 0.35);
   animation: ${pulse} 2.4s ease-in-out infinite;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 
   &:hover {
     transform: translateY(-2px);
-    box-shadow: 0 10px 32px rgba(0, 0, 0, 0.28);
+    box-shadow: 0 10px 32px rgba(6, 62, 35, 0.45);
     animation: none;
   }
 

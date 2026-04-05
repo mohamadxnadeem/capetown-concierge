@@ -99,10 +99,14 @@ type PageProps = {
 
 const SITE_URL = "https://capetown-concierge.co.za";
 
+function zarToUsd(val: string | number): string {
+  const num = Number(String(val).replace(/[^0-9.]/g, ""));
+  return isNaN(num) || num === 0 ? String(val) : `${Math.round(num / 18.5)}`;
+}
+
 function formatPriceRange(
   priceFrom?: string | number,
   priceTo?: string | number,
-  currency?: string
 ) {
   if (
     (priceFrom === undefined || priceFrom === null || priceFrom === "") &&
@@ -110,26 +114,20 @@ function formatPriceRange(
   ) {
     return "";
   }
-
-  const symbol = currency === "ZAR" || !currency ? "R" : `${currency} `;
-
-  if (priceFrom && priceTo) return `From ${symbol}${priceFrom} - ${symbol}${priceTo}`;
-  if (priceFrom) return `From ${symbol}${priceFrom}`;
-  return `${symbol}${priceTo}`;
+  if (priceFrom && priceTo) return `From $${zarToUsd(priceFrom)} - $${zarToUsd(priceTo)}`;
+  if (priceFrom) return `From $${zarToUsd(priceFrom)}`;
+  return `$${zarToUsd(priceTo!)}`;
 }
 
 function formatVehiclePrice(
   price?: string | number,
   priceFrom?: string | number,
   priceTo?: string | number,
-  currency?: string
 ) {
   if (price !== undefined && price !== null && price !== "") {
-    const symbol = currency === "ZAR" || !currency ? "R" : `${currency} `;
-    return `From ${symbol}${price}`;
+    return `From $${zarToUsd(price)}`;
   }
-
-  return formatPriceRange(priceFrom, priceTo, currency);
+  return formatPriceRange(priceFrom, priceTo);
 }
 
 function truncateText(text?: string, maxLength = 140) {
@@ -215,7 +213,7 @@ function getPageTitle(experience: Experience) {
   const keyword = getSeoKeyword(experience);
   const priceStr =
     experience.price_from
-      ? ` | From R${experience.price_from}`
+      ? ` | From $${zarToUsd(experience.price_from!)}`
       : "";
   return `${keyword} | Private Chauffeur Tour${priceStr} | Cape Town Concierge`;
 }
@@ -264,7 +262,7 @@ function mapRelatedTours(
         [...(tour.cover_photos || [])].sort((a, b) => a.order - b.order)[0]
           ?.cover_photos || "",
       href: `/private-tours/${tour.slug}`,
-      price: formatPriceRange(tour.price_from, tour.price_to, tour.currency),
+      price: formatPriceRange(tour.price_from, tour.price_to),
     }));
 }
 
@@ -430,7 +428,7 @@ export default async function PrivateTourDetailPage({ params }: PageProps) {
   const tourName = experience.title || "private tour";
   const tourKeyword = getSeoKeyword(experience);
   const priceAnswer = experience.price_from
-    ? `${tourKeyword} starts from R${experience.price_from} per vehicle. This is an all-inclusive private experience — contact us via WhatsApp for a personalised quote based on your group size and requirements.`
+    ? `${tourKeyword} starts from $${zarToUsd(experience.price_from!)} per vehicle. This is an all-inclusive private experience — contact us via WhatsApp for a personalised quote based on your group size and requirements.`
     : `Pricing for ${tourKeyword} depends on your group size and any custom requirements. Contact us via WhatsApp for a tailored quote — we typically respond within 30 minutes.`;
 
   const faqJsonLd = {
@@ -564,7 +562,7 @@ export default async function PrivateTourDetailPage({ params }: PageProps) {
     offers: price
       ? {
           "@type": "Offer",
-          priceCurrency: experience.currency || "ZAR",
+          priceCurrency: "USD",
           price: price,
           availability: "https://schema.org/InStock",
           url: canonicalUrl,

@@ -44,7 +44,8 @@ function truncateText(text: string, maxLength: number) {
 
 function formatPrice(price?: string | number) {
   if (price === undefined || price === null || price === "") return "";
-  return `R${price}`;
+  const num = Number(String(price).replace(/[^0-9.]/g, ""));
+  return isNaN(num) || num === 0 ? `$${price}` : `From $${Math.round(num / 18.5)}`;
 }
 
 async function getVehicles(): Promise<FeaturedVehicleItem[]> {

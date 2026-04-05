@@ -22,7 +22,6 @@ import ChauffeurIdealFor from "./ChauffeurIdealFor";
 import ChauffeurFaq from "./ChauffeurFaq";
 import ChauffeurRelatedVehicles from "./ChauffeurRelatedVehicles";
 import ChauffeurFinalCta from "./ChauffeurFinalCta";
-import ChauffeurStickyBar from "./ChauffeurStickyBar";
 import TestimonialsSection from "../testimonials/TestimonialsSection";
 import TestimonialsCta from "../testimonials/TestimonialsCta";
 
@@ -521,12 +520,6 @@ export default function ChauffeurDetailView({
       </Section>
 
       <ChauffeurFinalCta title={safeTitle} whatsappLink={mainWhatsAppLink} />
-
-      <ChauffeurStickyBar
-        title={safeTitle}
-        priceText={priceText}
-        whatsappLink={mainWhatsAppLink}
-      />
     </PageWrap>
   );
 }

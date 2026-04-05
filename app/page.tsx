@@ -147,8 +147,10 @@ function truncateText(text: string, maxLength: number) {
 
 function formatPrice(price?: string | number) {
   if (price === undefined || price === null || price === "") return "";
-  const clean = String(price).replace(/^\$\s*|^USD\s*/i, "").trim();
-  return clean ? `R${clean}` : "";
+  const clean = String(price).replace(/^\$\s*|^USD\s*|^R\s*/i, "").trim();
+  const num = Number(clean.replace(/[^0-9.]/g, ""));
+  if (isNaN(num) || num === 0) return clean ? `$${clean}` : "";
+  return `From $${Math.round(num / 18.5)}`;
 }
 
 function isFeaturedExperienceItem(

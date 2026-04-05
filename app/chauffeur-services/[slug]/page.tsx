@@ -83,13 +83,16 @@ function formatPrice(
   priceTo?: string | number,
   currency?: string
 ) {
-  const symbol = currency === "ZAR" || !currency ? "R" : `${currency} `;
-  if (price !== undefined && price !== null && price !== "") {
-    return `From ${symbol}${price}`;
+  function toUsd(val: string | number) {
+    const num = Number(String(val).replace(/[^0-9.]/g, ""));
+    return isNaN(num) || num === 0 ? String(val) : `${Math.round(num / 18.5)}`;
   }
-  if (priceFrom && priceTo) return `From ${symbol}${priceFrom} - ${symbol}${priceTo}`;
-  if (priceFrom) return `From ${symbol}${priceFrom}`;
-  if (priceTo) return `${symbol}${priceTo}`;
+  if (price !== undefined && price !== null && price !== "") {
+    return `From $${toUsd(price)}`;
+  }
+  if (priceFrom && priceTo) return `From $${toUsd(priceFrom)} - $${toUsd(priceTo)}`;
+  if (priceFrom) return `From $${toUsd(priceFrom)}`;
+  if (priceTo) return `$${toUsd(priceTo)}`;
   return "";
 }
 

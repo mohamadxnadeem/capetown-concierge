@@ -80,10 +80,10 @@ type FeaturedExperienceItem = {
 };
 
 const tourPrices: Record<string, string> = {
-  "cape peninsula private tour": "R1,800 per person",
-  "city and table mountain tour": "R1,200 per person",
-  "romantic stellenbosch winelands experience": "R1,500 per person",
-  "sunset safari day trip": "R2,200 per person",
+  "cape peninsula private tour": "$95 per person",
+  "city and table mountain tour": "$65 per person",
+  "romantic stellenbosch winelands experience": "$80 per person",
+  "sunset safari day trip": "$120 per person",
 };
 
 function stripHtml(html: string) {
