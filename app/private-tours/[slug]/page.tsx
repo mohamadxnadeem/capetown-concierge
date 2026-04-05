@@ -295,8 +295,7 @@ function mapVehicles(items: CarsApiItem[]): TourVehicle[] {
         price: formatVehiclePrice(
           car.price,
           car.price_from,
-          car.price_to,
-          car.currency
+          car.price_to
         ),
       };
     });
