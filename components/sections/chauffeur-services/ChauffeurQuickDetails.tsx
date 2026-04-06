@@ -1,13 +1,14 @@
 "use client";
 
 import styled from "styled-components";
+import Money from "../../common/Money";
 
 type Props = {
   title: string;
   vehicleType?: string;
   seats?: number;
   luggage?: number;
-  priceText?: string;
+  priceUsd?: number;
 };
 
 const Card = styled.div`
@@ -61,7 +62,7 @@ export default function ChauffeurQuickDetails({
   vehicleType,
   seats,
   luggage,
-  priceText,
+  priceUsd,
 }: Props) {
   return (
     <Card>
@@ -95,10 +96,10 @@ export default function ChauffeurQuickDetails({
             </QuickStat>
           ) : null}
 
-          {priceText ? (
+          {priceUsd ? (
             <QuickStat>
               <QuickStatLabel>Pricing</QuickStatLabel>
-              <QuickStatValue>{priceText}</QuickStatValue>
+              <QuickStatValue><Money usd={priceUsd} /></QuickStatValue>
             </QuickStat>
           ) : null}
         </QuickStats>

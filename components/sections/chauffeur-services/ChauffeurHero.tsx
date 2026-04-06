@@ -4,6 +4,7 @@ import Link from "next/link";
 import styled from "styled-components";
 import Container from "../../common/Container";
 import { trackWhatsAppClick } from "../../../lib/tracking";
+import Money from "../../common/Money";
 
 type Props = {
   title: string;
@@ -11,7 +12,7 @@ type Props = {
   vehicleType?: string;
   seats?: number;
   luggage?: number;
-  priceText?: string;
+  priceUsd?: number;
   image?: string;
   whatsappLink: string;
 };
@@ -150,7 +151,7 @@ export default function ChauffeurHero({
   vehicleType,
   seats,
   luggage,
-  priceText,
+  priceUsd,
   image,
   whatsappLink,
 }: Props) {
@@ -169,7 +170,7 @@ export default function ChauffeurHero({
             {vehicleType && <HeroMetaItem>{vehicleType}</HeroMetaItem>}
             {seats && <HeroMetaItem>{seats} Seats</HeroMetaItem>}
             {luggage && <HeroMetaItem>{luggage} Luggage</HeroMetaItem>}
-            {priceText && <HeroMetaItem>{priceText}</HeroMetaItem>}
+            {priceUsd ? <HeroMetaItem><Money usd={priceUsd} /></HeroMetaItem> : null}
           </HeroMeta>
 
           <HeroButtons>

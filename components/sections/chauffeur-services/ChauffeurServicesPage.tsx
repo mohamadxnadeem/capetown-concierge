@@ -19,7 +19,7 @@ type FeaturedVehicleItem = {
   image: string;
   alt: string;
   seats?: number;
-  price?: string;
+  priceUsd?: number;
 };
 
 const PageWrap = styled.main`

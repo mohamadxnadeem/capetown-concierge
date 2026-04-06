@@ -29,7 +29,7 @@ export type FeaturedVehicleItem = {
   image: string;
   alt: string;
   seats?: number;
-  price?: string;
+  priceUsd?: number;
 };
 
 function stripHtml(html: string) {
@@ -84,7 +84,7 @@ async function getVehicles(): Promise<FeaturedVehicleItem[]> {
           image: featuredPhoto,
           alt: `Luxury ${car.title} Chauffeur Service Cape Town - VIP Transport`,
           seats: car.number_of_seats,
-          price: formatPrice(car.price),
+          priceUsd: car.price ? Number(String(car.price).replace(/[^0-9.]/g, "")) || undefined : undefined,
         };
       }) as Array<FeaturedVehicleItem | null>
     ).filter((item): item is FeaturedVehicleItem => item !== null);

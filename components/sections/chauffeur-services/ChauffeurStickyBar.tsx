@@ -2,10 +2,11 @@
 
 import styled from "styled-components";
 import { trackWhatsAppClick } from "../../../lib/tracking";
+import Money from "../../common/Money";
 
 type Props = {
   title: string;
-  priceText?: string;
+  priceUsd?: number;
   whatsappLink: string;
 };
 
@@ -64,7 +65,7 @@ const Button = styled.a`
 
 export default function ChauffeurStickyBar({
   title,
-  priceText,
+  priceUsd,
   whatsappLink,
 }: Props) {
   return (
@@ -72,7 +73,7 @@ export default function ChauffeurStickyBar({
       <StickyCopy>
         <StickyTitle>{title}</StickyTitle>
         <StickySubtext>
-          {priceText || "Private chauffeur vehicle"} • Check availability now
+          {priceUsd ? <Money usd={priceUsd} /> : "Private chauffeur vehicle"} • Check availability now
         </StickySubtext>
       </StickyCopy>
 

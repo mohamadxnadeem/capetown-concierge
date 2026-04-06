@@ -90,7 +90,7 @@ type FeaturedVehicleItem = {
   image: string;
   alt: string;
   seats?: number;
-  price?: string;
+  priceUsd?: number;
 };
 
 function stripHtml(html: string) {
@@ -139,7 +139,7 @@ async function getVehicles(): Promise<FeaturedVehicleItem[]> {
           image,
           alt: `${car.title} airport transfer Cape Town`,
           seats: car.number_of_seats,
-          price: car.price ? `From $${Math.round(Number(String(car.price).replace(/[^0-9.]/g, "")))} per day` : undefined,
+          priceUsd: car.price ? Number(String(car.price).replace(/[^0-9.]/g, "")) || undefined : undefined,
         };
       }) as Array<FeaturedVehicleItem | null>)
       .filter((item): item is FeaturedVehicleItem => item !== null);
