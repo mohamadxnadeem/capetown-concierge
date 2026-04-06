@@ -21,7 +21,7 @@ const Pill = styled.button`
   align-items: center;
   gap: 6px;
   height: 38px;
-  padding: 0 12px;
+  padding: 0 10px;
   border-radius: 10px;
   background: rgba(255, 255, 255, 0.12);
   border: 1px solid rgba(255, 255, 255, 0.2);
@@ -47,7 +47,7 @@ const Pill = styled.button`
 `;
 
 const Flag = styled.span`
-  font-size: 1rem;
+  font-size: 1.15rem;
   line-height: 1;
 `;
 
@@ -55,6 +55,10 @@ const Code = styled.span`
   font-size: 0.8rem;
   font-weight: 700;
   letter-spacing: 0.06em;
+
+  @media (max-width: 767px) {
+    display: none;
+  }
 `;
 
 const Chevron = styled.span<{ $open: boolean }>`
@@ -62,6 +66,10 @@ const Chevron = styled.span<{ $open: boolean }>`
   opacity: 0.75;
   transition: transform 0.2s ease;
   transform: ${({ $open }) => ($open ? "rotate(180deg)" : "rotate(0deg)")};
+
+  @media (max-width: 767px) {
+    display: none;
+  }
 `;
 
 const DropdownWrap = styled.div`
@@ -74,6 +82,12 @@ const Panel = styled.div<{ $visible: boolean }>`
   right: 0;
   z-index: 9999;
   width: 260px;
+
+  @media (max-width: 767px) {
+    right: auto;
+    left: 0;
+    width: 240px;
+  }
   border-radius: 18px;
   background: rgba(6, 32, 18, 0.97);
   backdrop-filter: blur(20px);
