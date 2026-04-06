@@ -21,6 +21,7 @@ const GlobalStyles = createGlobalStyle`
     font-family: Arial, Helvetica, sans-serif;
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
+    overflow-x: hidden;
   }
 
   a {
