@@ -21,7 +21,7 @@ const Wrap = styled.a`
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 12px 18px 12px 14px;
+  padding: 13px;
   border-radius: 999px;
   background: linear-gradient(135deg, #0b5b33 0%, #063e23 100%);
   color: #fff;
@@ -38,21 +38,22 @@ const Wrap = styled.a`
     animation: none;
   }
 
-  /* Hide label on very small screens, show just icon */
-  @media (max-width: 360px) {
-    padding: 13px;
+  @media (min-width: 768px) {
+    padding: 12px 18px 12px 14px;
   }
 `;
 
 const Icon = styled.svg`
-  width: 22px;
-  height: 22px;
+  width: 24px;
+  height: 24px;
   flex: 0 0 auto;
 `;
 
 const Label = styled.span`
-  @media (max-width: 360px) {
-    display: none;
+  display: none;
+
+  @media (min-width: 768px) {
+    display: inline;
   }
 `;
 
