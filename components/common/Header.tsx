@@ -56,7 +56,7 @@ const RightSide = styled.div`
   display: flex;
   align-items: center;
   gap: 12px;
-  padding-right: 8px;
+  padding-right: 20px;
 
   @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
     padding-right: 0;
