@@ -56,6 +56,11 @@ const RightSide = styled.div`
   display: flex;
   align-items: center;
   gap: 12px;
+  padding-right: 8px;
+
+  @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
+    padding-right: 0;
+  }
 `;
 
 const HeaderCta = styled.a`
