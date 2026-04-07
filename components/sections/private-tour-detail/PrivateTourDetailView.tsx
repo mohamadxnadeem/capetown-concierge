@@ -18,9 +18,6 @@ import PrivateTourReviews from "./PrivateTourReviews";
 import PrivateTourFaq from "./PrivateTourFaq";
 import PrivateTourRelatedTours from "./PrivateTourRelatedTours";
 import PrivateTourCta from "./PrivateTourCta";
-import TestimonialsSection from "../testimonials/TestimonialsSection";
-import TestimonialsCta from "../testimonials/TestimonialsCta";
-
 
 
 import {
@@ -42,28 +39,23 @@ const Section = styled.section`
 const faqItems: FAQItem[] = [
   {
     question: "How long does the Cape Peninsula private tour take?",
-    answer:
-      "Most Cape Peninsula private tours take around a full day, depending on the pace, traffic, and how many photo or sightseeing stops you would like to include.",
+    answer: "The full route typically runs 7–9 hours, depending on your pace and preferred stops. We build in flexibility by design — if you want to spend longer at Boulders Beach or take a detour, just say the word.",
   },
   {
     question: "Is this a private tour or a shared group tour?",
-    answer:
-      "This is a private tour experience designed around your schedule, comfort, and preferences.",
+    answer: "100% private. You and your group have the entire vehicle to yourselves for the full day. We never combine bookings or add strangers to your tour.",
   },
   {
-    question: "Can the itinerary be customised?",
-    answer:
-      "Yes. The tour can be tailored around your interests, timing, and preferred stops where possible.",
+    question: "Can we customise the itinerary?",
+    answer: "Absolutely. The suggested route is a starting point, not a rule. Want to skip a stop, add one, or adjust timing around a lunch reservation? Tell us when you book and we'll tailor the day accordingly.",
   },
   {
-    question: "Does the tour include chauffeur transport?",
-    answer:
-      "Yes. The experience is designed around private chauffeur-driven transport for a smoother and more premium touring experience.",
+    question: "Is transport included?",
+    answer: "Yes — a professional chauffeur-driven vehicle is the foundation of the experience. Hotel pickup, drop-off, all driving, toll fees, and fuel are included in your booking.",
   },
   {
-    question: "Is this tour suitable for couples and families?",
-    answer:
-      "Yes. This private tour works especially well for couples, families, and travellers looking for a more relaxed and exclusive Cape Town experience.",
+    question: "Is this tour suitable for families and children?",
+    answer: "Very much so. The private format makes this especially good for families — no rushing, no crowds, and your chauffeur will adapt the pace to suit your group. Boulders Beach and Cape Point are particular hits with younger travellers.",
   },
 ];
 
@@ -159,16 +151,18 @@ export default function PrivateTourDetailView({
             stops={stops}
           />
 
-          {/* <PrivateTourMidCta
+          <PrivateTourMidCta
             tourTitle={safeTourTitle}
             whatsappLink={midCtaWhatsappLink}
-          /> */}
+          />
         </Container>
       </Section>
 
-       <TestimonialsSection />
-      
-        <TestimonialsCta />
+      <Section>
+        <Container>
+          <PrivateTourReviews reviews={reviewItems} />
+        </Container>
+      </Section>
 
       <Section>
         <Container>

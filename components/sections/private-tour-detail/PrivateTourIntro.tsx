@@ -100,6 +100,13 @@ const AlertText = styled.p`
   line-height: 1.75;
 `;
 
+const PriceNote = styled.p`
+  margin: 10px 0 0;
+  color: ${({ theme }) => theme.colors.textMuted};
+  font-size: 0.85rem;
+  line-height: 1.6;
+`;
+
 type Props = {
   title: string;
   shortDescription?: string;
@@ -130,9 +137,9 @@ export default function PrivateTourIntro({
 
       <TrustBar>
         <TrustBadge>⭐ 4.9 Rated by international travellers</TrustBadge>
-        <TrustBadge>✔ 100% Private — no shared rides</TrustBadge>
-        <TrustBadge>✔ Flexible itinerary</TrustBadge>
-        <TrustBadge>✔ Professional chauffeur included</TrustBadge>
+        <TrustBadge>✔ 100% Private — your vehicle, your group, your pace</TrustBadge>
+        <TrustBadge>✔ Flexible itinerary — you set the stops</TrustBadge>
+        <TrustBadge>✔ Professional chauffeur & local guide included</TrustBadge>
       </TrustBar>
 
       <QuickInfoRow>
@@ -146,11 +153,13 @@ export default function PrivateTourIntro({
         ) : null}
       </QuickInfoRow>
 
+      {lowestVehiclePrice ? (
+        <PriceNote>From ${Math.round(lowestVehiclePrice)} per vehicle — fully private, no per-person pricing</PriceNote>
+      ) : null}
+
       <AlertCard>
-        <AlertTitle>⚡ Peak-season dates fill fast</AlertTitle>
         <AlertText>
-          Private tours book out 2–3 weeks in advance during peak season.
-          Message us now to lock in your preferred date — we respond within 30 minutes.
+          ⚡ Peak-season dates book out 2–3 weeks ahead. Message us now and we'll hold your date — we respond in under 30 minutes.
         </AlertText>
       </AlertCard>
     </SectionHeader>

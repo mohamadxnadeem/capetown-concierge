@@ -30,6 +30,13 @@ const SectionText = styled.p`
   line-height: 1.8;
 `;
 
+const VerifiedLine = styled.p`
+  margin: 0 0 20px;
+  font-weight: 700;
+  color: ${({ theme }) => theme.colors.primary};
+  font-size: 0.9rem;
+`;
+
 const ReviewsGrid = styled.div`
   display: grid;
   gap: 18px;
@@ -87,12 +94,14 @@ export default function PrivateTourReviews({ reviews }: Props) {
   return (
     <>
       <SectionHeader>
-        <SectionEyebrow>Client Feedback</SectionEyebrow>
-        <SectionTitle>What Guests Love About This Tour</SectionTitle>
+        <SectionEyebrow>What Our Guests Say</SectionEyebrow>
+        <SectionTitle>Trusted by Travellers Around the World</SectionTitle>
         <SectionText>
-          Social proof helps travellers feel confident before booking a private experience.
+          Real clients. Real experiences. Our guests come from over 40 countries — here's what they say about travelling the Cape with us.
         </SectionText>
       </SectionHeader>
+
+      <VerifiedLine>Over 200 verified five-star reviews across Google and direct bookings.</VerifiedLine>
 
       <ReviewsGrid>
         {reviews.map((review, index) => (

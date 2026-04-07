@@ -71,7 +71,7 @@ type Props = {
 export default function PrivateTourHighlights({ tourTitle }: Props) {
   return (
     <Wrapper>
-      <Title>What Makes This Different</Title>
+      <Title>Why Guests Choose a Private Tour Over a Group Bus</Title>
 
       <Grid>
         <Item>
@@ -79,7 +79,7 @@ export default function PrivateTourHighlights({ tourTitle }: Props) {
           <TextWrap>
             <ItemTitle>No Shared Vehicle. Ever.</ItemTitle>
             <ItemText>
-              Your group has the vehicle entirely to themselves. No strangers, no compromises on timing, no waiting for anyone else.
+              Your group books the entire vehicle. No strangers, no compromises, no waiting for 20 people to get back on board. It’s your day — completely.
             </ItemText>
           </TextWrap>
         </Item>
@@ -87,9 +87,9 @@ export default function PrivateTourHighlights({ tourTitle }: Props) {
         <Item>
           <Icon>✓</Icon>
           <TextWrap>
-            <ItemTitle>Professional Local Chauffeur</ItemTitle>
+            <ItemTitle>A Chauffeur Who Knows the Peninsula</ItemTitle>
             <ItemText>
-              Your driver knows Cape Town’s roads, viewpoints, and hidden spots. You get local knowledge without the awkward tour group dynamic.
+              Your driver has done this route dozens of times. They know where the light is best for photos, which viewpoints the buses skip, and when to suggest lingering a little longer. It’s like having a local friend with a luxury car.
             </ItemText>
           </TextWrap>
         </Item>
@@ -97,9 +97,9 @@ export default function PrivateTourHighlights({ tourTitle }: Props) {
         <Item>
           <Icon>✓</Icon>
           <TextWrap>
-            <ItemTitle>Stay Longer Where It Matters</ItemTitle>
+            <ItemTitle>Your Schedule, Not Ours</ItemTitle>
             <ItemText>
-              Spend 10 minutes or an hour at any stop. Nobody is rushing you. Your {tourTitle || "tour"} runs on your schedule, not a bus timetable.
+              Spend 20 minutes at one stop or two hours — it’s your call. We build the day around what matters to you, not a preset timetable designed for the lowest common denominator.
             </ItemText>
           </TextWrap>
         </Item>
@@ -107,9 +107,9 @@ export default function PrivateTourHighlights({ tourTitle }: Props) {
         <Item>
           <Icon>✓</Icon>
           <TextWrap>
-            <ItemTitle>Hotel Pickup. Luggage Help. Water Included.</ItemTitle>
+            <ItemTitle>Everything Taken Care Of</ItemTitle>
             <ItemText>
-              We collect you from your hotel, help with luggage, and have cold water in the vehicle. Small details that make the day noticeably better.
+              Hotel pickup, cold water in the car, toll fees, fuel, local guidance — it’s all included. You focus on the experience. We handle everything else.
             </ItemText>
           </TextWrap>
         </Item>

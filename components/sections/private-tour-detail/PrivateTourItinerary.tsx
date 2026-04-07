@@ -194,9 +194,9 @@ export default function PrivateTourItinerary({ title, location, stops }: Props) 
     <>
       <SectionHeader>
         <SectionEyebrow>Your Itinerary</SectionEyebrow>
-        <SectionTitle>Every Stop, Yours to Enjoy</SectionTitle>
+        <SectionTitle>Every Stop, Yours to Explore</SectionTitle>
         <SectionText>
-          Each stop is private. No group timetables, no rushing to keep up. Take as long as you want at each location — your chauffeur works around you.
+          No group timetables. No strangers. No one rushing you back to the bus. This is the Cape Peninsula on your terms — linger at the penguin colony, take your time at the cliff edge, or ask your chauffeur to pull over for a photo. Every moment is yours.
         </SectionText>
       </SectionHeader>
 

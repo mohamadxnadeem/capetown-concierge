@@ -59,9 +59,9 @@ export default function PrivateTourCta({ whatsappLink }: Props) {
     <CTASection>
       <CTABox>
         <CTAEyebrow>Ready to Book?</CTAEyebrow>
-        <CTATitle>Plan Your Private Cape Town Tour</CTATitle>
+        <CTATitle>Book Your Private Cape Peninsula Tour</CTATitle>
         <CTAText>
-          Message us on WhatsApp to check availability, ask questions, and secure your preferred date for this experience.
+          Message us on WhatsApp to check availability, ask any questions, and lock in your preferred date. We respond within 30 minutes — usually much faster.
         </CTAText>
 
         <CTAButtons>
@@ -76,7 +76,7 @@ export default function PrivateTourCta({ whatsappLink }: Props) {
               })
             }
           >
-            <Button as="span">Book This Tour</Button>
+            <Button as="span">Book This Tour →</Button>
           </CTAAnchor>
 
           <CTAAnchor
@@ -91,7 +91,7 @@ export default function PrivateTourCta({ whatsappLink }: Props) {
             }
           >
             <Button as="span" $variant="secondary">
-              Chat on WhatsApp
+              Chat on WhatsApp →
             </Button>
           </CTAAnchor>
         </CTAButtons>

@@ -323,6 +323,15 @@ function VehicleImage({
   );
 }
 
+const VEHICLE_COPY: Record<string, string> = {
+  "BMW 5-Series": "An executive sedan that balances refined comfort with smooth, quiet performance. Perfect for couples or solo travellers who want a premium, discreet experience across the Peninsula.",
+  "BMW X5": "A luxury SUV with elevated road presence and a spacious interior — ideal for families or small groups who want comfort without sacrificing style.",
+  "Hyundai Staria": "A premium people carrier with generous legroom and panoramic windows designed for groups of up to 8. Comfortable, stylish, and built for a full day on the road.",
+  "Mercedes Sprinter": "Cape Town's finest group transporter — spacious, smooth, and well-appointed for larger parties of up to 14. Everyone travels together in comfort, no one squeezes in.",
+  "Mercedes V-Class": "The benchmark for group luxury travel. Rear-facing captain seats, ample boot space, and a first-class cabin feel. The favourite choice for families and executive groups.",
+  "Range Rover Sport": "Bold, refined, and unmistakable on Cape Town's coastal roads. For travellers who want the Peninsula experience with an extra layer of style. Up to 4 guests.",
+};
+
 export default function PrivateTourVehicles({ items, tourTitle }: Props) {
   const sliderRef = useRef<HTMLDivElement | null>(null);
   const autoScrollRef = useRef<NodeJS.Timeout | null>(null);
@@ -365,11 +374,9 @@ export default function PrivateTourVehicles({ items, tourTitle }: Props) {
     <>
       <SectionHeader>
         <SectionEyebrow>Private Chauffeur Experience</SectionEyebrow>
-        <SectionTitle>Travel Cape Town in Complete Comfort & Privacy</SectionTitle>
+        <SectionTitle>Travel in Comfort. Travel in Style.</SectionTitle>
         <SectionText>
-          Enjoy a fully private, chauffeur-driven experience with everything
-          taken care of — from hotel pickup to scenic routes, local insight, and
-          seamless travel throughout your day.
+          Every vehicle is private, climate-controlled, and driven by a professional chauffeur. Choose the size that fits your group — from executive sedans to spacious people carriers.
         </SectionText>
       </SectionHeader>
 
@@ -432,8 +439,7 @@ export default function PrivateTourVehicles({ items, tourTitle }: Props) {
                   </TrustRow>
 
                   <CardText>
-                    {item.description ||
-                      "A comfortable chauffeur-driven vehicle suitable for premium touring in Cape Town."}
+                    {VEHICLE_COPY[item.title] || item.description || "A comfortable chauffeur-driven vehicle suitable for premium touring in Cape Town."}
                   </CardText>
 
                   <CTAAnchor

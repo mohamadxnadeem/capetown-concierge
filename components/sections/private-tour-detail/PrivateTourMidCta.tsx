@@ -14,7 +14,7 @@ const Wrapper = styled.div`
   text-align: center;
 `;
 
-const Title = styled.h3`
+const Title = styled.h2`
   margin: 0 0 10px;
   font-size: 1.35rem;
   color: ${({ theme }) => theme.colors.heading};
@@ -34,18 +34,19 @@ const CTA = styled.a`
 type Props = {
   whatsappLink: string;
   tourTitle: string;
+  buttonLabel?: string;
 };
 
 export default function PrivateTourMidCta({
   whatsappLink,
   tourTitle,
+  buttonLabel,
 }: Props) {
   return (
     <Wrapper>
-      <Title>Ready to Experience {tourTitle}?</Title>
+      <Title>Ready to See the Cape Peninsula?</Title>
       <Text>
-        Check availability, ask questions, and tailor the day around your preferred pace,
-        stops, and vehicle.
+        Most guests tell us the Peninsula is the highlight of their entire Cape Town trip. Don't leave it to chance with a shared tour bus — message us and we'll plan the day around you.
       </Text>
 
       <CTA
@@ -60,7 +61,7 @@ export default function PrivateTourMidCta({
           })
         }
       >
-        <Button as="span">Check Availability on WhatsApp</Button>
+        <Button as="span">{buttonLabel || "Plan My Cape Town Day →"}</Button>
       </CTA>
     </Wrapper>
   );
