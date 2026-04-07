@@ -92,12 +92,14 @@ type Props = {
   experience: Experience;
   relatedTours: RelatedTour[];
   vehicles: TourVehicle[];
+  lowestVehiclePrice?: number;
 };
 
 export default function PrivateTourDetailView({
   experience,
   relatedTours,
   vehicles,
+  lowestVehiclePrice,
 }: Props) {
   const safeTourTitle = experience?.title || "private tour";
 
@@ -136,6 +138,7 @@ export default function PrivateTourDetailView({
             highlight={experience.highlight}
             duration={experience.duration}
             location={experience.location}
+            lowestVehiclePrice={lowestVehiclePrice}
           />
         </Container>
       </Section>

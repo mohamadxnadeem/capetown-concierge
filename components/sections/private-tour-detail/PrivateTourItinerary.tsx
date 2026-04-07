@@ -193,10 +193,10 @@ export default function PrivateTourItinerary({ title, location, stops }: Props) 
   return (
     <>
       <SectionHeader>
-        <SectionEyebrow>Itinerary</SectionEyebrow>
-        <SectionTitle>How the Day Flows</SectionTitle>
+        <SectionEyebrow>Your Itinerary</SectionEyebrow>
+        <SectionTitle>Every Stop, Yours to Enjoy</SectionTitle>
         <SectionText>
-          Explore how your private tour unfolds from the first stop to the final scenic moments of the day.
+          Each stop is private. No group timetables, no rushing to keep up. Take as long as you want at each location — your chauffeur works around you.
         </SectionText>
       </SectionHeader>
 
@@ -232,13 +232,12 @@ export default function PrivateTourItinerary({ title, location, stops }: Props) 
                       {stop.stop_type ? `${stop.stop_type} stop` : "Tour stop"}
                     </StopEyebrow>
                     <StopTitle>
-                      Stop {index + 1}: {stop.title}
-                      {location ? ` in ${location}` : ""}
+                      {stop.title}
                     </StopTitle>
                     <StopText>
                       {stop.short_description ||
                         stop.highlight ||
-                        "A memorable stop along your private Cape Town tour."}
+                        `One of the standout moments on this private tour. Your chauffeur will give you as much time here as you need.`}
                     </StopText>
 
                     <StopMetaRow>

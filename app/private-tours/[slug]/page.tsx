@@ -411,6 +411,17 @@ export default async function PrivateTourDetailPage({ params }: PageProps) {
   const relatedTours = mapRelatedTours(allExperiences, slug);
   const vehicles = mapVehicles(allVehicles);
 
+  const lowestVehiclePrice = allVehicles
+    .map((item) => {
+      const car = (item as CarsApiItem).car || (item as unknown as Car);
+      const p = car?.price;
+      if (!p) return null;
+      const n = Number(String(p).replace(/[^0-9.]/g, ""));
+      return isNaN(n) || n === 0 ? null : n;
+    })
+    .filter((p): p is number => p !== null)
+    .sort((a, b) => a - b)[0];
+
   const primaryImage = getPrimaryImage(experience);
   const canonicalUrl = `${SITE_URL}/private-tours/${slug}`;
   const price = experience.price_from || experience.price_to || "";
@@ -579,6 +590,7 @@ export default async function PrivateTourDetailPage({ params }: PageProps) {
         experience={experience}
         relatedTours={relatedTours}
         vehicles={vehicles}
+        lowestVehiclePrice={lowestVehiclePrice}
       />
     </>
   );

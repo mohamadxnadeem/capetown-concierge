@@ -71,16 +71,15 @@ type Props = {
 export default function PrivateTourHighlights({ tourTitle }: Props) {
   return (
     <Wrapper>
-      <Title>Why Travelers Choose This Experience</Title>
+      <Title>What Makes This Different</Title>
 
       <Grid>
         <Item>
           <Icon>✓</Icon>
           <TextWrap>
-            <ItemTitle>Private & Flexible Experience</ItemTitle>
+            <ItemTitle>No Shared Vehicle. Ever.</ItemTitle>
             <ItemText>
-              Enjoy a fully private tour with the freedom to move at your own pace,
-              without being tied to a group schedule.
+              Your group has the vehicle entirely to themselves. No strangers, no compromises on timing, no waiting for anyone else.
             </ItemText>
           </TextWrap>
         </Item>
@@ -88,10 +87,9 @@ export default function PrivateTourHighlights({ tourTitle }: Props) {
         <Item>
           <Icon>✓</Icon>
           <TextWrap>
-            <ItemTitle>Premium Chauffeur Service</ItemTitle>
+            <ItemTitle>Professional Local Chauffeur</ItemTitle>
             <ItemText>
-              Travel in comfort with a professional driver who knows Cape Town
-              and ensures a smooth, refined experience throughout the day.
+              Your driver knows Cape Town’s roads, viewpoints, and hidden spots. You get local knowledge without the awkward tour group dynamic.
             </ItemText>
           </TextWrap>
         </Item>
@@ -99,10 +97,9 @@ export default function PrivateTourHighlights({ tourTitle }: Props) {
         <Item>
           <Icon>✓</Icon>
           <TextWrap>
-            <ItemTitle>Scenic Routes & Hidden Gems</ItemTitle>
+            <ItemTitle>Stay Longer Where It Matters</ItemTitle>
             <ItemText>
-              Experience more than just the standard stops with access to scenic
-              routes and viewpoints many travellers miss.
+              Spend 10 minutes or an hour at any stop. Nobody is rushing you. Your {tourTitle || "tour"} runs on your schedule, not a bus timetable.
             </ItemText>
           </TextWrap>
         </Item>
@@ -110,10 +107,9 @@ export default function PrivateTourHighlights({ tourTitle }: Props) {
         <Item>
           <Icon>✓</Icon>
           <TextWrap>
-            <ItemTitle>Designed Around You</ItemTitle>
+            <ItemTitle>Hotel Pickup. Luggage Help. Water Included.</ItemTitle>
             <ItemText>
-              Whether it’s photo stops, coffee breaks, or extra time at a location,
-              your {tourTitle || "tour"} adapts to your preferences.
+              We collect you from your hotel, help with luggage, and have cold water in the vehicle. Small details that make the day noticeably better.
             </ItemText>
           </TextWrap>
         </Item>
