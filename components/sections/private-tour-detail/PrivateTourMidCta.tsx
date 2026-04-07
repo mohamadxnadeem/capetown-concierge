@@ -35,18 +35,22 @@ type Props = {
   whatsappLink: string;
   tourTitle: string;
   buttonLabel?: string;
+  title?: string;
+  body?: string;
 };
 
 export default function PrivateTourMidCta({
   whatsappLink,
   tourTitle,
   buttonLabel,
+  title,
+  body,
 }: Props) {
   return (
     <Wrapper>
-      <Title>Ready to See the Cape Peninsula?</Title>
+      <Title>{title || "Ready to See the Cape Peninsula?"}</Title>
       <Text>
-        Most guests tell us the Peninsula is the highlight of their entire Cape Town trip. Don't leave it to chance with a shared tour bus — message us and we'll plan the day around you.
+        {body || "Most guests tell us the Peninsula is the highlight of their entire Cape Town trip. Don't leave it to chance with a shared tour bus — message us and we'll plan the day around you."}
       </Text>
 
       <CTA

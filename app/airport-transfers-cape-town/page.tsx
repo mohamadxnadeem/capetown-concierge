@@ -103,6 +103,11 @@ function truncateText(text: string, maxLength: number) {
   return `${text.slice(0, maxLength).trim()}...`;
 }
 
+const AIRPORT_VEHICLE_DESC: Record<string, string> = {
+  "Hyundai Staria": "A premium 8-seat people carrier with generous legroom — perfect for families or groups arriving with luggage who want a spacious, comfortable ride into the city.",
+  "BMW X5": "A luxury SUV with a refined interior and serious boot space — ideal for couples or small groups who want a more elevated arrival experience.",
+};
+
 async function getVehicles(): Promise<FeaturedVehicleItem[]> {
   try {
     const res = await fetch(
@@ -128,6 +133,7 @@ async function getVehicles(): Promise<FeaturedVehicleItem[]> {
           "";
         const plainText = stripHtml(car.body || "");
         const description =
+          AIRPORT_VEHICLE_DESC[car.title] ||
           car.short_description ||
           car.highlight ||
           truncateText(plainText, 140) ||
@@ -152,22 +158,22 @@ const whyItems = [
   {
     title: "Meet & Greet at Arrivals",
     description:
-      "Your chauffeur tracks your flight in real time and meets you at the arrivals hall with a name board — no waiting, no confusion.",
+      "Your chauffeur tracks your flight in real time and meets you in the arrivals hall with a name board — no waiting around trying to find your ride.",
   },
   {
     title: "24/7 Availability",
     description:
-      "Early morning, late night, or midday — we operate around the clock for all Cape Town International Airport arrivals and departures.",
+      "Early morning, last flight of the night, or anything in between — we operate around the clock for all Cape Town International arrivals and departures.",
   },
   {
     title: "No Hidden Fees",
     description:
-      "Your quoted price covers the vehicle, chauffeur, and fuel. Parking and toll fees are included. No surprises on arrival.",
+      "Your quoted price covers the vehicle, chauffeur, fuel, parking, and toll fees. What you see is what you pay — no surprises after a long flight.",
   },
   {
-    title: "Luxury Fleet for Every Group",
+    title: "The Right Vehicle for Your Group",
     description:
-      "From executive sedans to the spacious Mercedes V-Class, we match the right vehicle to your group size and luggage requirements.",
+      "From executive sedans for solo travellers to the 14-seat Mercedes Sprinter for large groups — we match the vehicle to your party size and luggage. Just tell us what you need.",
   },
 ];
 
@@ -302,7 +308,7 @@ export default async function AirportTransfersCapeTownPage() {
       <HeroBanner
         eyebrow="Airport Transfers Cape Town"
         title="Luxury Airport Transfers in Cape Town"
-        description="Professional meet & greet at Cape Town International Airport. Your chauffeur tracks your flight, handles your luggage, and delivers you in comfort — 24/7, no hidden fees."
+        description="Your chauffeur meets you at arrivals, tracks your flight in real time, and has you at your hotel in a premium vehicle — without the queues, the metered taxis, or the guesswork."
         primaryCtaLabel="Book Your Transfer"
         primaryCtaHref={WHATSAPP}
         image="/images/car.jpg"
@@ -319,7 +325,11 @@ export default async function AirportTransfersCapeTownPage() {
         items={vehicles}
       />
 
-      <WhyChooseUs items={whyItems} />
+      <WhyChooseUs
+        eyebrow="Why Choose Us"
+        title="Premium Airport Transfers Built Around You"
+        items={whyItems}
+      />
 
       <FaqSection
         eyebrow="Airport Transfer FAQ"

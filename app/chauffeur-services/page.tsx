@@ -48,6 +48,11 @@ function formatPrice(price?: string | number) {
   return isNaN(num) || num === 0 ? "" : `From $${Math.round(num)} per day`;
 }
 
+const CHAUFFEUR_VEHICLE_DESC: Record<string, string> = {
+  "Hyundai Staria": "A premium people carrier with generous legroom and panoramic windows, designed for groups of up to 8. Comfortable, stylish, and built for a full day on the road — whether that's a city tour, a wine route, or an airport run.",
+  "BMW X5": "A luxury SUV with elevated road presence and a spacious, refined interior. Ideal for families or small groups who want serious comfort without compromising on style.",
+};
+
 async function getVehicles(): Promise<FeaturedVehicleItem[]> {
   try {
     const response = await fetch(
@@ -73,6 +78,7 @@ async function getVehicles(): Promise<FeaturedVehicleItem[]> {
         return {
           title: car.title,
           description:
+            CHAUFFEUR_VEHICLE_DESC[car.title] ||
             car.short_description ||
             car.highlight ||
             truncateText(stripHtml(car.body || ""), 140) ||

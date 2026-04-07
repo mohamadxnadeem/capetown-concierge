@@ -591,6 +591,7 @@ export default async function PrivateTourDetailPage({ params }: PageProps) {
         relatedTours={relatedTours}
         vehicles={vehicles}
         lowestVehiclePrice={lowestVehiclePrice}
+        slug={slug}
       />
     </>
   );

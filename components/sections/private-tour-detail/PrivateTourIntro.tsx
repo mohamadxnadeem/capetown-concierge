@@ -107,6 +107,12 @@ const PriceNote = styled.p`
   line-height: 1.6;
 `;
 
+const DEFAULT_TRUST_BADGES = [
+  "✔ 100% Private — your vehicle, your group, your pace",
+  "✔ Flexible itinerary — you set the stops",
+  "✔ Professional chauffeur & local guide included",
+];
+
 type Props = {
   title: string;
   shortDescription?: string;
@@ -114,6 +120,7 @@ type Props = {
   duration?: string;
   location?: string;
   lowestVehiclePrice?: number;
+  trustBadges?: string[];
 };
 
 export default function PrivateTourIntro({
@@ -123,6 +130,7 @@ export default function PrivateTourIntro({
   duration,
   location,
   lowestVehiclePrice,
+  trustBadges = DEFAULT_TRUST_BADGES,
 }: Props) {
   return (
     <SectionHeader>
@@ -136,10 +144,9 @@ export default function PrivateTourIntro({
       </SubText>
 
       <TrustBar>
-        <TrustBadge>⭐ 4.9 Rated by international travellers</TrustBadge>
-        <TrustBadge>✔ 100% Private — your vehicle, your group, your pace</TrustBadge>
-        <TrustBadge>✔ Flexible itinerary — you set the stops</TrustBadge>
-        <TrustBadge>✔ Professional chauffeur & local guide included</TrustBadge>
+        {trustBadges.map((badge) => (
+          <TrustBadge key={badge}>{badge}</TrustBadge>
+        ))}
       </TrustBar>
 
       <QuickInfoRow>

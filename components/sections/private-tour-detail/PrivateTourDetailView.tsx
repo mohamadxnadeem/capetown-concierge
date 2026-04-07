@@ -7,6 +7,7 @@ import {
   buildTourWhatsAppMessage,
   buildGeneralWhatsAppMessage,
 } from "../../../lib/whatsapp";
+import { getTourContent } from "../../../lib/tourPageContent";
 import PrivateTourGallery from "./PrivateTourGallery";
 import PrivateTourIntro from "./PrivateTourIntro";
 import PrivateTourWhatToExpect from "./PrivateTourWhatToExpect";
@@ -22,7 +23,6 @@ import PrivateTourCta from "./PrivateTourCta";
 
 import {
   Experience,
-  FAQItem,
   ReviewItem,
   TourVehicle,
   RelatedTour,
@@ -35,29 +35,6 @@ const PageWrap = styled.main`
 const Section = styled.section`
   padding: 64px 0;
 `;
-
-const faqItems: FAQItem[] = [
-  {
-    question: "How long does the Cape Peninsula private tour take?",
-    answer: "The full route typically runs 7–9 hours, depending on your pace and preferred stops. We build in flexibility by design — if you want to spend longer at Boulders Beach or take a detour, just say the word.",
-  },
-  {
-    question: "Is this a private tour or a shared group tour?",
-    answer: "100% private. You and your group have the entire vehicle to yourselves for the full day. We never combine bookings or add strangers to your tour.",
-  },
-  {
-    question: "Can we customise the itinerary?",
-    answer: "Absolutely. The suggested route is a starting point, not a rule. Want to skip a stop, add one, or adjust timing around a lunch reservation? Tell us when you book and we'll tailor the day accordingly.",
-  },
-  {
-    question: "Is transport included?",
-    answer: "Yes — a professional chauffeur-driven vehicle is the foundation of the experience. Hotel pickup, drop-off, all driving, toll fees, and fuel are included in your booking.",
-  },
-  {
-    question: "Is this tour suitable for families and children?",
-    answer: "Very much so. The private format makes this especially good for families — no rushing, no crowds, and your chauffeur will adapt the pace to suit your group. Boulders Beach and Cape Point are particular hits with younger travellers.",
-  },
-];
 
 const reviewItems: ReviewItem[] = [
   {
@@ -85,6 +62,7 @@ type Props = {
   relatedTours: RelatedTour[];
   vehicles: TourVehicle[];
   lowestVehiclePrice?: number;
+  slug?: string;
 };
 
 export default function PrivateTourDetailView({
@@ -92,8 +70,11 @@ export default function PrivateTourDetailView({
   relatedTours,
   vehicles,
   lowestVehiclePrice,
+  slug,
 }: Props) {
   const safeTourTitle = experience?.title || "private tour";
+
+  const content = getTourContent(slug || experience?.slug);
 
   const whatsappLink = buildWhatsAppLink(
     buildTourWhatsAppMessage(safeTourTitle)
@@ -131,11 +112,12 @@ export default function PrivateTourDetailView({
             duration={experience.duration}
             location={experience.location}
             lowestVehiclePrice={lowestVehiclePrice}
+            trustBadges={content.trustBadges}
           />
         </Container>
       </Section>
 
-       
+
 
       {/* <Section>
         <Container>
@@ -149,11 +131,16 @@ export default function PrivateTourDetailView({
             title={safeTourTitle}
             location={experience.location}
             stops={stops}
+            sectionTitle={content.itineraryTitle}
+            sectionSubheading={content.itinerarySubheading}
           />
 
           <PrivateTourMidCta
             tourTitle={safeTourTitle}
             whatsappLink={midCtaWhatsappLink}
+            title={content.midCtaTitle}
+            body={content.midCtaBody}
+            buttonLabel={content.midCtaButtonLabel}
           />
         </Container>
       </Section>
@@ -172,15 +159,19 @@ export default function PrivateTourDetailView({
 
       <Section>
         <Container>
-          <PrivateTourHighlights tourTitle={safeTourTitle} />
+          <PrivateTourHighlights
+            tourTitle={safeTourTitle}
+            title={content.highlightsTitle}
+            items={content.highlights}
+          />
         </Container>
       </Section>
 
-      
+
 
       <Section>
         <Container>
-          <PrivateTourFaq items={faqItems} />
+          <PrivateTourFaq items={content.faqItems} />
         </Container>
       </Section>
 
@@ -193,7 +184,11 @@ export default function PrivateTourDetailView({
         </Container>
       </Section>
 
-      <PrivateTourCta whatsappLink={whatsappLink} />
+      <PrivateTourCta
+        whatsappLink={whatsappLink}
+        title={content.ctaTitle}
+        body={content.ctaBody}
+      />
     </PageWrap>
   );
 }

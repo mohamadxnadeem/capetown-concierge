@@ -64,55 +64,54 @@ const ItemText = styled.p`
   font-size: 0.95rem;
 `;
 
-type Props = {
-  tourTitle?: string;
+type HighlightItem = {
+  heading: string;
+  body: string;
 };
 
-export default function PrivateTourHighlights({ tourTitle }: Props) {
+const DEFAULT_TITLE = "Why Guests Choose a Private Tour Over a Group Bus";
+
+const DEFAULT_ITEMS: HighlightItem[] = [
+  {
+    heading: "No Shared Vehicle. Ever.",
+    body: "Your group books the entire vehicle. No strangers, no compromises, no waiting for 20 people to get back on board. It’s your day — completely.",
+  },
+  {
+    heading: "A Chauffeur Who Knows the Peninsula",
+    body: "Your driver has done this route dozens of times. They know where the light is best for photos, which viewpoints the buses skip, and when to suggest lingering a little longer. It’s like having a local friend with a luxury car.",
+  },
+  {
+    heading: "Your Schedule, Not Ours",
+    body: "Spend 20 minutes at one stop or two hours — it’s your call. We build the day around what matters to you, not a preset timetable designed for the lowest common denominator.",
+  },
+  {
+    heading: "Everything Taken Care Of",
+    body: "Hotel pickup, cold water in the car, toll fees, fuel, local guidance — it’s all included. You focus on the experience. We handle everything else.",
+  },
+];
+
+type Props = {
+  tourTitle?: string;
+  title?: string;
+  items?: HighlightItem[];
+};
+
+export default function PrivateTourHighlights({ tourTitle, title, items }: Props) {
+  const resolvedItems = items || DEFAULT_ITEMS;
   return (
     <Wrapper>
-      <Title>Why Guests Choose a Private Tour Over a Group Bus</Title>
+      <Title>{title || DEFAULT_TITLE}</Title>
 
       <Grid>
-        <Item>
-          <Icon>✓</Icon>
-          <TextWrap>
-            <ItemTitle>No Shared Vehicle. Ever.</ItemTitle>
-            <ItemText>
-              Your group books the entire vehicle. No strangers, no compromises, no waiting for 20 people to get back on board. It’s your day — completely.
-            </ItemText>
-          </TextWrap>
-        </Item>
-
-        <Item>
-          <Icon>✓</Icon>
-          <TextWrap>
-            <ItemTitle>A Chauffeur Who Knows the Peninsula</ItemTitle>
-            <ItemText>
-              Your driver has done this route dozens of times. They know where the light is best for photos, which viewpoints the buses skip, and when to suggest lingering a little longer. It’s like having a local friend with a luxury car.
-            </ItemText>
-          </TextWrap>
-        </Item>
-
-        <Item>
-          <Icon>✓</Icon>
-          <TextWrap>
-            <ItemTitle>Your Schedule, Not Ours</ItemTitle>
-            <ItemText>
-              Spend 20 minutes at one stop or two hours — it’s your call. We build the day around what matters to you, not a preset timetable designed for the lowest common denominator.
-            </ItemText>
-          </TextWrap>
-        </Item>
-
-        <Item>
-          <Icon>✓</Icon>
-          <TextWrap>
-            <ItemTitle>Everything Taken Care Of</ItemTitle>
-            <ItemText>
-              Hotel pickup, cold water in the car, toll fees, fuel, local guidance — it’s all included. You focus on the experience. We handle everything else.
-            </ItemText>
-          </TextWrap>
-        </Item>
+        {resolvedItems.map((item) => (
+          <Item key={item.heading}>
+            <Icon>✓</Icon>
+            <TextWrap>
+              <ItemTitle>{item.heading}</ItemTitle>
+              <ItemText>{item.body}</ItemText>
+            </TextWrap>
+          </Item>
+        ))}
       </Grid>
     </Wrapper>
   );

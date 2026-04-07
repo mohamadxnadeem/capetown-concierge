@@ -52,16 +52,18 @@ const CTAAnchor = styled.a`
 
 type Props = {
   whatsappLink: string;
+  title?: string;
+  body?: string;
 };
 
-export default function PrivateTourCta({ whatsappLink }: Props) {
+export default function PrivateTourCta({ whatsappLink, title, body }: Props) {
   return (
     <CTASection>
       <CTABox>
         <CTAEyebrow>Ready to Book?</CTAEyebrow>
-        <CTATitle>Book Your Private Cape Peninsula Tour</CTATitle>
+        <CTATitle>{title || "Book Your Private Cape Peninsula Tour"}</CTATitle>
         <CTAText>
-          Message us on WhatsApp to check availability, ask any questions, and lock in your preferred date. We respond within 30 minutes — usually much faster.
+          {body || "Message us on WhatsApp to check availability, ask any questions, and lock in your preferred date. We respond within 30 minutes — usually much faster."}
         </CTAText>
 
         <CTAButtons>

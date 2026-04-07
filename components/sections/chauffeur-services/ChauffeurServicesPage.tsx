@@ -304,29 +304,29 @@ const includedItems = [
 
 const serviceFaqs = [
   {
-    question: "What is included in your chauffeur service in Cape Town?",
+    question: "What is included in your chauffeur service?",
     answer:
-      "Our chauffeur service is designed around a premium private travel experience, typically including the vehicle, professional driver, and tailored route planning based on your itinerary.",
+      "Every booking includes the vehicle, a professional PDP-licensed chauffeur, fuel, and toll fees. For airport transfers, your driver will track your flight and meet you at arrivals with a name board. For full-day hire, we plan the route around your schedule.",
   },
   {
     question: "Do you offer airport transfers in Cape Town?",
     answer:
-      "Yes, we provide premium airport transfers in Cape Town with professional chauffeurs and luxury vehicles suited to couples, families, and executive travellers.",
+      "Yes. We provide 24/7 premium airport transfers to and from Cape Town International Airport — meet and greet at arrivals, flight tracking, and luggage assistance included.",
   },
   {
-    question: "Can I book a chauffeur for a full day in Cape Town?",
+    question: "Can I book a chauffeur for a full day?",
     answer:
-      "Yes, full-day private chauffeur hire is available for meetings, restaurants, city travel, scenic routes, wine estates, and bespoke itineraries.",
+      "Yes. Full-day private chauffeur hire is available for city travel, wine routes, meetings, restaurant runs, scenic drives, and bespoke itineraries. The day runs entirely on your schedule.",
   },
   {
-    question: "Which vehicles are available for chauffeur service?",
+    question: "Which vehicles are available?",
     answer:
-      "Our fleet includes premium chauffeur-driven vehicles suited to executive travel, airport transfers, family transport, private day hire, and VIP group travel.",
+      "Our fleet includes the BMW 5-Series, BMW X5, Hyundai Staria (8 seats), Mercedes Sprinter (14 seats), Mercedes V-Class (6 seats), and Range Rover Sport. All vehicles are premium, climate-controlled, and privately driven.",
   },
   {
-    question: "Is private chauffeur service better than self-drive in Cape Town?",
+    question: "Is a private chauffeur better than self-driving in Cape Town?",
     answer:
-      "For many travellers, yes. A private chauffeur gives you more comfort, flexibility, and convenience, especially for airport transfers, wine routes, long scenic drives, and clients who want a more polished luxury experience.",
+      "For most visitors, yes — especially for airport transfers, wine routes, and long scenic drives. You arrive relaxed, your group travels together, and there's no parking, no navigation, and no designated driver required.",
   },
 ];
 
@@ -341,7 +341,7 @@ export default function ChauffeurServicesPage({ vehicles = [] }: { vehicles?: Fe
       <HeroBanner
         eyebrow="Cape Town Concierge"
         title="Chauffeur Service in Cape Town"
-        description="Book a luxury chauffeur service in Cape Town for airport transfers, executive travel, private driver hire, and bespoke day planning with premium vehicles and professional service."
+        description="Premium private chauffeur hire for airport transfers, full-day city travel, executive transport, and bespoke touring across Cape Town and the Western Cape."
         primaryCtaLabel="Book Chauffeur Service"
         primaryCtaHref="https://wa.me/27636746131?text=Hi%2C%20I%27d%20like%20to%20book%20a%20chauffeur%20service%20in%20Cape%20Town.%20Please%20can%20you%20assist%3F"
         secondaryCtaLabel="View Fleet"
@@ -396,13 +396,11 @@ export default function ChauffeurServicesPage({ vehicles = [] }: { vehicles?: Fe
           <AuthorityWrap>
             <AuthorityCard>
               <AuthorityCardTitle>Why clients book us</AuthorityCardTitle>
-              <BulletList>
-                <Bullet>Premium airport transfers with polished presentation</Bullet>
-                <Bullet>Flexible full-day private chauffeur hire</Bullet>
-                <Bullet>Executive travel and VIP guest transport</Bullet>
-                <Bullet>Cape Town routes tailored around your timing</Bullet>
-                <Bullet>Luxury vehicles suited to couples, families, and business travel</Bullet>
-              </BulletList>
+              <RichText>
+                <p>
+                  Whether you need a seamless airport pickup, a private driver for the day, or a premium vehicle for executive travel — we build every booking around comfort, discretion, and your exact schedule. Our clients range from international travellers arriving at Cape Town International to business executives, VIP guests, and families who simply want to move through the city without the hassle.
+                </p>
+              </RichText>
             </AuthorityCard>
 
             <RichText>
@@ -481,11 +479,9 @@ export default function ChauffeurServicesPage({ vehicles = [] }: { vehicles?: Fe
 
       <FinalCta>
         <FinalCtaInner>
-          <FinalTitle>Book Your Chauffeur Service in Cape Town</FinalTitle>
+          <FinalTitle>Book Your Cape Town Chauffeur Service</FinalTitle>
           <FinalText>
-            Message us to check vehicle availability, airport transfer options,
-            full-day chauffeur pricing, or a tailored private travel plan for
-            your dates in Cape Town.
+            Message us on WhatsApp to check vehicle availability, get a price, or plan your full Cape Town itinerary. We respond within 30 minutes.
           </FinalText>
 
           <ButtonRow>
@@ -495,7 +491,7 @@ export default function ChauffeurServicesPage({ vehicles = [] }: { vehicles?: Fe
               rel="noopener noreferrer"
               onClick={() => trackWhatsAppClick({ source: "chauffeur_services_cta", label: "Check Availability" })}
             >
-              <Button as="span">Check Availability</Button>
+              <Button as="span">Check Availability →</Button>
             </Anchor>
           </ButtonRow>
         </FinalCtaInner>

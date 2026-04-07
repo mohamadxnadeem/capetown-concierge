@@ -185,19 +185,21 @@ type Props = {
   title: string;
   location?: string;
   stops: ExperienceStop[];
+  sectionTitle?: string;
+  sectionSubheading?: string;
 };
 
-export default function PrivateTourItinerary({ title, location, stops }: Props) {
+export default function PrivateTourItinerary({ title, location, stops, sectionTitle, sectionSubheading }: Props) {
   if (!stops.length) return null;
 
   return (
     <>
       <SectionHeader>
         <SectionEyebrow>Your Itinerary</SectionEyebrow>
-        <SectionTitle>Every Stop, Yours to Explore</SectionTitle>
-        <SectionText>
-          No group timetables. No strangers. No one rushing you back to the bus. This is the Cape Peninsula on your terms — linger at the penguin colony, take your time at the cliff edge, or ask your chauffeur to pull over for a photo. Every moment is yours.
-        </SectionText>
+        <SectionTitle>{sectionTitle || "Every Stop, Yours to Explore"}</SectionTitle>
+        {sectionSubheading ? (
+          <SectionText>{sectionSubheading}</SectionText>
+        ) : null}
       </SectionHeader>
 
       <TimelineWrap>
