@@ -1,5 +1,6 @@
 import { Car, FaqItem, ReviewItem } from "./types";
 export { buildWhatsAppLink } from "../../../lib/whatsapp";
+import { brand } from "../../../lib/brand";
 
 export function stripHtml(html?: string) {
   if (!html) return "";
@@ -148,7 +149,7 @@ export function getVehicleMetaTitle(car: Car): string {
   const keyword = getSeoKeyword(car);
   const rate = formatPrice(car.price);
   const rateStr = rate ? ` | ${rate}` : "";
-  return `${keyword}${rateStr} | Cape Town Concierge`;
+  return `${keyword}${rateStr} | ` + brand.name;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
