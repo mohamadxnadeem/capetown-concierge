@@ -260,7 +260,7 @@ const MetaBadge = styled.div`
   padding: 0 12px;
   border-radius: 999px;
   background: rgba(11, 91, 51, 0.12);
-  color: #0b5b33;
+  color: ${({ theme }) => theme.colors.primary};
   font-size: 0.84rem;
   font-weight: 700;
   border: 1px solid rgba(11, 91, 51, 0.16);
@@ -276,7 +276,7 @@ const TrustRow = styled.div`
 const TrustBadge = styled.div`
   font-size: 0.75rem;
   font-weight: 700;
-  color: #0b5b33;
+  color: ${({ theme }) => theme.colors.primary};
 `;
 
 const CardText = styled.p`

@@ -11,7 +11,7 @@ const whatsappLink = buildWhatsAppLink(
 
 const Section = styled.section`
   padding: 80px 0;
-  background: linear-gradient(135deg, #0b5b33 0%, #063e23 100%);
+  background: linear-gradient(135deg, ${({ theme }) => theme.colors.primary} 0%, ${({ theme }) => theme.colors.primaryDark} 100%);
 `;
 
 const Container = styled.div`

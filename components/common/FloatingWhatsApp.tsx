@@ -23,7 +23,7 @@ const Wrap = styled.a`
   gap: 10px;
   padding: 13px;
   border-radius: 999px;
-  background: linear-gradient(135deg, #0b5b33 0%, #063e23 100%);
+  background: linear-gradient(135deg, ${({ theme }) => theme.colors.primary} 0%, ${({ theme }) => theme.colors.primaryDark} 100%);
   color: #fff;
   font-weight: 700;
   font-size: 0.92rem;

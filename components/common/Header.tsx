@@ -22,7 +22,7 @@ const Wrapper = styled.header`
   position: sticky;
   top: 0;
   z-index: 1100;
-  background: linear-gradient(135deg, #0b5b33 0%, #063e23 100%);
+  background: linear-gradient(135deg, ${({ theme }) => theme.colors.primary} 0%, ${({ theme }) => theme.colors.primaryDark} 100%);
   box-shadow: 0 10px 30px rgba(6, 62, 35, 0.18);
 `;
 

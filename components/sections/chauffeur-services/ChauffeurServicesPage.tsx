@@ -230,7 +230,7 @@ const FaqAnswer = styled.p`
 
 const FinalCta = styled.section`
   padding: 84px 0;
-  background: #0b5b33;
+  background: ${({ theme }) => theme.colors.primary};
   color: white;
 `;
 

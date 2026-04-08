@@ -21,7 +21,7 @@ const Drawer = styled.aside<{ $isOpen: boolean }>`
   left: 0;
   width: min(360px, 88vw);
   height: 100vh;
-  background: linear-gradient(180deg, #0b5b33 0%, #063e23 100%);
+  background: linear-gradient(180deg, ${({ theme }) => theme.colors.primary} 0%, ${({ theme }) => theme.colors.primaryDark} 100%);
   box-shadow: 10px 0 30px rgba(18, 61, 43, 0.2);
   transform: translateX(${({ $isOpen }) => ($isOpen ? "0" : "-100%")});
   transition: transform 0.3s ease;
