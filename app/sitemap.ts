@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
+import { brand } from "../lib/brand";
 
-const SITE_URL = "https://capetown-concierge.co.za";
+const SITE_URL = brand.siteUrl;
 
 type CarsApiItem = {
   car?: { slug?: string };
@@ -90,11 +91,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       url: `${SITE_URL}/7-day-cape-town-itinerary`,
       lastModified: new Date(),
       priority: 0.85,
-    },
-    {
-      url: `${SITE_URL}/contact`,
-      lastModified: new Date(),
-      priority: 0.6,
     },
   ];
 
