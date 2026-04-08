@@ -211,7 +211,7 @@ function getPageTitle(experience: Experience) {
     experience.price_from
       ? ` | From $${zarToUsd(experience.price_from!)}`
       : "";
-  return `${keyword} | Private Chauffeur Tour${priceStr} | Cape Town Concierge`;
+  return `${keyword} | Private Chauffeur Tour${priceStr} | ${brand.name}`;
 }
 
 function getPageDescription(experience: Experience) {
@@ -309,7 +309,7 @@ export async function generateMetadata({
 
   if (!experienceId) {
     return {
-      title: "Private Tour | Cape Town Concierge",
+      title: `Private Tour | ${brand.name}`,
       description: "Luxury private tours in Cape Town",
       robots: {
         index: true,

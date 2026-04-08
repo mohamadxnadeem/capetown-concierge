@@ -168,8 +168,8 @@ function getPageTitle(car: Car) {
   const rate = getMetaFriendlyRate(car);
   // Append price if it fits — increases CTR significantly for HNWI searches
   return rate
-    ? `${keyword} | From ${rate} | Cape Town Concierge`
-    : `${keyword} | Cape Town Concierge`;
+    ? `${keyword} | From ${rate} | ` + brand.name
+    : `${keyword} | ` + brand.name;
 }
 
 // ─────────────────────────────────────────────
@@ -300,7 +300,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   if (!car) {
     return {
-      title: "Chauffeur Service | Cape Town Concierge",
+      title: `Chauffeur Service | ${brand.name}`,
       description: "Premium chauffeur-driven vehicles in Cape Town",
     };
   }
@@ -467,8 +467,8 @@ export default async function ChauffeurServiceDetailPage({ params }: PageProps) 
           // FIX 14: Add geo — helps Google Maps and local pack ranking
           geo: {
             "@type": "GeoCoordinates",
-            latitude: -33.9249,
-            longitude: 18.4241,
+            latitude: brand.geo.lat,
+            longitude: brand.geo.lng,
           },
           priceRange: "$$$$",
           sameAs: [
