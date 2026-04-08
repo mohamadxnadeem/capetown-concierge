@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
+import { brand } from "../../../lib/brand";
 import PrivateTourDetailView from "../../../components/sections/private-tour-detail/PrivateTourDetailView";
 
 type ExperiencePhoto = {
@@ -97,7 +98,7 @@ type PageProps = {
   }>;
 };
 
-const SITE_URL = "https://capetown-concierge.co.za";
+const SITE_URL = brand.siteUrl;
 
 function zarToUsd(val: string | number): string {
   const num = Number(String(val).replace(/[^0-9.]/g, ""));
@@ -365,7 +366,7 @@ export async function generateMetadata({
       title: socialTitle,
       description: socialDescription,
       url: canonicalUrl,
-      siteName: "Cape Town Concierge",
+      siteName: brand.name,
       type: "website",
       locale: "en_ZA",
       images: image
@@ -536,19 +537,19 @@ export default async function PrivateTourDetailPage({ params }: PageProps) {
     url: canonicalUrl,
     provider: {
       "@type": "LocalBusiness",
-      name: "Cape Town Concierge",
+      name: brand.name,
       url: SITE_URL,
-      telephone: "+27636746131",
+      telephone: brand.phone,
       address: {
         "@type": "PostalAddress",
-        addressLocality: "Cape Town",
-        addressRegion: "Western Cape",
-        addressCountry: "ZA",
+        addressLocality: brand.address.locality,
+        addressRegion: brand.address.region,
+        addressCountry: brand.address.country,
       },
       geo: {
         "@type": "GeoCoordinates",
-        latitude: -33.9249,
-        longitude: 18.4241,
+        latitude: brand.geo.lat,
+        longitude: brand.geo.lng,
       },
       priceRange: "$$$$",
     },

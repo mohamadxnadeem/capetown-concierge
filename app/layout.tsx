@@ -11,7 +11,7 @@ import ScrollTracking from "../components/tracking/ScrollTracking";
 import EngagementTracking from "../components/tracking/EngagementTracking";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://capetown-concierge.co.za"),
+  metadataBase: new URL(brand.siteUrl),
   title: brand.name,
   description: brand.tagline,
 };
@@ -23,28 +23,28 @@ const googleAdsId = process.env.NEXT_PUBLIC_GOOGLE_ADS_ID;
 const localBusinessSchema = {
   "@context": "https://schema.org",
   "@type": ["LocalBusiness", "TouristInformationCenter"],
-  name: "Cape Town Concierge",
-  url: "https://capetown-concierge.co.za",
-  logo: "https://capetown-concierge.co.za/images/logo.svg",
-  image: "https://capetown-concierge.co.za/images/hero-car.jpg",
+  name: brand.name,
+  url: brand.siteUrl,
+  logo: `${brand.siteUrl}${brand.logoPath}`,
+  image: `${brand.siteUrl}${brand.heroImagePath}`,
   description:
-    "Cape Town Concierge offers luxury private chauffeur services, bespoke private tours, and premium airport transfers across Cape Town and the Western Cape.",
-  telephone: "+27636746131",
-  email: "info@capetown-concierge.co.za",
+    `${brand.name} offers luxury private chauffeur services, bespoke private tours, and premium airport transfers across ${brand.address.locality} and the ${brand.address.region}.`,
+  telephone: brand.phone,
+  email: brand.contactEmail,
   priceRange: "$$$$",
   currenciesAccepted: "ZAR",
   paymentAccepted: "Cash, EFT, Credit Card",
   address: {
     "@type": "PostalAddress",
-    addressLocality: "Cape Town",
-    addressRegion: "Western Cape",
-    postalCode: "8001",
-    addressCountry: "ZA",
+    addressLocality: brand.address.locality,
+    addressRegion: brand.address.region,
+    postalCode: brand.address.postalCode,
+    addressCountry: brand.address.country,
   },
   geo: {
     "@type": "GeoCoordinates",
-    latitude: -33.9249,
-    longitude: 18.4241,
+    latitude: brand.geo.lat,
+    longitude: brand.geo.lng,
   },
   areaServed: [
     "Cape Town",
@@ -62,7 +62,7 @@ const localBusinessSchema = {
         itemOffered: {
           "@type": "Service",
           name: "Private Chauffeur Service Cape Town",
-          url: "https://capetown-concierge.co.za/chauffeur-services",
+          url: `${brand.siteUrl}/chauffeur-services`,
         },
       },
       {
@@ -70,7 +70,7 @@ const localBusinessSchema = {
         itemOffered: {
           "@type": "Service",
           name: "Private Tours Cape Town",
-          url: "https://capetown-concierge.co.za/private-tours",
+          url: `${brand.siteUrl}/private-tours`,
         },
       },
       {
@@ -78,13 +78,13 @@ const localBusinessSchema = {
         itemOffered: {
           "@type": "Service",
           name: "Airport Transfers Cape Town",
-          url: "https://capetown-concierge.co.za/airport-transfers-cape-town",
+          url: `${brand.siteUrl}/airport-transfers-cape-town`,
         },
       },
     ],
   },
   sameAs: [
-    "https://wa.me/27636746131",
+    `https://wa.me/${brand.whatsappNumber}`,
   ],
 };
 

@@ -11,6 +11,7 @@ import {
   buildWhatsAppLink,
 } from "../../../lib/whatsapp";
 import { trackWhatsAppClick } from "../../../lib/tracking";
+import { brand } from "../../../lib/brand";
 
 type FeaturedVehicleItem = {
   title: string;
@@ -339,11 +340,11 @@ export default function ChauffeurServicesPage({ vehicles = [] }: { vehicles?: Fe
   return (
     <PageWrap>
       <HeroBanner
-        eyebrow="Cape Town Concierge"
+        eyebrow={brand.name}
         title="Chauffeur Service in Cape Town"
         description="Premium private chauffeur hire for airport transfers, full-day city travel, executive transport, and bespoke touring across Cape Town and the Western Cape."
         primaryCtaLabel="Book Chauffeur Service"
-        primaryCtaHref="https://wa.me/27636746131?text=Hi%2C%20I%27d%20like%20to%20book%20a%20chauffeur%20service%20in%20Cape%20Town.%20Please%20can%20you%20assist%3F"
+        primaryCtaHref={buildWhatsAppLink("Hi, I'd like to book a chauffeur service in Cape Town. Please can you assist?")}
         secondaryCtaLabel="View Fleet"
         secondaryCtaHref="#chauffeur-fleet"
         image="/images/hero-car.jpg"

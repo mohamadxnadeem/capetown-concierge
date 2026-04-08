@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { brand } from "../../lib/brand";
 import BestActivitiesPage from "../../components/sections/cape-town-activities/BestActivitiesPage";
 
 type ExperiencePhoto = {
@@ -93,7 +94,7 @@ async function getFeaturedExperiences(): Promise<FeaturedExperienceItem[]> {
   }
 }
 
-const SITE_URL = "https://capetown-concierge.co.za";
+const SITE_URL = brand.siteUrl;
 
 export const metadata: Metadata = {
   title:
@@ -120,7 +121,7 @@ export const metadata: Metadata = {
     description:
       "Explore top Cape Town activities including Table Mountain, Cape Peninsula, wine tours, helicopter rides, and chauffeur-driven private experiences.",
     url: `${SITE_URL}/best-activities-to-do-in-cape-town`,
-    siteName: "Cape Town Concierge",
+    siteName: brand.name,
     type: "article",
     images: [
       {
@@ -154,11 +155,11 @@ export default async function BestActivitiesToDoInCapeTownPage() {
         image: [`${SITE_URL}/images/activities/table-mountain.jpg`],
         author: {
           "@type": "Organization",
-          name: "Cape Town Concierge",
+          name: brand.name,
         },
         publisher: {
           "@type": "Organization",
-          name: "Cape Town Concierge",
+          name: brand.name,
           logo: {
             "@type": "ImageObject",
             url: `${SITE_URL}/images/logo.png`,

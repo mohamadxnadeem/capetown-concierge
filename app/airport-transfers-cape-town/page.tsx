@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { brand } from "../../lib/brand";
+import { buildWhatsAppLink } from "../../lib/whatsapp";
 import HeroBanner from "../../components/sections/HeroBanner";
 import WhyChooseUs from "../../components/sections/WhyChooseUs";
 import FeaturedVehicles from "../../components/sections/FeaturedVehicles";
@@ -6,9 +8,10 @@ import FaqSection from "../../components/sections/FaqSection";
 import TestimonialsSection from "../../components/sections/testimonials/TestimonialsSection";
 import TestimonialsCta from "../../components/sections/testimonials/TestimonialsCta";
 
-const SITE_URL = "https://capetown-concierge.co.za";
-const WHATSAPP =
-  "https://wa.me/27636746131?text=Hi%2C%20I%27d%20like%20to%20book%20an%20airport%20transfer%20in%20Cape%20Town.%20Please%20can%20you%20assist%3F";
+const SITE_URL = brand.siteUrl;
+const WHATSAPP = buildWhatsAppLink(
+  "Hi, I'd like to book an airport transfer in Cape Town. Please can you assist?"
+);
 
 export const metadata: Metadata = {
   title: "Airport Transfers Cape Town | Luxury Private Chauffeur Service",
@@ -42,7 +45,7 @@ export const metadata: Metadata = {
     description:
       "Meet & greet at arrivals. Your driver waits for you, handles luggage, and gets you to your destination in comfort. Book via WhatsApp in under 2 minutes.",
     url: `${SITE_URL}/airport-transfers-cape-town`,
-    siteName: "Cape Town Concierge",
+    siteName: brand.name,
     type: "website",
     images: [
       {
@@ -197,13 +200,13 @@ export default async function AirportTransfersCapeTownPage() {
         serviceType: "Airport Transfer",
         provider: {
           "@type": "LocalBusiness",
-          name: "Cape Town Concierge",
+          name: brand.name,
           url: SITE_URL,
-          telephone: "+27636746131",
+          telephone: brand.phone,
           address: {
             "@type": "PostalAddress",
-            addressLocality: "Cape Town",
-            addressRegion: "Western Cape",
+            addressLocality: brand.address.locality,
+            addressRegion: brand.address.region,
             addressCountry: "ZA",
           },
           geo: {

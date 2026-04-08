@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
+import { brand } from "../../lib/brand";
+import { buildWhatsAppLink } from "../../lib/whatsapp";
 import HeroBanner from "../../components/sections/HeroBanner";
 import FeaturedExperiences from "../../components/sections/FeaturedExperiences";
 import TestimonialsSection from "../../components/sections/testimonials/TestimonialsSection";
 import TestimonialsCta from "../../components/sections/testimonials/TestimonialsCta";
 import WhyChooseUs from "../../components/sections/WhyChooseUs";
 
-const SITE_URL = "https://capetown-concierge.co.za";
+const SITE_URL = brand.siteUrl;
 
 export const metadata: Metadata = {
   title: "Private Tours Cape Town | Luxury Chauffeur-Driven Experiences",
@@ -30,7 +32,7 @@ export const metadata: Metadata = {
     description:
       "Cape Peninsula, Winelands, Table Mountain, and more. Every tour is private, flexible, and designed around you. No shared groups. Book via WhatsApp.",
     url: `${SITE_URL}/private-tours`,
-    siteName: "Cape Town Concierge",
+    siteName: brand.name,
     type: "website",
     images: [
       {
@@ -181,19 +183,19 @@ export default async function PrivateToursLandingPage() {
         serviceType: "Private Chauffeur Tours",
         provider: {
           "@type": "LocalBusiness",
-          name: "Cape Town Concierge",
+          name: brand.name,
           url: SITE_URL,
-          telephone: "+27636746131",
+          telephone: brand.phone,
           address: {
             "@type": "PostalAddress",
-            addressLocality: "Cape Town",
-            addressRegion: "Western Cape",
-            addressCountry: "ZA",
+            addressLocality: brand.address.locality,
+            addressRegion: brand.address.region,
+            addressCountry: brand.address.country,
           },
           geo: {
             "@type": "GeoCoordinates",
-            latitude: -33.9249,
-            longitude: 18.4241,
+            latitude: brand.geo.lat,
+            longitude: brand.geo.lng,
           },
           priceRange: "$$$$",
         },
@@ -280,7 +282,7 @@ export default async function PrivateToursLandingPage() {
         primaryCtaLabel="Explore Tours"
         primaryCtaHref="#tours"
         secondaryCtaLabel="Book via WhatsApp"
-        secondaryCtaHref="https://wa.me/27636746131?text=I%27m%20interested%20in%20booking%20a%20private%20tour%20in%20Cape%20Town.%20Please%20can%20you%20share%20more%20details%3F"
+        secondaryCtaHref={buildWhatsAppLink("I'm interested in booking a private tour in Cape Town. Please can you share more details?")}
         image="/images/car.jpg"
         imageAlt="Private tour in Cape Town with luxury chauffeur-driven transport"
       />

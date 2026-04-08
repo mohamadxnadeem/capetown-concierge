@@ -6,8 +6,10 @@ import FeaturedExperiences from "../components/sections/FeaturedExperiences";
 import TestimonialsSection from "../components/sections/testimonials/TestimonialsSection";
 import TestimonialsCta from "../components/sections/testimonials/TestimonialsCta";
 import ChauffeurAuthoritySection from "../components/sections/ChauffeurAuthoritySection";
+import { brand } from "../lib/brand";
+import { buildWhatsAppLink } from "../lib/whatsapp";
 
-const SITE_URL = "https://capetown-concierge.co.za";
+const SITE_URL = brand.siteUrl;
 
 export const metadata: Metadata = {
   title: "Luxury Chauffeur Service & Private Tours Cape Town | Cape Town Concierge",
@@ -32,7 +34,7 @@ export const metadata: Metadata = {
     description:
       "Airport transfers, private day tours, and bespoke chauffeur-driven experiences across Cape Town. Professional, discreet, and available on demand. Book via WhatsApp.",
     url: SITE_URL,
-    siteName: "Cape Town Concierge",
+    siteName: brand.name,
     type: "website",
     images: [
       {
@@ -294,11 +296,11 @@ export default async function HomePage() {
     "@graph": [
       {
         "@type": "Organization",
-        name: "Cape Town Concierge",
+        name: brand.name,
         url: SITE_URL,
         logo: `${SITE_URL}/images/logo.png`,
-        telephone: "+27636746131",
-        email: "zaid@capetown-concierge.co.za",
+        telephone: brand.phone,
+        email: brand.contactEmail,
         description:
           "Luxury chauffeur services, private tours, airport transfers, and curated travel experiences in Cape Town.",
         sameAs: [
@@ -308,10 +310,10 @@ export default async function HomePage() {
       {
         "@type": "LocalBusiness",
         "@id": `${SITE_URL}/#localbusiness`,
-        name: "Cape Town Concierge",
+        name: brand.name,
         url: SITE_URL,
-        telephone: "+27636746131",
-        email: "zaid@capetown-concierge.co.za",
+        telephone: brand.phone,
+        email: brand.contactEmail,
         priceRange: "$$$$",
         image: `${SITE_URL}/images/hero-car.jpg`,
         logo: `${SITE_URL}/images/logo.png`,
@@ -319,14 +321,14 @@ export default async function HomePage() {
           "Luxury chauffeur services, private tours, airport transfers, and curated travel experiences in Cape Town.",
         address: {
           "@type": "PostalAddress",
-          addressLocality: "Cape Town",
-          addressRegion: "Western Cape",
-          addressCountry: "ZA",
+          addressLocality: brand.address.locality,
+          addressRegion: brand.address.region,
+          addressCountry: brand.address.country,
         },
         geo: {
           "@type": "GeoCoordinates",
-          latitude: -33.9249,
-          longitude: 18.4241,
+          latitude: brand.geo.lat,
+          longitude: brand.geo.lng,
         },
         areaServed: [
           { "@type": "City", name: "Cape Town" },
@@ -336,7 +338,7 @@ export default async function HomePage() {
       },
       {
         "@type": "WebSite",
-        name: "Cape Town Concierge",
+        name: brand.name,
         url: SITE_URL,
       },
       {
@@ -409,7 +411,7 @@ export default async function HomePage() {
         name: "Private Chauffeur Services",
         provider: {
           "@type": "Organization",
-          name: "Cape Town Concierge",
+          name: brand.name,
           url: SITE_URL,
         },
         areaServed: {
@@ -425,7 +427,7 @@ export default async function HomePage() {
         name: "Custom Cape Town Tours",
         provider: {
           "@type": "Organization",
-          name: "Cape Town Concierge",
+          name: brand.name,
           url: SITE_URL,
         },
         areaServed: {
@@ -448,11 +450,11 @@ export default async function HomePage() {
       />
 
       <HeroBanner
-        eyebrow="Cape Town Concierge"
+        eyebrow={brand.name}
         title="Luxury Chauffeur Services in Cape Town"
         description="Premium airport transfers, private chauffeur services, and curated travel experiences designed for clients who value comfort, elegance, and reliability."
         primaryCtaLabel="Book on WhatsApp"
-        primaryCtaHref="https://wa.me/27636746131?text=Hi%2C%20I%27d%20like%20to%20book%20a%20luxury%20chauffeur%20or%20private%20tour%20in%20Cape%20Town.%20Please%20can%20you%20assist%3F"
+        primaryCtaHref={buildWhatsAppLink("Hi, I'd like to book a luxury chauffeur or private tour in Cape Town. Please can you assist?")}
         secondaryCtaLabel="Explore Services"
         secondaryCtaHref="/chauffeur-services"
         image="/images/car.jpg"

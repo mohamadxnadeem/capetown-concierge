@@ -2,9 +2,10 @@
 
 import styled from "styled-components";
 import { trackWhatsAppClick } from "../../lib/tracking";
+import { buildWhatsAppLink, buildGeneralWhatsAppMessage } from "../../lib/whatsapp";
+import { brand } from "../../lib/brand";
 
-const WHATSAPP =
-  "https://wa.me/27636746131?text=Hey%2C%20I%27d%20like%20to%20make%20a%20booking.%20Please%20can%20you%20assist%3F";
+const WHATSAPP = buildWhatsAppLink(buildGeneralWhatsAppMessage());
 
 const Wrapper = styled.main`
   min-height: calc(100vh - 82px);
@@ -56,7 +57,7 @@ const WhatsAppButton = styled.a`
   min-height: 54px;
   padding: 0 28px;
   border-radius: 16px;
-  background: #0b5b33;
+  background: ${({ theme }) => theme.colors.primary};
   color: white;
   font-weight: 700;
   font-size: 1rem;
@@ -65,7 +66,7 @@ const WhatsAppButton = styled.a`
   transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
 
   &:hover {
-    background: #063e23;
+    background: ${({ theme }) => theme.colors.primaryDark};
     transform: translateY(-2px);
     box-shadow: 0 12px 32px rgba(11, 91, 51, 0.36);
   }
@@ -78,7 +79,7 @@ const ResponseBadge = styled.div`
   margin-top: 16px;
   padding: 8px 14px;
   border-radius: 999px;
-  background: rgba(11, 91, 51, 0.08);
+  background: ${({ theme }) => `${theme.colors.primary}14`};
   color: ${({ theme }) => theme.colors.primary};
   font-size: 0.82rem;
   font-weight: 700;
@@ -110,7 +111,7 @@ export default function ContactContent() {
   return (
     <Wrapper>
       <Card>
-        <Eyebrow>Cape Town Concierge</Eyebrow>
+        <Eyebrow>{brand.name}</Eyebrow>
         <Heading>Get in Touch</Heading>
         <Body>
           The fastest way to book a chauffeur service, airport transfer, or
@@ -134,8 +135,8 @@ export default function ContactContent() {
 
         <Detail>
           You can also reach us by email at{" "}
-          <a href="mailto:zaid@capetown-concierge.co.za">
-            zaid@capetown-concierge.co.za
+          <a href={`mailto:${brand.contactEmail}`}>
+            {brand.contactEmail}
           </a>
         </Detail>
       </Card>

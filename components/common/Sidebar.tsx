@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import styled from "styled-components";
+import { brand } from "../../lib/brand";
 
 const Overlay = styled.div<{ $isOpen: boolean }>`
   position: fixed;
@@ -98,7 +99,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
       <Overlay $isOpen={isOpen} onClick={onClose} />
       <Drawer $isOpen={isOpen}>
         <TopRow>
-          <Title>Cape Town Concierge</Title>
+          <Title>{brand.name}</Title>
           <CloseButton onClick={onClose} aria-label="Close menu">
             ×
           </CloseButton>

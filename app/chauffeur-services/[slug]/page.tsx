@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
+import { brand } from "../../../lib/brand";
 import ChauffeurDetailView from "../../../components/sections/chauffeur-services/ChauffeurDetailView";
 
 // ─────────────────────────────────────────────
@@ -60,7 +61,7 @@ type PageProps = {
   params: Promise<{ slug: string }>;
 };
 
-const SITE_URL = "https://capetown-concierge.co.za";
+const SITE_URL = brand.siteUrl;
 
 // ─────────────────────────────────────────────
 // FIX 1: SEO KEYWORD GENERATOR
@@ -339,7 +340,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       title,
       description,
       url: canonicalUrl,
-      siteName: "Cape Town Concierge",
+      siteName: brand.name,
       // FIX 9: Change type from "article" to "website" — vehicle pages are not articles
       // "article" type triggers publishedTime/author expectations Google may flag
       type: "website",
@@ -403,7 +404,7 @@ export default async function ChauffeurServiceDetailPage({ params }: PageProps) 
         description: getShortVehicleDescription(car),
         brand: {
           "@type": "Brand",
-          name: "Cape Town Concierge",
+          name: brand.name,
         },
         category: car.category || car.vehicle_type || "Luxury Chauffeur Vehicle",
         url: canonicalUrl,
@@ -453,15 +454,15 @@ export default async function ChauffeurServiceDetailPage({ params }: PageProps) 
         serviceType: "Private Chauffeur Service",
         provider: {
           "@type": "LocalBusiness",
-          name: "Cape Town Concierge",
+          name: brand.name,
           url: SITE_URL,
-          telephone: "+27636746131",
+          telephone: brand.phone,
           // FIX 13: Add address — critical for local SEO ranking
           address: {
             "@type": "PostalAddress",
-            addressLocality: "Cape Town",
-            addressRegion: "Western Cape",
-            addressCountry: "ZA",
+            addressLocality: brand.address.locality,
+            addressRegion: brand.address.region,
+            addressCountry: brand.address.country,
           },
           // FIX 14: Add geo — helps Google Maps and local pack ranking
           geo: {

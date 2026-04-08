@@ -5,6 +5,7 @@ import Link from "next/link";
 import Container from "./Container";
 import { trackWhatsAppClick } from "../../lib/tracking";
 import { buildWhatsAppLink, buildGeneralWhatsAppMessage } from "../../lib/whatsapp";
+import { brand } from "../../lib/brand";
 
 const footerWhatsappLink = buildWhatsAppLink(
   buildGeneralWhatsAppMessage("booking a private tour or chauffeur service in Cape Town")
@@ -167,7 +168,7 @@ export default function Footer() {
       <Container>
         <Grid>
           <Brand>
-            <BrandName>Cape Town Concierge</BrandName>
+            <BrandName>{brand.name}</BrandName>
             <BrandText>
               Premium private chauffeur services, bespoke tours, and luxury
               airport transfers across Cape Town and the Western Cape. Available
@@ -207,11 +208,11 @@ export default function Footer() {
             <ColTitle>Contact</ColTitle>
             <ContactItem>
               <ContactLabel>WhatsApp / Phone</ContactLabel>
-              +27 63 674 6131
+              {brand.phone}
             </ContactItem>
             <ContactItem>
               <ContactLabel>Location</ContactLabel>
-              Cape Town, Western Cape
+              {brand.address.locality}, {brand.address.region}
             </ContactItem>
             <ContactItem>
               <ContactLabel>Availability</ContactLabel>
@@ -234,7 +235,7 @@ export default function Footer() {
 
         <Bottom>
           <Copyright>
-            © {new Date().getFullYear()} Cape Town Concierge. All rights reserved.
+            © {new Date().getFullYear()} {brand.name}. All rights reserved.
           </Copyright>
           <LegalLinks>
             <LegalLink href="/contact">Contact</LegalLink>

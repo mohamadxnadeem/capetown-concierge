@@ -12,6 +12,7 @@ import {
 } from "../../lib/whatsapp";
 import { trackWhatsAppClick } from "../../lib/tracking";
 import CurrencySelector from "./CurrencySelector";
+import { brand } from "../../lib/brand";
 
 const headerWhatsappLink = buildWhatsAppLink(
   buildGeneralWhatsAppMessage("booking a private chauffeur or tour in Cape Town")
@@ -172,7 +173,7 @@ export default function Header() {
               <LogoImage>
                 <Image
                   src="/images/logo.svg"
-                  alt="Cape Town Concierge"
+                  alt={brand.name}
                   fill
                   priority
                   style={{

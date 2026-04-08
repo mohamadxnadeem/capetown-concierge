@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import ChauffeurServicesPage from "../../components/sections/chauffeur-services/ChauffeurServicesPage";
+import { brand } from "../../lib/brand";
 
 type CarPhoto = {
   cover_photos?: string;
@@ -99,7 +100,7 @@ async function getVehicles(): Promise<FeaturedVehicleItem[]> {
   }
 }
 
-const SITE_URL = "https://capetown-concierge.co.za";
+const SITE_URL = brand.siteUrl;
 
 export const metadata: Metadata = {
   title: "Chauffeur Service Cape Town | Luxury Private Driver & Airport Transfers",
@@ -124,7 +125,7 @@ export const metadata: Metadata = {
     description:
       "Professional, discreet, and always on time. Mercedes V-Class, BMW X5, and more. Airport transfers, private tours, and executive travel. Book via WhatsApp.",
     url: `${SITE_URL}/chauffeur-services`,
-    siteName: "Cape Town Concierge",
+    siteName: brand.name,
     type: "website",
     images: [
       {
@@ -163,7 +164,7 @@ export default async function ChauffeurServicesLandingPage() {
         serviceType: "Private Chauffeur Service",
         provider: {
           "@type": "Organization",
-          name: "Cape Town Concierge",
+          name: brand.name,
           url: SITE_URL,
         },
         areaServed: {

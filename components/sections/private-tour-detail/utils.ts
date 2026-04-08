@@ -1,10 +1,5 @@
 import { Experience, FaqItem, ReviewItem } from "./types";
-
-export const WHATSAPP_NUMBER = "27636746131";
-
-export function buildWhatsAppLink(message: string) {
-  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
-}
+export { buildWhatsAppLink } from "../../../lib/whatsapp";
 
 export function stripHtml(html?: string) {
   if (!html) return "";
