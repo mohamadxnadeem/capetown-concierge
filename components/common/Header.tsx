@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import styled from "styled-components";
-import Container from "./Container";
 import Sidebar from "./Sidebar";
 import Hamburger from "./Hamburger";
 import {
@@ -26,12 +25,27 @@ const Wrapper = styled.header`
   box-shadow: 0 10px 30px rgba(6, 62, 35, 0.18);
 `;
 
+const HeaderContainer = styled.div`
+  width: 100%;
+  max-width: ${({ theme }) => theme.container.maxWidth};
+  margin: 0 auto;
+  padding: 0 16px;
+
+  @media (min-width: ${({ theme }) => theme.breakpoints.sm}) {
+    padding: 0 28px;
+  }
+`;
+
 const Inner = styled.div`
   min-height: 100px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 20px;
+  gap: 0;
+
+  @media (min-width: ${({ theme }) => theme.breakpoints.sm}) {
+    gap: 20px;
+  }
 `;
 
 const Logo = styled(Link)`
@@ -42,9 +56,14 @@ const Logo = styled(Link)`
 
 const LogoImage = styled.div`
   position: relative;
-  width: 240px;
-  height: 65px;
+  width: 165px;
+  height: 45px;
   filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.35));
+
+  @media (min-width: ${({ theme }) => theme.breakpoints.sm}) {
+    width: 240px;
+    height: 65px;
+  }
 
   @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
     width: 300px;
@@ -147,7 +166,7 @@ export default function Header() {
   return (
     <>
       <Wrapper>
-        <Container>
+        <HeaderContainer>
           <Inner>
             <Logo href="/">
               <LogoImage>
@@ -202,7 +221,7 @@ export default function Header() {
               <Hamburger onClick={toggleSidebar} />
             </RightSide>
           </Inner>
-        </Container>
+        </HeaderContainer>
       </Wrapper>
 
       <Sidebar isOpen={isSidebarOpen} onClose={closeSidebar} />
