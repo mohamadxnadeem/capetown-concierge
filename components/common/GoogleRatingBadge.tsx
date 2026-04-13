@@ -64,7 +64,7 @@ const Label = styled.span`
 export default function GoogleRatingBadge() {
   return (
     <Badge
-      href="https://www.google.com/search?q=Cape+Town+Concierge+reviews"
+      href="https://share.google/PthhtCdRu9zx9H6Cb"
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Cape Town Concierge — 4.9 Google Reviews"
