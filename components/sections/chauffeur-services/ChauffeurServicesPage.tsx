@@ -426,7 +426,7 @@ export default function ChauffeurServicesPage({ vehicles = [] }: { vehicles?: Fe
                 For couples, families, VIP guests, and business visitors, a
                 private chauffeur in Cape Town creates a far more refined travel
                 experience. Popular routes include{" "}
-                <Link href="/private-tours/cape-peninsular-tour" style={{color:"inherit"}}>Cape Peninsula travel</Link>
+                <Link href="/private-tours/cape-peninsula-tour" style={{color:"inherit"}}>Cape Peninsula travel</Link>
                 {" "}and day trips to the{" "}
                 <Link href="/best-wine-farms-in-cape-town" style={{color:"inherit"}}>wine farms</Link>
                 {" "}of Stellenbosch and Franschhoek. It gives you the freedom to focus on your schedule,

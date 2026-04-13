@@ -102,7 +102,7 @@ const SITE_URL = brand.siteUrl;
 
 // Slug-based meta overrides (used when CMS meta_title is not set)
 const TOUR_META: Record<string, { title: string; description: string }> = {
-  "cape-peninsular-tour": {
+  "cape-peninsula-tour": {
     title: "Cape Peninsula Private Tour Cape Town | Full Day",
     description: "Two oceans, Boulders Beach penguins & Chapman's Peak in one private day. No shared groups, flexible pace. Book your Peninsula tour on WhatsApp.",
   },

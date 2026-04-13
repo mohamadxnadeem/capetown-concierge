@@ -74,6 +74,12 @@ const nextConfig: NextConfig = {
         destination: "/chauffeur-services/8-seater-staria-van-with-driver",
         permanent: true,
       },
+      // Peninsular typo → Peninsula (correct spelling)
+      {
+        source: "/private-tours/cape-peninsular-tour",
+        destination: "/private-tours/cape-peninsula-tour",
+        permanent: true,
+      },
     ];
   },
 };

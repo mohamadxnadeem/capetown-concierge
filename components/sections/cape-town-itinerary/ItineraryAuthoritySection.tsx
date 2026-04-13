@@ -227,7 +227,7 @@ export default function ItineraryAuthoritySection() {
                   for scenic routes, iconic attractions, and enough downtime to
                   enjoy the city at a comfortable pace. For most travellers, a
                   strong itinerary should include arrival and city highlights, a{" "}
-                  <InlineLink href="/private-tours/cape-peninsular-tour">
+                  <InlineLink href="/private-tours/cape-peninsula-tour">
                     Cape Peninsula day
                   </InlineLink>
                   , a{" "}

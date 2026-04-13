@@ -267,7 +267,7 @@ const SUNSET_SAFARI: TourPageContent = {
 const DEFAULT_CONTENT: TourPageContent = CAPE_PENINSULA;
 
 const TOUR_CONTENT: Record<string, TourPageContent> = {
-  "cape-peninsular-tour": CAPE_PENINSULA,
+  "cape-peninsula-tour": CAPE_PENINSULA,
   "cape-town-city-tour": CAPE_TOWN_CITY,
   "winelands-chauffeur-drive": WINELANDS,
   "sunset-safari-experience": SUNSET_SAFARI,
