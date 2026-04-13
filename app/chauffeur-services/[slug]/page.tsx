@@ -403,6 +403,8 @@ export default async function ChauffeurServiceDetailPage({ params }: PageProps) 
 
   const relatedVehicles = mapRelatedVehicles(vehicles, slug);
   const image = getPrimaryImage(car);
+  const ogImage = `${SITE_URL}/images/og-cape-town-concierge.jpg`;
+  const schemaImage = image || ogImage;
   const canonicalUrl = `${SITE_URL}/chauffeur-services/${slug}`;
   const pageTitle = getPageTitle(car);
   const pageDescription = getPageDescription(car);
@@ -424,8 +426,8 @@ export default async function ChauffeurServiceDetailPage({ params }: PageProps) 
       // 1. Product schema — vehicle as a bookable product
       {
         "@type": "Product",
-        name: keyword, // FIX: was car.title, now uses SEO keyword
-        image: image ? [image] : [],
+        name: keyword,
+        image: [schemaImage],
         description: getShortVehicleDescription(car),
         brand: {
           "@type": "Brand",
@@ -505,7 +507,7 @@ export default async function ChauffeurServiceDetailPage({ params }: PageProps) 
           { "@type": "City", name: "Cape Town" },
           { "@type": "State", name: "Western Cape" },
         ],
-        image: image ? [image] : [],
+        image: [schemaImage],
         description: car.chauffeur_service_text || getShortVehicleDescription(car),
         url: canonicalUrl,
       },
@@ -550,7 +552,7 @@ export default async function ChauffeurServiceDetailPage({ params }: PageProps) 
         name: pageTitle,
         description: pageDescription,
         url: canonicalUrl,
-        image: image ? [image] : [],
+        image: [schemaImage],
         // FIX 15: Add speakable — helps voice search / AI summaries
         speakable: {
           "@type": "SpeakableSpecification",

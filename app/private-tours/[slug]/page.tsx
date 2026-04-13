@@ -445,6 +445,8 @@ export default async function PrivateTourDetailPage({ params }: PageProps) {
     .sort((a, b) => a - b)[0];
 
   const primaryImage = getPrimaryImage(experience);
+  const ogImage = `${SITE_URL}/images/og-cape-town-concierge.jpg`;
+  const schemaImage = primaryImage || ogImage;
   const canonicalUrl = `${SITE_URL}/private-tours/${slug}`;
   const price = experience.price_from || experience.price_to || "";
 
@@ -554,7 +556,7 @@ export default async function PrivateTourDetailPage({ params }: PageProps) {
     "@type": "TouristTrip",
     name: tourKeyword,
     description: getPageDescription(experience),
-    image: primaryImage ? [primaryImage] : [],
+    image: [schemaImage],
     url: canonicalUrl,
     provider: {
       "@type": "LocalBusiness",
