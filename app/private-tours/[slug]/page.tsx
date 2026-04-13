@@ -319,7 +319,7 @@ export async function generateStaticParams() {
   return data
     .map((item) => item?.experience?.slug)
     .filter((slug): slug is string => Boolean(slug))
-    .map((slug) => ({ slug }));
+    .map((slug) => ({ slug: slug.toLowerCase() }));
 }
 
 export async function generateMetadata({

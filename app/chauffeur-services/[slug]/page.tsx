@@ -316,7 +316,7 @@ export async function generateStaticParams() {
   const vehicles = normalizeCars(await getAllVehicles());
   return vehicles
     .filter((car) => Boolean(car.slug))
-    .map((car) => ({ slug: car.slug as string }));
+    .map((car) => ({ slug: (car.slug as string).toLowerCase() }));
 }
 
 // ─────────────────────────────────────────────
