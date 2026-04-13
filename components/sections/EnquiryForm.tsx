@@ -116,7 +116,7 @@ const SubmitButton = styled.button`
 const ErrorMsg = styled.p`
   margin: 2px 0 0;
   font-size: 0.78rem;
-  color: ${({ theme }) => theme.colors.error};
+  color: #e53e3e;
 `;
 
 const SuccessMsg = styled.div`
