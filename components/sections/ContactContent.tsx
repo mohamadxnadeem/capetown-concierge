@@ -1,11 +1,13 @@
 "use client";
 
+import { useState } from "react";
 import styled from "styled-components";
 import { trackWhatsAppClick } from "../../lib/tracking";
 import { buildWhatsAppLink, buildGeneralWhatsAppMessage } from "../../lib/whatsapp";
 import { brand } from "../../lib/brand";
+import EnquiryForm from "./EnquiryForm";
 
-const WHATSAPP = buildWhatsAppLink(buildGeneralWhatsAppMessage());
+const WHATSAPP = "https://wa.me/27636746131?text=Hi%2C+I%27d+like+to+book+a+luxury+chauffeur+or+private+tour+in+Cape+Town.+Please+assist.";
 
 const Wrapper = styled.main`
   min-height: calc(100vh - 82px);
@@ -140,6 +142,10 @@ export default function ContactContent() {
           </a>
         </Detail>
       </Card>
+
+      <div style={{ width: "min(720px, calc(100% - 40px))", margin: "40px auto 60px" }}>
+        <EnquiryForm />
+      </div>
     </Wrapper>
   );
 }

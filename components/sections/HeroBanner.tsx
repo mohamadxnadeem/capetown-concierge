@@ -146,6 +146,7 @@ export default function HeroBanner({
           alt={imageAlt}
           fill
           priority
+          fetchPriority="high"
           quality={90}
           sizes="100vw"
           style={{ objectFit: "cover" }}

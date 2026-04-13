@@ -31,8 +31,8 @@ const localBusinessSchema = {
     `${brand.name} offers luxury private chauffeur services, bespoke private tours, and premium airport transfers across ${brand.address.locality} and the ${brand.address.region}.`,
   telephone: brand.phone,
   email: brand.contactEmail,
-  priceRange: "$$$$",
-  currenciesAccepted: "ZAR",
+  priceRange: "$$$",
+  currenciesAccepted: "ZAR, USD",
   paymentAccepted: "Cash, EFT, Credit Card",
   address: {
     "@type": "PostalAddress",
@@ -46,13 +46,22 @@ const localBusinessSchema = {
     latitude: brand.geo.lat,
     longitude: brand.geo.lng,
   },
-  areaServed: [
-    "Cape Town",
-    "Cape Peninsula",
-    "Stellenbosch",
-    "Franschhoek",
-    "Western Cape",
-  ],
+  openingHoursSpecification: [
+    "Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"
+  ].map((day) => ({
+    "@type": "OpeningHoursSpecification",
+    dayOfWeek: day,
+    opens: "00:00",
+    closes: "23:59",
+  })),
+  aggregateRating: {
+    "@type": "AggregateRating",
+    ratingValue: "4.9",
+    reviewCount: "27",
+    bestRating: "5",
+  },
+  touristType: ["LuxuryTourist", "BusinessTraveler", "FamilyTourist"],
+  areaServed: "Cape Town, Western Cape, South Africa",
   hasOfferCatalog: {
     "@type": "OfferCatalog",
     name: "Private Tours & Chauffeur Services",
@@ -95,6 +104,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <link rel="preconnect" href="https://why-cpt-storage.s3.amazonaws.com" />
+        <link rel="dns-prefetch" href="//wa.me" />
+      </head>
       <body>
         <script
           type="application/ld+json"

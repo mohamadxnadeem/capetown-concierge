@@ -123,8 +123,37 @@ function normalizeCars(items: CarsApiItem[]): Car[] {
 }
 
 function getVehicleBySlug(cars: Car[], slug: string) {
-  return cars.find((car) => car.slug === slug) || null;
+  const lower = slug.toLowerCase();
+  return cars.find((car) => car.slug?.toLowerCase() === lower) || null;
 }
+
+// Slug-based meta title/description overrides (used when CMS meta_title is not set)
+const VEHICLE_META: Record<string, { title: string; description: string }> = {
+  "bmw-5-series-for-hire-with-driver": {
+    title: "BMW 5-Series Chauffeur Cape Town | Executive Hire",
+    description: "Hire a BMW 5-Series with professional driver in Cape Town. Ideal for airport transfers & business travel. From $450/day. Book via WhatsApp.",
+  },
+  "bmw-x5-for-hire-with-driver": {
+    title: "BMW X5 Chauffeur Cape Town | Luxury SUV with Driver",
+    description: "Private BMW X5 hire with professional chauffeur in Cape Town. Perfect for families & small groups. From $450/day. WhatsApp to check availability.",
+  },
+  "8-seater-staria-van-with-driver": {
+    title: "Hyundai Staria 8-Seater Cape Town | Group Transfers",
+    description: "Book an 8-seat Hyundai Staria with driver in Cape Town. Ideal for group airport transfers & tours. From $350/day. WhatsApp to book today.",
+  },
+  "mercedes-sprinter-with-driver-cape-town": {
+    title: "Mercedes Sprinter Cape Town | 14-Seat Group Hire",
+    description: "14-seater Mercedes Sprinter with professional driver for large group tours & transfers in Cape Town. From $600/day. Get a quote on WhatsApp.",
+  },
+  "mercedes-v-class-private-chauffeur-service": {
+    title: "Mercedes V-Class Cape Town | Luxury Group Chauffeur",
+    description: "Premium 6-seat Mercedes V-Class with private chauffeur in Cape Town. Perfect for VIPs & families. From $550/day. Book via WhatsApp today.",
+  },
+  "range-rover-sport-chauffeur-service-cape-town": {
+    title: "Range Rover Sport Cape Town | Luxury SUV Chauffeur",
+    description: "Hire a Range Rover Sport with driver in Cape Town. Bold, refined & fully private. From $500/day. WhatsApp us to check availability & book.",
+  },
+};
 
 function getPrimaryImage(car: Car) {
   const imageArray = car.cover_photos || car.images || [];
@@ -305,16 +334,17 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     };
   }
 
-  const title = getPageTitle(car);
-  const description = getPageDescription(car);
+  const override = VEHICLE_META[slug.toLowerCase()];
+  const title = override?.title || getPageTitle(car);
+  const description = override?.description || getPageDescription(car);
   const image = getPrimaryImage(car);
   const canonicalUrl = `${SITE_URL}/chauffeur-services/${slug}`;
   const keyword = getSeoKeyword(car);
+  const ogImage = `${SITE_URL}/images/og-cape-town-concierge.jpg`;
 
   return {
     title,
     description,
-    // FIX 8: Add keywords — minor signal but costs nothing
     keywords: [
       keyword,
       `${car.title} chauffeur cape town`,
@@ -341,27 +371,22 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       description,
       url: canonicalUrl,
       siteName: brand.name,
-      // FIX 9: Change type from "article" to "website" — vehicle pages are not articles
-      // "article" type triggers publishedTime/author expectations Google may flag
       type: "website",
       locale: "en_ZA",
-      images: image
-        ? [
-            {
-              url: image,
-              // FIX 10: OG image alt = SEO keyword (indexed by social crawlers)
-              alt: keyword,
-              width: 1200,
-              height: 630,
-            },
-          ]
-        : [],
+      images: [
+        {
+          url: image || ogImage,
+          alt: "Cape Town Concierge — Luxury Chauffeur Service",
+          width: 1200,
+          height: 630,
+        },
+      ],
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
-      images: image ? [image] : [],
+      images: [image || ogImage],
     },
   };
 }

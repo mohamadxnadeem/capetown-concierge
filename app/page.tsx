@@ -6,15 +6,19 @@ import FeaturedExperiences from "../components/sections/FeaturedExperiences";
 import TestimonialsSection from "../components/sections/testimonials/TestimonialsSection";
 import TestimonialsCta from "../components/sections/testimonials/TestimonialsCta";
 import ChauffeurAuthoritySection from "../components/sections/ChauffeurAuthoritySection";
+import HomepageEnquiryCollapsible from "../components/sections/HomepageEnquiryCollapsible";
+import GoogleRatingBadge from "../components/common/GoogleRatingBadge";
 import { brand } from "../lib/brand";
 import { buildWhatsAppLink } from "../lib/whatsapp";
 
 const SITE_URL = brand.siteUrl;
 
+const OG_IMAGE = `${SITE_URL}/images/og-cape-town-concierge.jpg`;
+
 export const metadata: Metadata = {
-  title: "Luxury Chauffeur Service & Private Tours Cape Town | Cape Town Concierge",
+  title: "Luxury Chauffeur Service Cape Town | Cape Town Concierge",
   description:
-    "Book the #1 rated luxury chauffeur service and private tours in Cape Town. Premium airport transfers, bespoke itineraries, and a 5-star fleet including Mercedes V-Class and BMW X5. All-inclusive, professional, and reliable.",
+    "Premium private chauffeur hire, airport transfers & bespoke tours in Cape Town. Trusted by international travellers. Book via WhatsApp in minutes.",
   alternates: {
     canonical: SITE_URL,
   },
@@ -30,27 +34,28 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "Cape Town's Top Private Chauffeur & Tour Service",
+    title: "Luxury Chauffeur Service Cape Town | Cape Town Concierge",
     description:
-      "Airport transfers, private day tours, and bespoke chauffeur-driven experiences across Cape Town. Professional, discreet, and available on demand. Book via WhatsApp.",
+      "Premium private chauffeur hire, airport transfers & bespoke tours in Cape Town. Trusted by international travellers. Book via WhatsApp in minutes.",
     url: SITE_URL,
     siteName: brand.name,
     type: "website",
+    locale: "en_ZA",
     images: [
       {
-        url: `${SITE_URL}/images/hero-car.jpg`,
+        url: OG_IMAGE,
         width: 1200,
         height: 630,
-        alt: "Cape Town private chauffeur service — luxury vehicles and bespoke tours",
+        alt: "Cape Town Concierge — Luxury Chauffeur Service",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Cape Town's Top Private Chauffeur & Tour Service",
+    title: "Luxury Chauffeur Service Cape Town | Cape Town Concierge",
     description:
-      "Airport transfers, private day tours, and bespoke chauffeur-driven experiences across Cape Town. Professional, discreet, and available on demand. Book via WhatsApp.",
-    images: [`${SITE_URL}/images/hero-car.jpg`],
+      "Premium private chauffeur hire, airport transfers & bespoke tours in Cape Town. Trusted by international travellers. Book via WhatsApp in minutes.",
+    images: [OG_IMAGE],
   },
 };
 
@@ -454,12 +459,16 @@ export default async function HomePage() {
         title="Luxury Chauffeur Services in Cape Town"
         description="Premium airport transfers, private chauffeur services, and curated travel experiences designed for clients who value comfort, elegance, and reliability."
         primaryCtaLabel="Book on WhatsApp"
-        primaryCtaHref={buildWhatsAppLink("Hi, I'd like to book a luxury chauffeur or private tour in Cape Town. Please can you assist?")}
+        primaryCtaHref="https://wa.me/27636746131?text=Hi%2C+I%27d+like+to+book+a+luxury+chauffeur+or+private+tour+in+Cape+Town.+Please+assist."
         secondaryCtaLabel="Explore Services"
         secondaryCtaHref="/chauffeur-services"
         image="/images/car.jpg"
         imageAlt="Luxury chauffeur fleet in Cape Town featuring premium private transport vehicles"
       />
+
+      <div style={{ textAlign: "center", padding: "20px 20px 0" }}>
+        <GoogleRatingBadge />
+      </div>
 
       <TestimonialsSection />
       <TestimonialsCta />
@@ -471,6 +480,8 @@ export default async function HomePage() {
       <ChauffeurAuthoritySection />
 
       <FeaturedExperiences items={featuredExperienceItems} />
+
+      <HomepageEnquiryCollapsible />
     </>
   );
 }

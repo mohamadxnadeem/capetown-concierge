@@ -76,19 +76,9 @@ export default function PrivateTourDetailView({
 
   const content = getTourContent(slug || experience?.slug);
 
-  const whatsappLink = buildWhatsAppLink(
-    buildTourWhatsAppMessage(safeTourTitle)
-  );
-
-  const midCtaWhatsappLink = buildWhatsAppLink(
-    buildGeneralWhatsAppMessage(`checking availability for the ${safeTourTitle}`)
-  );
-
-  const bundleWhatsAppLink = buildWhatsAppLink(
-    buildGeneralWhatsAppMessage(
-      `booking 3 private tours including ${safeTourTitle}`
-    )
-  );
+  const whatsappLink = `https://wa.me/27636746131?text=${encodeURIComponent(`Hi, I'd like to book the ${safeTourTitle}. Please assist.`)}`;
+  const midCtaWhatsappLink = `https://wa.me/27636746131?text=${encodeURIComponent(`Hi, I'd like to book the ${safeTourTitle}. Please assist.`)}`;
+  const bundleWhatsAppLink = `https://wa.me/27636746131?text=${encodeURIComponent(`Hi, I'd like to enquire about private tours in Cape Town including the ${safeTourTitle}. Please assist.`)}`;
 
   const stops = [...(experience.stops || [])].sort((a, b) => a.order - b.order);
 

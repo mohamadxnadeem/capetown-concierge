@@ -28,7 +28,8 @@ async function getVehicleSlugs(): Promise<string[]> {
       : [];
     return items
       .map((item) => item?.car?.slug || item?.slug)
-      .filter((slug): slug is string => Boolean(slug));
+      .filter((slug): slug is string => Boolean(slug))
+      .map((slug) => slug.toLowerCase());
   } catch {
     return [];
   }
@@ -44,7 +45,8 @@ async function getExperienceSlugs(): Promise<string[]> {
     const data: ExperienceListItem[] = await res.json();
     return data
       .map((item) => item?.experience?.slug || item?.slug)
-      .filter((slug): slug is string => Boolean(slug));
+      .filter((slug): slug is string => Boolean(slug))
+      .map((slug) => slug.toLowerCase());
   } catch {
     return [];
   }
@@ -60,50 +62,59 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     {
       url: SITE_URL,
       lastModified: new Date(),
-      priority: 1,
+      changeFrequency: "weekly",
+      priority: 1.0,
     },
     {
       url: `${SITE_URL}/chauffeur-services`,
       lastModified: new Date(),
-      priority: 0.95,
+      changeFrequency: "weekly",
+      priority: 0.9,
     },
     {
       url: `${SITE_URL}/private-tours`,
       lastModified: new Date(),
+      changeFrequency: "weekly",
       priority: 0.9,
     },
     {
       url: `${SITE_URL}/airport-transfers-cape-town`,
       lastModified: new Date(),
-      priority: 0.95,
+      changeFrequency: "weekly",
+      priority: 0.9,
     },
     {
       url: `${SITE_URL}/best-wine-farms-in-cape-town`,
       lastModified: new Date(),
-      priority: 0.85,
+      changeFrequency: "monthly",
+      priority: 0.8,
     },
     {
       url: `${SITE_URL}/best-activities-to-do-in-cape-town`,
       lastModified: new Date(),
-      priority: 0.85,
+      changeFrequency: "monthly",
+      priority: 0.8,
     },
     {
       url: `${SITE_URL}/7-day-cape-town-itinerary`,
       lastModified: new Date(),
-      priority: 0.85,
+      changeFrequency: "monthly",
+      priority: 0.7,
     },
   ];
 
   const vehicleRoutes: MetadataRoute.Sitemap = vehicleSlugs.map((slug) => ({
     url: `${SITE_URL}/chauffeur-services/${slug}`,
     lastModified: new Date(),
-    priority: 0.9,
+    changeFrequency: "monthly" as const,
+    priority: 0.75,
   }));
 
   const tourRoutes: MetadataRoute.Sitemap = experienceSlugs.map((slug) => ({
     url: `${SITE_URL}/private-tours/${slug}`,
     lastModified: new Date(),
-    priority: 0.9,
+    changeFrequency: "monthly" as const,
+    priority: 0.85,
   }));
 
   return [...staticRoutes, ...vehicleRoutes, ...tourRoutes];

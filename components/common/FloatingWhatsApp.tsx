@@ -57,9 +57,7 @@ const Label = styled.span`
   }
 `;
 
-const whatsappLink = buildWhatsAppLink(
-  buildGeneralWhatsAppMessage("booking a private tour or chauffeur service in Cape Town")
-);
+const whatsappLink = "https://wa.me/27636746131?text=Hi%2C+I%27d+like+to+book+a+luxury+chauffeur+or+private+tour+in+Cape+Town.+Please+assist.";
 
 export default function FloatingWhatsApp() {
   return (

@@ -3,13 +3,12 @@
 import styled from "styled-components";
 import Link from "next/link";
 import Container from "./Container";
+import GoogleRatingBadge from "./GoogleRatingBadge";
 import { trackWhatsAppClick } from "../../lib/tracking";
 import { buildWhatsAppLink, buildGeneralWhatsAppMessage } from "../../lib/whatsapp";
 import { brand } from "../../lib/brand";
 
-const footerWhatsappLink = buildWhatsAppLink(
-  buildGeneralWhatsAppMessage("booking a private tour or chauffeur service in Cape Town")
-);
+const footerWhatsappLink = "https://wa.me/27636746131?text=Hi%2C+I%27d+like+to+book+a+luxury+chauffeur+or+private+tour+in+Cape+Town.+Please+assist.";
 
 const Wrapper = styled.footer`
   background: #0a1a10;
@@ -224,6 +223,10 @@ export default function Footer() {
             </ContactItem>
           </Column>
         </Grid>
+
+        <div style={{ marginBottom: "16px" }}>
+          <GoogleRatingBadge />
+        </div>
 
         <TrustRow>
           <TrustBadge>⭐ 4.9 Rated Service</TrustBadge>

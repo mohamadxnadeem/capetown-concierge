@@ -100,6 +100,26 @@ type PageProps = {
 
 const SITE_URL = brand.siteUrl;
 
+// Slug-based meta overrides (used when CMS meta_title is not set)
+const TOUR_META: Record<string, { title: string; description: string }> = {
+  "cape-peninsular-tour": {
+    title: "Cape Peninsula Private Tour Cape Town | Full Day",
+    description: "Two oceans, Boulders Beach penguins & Chapman's Peak in one private day. No shared groups, flexible pace. Book your Peninsula tour on WhatsApp.",
+  },
+  "cape-town-city-tour": {
+    title: "Cape Town City Tour | Table Mountain Private Driver",
+    description: "Explore Table Mountain, Bo-Kaap, Camps Bay & the Waterfront privately. Dedicated chauffeur, your schedule. Book your Cape Town city tour today.",
+  },
+  "winelands-chauffeur-drive": {
+    title: "Stellenbosch Winelands Private Tour | Cape Town",
+    description: "Private chauffeur through Stellenbosch & Franschhoek — no shuttles, no timetables. Cape Dutch estates & world-class tastings. Book on WhatsApp.",
+  },
+  "safari-day-trip": {
+    title: "Cape Town Safari Day Trip | Aquila Private Reserve",
+    description: "Big 5 game drive from Cape Town with private transport & meals included. Back by dinner. Book your Aquila safari experience on WhatsApp.",
+  },
+};
+
 function zarToUsd(val: string | number): string {
   const num = Number(String(val).replace(/[^0-9.]/g, ""));
   return isNaN(num) || num === 0 ? String(val) : `${Math.round(num / 18.5)}`;
@@ -164,7 +184,8 @@ async function getAllVehicles(): Promise<CarsApiItem[]> {
 
 async function getExperienceIdBySlug(slug: string) {
   const data = await getAllExperiences();
-  const match = data.find((item) => item?.experience?.slug === slug);
+  const lower = slug.toLowerCase();
+  const match = data.find((item) => item?.experience?.slug?.toLowerCase() === lower);
   return match?.experience?.id || null;
 }
 
@@ -327,12 +348,14 @@ export async function generateMetadata({
   const raw = await getExperienceDetails(experienceId);
   const experience = normalizeExperience(raw);
 
-  const title = getPageTitle(experience);
-  const description = getPageDescription(experience);
-  const socialTitle = getSocialTitle(experience);
-  const socialDescription = getSocialDescription(experience);
+  const override = TOUR_META[slug.toLowerCase()];
+  const title = override?.title || getPageTitle(experience);
+  const description = override?.description || getPageDescription(experience);
+  const socialTitle = override?.title || getSocialTitle(experience);
+  const socialDescription = override?.description || getSocialDescription(experience);
   const image = getPrimaryImage(experience);
   const canonicalUrl = `${SITE_URL}/private-tours/${slug}`;
+  const ogImage = `${SITE_URL}/images/og-cape-town-concierge.jpg`;
 
   const keyword = getSeoKeyword(experience);
 
@@ -369,22 +392,20 @@ export async function generateMetadata({
       siteName: brand.name,
       type: "website",
       locale: "en_ZA",
-      images: image
-        ? [
-            {
-              url: image,
-              width: 1200,
-              height: 630,
-              alt: socialTitle,
-            },
-          ]
-        : [],
+      images: [
+        {
+          url: image || ogImage,
+          width: 1200,
+          height: 630,
+          alt: "Cape Town Concierge — Luxury Chauffeur Service",
+        },
+      ],
     },
     twitter: {
       card: "summary_large_image",
       title: socialTitle,
       description: socialDescription,
-      images: image ? [image] : [],
+      images: [image || ogImage],
     },
   };
 }

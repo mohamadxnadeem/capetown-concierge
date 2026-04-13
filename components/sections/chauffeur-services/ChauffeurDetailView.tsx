@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import styled from "styled-components";
+import Link from "next/link";
 import Container from "../../common/Container";
 import { Car, RelatedVehicle } from "./types";
 import {
@@ -308,9 +309,7 @@ export default function ChauffeurDetailView({
   const heroImage = getPrimaryImage(car);
   const priceUsd = car.price ? Number(String(car.price).replace(/[^0-9.]/g, "")) || undefined : undefined;
 
-  const mainWhatsAppLink = buildWhatsAppLink(
-    `Hey, I'm interested in booking the ${safeTitle}. Please can you share pricing and availability?`
-  );
+  const mainWhatsAppLink = `https://wa.me/27636746131?text=${encodeURIComponent(`Hi, I'd like to enquire about the ${safeTitle} chauffeur service. Please assist.`)}`;
 
   // ── Features & ideal-for ──────────────────
   const features =
@@ -433,6 +432,9 @@ export default function ChauffeurDetailView({
             <AuthorityIntro className="chauffeur-intro">
               {authorityIntro}
             </AuthorityIntro>
+            <p style={{fontSize:"0.88rem",color:"#6c7a74",margin:"8px 0 0",lineHeight:1.7}}>
+              Available for <Link href="/airport-transfers-cape-town" style={{color:"inherit",textDecoration:"underline"}}>airport transfers</Link> and <Link href="/private-tours" style={{color:"inherit",textDecoration:"underline"}}>private tours</Link> across Cape Town.
+            </p>
           </AuthorityHeader>
 
           {/* 3 authority cards — dynamic per vehicle */}

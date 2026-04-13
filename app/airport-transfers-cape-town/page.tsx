@@ -9,14 +9,14 @@ import TestimonialsSection from "../../components/sections/testimonials/Testimon
 import TestimonialsCta from "../../components/sections/testimonials/TestimonialsCta";
 
 const SITE_URL = brand.siteUrl;
-const WHATSAPP = buildWhatsAppLink(
-  "Hi, I'd like to book an airport transfer in Cape Town. Please can you assist?"
-);
+const WHATSAPP = "https://wa.me/27636746131?text=Hi%2C+I%27d+like+to+book+an+airport+transfer+in+Cape+Town.+Please+assist.";
+
+const OG_IMAGE = `${SITE_URL}/images/og-cape-town-concierge.jpg`;
 
 export const metadata: Metadata = {
-  title: "Airport Transfers Cape Town | Luxury Private Chauffeur Service",
+  title: "Airport Transfers Cape Town | Luxury Meet & Greet",
   description:
-    "Book a luxury airport transfer in Cape Town. Professional chauffeur meets you at arrivals, handles your luggage, and delivers you in comfort. Available 24/7 for Cape Town International Airport. No hidden fees.",
+    "Private luxury airport transfers to & from Cape Town International. Flight tracking, meet & greet, 24/7 availability. Get an instant quote on WhatsApp.",
   alternates: {
     canonical: `${SITE_URL}/airport-transfers-cape-town`,
   },
@@ -41,27 +41,28 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "Cape Town Airport Transfers — Private, No Shared Rides",
+    title: "Airport Transfers Cape Town | Luxury Meet & Greet",
     description:
-      "Meet & greet at arrivals. Your driver waits for you, handles luggage, and gets you to your destination in comfort. Book via WhatsApp in under 2 minutes.",
+      "Private luxury airport transfers to & from Cape Town International. Flight tracking, meet & greet, 24/7 availability. Get an instant quote on WhatsApp.",
     url: `${SITE_URL}/airport-transfers-cape-town`,
     siteName: brand.name,
     type: "website",
+    locale: "en_ZA",
     images: [
       {
-        url: `${SITE_URL}/images/hero-car.jpg`,
+        url: OG_IMAGE,
         width: 1200,
         height: 630,
-        alt: "Cape Town airport transfer — private chauffeur meets you at arrivals",
+        alt: "Cape Town Concierge — Luxury Chauffeur Service",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Cape Town Airport Transfers — Private, No Shared Rides",
+    title: "Airport Transfers Cape Town | Luxury Meet & Greet",
     description:
-      "Meet & greet at arrivals. Your driver waits for you, handles luggage, and gets you to your destination in comfort. Book via WhatsApp in under 2 minutes.",
-    images: [`${SITE_URL}/images/hero-car.jpg`],
+      "Private luxury airport transfers to & from Cape Town International. Flight tracking, meet & greet, 24/7 availability. Get an instant quote on WhatsApp.",
+    images: [OG_IMAGE],
   },
 };
 
@@ -327,6 +328,9 @@ export default async function AirportTransfersCapeTownPage() {
         description="Every vehicle comes with a professional chauffeur, flight tracking, and meet & greet at arrivals."
         items={vehicles}
       />
+      <div style={{textAlign:"center",padding:"0 0 24px",fontSize:"0.9rem",color:"#6c7a74"}}>
+        Also available for <a href="/chauffeur-services" style={{color:"inherit",textDecoration:"underline"}}>full-day chauffeur hire</a> across Cape Town.
+      </div>
 
       <WhyChooseUs
         eyebrow="Why Choose Us"

@@ -6,11 +6,12 @@ import ItineraryPage from "../../components/sections/cape-town-itinerary/Itinera
 
 const SITE_URL = brand.siteUrl;
 
+const OG_IMAGE = `${SITE_URL}/images/og-cape-town-concierge.jpg`;
+
 export const metadata: Metadata = {
-  title:
-    "7 Day Cape Town Itinerary (Luxury Travel Guide 2026) | Private Tours",
+  title: "7 Day Cape Town Itinerary | Private Guided Tour Plan",
   description:
-    "Plan the perfect 7 day Cape Town itinerary with private chauffeur-driven travel. Explore Table Mountain, Cape Peninsula, wine farms, beaches, and luxury experiences with a curated day-by-day guide.",
+    "Follow our expert 7-day Cape Town itinerary with private chauffeur included. From the Peninsula to the Winelands — fully planned, fully private.",
   alternates: {
     canonical: `${SITE_URL}/7-day-cape-town-itinerary`,
   },
@@ -26,29 +27,28 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title:
-      "7 Day Cape Town Itinerary (Luxury Travel Guide)",
+    title: "7 Day Cape Town Itinerary | Private Guided Tour Plan",
     description:
-      "A complete 7 day Cape Town itinerary including private tours, wine routes, scenic drives, and luxury experiences.",
+      "Follow our expert 7-day Cape Town itinerary with private chauffeur included. From the Peninsula to the Winelands — fully planned, fully private.",
     url: `${SITE_URL}/7-day-cape-town-itinerary`,
     siteName: brand.name,
-    type: "article",
+    type: "website",
+    locale: "en_ZA",
     images: [
       {
-        url: `${SITE_URL}/images/itinerary/cape-point.jpg`,
+        url: OG_IMAGE,
         width: 1200,
         height: 630,
-        alt: "Cape Peninsula scenic drive and Cape Point on a Cape Town itinerary",
+        alt: "Cape Town Concierge — Luxury Chauffeur Service",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title:
-      "7 Day Cape Town Itinerary (Luxury Travel Guide)",
+    title: "7 Day Cape Town Itinerary | Private Guided Tour Plan",
     description:
-      "Plan your Cape Town trip with a full 7-day itinerary including wine tours, beaches, and private chauffeur experiences.",
-    images: [`${SITE_URL}/images/itinerary/cape-point.jpg`],
+      "Follow our expert 7-day Cape Town itinerary with private chauffeur included. From the Peninsula to the Winelands — fully planned, fully private.",
+    images: [OG_IMAGE],
   },
 };
 
