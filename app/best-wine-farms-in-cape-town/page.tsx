@@ -1,9 +1,10 @@
 // app/best-wine-farms-in-cape-town/page.tsx
 
 import type { Metadata } from "next";
+import { brand } from "../../lib/brand";
 import WineFarmsPage from "../../components/sections/wine-farms/WineFarmsPage";
 
-const SITE_URL = "https://capetown-concierge.co.za";
+const SITE_URL = brand.siteUrl;
 
 export const metadata: Metadata = {
   title:
@@ -32,7 +33,7 @@ export const metadata: Metadata = {
     description:
       "Explore the top wine farms in Cape Town including Delaire Graff, Babylonstoren, Boschendal, and more. Plan your private wine tour with a chauffeur.",
     url: `${SITE_URL}/best-wine-farms-in-cape-town`,
-    siteName: "WhyCapeTown",
+    siteName: brand.name,
     type: "article",
     images: [
       {
@@ -67,11 +68,11 @@ export default function BestWineFarmsInCapeTownPage() {
         image: [`${SITE_URL}/images/wine/graff.jpg`],
         author: {
           "@type": "Organization",
-          name: "WhyCapeTown",
+          name: brand.name,
         },
         publisher: {
           "@type": "Organization",
-          name: "WhyCapeTown",
+          name: brand.name,
           logo: {
             "@type": "ImageObject",
             url: `${SITE_URL}/images/logo.png`,

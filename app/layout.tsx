@@ -6,10 +6,12 @@ import StyledComponentsRegistry from "../lib/styled-components-registry";
 import Providers from "./providers";
 import Header from "../components/common/Header";
 import Footer from "../components/common/Footer";
+import FloatingWhatsApp from "../components/common/FloatingWhatsApp";
 import ScrollTracking from "../components/tracking/ScrollTracking";
 import EngagementTracking from "../components/tracking/EngagementTracking";
 
 export const metadata: Metadata = {
+  metadataBase: new URL(brand.siteUrl),
   title: brand.name,
   description: brand.tagline,
 };
@@ -17,6 +19,74 @@ export const metadata: Metadata = {
 const gaId = process.env.NEXT_PUBLIC_GA_ID;
 const metaPixelId = process.env.NEXT_PUBLIC_META_PIXEL_ID;
 const googleAdsId = process.env.NEXT_PUBLIC_GOOGLE_ADS_ID;
+
+const localBusinessSchema = {
+  "@context": "https://schema.org",
+  "@type": ["LocalBusiness", "TouristInformationCenter"],
+  name: brand.name,
+  url: brand.siteUrl,
+  logo: `${brand.siteUrl}${brand.logoPath}`,
+  image: `${brand.siteUrl}${brand.heroImagePath}`,
+  description:
+    `${brand.name} offers luxury private chauffeur services, bespoke private tours, and premium airport transfers across ${brand.address.locality} and the ${brand.address.region}.`,
+  telephone: brand.phone,
+  email: brand.contactEmail,
+  priceRange: "$$$$",
+  currenciesAccepted: "ZAR",
+  paymentAccepted: "Cash, EFT, Credit Card",
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: brand.address.locality,
+    addressRegion: brand.address.region,
+    postalCode: brand.address.postalCode,
+    addressCountry: brand.address.country,
+  },
+  geo: {
+    "@type": "GeoCoordinates",
+    latitude: brand.geo.lat,
+    longitude: brand.geo.lng,
+  },
+  areaServed: [
+    "Cape Town",
+    "Cape Peninsula",
+    "Stellenbosch",
+    "Franschhoek",
+    "Western Cape",
+  ],
+  hasOfferCatalog: {
+    "@type": "OfferCatalog",
+    name: "Private Tours & Chauffeur Services",
+    itemListElement: [
+      {
+        "@type": "Offer",
+        itemOffered: {
+          "@type": "Service",
+          name: "Private Chauffeur Service Cape Town",
+          url: `${brand.siteUrl}/chauffeur-services`,
+        },
+      },
+      {
+        "@type": "Offer",
+        itemOffered: {
+          "@type": "Service",
+          name: "Private Tours Cape Town",
+          url: `${brand.siteUrl}/private-tours`,
+        },
+      },
+      {
+        "@type": "Offer",
+        itemOffered: {
+          "@type": "Service",
+          name: "Airport Transfers Cape Town",
+          url: `${brand.siteUrl}/airport-transfers-cape-town`,
+        },
+      },
+    ],
+  },
+  sameAs: [
+    `https://wa.me/${brand.whatsappNumber}`,
+  ],
+};
 
 export default function RootLayout({
   children,
@@ -26,6 +96,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}
+        />
         <StyledComponentsRegistry>
           <Providers>
             <ScrollTracking />
@@ -33,6 +107,7 @@ export default function RootLayout({
             <Header />
             {children}
             <Footer />
+            <FloatingWhatsApp />
           </Providers>
         </StyledComponentsRegistry>
 

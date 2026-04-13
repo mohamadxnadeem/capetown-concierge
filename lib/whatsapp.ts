@@ -1,4 +1,6 @@
-const WHATSAPP_NUMBER = "27636746131";
+import { brand } from "./brand";
+
+const WHATSAPP_NUMBER = brand.whatsappNumber;
 
 export function buildWhatsAppLink(message: string) {
   return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;

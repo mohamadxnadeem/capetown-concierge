@@ -6,8 +6,10 @@ import FeaturedExperiences from "../components/sections/FeaturedExperiences";
 import TestimonialsSection from "../components/sections/testimonials/TestimonialsSection";
 import TestimonialsCta from "../components/sections/testimonials/TestimonialsCta";
 import ChauffeurAuthoritySection from "../components/sections/ChauffeurAuthoritySection";
+import { brand } from "../lib/brand";
+import { buildWhatsAppLink } from "../lib/whatsapp";
 
-const SITE_URL = "https://capetown-concierge.co.za";
+const SITE_URL = brand.siteUrl;
 
 export const metadata: Metadata = {
   title: "Luxury Chauffeur Service & Private Tours Cape Town | Cape Town Concierge",
@@ -28,26 +30,26 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "Luxury Chauffeur Service & Private Tours Cape Town | WhyCapeTown",
+    title: "Cape Town's Top Private Chauffeur & Tour Service",
     description:
-      "Book the #1 rated luxury chauffeur service and private tours in Cape Town. Premium airport transfers, bespoke itineraries, and a 5-star fleet including Mercedes V-Class and BMW X5. All-inclusive, professional, and reliable.",
+      "Airport transfers, private day tours, and bespoke chauffeur-driven experiences across Cape Town. Professional, discreet, and available on demand. Book via WhatsApp.",
     url: SITE_URL,
-    siteName: "WhyCapeTown",
+    siteName: brand.name,
     type: "website",
     images: [
       {
         url: `${SITE_URL}/images/hero-car.jpg`,
         width: 1200,
         height: 630,
-        alt: "Luxury chauffeur service Cape Town with premium private travel experience",
+        alt: "Cape Town private chauffeur service — luxury vehicles and bespoke tours",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Luxury Chauffeur Service & Private Tours Cape Town | WhyCapeTown",
+    title: "Cape Town's Top Private Chauffeur & Tour Service",
     description:
-      "Book the #1 rated luxury chauffeur service and private tours in Cape Town. Premium airport transfers, bespoke itineraries, and a 5-star fleet including Mercedes V-Class and BMW X5.",
+      "Airport transfers, private day tours, and bespoke chauffeur-driven experiences across Cape Town. Professional, discreet, and available on demand. Book via WhatsApp.",
     images: [`${SITE_URL}/images/hero-car.jpg`],
   },
 };
@@ -90,6 +92,7 @@ type Experience = {
   highlight?: string;
   body?: string;
   cover_photos?: ExperiencePhoto[];
+  price?: string | number;
 };
 
 type ExperienceApiItem = {
@@ -102,6 +105,7 @@ type FeaturedExperienceItem = {
   href: string;
   image: string;
   alt: string;
+  priceUsd?: number;
 };
 
 type CarPhoto = {
@@ -132,7 +136,7 @@ type FeaturedVehicleItem = {
   image: string;
   alt: string;
   seats?: number;
-  price?: string;
+  priceUsd?: number;
 };
 
 function stripHtml(html: string) {
@@ -143,11 +147,6 @@ function truncateText(text: string, maxLength: number) {
   if (!text) return "";
   if (text.length <= maxLength) return text;
   return `${text.slice(0, maxLength).trim()}...`;
-}
-
-function formatPrice(price?: string | number) {
-  if (price === undefined || price === null || price === "") return "";
-  return `R${price}`;
 }
 
 function isFeaturedExperienceItem(
@@ -166,9 +165,7 @@ async function getFeaturedExperiences(): Promise<FeaturedExperienceItem[]> {
   try {
     const response = await fetch(
       "https://web-production-1ab9.up.railway.app/api/experiences/all/",
-      {
-        cache: "no-store",
-      }
+      { next: { revalidate: 3600 } }
     );
 
     if (!response.ok) {
@@ -196,6 +193,10 @@ async function getFeaturedExperiences(): Promise<FeaturedExperienceItem[]> {
           truncateText(plainTextBody, 140) ||
           "Discover a premium private tour in Cape Town.";
 
+        const expPriceUsd = experience.price
+          ? Number(String(experience.price).replace(/[^0-9.]/g, "")) || undefined
+          : undefined;
+
         return {
           title: experience.title,
           description,
@@ -204,6 +205,7 @@ async function getFeaturedExperiences(): Promise<FeaturedExperienceItem[]> {
             : "/private-tours",
           image: featuredPhoto,
           alt: `Private ${experience.title} in Cape Town with Professional Driver`,
+          priceUsd: expPriceUsd,
         };
       }
     );
@@ -219,9 +221,7 @@ async function getFeaturedVehicles(): Promise<FeaturedVehicleItem[]> {
   try {
     const response = await fetch(
       "https://web-production-1ab9.up.railway.app/api/cars-for-hire/all/",
-      {
-        cache: "no-store",
-      }
+      { next: { revalidate: 3600 } }
     );
 
     if (!response.ok) {
@@ -262,6 +262,10 @@ async function getFeaturedVehicles(): Promise<FeaturedVehicleItem[]> {
             ? `/chauffeur-services/${car.slug.trim()}`
             : "/chauffeur-services";
 
+        const carPriceUsd = car.price
+          ? Number(String(car.price).replace(/[^0-9.]/g, "")) || undefined
+          : undefined;
+
         return {
           title: car.title,
           description,
@@ -269,7 +273,7 @@ async function getFeaturedVehicles(): Promise<FeaturedVehicleItem[]> {
           image: featuredPhoto,
           alt: `Luxury ${car.title} Chauffeur Service Cape Town - VIP Transport`,
           seats: car.number_of_seats,
-          price: formatPrice(car.price),
+          priceUsd: carPriceUsd,
         };
       }
     );
@@ -292,20 +296,54 @@ export default async function HomePage() {
     "@graph": [
       {
         "@type": "Organization",
-        name: "WhyCapeTown",
+        name: brand.name,
         url: SITE_URL,
+        logo: `${SITE_URL}/images/logo.png`,
+        telephone: brand.phone,
+        email: brand.contactEmail,
+        description:
+          "Luxury chauffeur services, private tours, airport transfers, and curated travel experiences in Cape Town.",
+        sameAs: [
+          "https://www.facebook.com/capetownconcierge",
+        ],
+      },
+      {
+        "@type": "LocalBusiness",
+        "@id": `${SITE_URL}/#localbusiness`,
+        name: brand.name,
+        url: SITE_URL,
+        telephone: brand.phone,
+        email: brand.contactEmail,
+        priceRange: "$$$$",
+        image: `${SITE_URL}/images/hero-car.jpg`,
         logo: `${SITE_URL}/images/logo.png`,
         description:
           "Luxury chauffeur services, private tours, airport transfers, and curated travel experiences in Cape Town.",
+        address: {
+          "@type": "PostalAddress",
+          addressLocality: brand.address.locality,
+          addressRegion: brand.address.region,
+          addressCountry: brand.address.country,
+        },
+        geo: {
+          "@type": "GeoCoordinates",
+          latitude: brand.geo.lat,
+          longitude: brand.geo.lng,
+        },
+        areaServed: [
+          { "@type": "City", name: "Cape Town" },
+          { "@type": "State", name: "Western Cape" },
+        ],
+        serviceType: ["Private Chauffeur Service", "Private Tours", "Airport Transfers"],
       },
       {
         "@type": "WebSite",
-        name: "WhyCapeTown",
+        name: brand.name,
         url: SITE_URL,
       },
       {
         "@type": "WebPage",
-        name: "Luxury Chauffeur Service & Private Tours Cape Town | WhyCapeTown",
+        name: "Luxury Chauffeur Service & Private Tours Cape Town | Cape Town Concierge",
         url: SITE_URL,
         description:
           "Book the #1 rated luxury chauffeur service and private tours in Cape Town. Premium airport transfers, bespoke itineraries, and a 5-star fleet including Mercedes V-Class and BMW X5. All-inclusive, professional, and reliable.",
@@ -373,7 +411,7 @@ export default async function HomePage() {
         name: "Private Chauffeur Services",
         provider: {
           "@type": "Organization",
-          name: "WhyCapeTown",
+          name: brand.name,
           url: SITE_URL,
         },
         areaServed: {
@@ -389,7 +427,7 @@ export default async function HomePage() {
         name: "Custom Cape Town Tours",
         provider: {
           "@type": "Organization",
-          name: "WhyCapeTown",
+          name: brand.name,
           url: SITE_URL,
         },
         areaServed: {
@@ -412,11 +450,11 @@ export default async function HomePage() {
       />
 
       <HeroBanner
-        eyebrow="Cape Town Concierge"
+        eyebrow={brand.name}
         title="Luxury Chauffeur Services in Cape Town"
         description="Premium airport transfers, private chauffeur services, and curated travel experiences designed for clients who value comfort, elegance, and reliability."
-        primaryCtaLabel="Book Your Ride"
-        primaryCtaHref="/contact"
+        primaryCtaLabel="Book on WhatsApp"
+        primaryCtaHref={buildWhatsAppLink("Hi, I'd like to book a luxury chauffeur or private tour in Cape Town. Please can you assist?")}
         secondaryCtaLabel="Explore Services"
         secondaryCtaHref="/chauffeur-services"
         image="/images/car.jpg"

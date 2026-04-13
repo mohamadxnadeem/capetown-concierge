@@ -3,6 +3,7 @@
 import { ThemeProvider } from "styled-components";
 import { theme } from "@/styles/theme";
 import GlobalStyles from "../styles/GlobalStyles";
+import { CurrencyProvider } from "../context/CurrencyContext";
 
 export default function Providers({
   children,
@@ -12,7 +13,7 @@ export default function Providers({
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyles />
-      {children}
+      <CurrencyProvider>{children}</CurrencyProvider>
     </ThemeProvider>
   );
 }

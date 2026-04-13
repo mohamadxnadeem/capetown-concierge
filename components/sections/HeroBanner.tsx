@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import styled from "styled-components";
 import Button from "../common/Button";
+import { trackWhatsAppClick } from "../../lib/tracking";
 
 type HeroBannerProps = {
   eyebrow?: string;
@@ -11,8 +12,10 @@ type HeroBannerProps = {
   description: string;
   primaryCtaLabel?: string;
   primaryCtaHref?: string;
+  primaryCtaOnClick?: () => void;
   secondaryCtaLabel?: string;
   secondaryCtaHref?: string;
+  secondaryCtaOnClick?: () => void;
   image: string;
   imageAlt?: string;
 };
@@ -102,17 +105,39 @@ const StyledLink = styled(Link)`
   display: inline-flex;
 `;
 
+const StyledAnchor = styled.a`
+  display: inline-flex;
+`;
+
+function isExternal(href: string) {
+  return href.startsWith("http://") || href.startsWith("https://") || href.startsWith("//");
+}
+
+function makeClickHandler(href: string, label: string, override?: () => void) {
+  return () => {
+    if (override) { override(); return; }
+    if (href.includes("wa.me")) {
+      trackWhatsAppClick({ source: "hero_banner", label });
+    }
+  };
+}
+
 export default function HeroBanner({
   eyebrow = "Luxury Travel in Cape Town",
   title,
   description,
   primaryCtaLabel = "Book Now",
-  primaryCtaHref = "/contact",
+  primaryCtaHref = "/chauffeur-services",
+  primaryCtaOnClick,
   secondaryCtaLabel = "Explore Services",
   secondaryCtaHref = "/chauffeur-services",
+  secondaryCtaOnClick,
   image,
   imageAlt = "Luxury chauffeur fleet in Cape Town including premium private transport vehicles",
 }: HeroBannerProps) {
+  const handlePrimaryClick = makeClickHandler(primaryCtaHref, primaryCtaLabel, primaryCtaOnClick);
+  const handleSecondaryClick = makeClickHandler(secondaryCtaHref, secondaryCtaLabel, secondaryCtaOnClick);
+
   return (
     <Wrapper>
       <ImageLayer>
@@ -136,15 +161,15 @@ export default function HeroBanner({
           <Description>{description}</Description>
 
           <ButtonRow>
-            <StyledLink href={primaryCtaHref}>
-              <Button as="span">{primaryCtaLabel}</Button>
-            </StyledLink>
-
-            {/* <StyledLink href={secondaryCtaHref}>
-              <Button as="span" $variant="secondary">
-                {secondaryCtaLabel}
-              </Button>
-            </StyledLink> */}
+            {isExternal(primaryCtaHref) ? (
+              <StyledAnchor href={primaryCtaHref} target="_blank" rel="noopener noreferrer" onClick={handlePrimaryClick}>
+                <Button as="span">{primaryCtaLabel}</Button>
+              </StyledAnchor>
+            ) : (
+              <StyledLink href={primaryCtaHref} onClick={handlePrimaryClick}>
+                <Button as="span">{primaryCtaLabel}</Button>
+              </StyledLink>
+            )}
           </ButtonRow>
         </Inner>
       </Content>

@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
+import { brand } from "../../../lib/brand";
 import ChauffeurDetailView from "../../../components/sections/chauffeur-services/ChauffeurDetailView";
 
 // ─────────────────────────────────────────────
@@ -60,7 +61,7 @@ type PageProps = {
   params: Promise<{ slug: string }>;
 };
 
-const SITE_URL = "https://capetown-concierge.co.za";
+const SITE_URL = brand.siteUrl;
 
 // ─────────────────────────────────────────────
 // FIX 1: SEO KEYWORD GENERATOR
@@ -77,20 +78,10 @@ function getSeoKeyword(car: Car): string {
 // ─────────────────────────────────────────────
 // PRICE HELPERS (unchanged)
 // ─────────────────────────────────────────────
-function formatPrice(
-  price?: string | number,
-  priceFrom?: string | number,
-  priceTo?: string | number,
-  currency?: string
-) {
-  const symbol = currency === "ZAR" || !currency ? "$" : `${currency} `;
-  if (price !== undefined && price !== null && price !== "") {
-    return `From ${symbol}${price}`;
-  }
-  if (priceFrom && priceTo) return `From ${symbol}${priceFrom} - ${symbol}${priceTo}`;
-  if (priceFrom) return `From ${symbol}${priceFrom}`;
-  if (priceTo) return `${symbol}${priceTo}`;
-  return "";
+function formatPrice(price?: string | number) {
+  if (price === undefined || price === null || price === "") return "";
+  const num = Number(String(price).replace(/[^0-9.]/g, ""));
+  return isNaN(num) || num === 0 ? "" : `From $${Math.round(num)} per day`;
 }
 
 function getNumericPriceValue(
@@ -155,7 +146,7 @@ function getVehicleImageAlt(car: Car) {
 }
 
 function getFormattedDailyRate(car: Car) {
-  return formatPrice(car.price, car.price_from, car.price_to, car.currency);
+  return formatPrice(car.price);
 }
 
 function getMetaFriendlyRate(car: Car) {
@@ -177,8 +168,8 @@ function getPageTitle(car: Car) {
   const rate = getMetaFriendlyRate(car);
   // Append price if it fits — increases CTR significantly for HNWI searches
   return rate
-    ? `${keyword} | From ${rate} | Cape Town Concierge`
-    : `${keyword} | Cape Town Concierge`;
+    ? `${keyword} | From ${rate} | ` + brand.name
+    : `${keyword} | ` + brand.name;
 }
 
 // ─────────────────────────────────────────────
@@ -223,7 +214,7 @@ function mapRelatedVehicles(cars: Car[], currentSlug: string): RelatedVehicle[] 
         truncateText(car.body, 120) ||
         "Premium chauffeur-driven vehicle for Cape Town travel.",
       seats: car.number_of_seats,
-      price: formatPrice(car.price, car.price_from, car.price_to, car.currency),
+      price: formatPrice(car.price),
       href: `/chauffeur-services/${car.slug}`,
     }));
 }
@@ -309,7 +300,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   if (!car) {
     return {
-      title: "Chauffeur Service | Cape Town Concierge",
+      title: `Chauffeur Service | ${brand.name}`,
       description: "Premium chauffeur-driven vehicles in Cape Town",
     };
   }
@@ -349,7 +340,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       title,
       description,
       url: canonicalUrl,
-      siteName: "Cape Town Concierge",
+      siteName: brand.name,
       // FIX 9: Change type from "article" to "website" — vehicle pages are not articles
       // "article" type triggers publishedTime/author expectations Google may flag
       type: "website",
@@ -391,8 +382,8 @@ export default async function ChauffeurServiceDetailPage({ params }: PageProps) 
   const pageTitle = getPageTitle(car);
   const pageDescription = getPageDescription(car);
   const keyword = getSeoKeyword(car);
-  const formattedPrice = formatPrice(car.price, car.price_from, car.price_to, car.currency);
-  const numericPrice = getNumericPriceValue(car.price, car.price_from, car.price_to);
+  const formattedPrice = formatPrice(car.price);
+  const numericPrice = car.price;
   const vehicleFaqs = buildVehicleFaqs(car, formattedPrice);
 
   // ─────────────────────────────────────────────
@@ -413,7 +404,7 @@ export default async function ChauffeurServiceDetailPage({ params }: PageProps) 
         description: getShortVehicleDescription(car),
         brand: {
           "@type": "Brand",
-          name: "Cape Town Concierge",
+          name: brand.name,
         },
         category: car.category || car.vehicle_type || "Luxury Chauffeur Vehicle",
         url: canonicalUrl,
@@ -463,21 +454,21 @@ export default async function ChauffeurServiceDetailPage({ params }: PageProps) 
         serviceType: "Private Chauffeur Service",
         provider: {
           "@type": "LocalBusiness",
-          name: "Cape Town Concierge",
+          name: brand.name,
           url: SITE_URL,
-          telephone: "+27636746131",
+          telephone: brand.phone,
           // FIX 13: Add address — critical for local SEO ranking
           address: {
             "@type": "PostalAddress",
-            addressLocality: "Cape Town",
-            addressRegion: "Western Cape",
-            addressCountry: "ZA",
+            addressLocality: brand.address.locality,
+            addressRegion: brand.address.region,
+            addressCountry: brand.address.country,
           },
           // FIX 14: Add geo — helps Google Maps and local pack ranking
           geo: {
             "@type": "GeoCoordinates",
-            latitude: -33.9249,
-            longitude: 18.4241,
+            latitude: brand.geo.lat,
+            longitude: brand.geo.lng,
           },
           priceRange: "$$$$",
           sameAs: [

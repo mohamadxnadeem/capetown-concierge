@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import styled from "styled-components";
+import { brand } from "../../lib/brand";
 
 const Overlay = styled.div<{ $isOpen: boolean }>`
   position: fixed;
@@ -20,7 +21,7 @@ const Drawer = styled.aside<{ $isOpen: boolean }>`
   left: 0;
   width: min(360px, 88vw);
   height: 100vh;
-  background: linear-gradient(180deg, #0b5b33 0%, #063e23 100%);
+  background: linear-gradient(180deg, ${({ theme }) => theme.colors.primary} 0%, ${({ theme }) => theme.colors.primaryDark} 100%);
   box-shadow: 10px 0 30px rgba(18, 61, 43, 0.2);
   transform: translateX(${({ $isOpen }) => ($isOpen ? "0" : "-100%")});
   transition: transform 0.3s ease;
@@ -98,7 +99,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
       <Overlay $isOpen={isOpen} onClick={onClose} />
       <Drawer $isOpen={isOpen}>
         <TopRow>
-          <Title>Cape Town Concierge</Title>
+          <Title>{brand.name}</Title>
           <CloseButton onClick={onClose} aria-label="Close menu">
             ×
           </CloseButton>
@@ -108,33 +109,24 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
           <NavLink href="/" onClick={onClose}>
             Home
           </NavLink>
+          <NavLink href="/chauffeur-services" onClick={onClose}>
+            Chauffeur Services
+          </NavLink>
+          <NavLink href="/private-tours" onClick={onClose}>
+            Private Tours
+          </NavLink>
+          <NavLink href="/airport-transfers-cape-town" onClick={onClose}>
+            Airport Transfers
+          </NavLink>
+          <NavLink href="/best-wine-farms-in-cape-town" onClick={onClose}>
+            Wine Farms
+          </NavLink>
           <NavLink href="/best-activities-to-do-in-cape-town" onClick={onClose}>
             Experiences
           </NavLink>
-
-            <NavLink href="/best-wine-farms-in-cape-town" onClick={onClose}>
-              Wine Farms
-            </NavLink>
-
-            <NavLink href="/7-day-cape-town-itinerary" onClick={onClose}>
-              7 Day Itinerary
-            </NavLink>
-
-          {/* <NavLink href="/chauffeur-services" onClick={onClose}>
-            Chauffeur Services
+          <NavLink href="/7-day-cape-town-itinerary" onClick={onClose}>
+            7 Day Itinerary
           </NavLink>
-          <NavLink href="/tours" onClick={onClose}>
-            Tours
-          </NavLink>
-          <NavLink href="/accommodation" onClick={onClose}>
-            Accommodation
-          </NavLink>
-          <NavLink href="/contact" onClick={onClose}>
-            Contact
-          </NavLink>
-          <NavLink href="/portal" onClick={onClose}>
-            Portal Login
-          </NavLink> */}
         </Nav>
 
         <FooterNote>

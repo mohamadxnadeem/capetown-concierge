@@ -1,10 +1,6 @@
 import { Car, FaqItem, ReviewItem } from "./types";
-
-export const WHATSAPP_NUMBER = "27636746131";
-
-export function buildWhatsAppLink(message: string) {
-  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
-}
+export { buildWhatsAppLink } from "../../../lib/whatsapp";
+import { brand } from "../../../lib/brand";
 
 export function stripHtml(html?: string) {
   if (!html) return "";
@@ -23,21 +19,13 @@ export function getPrimaryImage(car: Car) {
 
 export function formatCurrency(amount: number) {
   if (!amount || Number.isNaN(amount)) return "";
-  return `$${amount.toFixed(0)}`;
+  return `$${Math.round(amount)}`;
 }
 
-export function formatPrice(
-  price?: string | number,
-  priceFrom?: string | number,
-  priceTo?: string | number
-) {
-  if (price !== undefined && price !== null && price !== "") {
-    return `From $${price}`;
-  }
-  if (priceFrom && priceTo) return `From $${priceFrom} - $${priceTo}`;
-  if (priceFrom) return `From $${priceFrom}`;
-  if (priceTo) return `$${priceTo}`;
-  return "";
+export function formatPrice(price?: string | number) {
+  if (price === undefined || price === null || price === "") return "";
+  const num = Number(String(price).replace(/[^0-9.]/g, ""));
+  return isNaN(num) || num === 0 ? "" : `From $${Math.round(num)} per day`;
 }
 
 export function getBaseDailyRate(
@@ -89,7 +77,7 @@ export function buildFaqs(vehicleTitle: string, seoKeyword?: string): FaqItem[] 
     // Q1: primary keyword in the question — strongest FAQ schema trigger
     {
       question: `How much does ${kw} cost?`,
-      answer: `${kw} starts from $500 per vehicle per day. This includes your professional chauffeur, fuel, and complimentary bottled water. Airport entrance fees and national park entry are not included in the base rate. Message us on WhatsApp for a tailored quote based on your exact route and itinerary.`,
+      answer: `Pricing for ${kw} depends on your route, duration, and itinerary. Contact us via WhatsApp for availability and a personalised quote — we typically respond within 30 minutes.`,
     },
 
     // Q2: airport transfer — high search volume
@@ -159,9 +147,9 @@ export function getSeoKeyword(car: Car): string {
 export function getVehicleMetaTitle(car: Car): string {
   if (car.meta_title) return car.meta_title;
   const keyword = getSeoKeyword(car);
-  const rate = formatPrice(car.price, car.price_from, car.price_to);
+  const rate = formatPrice(car.price);
   const rateStr = rate ? ` | ${rate}` : "";
-  return `${keyword}${rateStr} | Cape Town Concierge`;
+  return `${keyword}${rateStr} | ` + brand.name;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -172,7 +160,7 @@ export function getVehicleMetaTitle(car: Car): string {
 export function getVehicleMetaDescription(car: Car): string {
   if (car.meta_description) return car.meta_description;
   const keyword = getSeoKeyword(car);
-  const rate = formatPrice(car.price, car.price_from, car.price_to);
+  const rate = formatPrice(car.price);
   const rateStr = rate ? ` ${rate}/day.` : "";
   const seats = car.number_of_seats ? ` ${car.number_of_seats} seats.` : "";
   const raw = `${keyword} — private airport transfers, full-day tours & Cape Town hire.${rateStr}${seats} Professional chauffeur. Book via WhatsApp.`;

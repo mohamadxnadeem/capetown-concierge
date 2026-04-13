@@ -104,10 +104,10 @@ export default function PrivateTourFaq({ items }: Props) {
     <>
       <SectionHeader>
         <SectionEyebrow>FAQ</SectionEyebrow>
-        <SectionTitle>Frequently Asked Questions</SectionTitle>
-       <SectionText>
-        Everything you need to know about your private tour, from pickup and timings to inclusions and what to expect on the day.
-      </SectionText>
+        <SectionTitle>Your Questions, Answered</SectionTitle>
+        <SectionText>
+          Everything you need to know before you book — from what's included and how long it takes, to flexibility and family suitability.
+        </SectionText>
       </SectionHeader>
 
       <FAQList>

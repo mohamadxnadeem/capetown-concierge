@@ -1,7 +1,100 @@
 import type { Metadata } from "next";
+import { brand } from "../../lib/brand";
 import BestActivitiesPage from "../../components/sections/cape-town-activities/BestActivitiesPage";
 
-const SITE_URL = "https://capetown-concierge.co.za";
+type ExperiencePhoto = {
+  id: number;
+  cover_photos: string;
+  is_featured: boolean;
+  order: number;
+};
+
+type Experience = {
+  id: number;
+  title: string;
+  slug?: string;
+  short_description?: string;
+  highlight?: string;
+  body?: string;
+  cover_photos?: ExperiencePhoto[];
+  price?: string | number;
+};
+
+type ExperienceApiItem = {
+  experience?: Experience;
+} & Partial<Experience>;
+
+type FeaturedExperienceItem = {
+  title: string;
+  description: string;
+  href: string;
+  image: string;
+  alt: string;
+  price?: string;
+};
+
+function formatApiPrice(price?: string | number): string | undefined {
+  if (!price && price !== 0) return undefined;
+  const num = Number(String(price).replace(/[^0-9.]/g, ""));
+  if (isNaN(num) || num === 0) return undefined;
+  return `From $${Math.round(num)} per day`;
+}
+
+function stripHtml(html: string) {
+  return html.replace(/<[^>]*>/g, "").replace(/\s+/g, " ").trim();
+}
+
+function truncateText(text: string, maxLength: number) {
+  if (!text) return "";
+  if (text.length <= maxLength) return text;
+  return `${text.slice(0, maxLength).trim()}...`;
+}
+
+async function getFeaturedExperiences(): Promise<FeaturedExperienceItem[]> {
+  try {
+    const response = await fetch(
+      "https://web-production-1ab9.up.railway.app/api/experiences/all/",
+      { next: { revalidate: 3600 } }
+    );
+
+    if (!response.ok) throw new Error("Failed to fetch experiences");
+
+    const data: ExperienceApiItem[] = await response.json();
+
+    return (data.map((item: ExperienceApiItem) => {
+      const experience = item?.experience || item;
+      if (!experience?.title) return null;
+
+      const featuredPhoto =
+        experience.cover_photos?.find((photo) => photo.is_featured)?.cover_photos ||
+        experience.cover_photos?.[0]?.cover_photos ||
+        "";
+
+      const plainTextBody = stripHtml(experience.body || "");
+      const description =
+        experience.short_description ||
+        experience.highlight ||
+        truncateText(plainTextBody, 140) ||
+        "Discover a premium private tour in Cape Town.";
+
+      return {
+        title: experience.title,
+        description,
+        href: experience.slug ? `/private-tours/${experience.slug}` : "/private-tours",
+        image: featuredPhoto,
+        alt: `Private ${experience.title} in Cape Town with Professional Driver`,
+        price: formatApiPrice(experience.price),
+      };
+    }) as Array<FeaturedExperienceItem | null>).filter(
+      (item): item is FeaturedExperienceItem => item !== null
+    );
+  } catch (error) {
+    console.error("Error loading featured experiences:", error);
+    return [];
+  }
+}
+
+const SITE_URL = brand.siteUrl;
 
 export const metadata: Metadata = {
   title:
@@ -9,7 +102,7 @@ export const metadata: Metadata = {
   description:
     "Discover the best activities to do in Cape Town, from Table Mountain and Cape Point to wine tours, helicopter rides, safaris, and private chauffeur-driven experiences. Plan the perfect Cape Town itinerary with luxury transport and curated experiences.",
   alternates: {
-    canonical: `${SITE_URL}/best-activities-in-cape-town`,
+    canonical: `${SITE_URL}/best-activities-to-do-in-cape-town`,
   },
   robots: {
     index: true,
@@ -27,8 +120,8 @@ export const metadata: Metadata = {
       "Best Activities to Do in Cape Town (2026 Guide) | Private Tours & Chauffeur",
     description:
       "Explore top Cape Town activities including Table Mountain, Cape Peninsula, wine tours, helicopter rides, and chauffeur-driven private experiences.",
-    url: `${SITE_URL}/best-activities-in-cape-town`,
-    siteName: "WhyCapeTown",
+    url: `${SITE_URL}/best-activities-to-do-in-cape-town`,
+    siteName: brand.name,
     type: "article",
     images: [
       {
@@ -49,7 +142,8 @@ export const metadata: Metadata = {
   },
 };
 
-export default function BestActivitiesToDoInCapeTownPage() {
+export default async function BestActivitiesToDoInCapeTownPage() {
+  const featuredExperiences = await getFeaturedExperiences();
   const structuredData = {
     "@context": "https://schema.org",
     "@graph": [
@@ -61,11 +155,11 @@ export default function BestActivitiesToDoInCapeTownPage() {
         image: [`${SITE_URL}/images/activities/table-mountain.jpg`],
         author: {
           "@type": "Organization",
-          name: "WhyCapeTown",
+          name: brand.name,
         },
         publisher: {
           "@type": "Organization",
-          name: "WhyCapeTown",
+          name: brand.name,
           logo: {
             "@type": "ImageObject",
             url: `${SITE_URL}/images/logo.png`,
@@ -73,7 +167,7 @@ export default function BestActivitiesToDoInCapeTownPage() {
         },
         mainEntityOfPage: {
           "@type": "WebPage",
-          "@id": `${SITE_URL}/best-activities-in-cape-town`,
+          "@id": `${SITE_URL}/best-activities-to-do-in-cape-town`,
         },
       },
       {
@@ -134,7 +228,7 @@ export default function BestActivitiesToDoInCapeTownPage() {
             "@type": "ListItem",
             position: 2,
             name: "Best Activities in Cape Town",
-            item: `${SITE_URL}/best-activities-in-cape-town`,
+            item: `${SITE_URL}/best-activities-to-do-in-cape-town`,
           },
         ],
       },
@@ -150,7 +244,7 @@ export default function BestActivitiesToDoInCapeTownPage() {
         }}
       />
 
-      <BestActivitiesPage />
+      <BestActivitiesPage featuredExperiences={featuredExperiences} />
     </>
   );
 }

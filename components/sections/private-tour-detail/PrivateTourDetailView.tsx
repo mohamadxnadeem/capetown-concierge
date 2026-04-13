@@ -7,6 +7,7 @@ import {
   buildTourWhatsAppMessage,
   buildGeneralWhatsAppMessage,
 } from "../../../lib/whatsapp";
+import { getTourContent } from "../../../lib/tourPageContent";
 import PrivateTourGallery from "./PrivateTourGallery";
 import PrivateTourIntro from "./PrivateTourIntro";
 import PrivateTourWhatToExpect from "./PrivateTourWhatToExpect";
@@ -18,15 +19,10 @@ import PrivateTourReviews from "./PrivateTourReviews";
 import PrivateTourFaq from "./PrivateTourFaq";
 import PrivateTourRelatedTours from "./PrivateTourRelatedTours";
 import PrivateTourCta from "./PrivateTourCta";
-import PrivateTourStickyBar from "./PrivateTourStickyBar";
-import TestimonialsSection from "../testimonials/TestimonialsSection";
-import TestimonialsCta from "../testimonials/TestimonialsCta";
-
 
 
 import {
   Experience,
-  FAQItem,
   ReviewItem,
   TourVehicle,
   RelatedTour,
@@ -39,46 +35,6 @@ const PageWrap = styled.main`
 const Section = styled.section`
   padding: 64px 0;
 `;
-
-function formatPriceRange(
-  priceFrom?: string,
-  priceTo?: string,
-  currency?: string
-) {
-  if (!priceFrom && !priceTo) return "";
-  const symbol = "$";
-  if (priceFrom && priceTo) return `From ${symbol}${priceFrom} - ${symbol}${priceTo}`;
-  if (priceFrom) return `From ${symbol}${priceFrom}`;
-  return `${symbol}${priceTo}`;
-}
-
-const faqItems: FAQItem[] = [
-  {
-    question: "How long does the Cape Peninsula private tour take?",
-    answer:
-      "Most Cape Peninsula private tours take around a full day, depending on the pace, traffic, and how many photo or sightseeing stops you would like to include.",
-  },
-  {
-    question: "Is this a private tour or a shared group tour?",
-    answer:
-      "This is a private tour experience designed around your schedule, comfort, and preferences.",
-  },
-  {
-    question: "Can the itinerary be customised?",
-    answer:
-      "Yes. The tour can be tailored around your interests, timing, and preferred stops where possible.",
-  },
-  {
-    question: "Does the tour include chauffeur transport?",
-    answer:
-      "Yes. The experience is designed around private chauffeur-driven transport for a smoother and more premium touring experience.",
-  },
-  {
-    question: "Is this tour suitable for couples and families?",
-    answer:
-      "Yes. This private tour works especially well for couples, families, and travellers looking for a more relaxed and exclusive Cape Town experience.",
-  },
-];
 
 const reviewItems: ReviewItem[] = [
   {
@@ -105,14 +61,20 @@ type Props = {
   experience: Experience;
   relatedTours: RelatedTour[];
   vehicles: TourVehicle[];
+  lowestVehiclePrice?: number;
+  slug?: string;
 };
 
 export default function PrivateTourDetailView({
   experience,
   relatedTours,
   vehicles,
+  lowestVehiclePrice,
+  slug,
 }: Props) {
   const safeTourTitle = experience?.title || "private tour";
+
+  const content = getTourContent(slug || experience?.slug);
 
   const whatsappLink = buildWhatsAppLink(
     buildTourWhatsAppMessage(safeTourTitle)
@@ -126,12 +88,6 @@ export default function PrivateTourDetailView({
     buildGeneralWhatsAppMessage(
       `booking 3 private tours including ${safeTourTitle}`
     )
-  );
-
-  const priceText = formatPriceRange(
-    experience.price_from,
-    experience.price_to,
-    experience.currency
   );
 
   const stops = [...(experience.stops || [])].sort((a, b) => a.order - b.order);
@@ -155,12 +111,13 @@ export default function PrivateTourDetailView({
             highlight={experience.highlight}
             duration={experience.duration}
             location={experience.location}
-            priceText={priceText}
+            lowestVehiclePrice={lowestVehiclePrice}
+            trustBadges={content.trustBadges}
           />
         </Container>
       </Section>
 
-       
+
 
       {/* <Section>
         <Container>
@@ -174,18 +131,25 @@ export default function PrivateTourDetailView({
             title={safeTourTitle}
             location={experience.location}
             stops={stops}
+            sectionTitle={content.itineraryTitle}
+            sectionSubheading={content.itinerarySubheading}
           />
 
-          {/* <PrivateTourMidCta
+          <PrivateTourMidCta
             tourTitle={safeTourTitle}
             whatsappLink={midCtaWhatsappLink}
-          /> */}
+            title={content.midCtaTitle}
+            body={content.midCtaBody}
+            buttonLabel={content.midCtaButtonLabel}
+          />
         </Container>
       </Section>
 
-       <TestimonialsSection />
-      
-        <TestimonialsCta />
+      <Section>
+        <Container>
+          <PrivateTourReviews reviews={reviewItems} />
+        </Container>
+      </Section>
 
       <Section>
         <Container>
@@ -195,15 +159,19 @@ export default function PrivateTourDetailView({
 
       <Section>
         <Container>
-          <PrivateTourHighlights tourTitle={safeTourTitle} />
+          <PrivateTourHighlights
+            tourTitle={safeTourTitle}
+            title={content.highlightsTitle}
+            items={content.highlights}
+          />
         </Container>
       </Section>
 
-      
+
 
       <Section>
         <Container>
-          <PrivateTourFaq items={faqItems} />
+          <PrivateTourFaq items={content.faqItems} />
         </Container>
       </Section>
 
@@ -216,11 +184,10 @@ export default function PrivateTourDetailView({
         </Container>
       </Section>
 
-      <PrivateTourCta whatsappLink={whatsappLink} />
-      <PrivateTourStickyBar
-        title={safeTourTitle}
+      <PrivateTourCta
         whatsappLink={whatsappLink}
-        priceText={priceText}
+        title={content.ctaTitle}
+        body={content.ctaBody}
       />
     </PageWrap>
   );

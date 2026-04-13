@@ -1,9 +1,10 @@
 // app/7-day-cape-town-itinerary/page.tsx
 
 import type { Metadata } from "next";
+import { brand } from "../../lib/brand";
 import ItineraryPage from "../../components/sections/cape-town-itinerary/ItineraryPage";
 
-const SITE_URL = "https://capetown-concierge.co.za";
+const SITE_URL = brand.siteUrl;
 
 export const metadata: Metadata = {
   title:
@@ -30,7 +31,7 @@ export const metadata: Metadata = {
     description:
       "A complete 7 day Cape Town itinerary including private tours, wine routes, scenic drives, and luxury experiences.",
     url: `${SITE_URL}/7-day-cape-town-itinerary`,
-    siteName: "WhyCapeTown",
+    siteName: brand.name,
     type: "article",
     images: [
       {
@@ -63,11 +64,11 @@ export default function SevenDayCapeTownItineraryPage() {
         image: [`${SITE_URL}/images/itinerary/cape-point.jpg`],
         author: {
           "@type": "Organization",
-          name: "WhyCapeTown",
+          name: brand.name,
         },
         publisher: {
           "@type": "Organization",
-          name: "WhyCapeTown",
+          name: brand.name,
           logo: {
             "@type": "ImageObject",
             url: `${SITE_URL}/images/logo.png`,

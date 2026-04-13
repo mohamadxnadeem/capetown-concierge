@@ -19,6 +19,7 @@ export type ExperienceStop = {
 
 export type Experience = {
   title?: string;
+  slug?: string;
   short_description?: string;
   highlight?: string;
   body?: string;

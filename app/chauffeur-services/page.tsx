@@ -1,7 +1,106 @@
 import type { Metadata } from "next";
 import ChauffeurServicesPage from "../../components/sections/chauffeur-services/ChauffeurServicesPage";
+import { brand } from "../../lib/brand";
 
-const SITE_URL = "https://capetown-concierge.co.za";
+type CarPhoto = {
+  cover_photos?: string;
+  is_featured?: boolean;
+};
+
+type CarItem = {
+  title?: string;
+  slug?: string;
+  short_description?: string;
+  highlight?: string;
+  body?: string;
+  cover_photos?: CarPhoto[];
+  images?: CarPhoto[];
+  number_of_seats?: number;
+  price?: string | number;
+};
+
+type CarsApiItem = {
+  car?: CarItem;
+} & Partial<CarItem>;
+
+export type FeaturedVehicleItem = {
+  title: string;
+  description: string;
+  href: string;
+  image: string;
+  alt: string;
+  seats?: number;
+  priceUsd?: number;
+};
+
+function stripHtml(html: string) {
+  return html.replace(/<[^>]*>/g, "").replace(/\s+/g, " ").trim();
+}
+
+function truncateText(text: string, maxLength: number) {
+  if (!text) return "";
+  if (text.length <= maxLength) return text;
+  return `${text.slice(0, maxLength).trim()}...`;
+}
+
+function formatPrice(price?: string | number) {
+  if (price === undefined || price === null || price === "") return "";
+  const num = Number(String(price).replace(/[^0-9.]/g, ""));
+  return isNaN(num) || num === 0 ? "" : `From $${Math.round(num)} per day`;
+}
+
+const CHAUFFEUR_VEHICLE_DESC: Record<string, string> = {
+  "Hyundai Staria": "A premium people carrier with generous legroom and panoramic windows, designed for groups of up to 8. Comfortable, stylish, and built for a full day on the road — whether that's a city tour, a wine route, or an airport run.",
+  "BMW X5": "A luxury SUV with elevated road presence and a spacious, refined interior. Ideal for families or small groups who want serious comfort without compromising on style.",
+};
+
+async function getVehicles(): Promise<FeaturedVehicleItem[]> {
+  try {
+    const response = await fetch(
+      "https://web-production-1ab9.up.railway.app/api/cars-for-hire/all/",
+      { next: { revalidate: 3600 } }
+    );
+    if (!response.ok) return [];
+    const data = await response.json();
+    const sourceArray: CarsApiItem[] = Array.isArray(data)
+      ? data
+      : Array.isArray(data?.results)
+      ? data.results
+      : [];
+    return (
+      sourceArray.map((item: CarsApiItem) => {
+        const car = item?.car || item;
+        if (!car?.title) return null;
+        const imageArray = car.cover_photos || car.images || [];
+        const featuredPhoto =
+          imageArray.find((photo: CarPhoto) => photo?.is_featured)?.cover_photos ||
+          imageArray[0]?.cover_photos ||
+          "";
+        return {
+          title: car.title,
+          description:
+            CHAUFFEUR_VEHICLE_DESC[car.title] ||
+            car.short_description ||
+            car.highlight ||
+            truncateText(stripHtml(car.body || ""), 140) ||
+            "Luxury chauffeur vehicle available for private travel in Cape Town.",
+          href:
+            typeof car.slug === "string" && car.slug.trim()
+              ? `/chauffeur-services/${car.slug.trim()}`
+              : "/chauffeur-services",
+          image: featuredPhoto,
+          alt: `Luxury ${car.title} Chauffeur Service Cape Town - VIP Transport`,
+          seats: car.number_of_seats,
+          priceUsd: car.price ? Number(String(car.price).replace(/[^0-9.]/g, "")) || undefined : undefined,
+        };
+      }) as Array<FeaturedVehicleItem | null>
+    ).filter((item): item is FeaturedVehicleItem => item !== null);
+  } catch {
+    return [];
+  }
+}
+
+const SITE_URL = brand.siteUrl;
 
 export const metadata: Metadata = {
   title: "Chauffeur Service Cape Town | Luxury Private Driver & Airport Transfers",
@@ -22,31 +121,32 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "Chauffeur Service Cape Town | Luxury Private Driver & Airport Transfers",
+    title: "Private Chauffeur Service Cape Town — Airport, Tours & Day Hire",
     description:
-      "Luxury chauffeur service in Cape Town for airport transfers, private tours, executive travel, and bespoke day hire.",
+      "Professional, discreet, and always on time. Mercedes V-Class, BMW X5, and more. Airport transfers, private tours, and executive travel. Book via WhatsApp.",
     url: `${SITE_URL}/chauffeur-services`,
-    siteName: "Cape Town Concierge",
+    siteName: brand.name,
     type: "website",
     images: [
       {
         url: `${SITE_URL}/images/hero-car.jpg`,
         width: 1200,
         height: 630,
-        alt: "Luxury chauffeur service in Cape Town with premium private transport vehicles",
+        alt: "Private chauffeur service Cape Town — luxury vehicles for hire",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Chauffeur Service Cape Town | Luxury Private Driver & Airport Transfers",
+    title: "Private Chauffeur Service Cape Town — Airport, Tours & Day Hire",
     description:
-      "Book a luxury chauffeur service in Cape Town for airport transfers, private tours, and executive travel.",
+      "Professional, discreet, and always on time. Mercedes V-Class, BMW X5, and more. Airport transfers, private tours, and executive travel. Book via WhatsApp.",
     images: [`${SITE_URL}/images/hero-car.jpg`],
   },
 };
 
-export default function ChauffeurServicesLandingPage() {
+export default async function ChauffeurServicesLandingPage() {
+  const vehicles = await getVehicles();
   const structuredData = {
     "@context": "https://schema.org",
     "@graph": [
@@ -64,7 +164,7 @@ export default function ChauffeurServicesLandingPage() {
         serviceType: "Private Chauffeur Service",
         provider: {
           "@type": "Organization",
-          name: "Cape Town Concierge",
+          name: brand.name,
           url: SITE_URL,
         },
         areaServed: {
@@ -149,7 +249,7 @@ export default function ChauffeurServicesLandingPage() {
           __html: JSON.stringify(structuredData),
         }}
       />
-      <ChauffeurServicesPage />
+      <ChauffeurServicesPage vehicles={vehicles} />
     </>
   );
 }

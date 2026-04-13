@@ -11,6 +11,8 @@ const GlobalStyles = createGlobalStyle`
 
   html {
     scroll-behavior: smooth;
+    overflow-x: hidden;
+    max-width: 100%;
   }
 
   body {
@@ -21,6 +23,9 @@ const GlobalStyles = createGlobalStyle`
     font-family: Arial, Helvetica, sans-serif;
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+    max-width: 100%;
+    position: relative;
   }
 
   a {

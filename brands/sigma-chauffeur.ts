@@ -1,27 +1,28 @@
 import type { BrandConfig } from "../lib/brandConfig";
 
-export const capeTownConciergeBrand: BrandConfig = {
-  name: "Cape Town Concierge",
-  shortName: "CTC",
-  siteUrl: "https://www.capetown-concierge.co.za",
+export const sigmaVipBrand: BrandConfig = {
+  name: "Sigma VIP",
+  shortName: "Sigma",
+  siteUrl: "https://www.sigmavip.co.za",
   tagline:
     "Luxury chauffeur services, private tours, and premium travel experiences in Cape Town",
-  contactEmail: "zaid@capetown-concierge.co.za",
-  phone: "+27 63 674 6131",
-  whatsappNumber: "27636746131",
+  contactEmail: "info@sigmavip.co.za",
+  phone: "+27 71 108 1227",
+  whatsappNumber: "27711081227",
   logoPath: "/images/logo.svg",
   heroImagePath: "/images/hero-car.jpg",
   address: {
     locality: "Cape Town",
     region: "Western Cape",
     country: "ZA",
-    postalCode: "8001",
+    postalCode: "7700",
   },
   geo: {
-    lat: -33.9249,
-    lng: 18.4241,
+    lat: -33.9593,
+    lng: 18.4742,
   },
   colors: {
+    // TODO: replace with Sigma VIP's actual brand colours
     primary: "#0b5b33",
     primaryDark: "#063e23",
     heading: "#123d2b",

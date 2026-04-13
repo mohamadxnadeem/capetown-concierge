@@ -6,7 +6,7 @@ import { trackWhatsAppClick } from "../../../lib/tracking";
 
 const CTASection = styled.section`
   padding: 84px 0;
-  background: linear-gradient(135deg, #0b5b33 0%, #063e23 100%);
+  background: linear-gradient(135deg, ${({ theme }) => theme.colors.primary} 0%, ${({ theme }) => theme.colors.primaryDark} 100%);
 `;
 
 const CTABox = styled.div`
@@ -52,16 +52,18 @@ const CTAAnchor = styled.a`
 
 type Props = {
   whatsappLink: string;
+  title?: string;
+  body?: string;
 };
 
-export default function PrivateTourCta({ whatsappLink }: Props) {
+export default function PrivateTourCta({ whatsappLink, title, body }: Props) {
   return (
     <CTASection>
       <CTABox>
         <CTAEyebrow>Ready to Book?</CTAEyebrow>
-        <CTATitle>Plan Your Private Cape Town Tour</CTATitle>
+        <CTATitle>{title || "Book Your Private Cape Peninsula Tour"}</CTATitle>
         <CTAText>
-          Message us on WhatsApp to check availability, ask questions, and secure your preferred date for this experience.
+          {body || "Message us on WhatsApp to check availability, ask any questions, and lock in your preferred date. We respond within 30 minutes — usually much faster."}
         </CTAText>
 
         <CTAButtons>
@@ -76,7 +78,7 @@ export default function PrivateTourCta({ whatsappLink }: Props) {
               })
             }
           >
-            <Button as="span">Book This Tour</Button>
+            <Button as="span">Book This Tour →</Button>
           </CTAAnchor>
 
           <CTAAnchor
@@ -91,7 +93,7 @@ export default function PrivateTourCta({ whatsappLink }: Props) {
             }
           >
             <Button as="span" $variant="secondary">
-              Chat on WhatsApp
+              Chat on WhatsApp →
             </Button>
           </CTAAnchor>
         </CTAButtons>

@@ -1,10 +1,5 @@
 import { Experience, FaqItem, ReviewItem } from "./types";
-
-export const WHATSAPP_NUMBER = "27636746131";
-
-export function buildWhatsAppLink(message: string) {
-  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
-}
+export { buildWhatsAppLink } from "../../../lib/whatsapp";
 
 export function stripHtml(html?: string) {
   if (!html) return "";
@@ -24,26 +19,13 @@ export function getPrimaryImage(experience: Experience) {
 
 export function formatCurrency(amount: number) {
   if (!amount || Number.isNaN(amount)) return "";
-  return `$${amount.toFixed(0)}`;
+  return `$${Math.round(amount)}`;
 }
 
-export function formatPrice(
-  price?: string | number,
-  priceFrom?: string | number,
-  priceTo?: string | number
-) {
-  if (price !== undefined && price !== null && price !== "") {
-    return `From $${price}`;
-  }
-
-  if (priceFrom && priceTo) {
-    return `From $${priceFrom} - $${priceTo}`;
-  }
-
-  if (priceFrom) return `From $${priceFrom}`;
-  if (priceTo) return `$${priceTo}`;
-
-  return "";
+export function formatPrice(price?: string | number) {
+  if (price === undefined || price === null || price === "") return "";
+  const num = Number(String(price).replace(/[^0-9.]/g, ""));
+  return isNaN(num) || num === 0 ? "" : `From $${Math.round(num)} per day`;
 }
 
 export function normalizeUsdPrice(price?: string) {

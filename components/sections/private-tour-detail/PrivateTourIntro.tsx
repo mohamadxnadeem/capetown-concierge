@@ -1,7 +1,7 @@
 "use client";
 
 import styled from "styled-components";
-import Link from "next/link";
+import Money from "../../common/Money";
 
 const SectionHeader = styled.div`
   max-width: 860px;
@@ -100,11 +100,18 @@ const AlertText = styled.p`
   line-height: 1.75;
 `;
 
-const InlineLink = styled(Link)`
-  color: ${({ theme }) => theme.colors.primary};
-  font-weight: 700;
-  text-decoration: none;
+const PriceNote = styled.p`
+  margin: 10px 0 0;
+  color: ${({ theme }) => theme.colors.textMuted};
+  font-size: 0.85rem;
+  line-height: 1.6;
 `;
+
+const DEFAULT_TRUST_BADGES = [
+  "✔ 100% Private — your vehicle, your group, your pace",
+  "✔ Flexible itinerary — you set the stops",
+  "✔ Professional chauffeur & local guide included",
+];
 
 type Props = {
   title: string;
@@ -112,7 +119,8 @@ type Props = {
   highlight?: string;
   duration?: string;
   location?: string;
-  priceText?: string;
+  lowestVehiclePrice?: number;
+  trustBadges?: string[];
 };
 
 export default function PrivateTourIntro({
@@ -121,7 +129,8 @@ export default function PrivateTourIntro({
   highlight,
   duration,
   location,
-  priceText,
+  lowestVehiclePrice,
+  trustBadges = DEFAULT_TRUST_BADGES,
 }: Props) {
   return (
     <SectionHeader>
@@ -131,31 +140,33 @@ export default function PrivateTourIntro({
       <SubText>
         {shortDescription ||
           highlight ||
-          "Experience Cape Town like never before with a luxury private tour designed around comfort, flexibility, and unforgettable scenic moments."}{" "}
-        Explore more curated <InlineLink href="/private-tours">private tours</InlineLink>{" "}
-        or pair this with our <InlineLink href="/chauffeur-services">chauffeur services</InlineLink>{" "}
-        for a smoother luxury travel experience.
+          `Skip the group buses and crowded shuttles. The ${title} is a fully private, chauffeur-driven experience — your vehicle, your schedule, your pace. No shared passengers. No fixed stops you didn't ask for.`}
       </SubText>
 
       <TrustBar>
-        <TrustBadge>⭐ Trusted by international travellers</TrustBadge>
-        <TrustBadge>✔ Private experience</TrustBadge>
-        <TrustBadge>✔ Flexible itinerary</TrustBadge>
-        <TrustBadge>✔ Premium chauffeur service</TrustBadge>
+        {trustBadges.map((badge) => (
+          <TrustBadge key={badge}>{badge}</TrustBadge>
+        ))}
       </TrustBar>
 
       <QuickInfoRow>
-        {duration ? <QuickInfoBadge>{duration}</QuickInfoBadge> : null}
-        {location ? <QuickInfoBadge>{location}</QuickInfoBadge> : null}
-        {priceText ? <QuickInfoBadge>{priceText}</QuickInfoBadge> : null}
-        <QuickInfoBadge>Hotel pickup available</QuickInfoBadge>
+        {duration ? <QuickInfoBadge>⏱ {duration}</QuickInfoBadge> : null}
+        {location ? <QuickInfoBadge>📍 {location}</QuickInfoBadge> : null}
+        <QuickInfoBadge>🚗 Hotel pickup included</QuickInfoBadge>
+        {lowestVehiclePrice ? (
+          <QuickInfoBadge>
+            <Money usd={lowestVehiclePrice} prefix="From " suffix="per vehicle" />
+          </QuickInfoBadge>
+        ) : null}
       </QuickInfoRow>
 
+      {lowestVehiclePrice ? (
+        <PriceNote>From ${Math.round(lowestVehiclePrice)} per vehicle — fully private, no per-person pricing</PriceNote>
+      ) : null}
+
       <AlertCard>
-        <AlertTitle>Popular with first-time Cape Town visitors</AlertTitle>
         <AlertText>
-          Peak-season dates can book out quickly, especially for premium private touring.
-          Message us early to secure your preferred date and vehicle.
+          ⚡ Peak-season dates book out 2–3 weeks ahead. Message us now and we'll hold your date — we respond in under 30 minutes.
         </AlertText>
       </AlertCard>
     </SectionHeader>

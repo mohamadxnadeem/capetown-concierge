@@ -3,9 +3,9 @@
 import styled from "styled-components";
 import {
   calculateDiscountedRate,
-  formatCurrency,
   getDiscountPercent,
 } from "./utils";
+import Money from "../../common/Money";
 
 type Props = {
   baseRate: number;
@@ -109,10 +109,10 @@ export default function ChauffeurDiscountTable({ baseRate }: Props) {
                     <Td>
                       <Strong>{band.label}</Strong>
                     </Td>
-                    <Td>{formatCurrency(baseRate)}</Td>
+                    <Td><Money usd={baseRate} prefix="" suffix="" /></Td>
                     <Td>{discount}% off</Td>
                     <Td>
-                      <Strong>{formatCurrency(discountedRate)}</Strong>
+                      <Strong><Money usd={discountedRate} prefix="" suffix="" /></Strong>
                     </Td>
                   </tr>
                 );

@@ -185,19 +185,21 @@ type Props = {
   title: string;
   location?: string;
   stops: ExperienceStop[];
+  sectionTitle?: string;
+  sectionSubheading?: string;
 };
 
-export default function PrivateTourItinerary({ title, location, stops }: Props) {
+export default function PrivateTourItinerary({ title, location, stops, sectionTitle, sectionSubheading }: Props) {
   if (!stops.length) return null;
 
   return (
     <>
       <SectionHeader>
-        <SectionEyebrow>Itinerary</SectionEyebrow>
-        <SectionTitle>How the Day Flows</SectionTitle>
-        <SectionText>
-          Explore how your private tour unfolds from the first stop to the final scenic moments of the day.
-        </SectionText>
+        <SectionEyebrow>Your Itinerary</SectionEyebrow>
+        <SectionTitle>{sectionTitle || "Every Stop, Yours to Explore"}</SectionTitle>
+        {sectionSubheading ? (
+          <SectionText>{sectionSubheading}</SectionText>
+        ) : null}
       </SectionHeader>
 
       <TimelineWrap>
@@ -232,13 +234,12 @@ export default function PrivateTourItinerary({ title, location, stops }: Props) 
                       {stop.stop_type ? `${stop.stop_type} stop` : "Tour stop"}
                     </StopEyebrow>
                     <StopTitle>
-                      Stop {index + 1}: {stop.title}
-                      {location ? ` in ${location}` : ""}
+                      {stop.title}
                     </StopTitle>
                     <StopText>
                       {stop.short_description ||
                         stop.highlight ||
-                        "A memorable stop along your private Cape Town tour."}
+                        `One of the standout moments on this private tour. Your chauffeur will give you as much time here as you need.`}
                     </StopText>
 
                     <StopMetaRow>

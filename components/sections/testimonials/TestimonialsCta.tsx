@@ -11,7 +11,7 @@ const whatsappLink = buildWhatsAppLink(
 
 const Section = styled.section`
   padding: 80px 0;
-  background: linear-gradient(135deg, #0b5b33 0%, #063e23 100%);
+  background: linear-gradient(135deg, ${({ theme }) => theme.colors.primary} 0%, ${({ theme }) => theme.colors.primaryDark} 100%);
 `;
 
 const Container = styled.div`
@@ -62,10 +62,10 @@ export default function TestimonialsCta() {
         </Text>
 
         <TrustRow>
+          <TrustItem>⭐ 4.9 Rated</TrustItem>
           <TrustItem>Private Chauffeur</TrustItem>
           <TrustItem>Custom Itinerary</TrustItem>
-          <TrustItem>Luxury Experiences</TrustItem>
-          <TrustItem>Local Expertise</TrustItem>
+          <TrustItem>Responds in 30 min</TrustItem>
         </TrustRow>
 
         <Anchor

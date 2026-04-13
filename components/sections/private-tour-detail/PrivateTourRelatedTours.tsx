@@ -6,15 +6,6 @@ import Link from "next/link";
 import Button from "../../common/Button";
 import { RelatedTour } from "./types";
 
-function normalizeUsdPrice(price?: string | number) {
-  if (!price) return "";
-
-  return String(price)
-    .replace(/^From\s+R/i, "From $")
-    .replace(/^R/i, "$")
-    .replace(/\s+R(?=\d)/gi, " $");
-}
-
 function shimmer(w: number, h: number) {
   return `
     <svg width="${w}" height="${h}" xmlns="http://www.w3.org/2000/svg">
@@ -129,12 +120,6 @@ const CardTitle = styled.h3`
   font-size: 1.2rem;
 `;
 
-const Price = styled.div`
-  margin-bottom: 12px;
-  color: ${({ theme }) => theme.colors.primary};
-  font-weight: 700;
-`;
-
 const CardText = styled.p`
   margin: 0 0 18px;
   color: ${({ theme }) => theme.colors.textMuted};
@@ -144,6 +129,12 @@ const CardText = styled.p`
 type Props = {
   items: RelatedTour[];
   bundleWhatsappLink: string;
+};
+
+const TOUR_COPY: Record<string, string> = {
+  "City and Table Mountain Tour": "Cape Town's most iconic landmarks in one seamless private day — Table Mountain, the Bo-Kaap, the V&A Waterfront, and more. Your chauffeur, your pace.",
+  "Romantic Stellenbosch Winelands Experience": "A private drive through South Africa's most celebrated wine country — rolling vineyards, Cape Dutch estates, and world-class tastings, without the shared shuttle.",
+  "Sunset Safari Day Trip": "Wild game, golden-hour light, and a full day away from the city. Transport and meals included — just arrive ready for an unforgettable afternoon.",
 };
 
 export default function PrivateTourRelatedTours({
@@ -156,20 +147,16 @@ export default function PrivateTourRelatedTours({
     <>
       <SectionHeader>
         <SectionEyebrow>More Experiences</SectionEyebrow>
-        <SectionTitle>Other Tours You May Also Enjoy</SectionTitle>
+        <SectionTitle>More of Cape Town, Done Privately</SectionTitle>
         <SectionText>
-          Explore more of Cape Town with additional private experiences designed
-          for comfort, flexibility, and unforgettable scenery.
+          Every tour is fully private, chauffeur-driven, and built around your schedule. Explore more — or bundle three tours and ask us about a group rate.
         </SectionText>
       </SectionHeader>
 
       <OfferCard>
-        <OfferTitle>Explore More and Save</OfferTitle>
+        <OfferTitle>Bundle &amp; Save</OfferTitle>
         <OfferText>
-          Book any 3 private tours together and ask us about a special bundled
-          rate. It’s the perfect option for travellers who want to experience
-          more of Cape Town in comfort, style, and with a smoother overall
-          itinerary.
+          Book any 3 private tours together and ask us about a group rate. It’s the perfect option for travellers who want to see more of Cape Town without compromising on comfort or flexibility.
         </OfferText>
 
         <OfferCta href={bundleWhatsappLink} target="_blank">
@@ -199,13 +186,8 @@ export default function PrivateTourRelatedTours({
             <CardBody>
               <CardTitle>{item.title}</CardTitle>
 
-              {item.price ? (
-                <Price>{normalizeUsdPrice(item.price)}</Price>
-              ) : null}
-
               <CardText>
-                {item.description ||
-                  "Discover another premium private tour experience in Cape Town."}
+                {TOUR_COPY[item.title] || item.description || "Discover another premium private tour experience in Cape Town."}
               </CardText>
 
               <Link href={item.href}>

@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import HeroBanner from "../HeroBanner";
 import FeaturedVehicles from "../FeaturedVehicles";
 import TestimonialsSection from "../testimonials/TestimonialsSection";
@@ -11,27 +10,8 @@ import {
   buildGeneralWhatsAppMessage,
   buildWhatsAppLink,
 } from "../../../lib/whatsapp";
-
-type CarPhoto = {
-  cover_photos?: string;
-  is_featured?: boolean;
-};
-
-type CarItem = {
-  title?: string;
-  slug?: string;
-  short_description?: string;
-  highlight?: string;
-  body?: string;
-  cover_photos?: CarPhoto[];
-  images?: CarPhoto[];
-  number_of_seats?: number;
-  price?: string | number;
-};
-
-type CarsApiItem = {
-  car?: CarItem;
-} & Partial<CarItem>;
+import { trackWhatsAppClick } from "../../../lib/tracking";
+import { brand } from "../../../lib/brand";
 
 type FeaturedVehicleItem = {
   title: string;
@@ -40,23 +20,8 @@ type FeaturedVehicleItem = {
   image: string;
   alt: string;
   seats?: number;
-  price?: string;
+  priceUsd?: number;
 };
-
-function stripHtml(html: string) {
-  return html.replace(/<[^>]*>/g, "").replace(/\s+/g, " ").trim();
-}
-
-function truncateText(text: string, maxLength: number) {
-  if (!text) return "";
-  if (text.length <= maxLength) return text;
-  return `${text.slice(0, maxLength).trim()}...`;
-}
-
-function formatPrice(price?: string | number) {
-  if (price === undefined || price === null || price === "") return "";
-  return `R${price}`;
-}
 
 const PageWrap = styled.main`
   background: ${({ theme }) => theme.colors.background};
@@ -265,7 +230,7 @@ const FaqAnswer = styled.p`
 
 const FinalCta = styled.section`
   padding: 84px 0;
-  background: #0b5b33;
+  background: ${({ theme }) => theme.colors.primary};
   color: white;
 `;
 
@@ -340,101 +305,33 @@ const includedItems = [
 
 const serviceFaqs = [
   {
-    question: "What is included in your chauffeur service in Cape Town?",
+    question: "What is included in your chauffeur service?",
     answer:
-      "Our chauffeur service is designed around a premium private travel experience, typically including the vehicle, professional driver, and tailored route planning based on your itinerary.",
+      "Every booking includes the vehicle, a professional PDP-licensed chauffeur, fuel, and toll fees. For airport transfers, your driver will track your flight and meet you at arrivals with a name board. For full-day hire, we plan the route around your schedule.",
   },
   {
     question: "Do you offer airport transfers in Cape Town?",
     answer:
-      "Yes, we provide premium airport transfers in Cape Town with professional chauffeurs and luxury vehicles suited to couples, families, and executive travellers.",
+      "Yes. We provide 24/7 premium airport transfers to and from Cape Town International Airport — meet and greet at arrivals, flight tracking, and luggage assistance included.",
   },
   {
-    question: "Can I book a chauffeur for a full day in Cape Town?",
+    question: "Can I book a chauffeur for a full day?",
     answer:
-      "Yes, full-day private chauffeur hire is available for meetings, restaurants, city travel, scenic routes, wine estates, and bespoke itineraries.",
+      "Yes. Full-day private chauffeur hire is available for city travel, wine routes, meetings, restaurant runs, scenic drives, and bespoke itineraries. The day runs entirely on your schedule.",
   },
   {
-    question: "Which vehicles are available for chauffeur service?",
+    question: "Which vehicles are available?",
     answer:
-      "Our fleet includes premium chauffeur-driven vehicles suited to executive travel, airport transfers, family transport, private day hire, and VIP group travel.",
+      "Our fleet includes the BMW 5-Series, BMW X5, Hyundai Staria (8 seats), Mercedes Sprinter (14 seats), Mercedes V-Class (6 seats), and Range Rover Sport. All vehicles are premium, climate-controlled, and privately driven.",
   },
   {
-    question: "Is private chauffeur service better than self-drive in Cape Town?",
+    question: "Is a private chauffeur better than self-driving in Cape Town?",
     answer:
-      "For many travellers, yes. A private chauffeur gives you more comfort, flexibility, and convenience, especially for airport transfers, wine routes, long scenic drives, and clients who want a more polished luxury experience.",
+      "For most visitors, yes — especially for airport transfers, wine routes, and long scenic drives. You arrive relaxed, your group travels together, and there's no parking, no navigation, and no designated driver required.",
   },
 ];
 
-function isFeaturedVehicleItem(
-  item: FeaturedVehicleItem | null
-): item is FeaturedVehicleItem {
-  return item !== null;
-}
-
-export default function ChauffeurServicesPage() {
-  const [vehicles, setVehicles] = useState<FeaturedVehicleItem[]>([]);
-
-  useEffect(() => {
-    async function loadVehicles() {
-      try {
-        const response = await fetch(
-          "https://web-production-1ab9.up.railway.app/api/cars-for-hire/all/",
-          { cache: "no-store" }
-        );
-
-        if (!response.ok) {
-          throw new Error("Failed to fetch vehicles");
-        }
-
-        const data = await response.json();
-
-        const sourceArray: CarsApiItem[] = Array.isArray(data)
-          ? data
-          : Array.isArray(data?.results)
-          ? data.results
-          : [];
-
-        const mapped: Array<FeaturedVehicleItem | null> = sourceArray.map(
-          (item: CarsApiItem) => {
-            const car = item?.car || item;
-            if (!car?.title) return null;
-
-            const imageArray = car.cover_photos || car.images || [];
-            const featuredPhoto =
-              imageArray.find((photo: CarPhoto) => photo?.is_featured)
-                ?.cover_photos ||
-              imageArray[0]?.cover_photos ||
-              "";
-
-            return {
-              title: car.title,
-              description:
-                car.short_description ||
-                car.highlight ||
-                truncateText(stripHtml(car.body || ""), 140) ||
-                "Luxury chauffeur vehicle available for private travel in Cape Town.",
-              href:
-                typeof car.slug === "string" && car.slug.trim()
-                  ? `/chauffeur-services/${car.slug.trim()}`
-                  : "/chauffeur-services",
-              image: featuredPhoto,
-              alt: `Luxury ${car.title} Chauffeur Service Cape Town - VIP Transport`,
-              seats: car.number_of_seats,
-              price: formatPrice(car.price),
-            };
-          }
-        );
-
-        setVehicles(mapped.filter(isFeaturedVehicleItem));
-      } catch (error) {
-        console.error("Error loading vehicles:", error);
-        setVehicles([]);
-      }
-    }
-
-    loadVehicles();
-  }, []);
+export default function ChauffeurServicesPage({ vehicles = [] }: { vehicles?: FeaturedVehicleItem[] }) {
 
   const whatsappLink = buildWhatsAppLink(
     buildGeneralWhatsAppMessage("booking a chauffeur service in Cape Town")
@@ -443,11 +340,11 @@ export default function ChauffeurServicesPage() {
   return (
     <PageWrap>
       <HeroBanner
-        eyebrow="Cape Town Concierge"
+        eyebrow={brand.name}
         title="Chauffeur Service in Cape Town"
-        description="Book a luxury chauffeur service in Cape Town for airport transfers, executive travel, private driver hire, and bespoke day planning with premium vehicles and professional service."
+        description="Premium private chauffeur hire for airport transfers, full-day city travel, executive transport, and bespoke touring across Cape Town and the Western Cape."
         primaryCtaLabel="Book Chauffeur Service"
-        primaryCtaHref="/contact"
+        primaryCtaHref={buildWhatsAppLink("Hi, I'd like to book a chauffeur service in Cape Town. Please can you assist?")}
         secondaryCtaLabel="View Fleet"
         secondaryCtaHref="#chauffeur-fleet"
         image="/images/hero-car.jpg"
@@ -500,13 +397,11 @@ export default function ChauffeurServicesPage() {
           <AuthorityWrap>
             <AuthorityCard>
               <AuthorityCardTitle>Why clients book us</AuthorityCardTitle>
-              <BulletList>
-                <Bullet>Premium airport transfers with polished presentation</Bullet>
-                <Bullet>Flexible full-day private chauffeur hire</Bullet>
-                <Bullet>Executive travel and VIP guest transport</Bullet>
-                <Bullet>Cape Town routes tailored around your timing</Bullet>
-                <Bullet>Luxury vehicles suited to couples, families, and business travel</Bullet>
-              </BulletList>
+              <RichText>
+                <p>
+                  Whether you need a seamless airport pickup, a private driver for the day, or a premium vehicle for executive travel — we build every booking around comfort, discretion, and your exact schedule. Our clients range from international travellers arriving at Cape Town International to business executives, VIP guests, and families who simply want to move through the city without the hassle.
+                </p>
+              </RichText>
             </AuthorityCard>
 
             <RichText>
@@ -585,16 +480,19 @@ export default function ChauffeurServicesPage() {
 
       <FinalCta>
         <FinalCtaInner>
-          <FinalTitle>Book Your Chauffeur Service in Cape Town</FinalTitle>
+          <FinalTitle>Book Your Cape Town Chauffeur Service</FinalTitle>
           <FinalText>
-            Message us to check vehicle availability, airport transfer options,
-            full-day chauffeur pricing, or a tailored private travel plan for
-            your dates in Cape Town.
+            Message us on WhatsApp to check vehicle availability, get a price, or plan your full Cape Town itinerary. We respond within 30 minutes.
           </FinalText>
 
           <ButtonRow>
-            <Anchor href={whatsappLink} target="_blank" rel="noopener noreferrer">
-              <Button as="span">Check Availability</Button>
+            <Anchor
+              href={whatsappLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => trackWhatsAppClick({ source: "chauffeur_services_cta", label: "Check Availability" })}
+            >
+              <Button as="span">Check Availability →</Button>
             </Anchor>
           </ButtonRow>
         </FinalCtaInner>
