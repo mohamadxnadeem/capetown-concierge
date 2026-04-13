@@ -111,7 +111,7 @@ const TOUR_META: Record<string, { title: string; description: string }> = {
     description: "Explore Table Mountain, Bo-Kaap, Camps Bay & the Waterfront privately. Dedicated chauffeur, your schedule. Book your Cape Town city tour today.",
   },
   "winelands-chauffeur-drive": {
-    title: "Stellenbosch Winelands Private Tour | Cape Town",
+    title: "Romantic Stellenbosch Winelands Experience | Private Tour Cape Town",
     description: "Private chauffeur through Stellenbosch & Franschhoek — no shuttles, no timetables. Cape Dutch estates & world-class tastings. Book on WhatsApp.",
   },
   "safari-day-trip": {
