@@ -149,7 +149,7 @@ export default function PrivateTourReviews({ reviews }: Props) {
       <ReviewsGrid>
         {reviews.map((review, index) => (
           <ReviewCard key={`${review.name}-${index}`}>
-            <QuoteMark>”</QuoteMark>
+            <QuoteMark>"</QuoteMark>
             <ReviewQuote>{review.quote}</ReviewQuote>
             <ReviewFooter>
               <ReviewName>{review.name}</ReviewName>
@@ -161,10 +161,10 @@ export default function PrivateTourReviews({ reviews }: Props) {
 
       <GoogleRow>
         <GoogleButton
-          href=”https://share.google/P13pnsYwTEQGoPaSh”
-          target=”_blank”
-          rel=”noopener noreferrer”
-          aria-label=”Read all reviews on Google”
+          href="https://share.google/P13pnsYwTEQGoPaSh"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Read all reviews on Google"
         >
           <GoogleG>G</GoogleG>
           <GoogleStars>★★★★★</GoogleStars>
