@@ -192,16 +192,25 @@ async function getExperienceIdBySlug(slug: string) {
 async function getExperienceDetails(
   id: number
 ): Promise<ExperienceDetailResponse | Experience> {
-  const response = await fetch(
-    `https://web-production-1ab9.up.railway.app/api/experiences/${id}/details/`,
-    { next: { revalidate: 3600 } }
-  );
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 10000);
 
-  if (!response.ok) {
-    throw new Error("Failed to fetch experience details");
+  try {
+    const response = await fetch(
+      `https://web-production-1ab9.up.railway.app/api/experiences/${id}/details/`,
+      { next: { revalidate: 3600 }, signal: controller.signal }
+    );
+    clearTimeout(timeout);
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch experience details");
+    }
+
+    return response.json();
+  } catch (err) {
+    clearTimeout(timeout);
+    throw err;
   }
-
-  return response.json();
 }
 
 function normalizeExperience(data: ExperienceDetailResponse | Experience): Experience {
