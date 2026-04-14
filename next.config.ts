@@ -24,11 +24,6 @@ const nextConfig: NextConfig = {
     return [
       // Mixed-case slug corrections (301 permanent)
       {
-        source: "/private-tours/Cape-Town-City-Tour",
-        destination: "/private-tours/cape-town-city-tour",
-        permanent: true,
-      },
-      {
         source: "/private-tours/cape-peninsular-tour",
         destination: "/private-tours/cape-peninsula-tour",
         permanent: true,
