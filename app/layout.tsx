@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import Script from "next/script";
 
 import { brand } from "../lib/brand";
@@ -14,6 +14,10 @@ export const metadata: Metadata = {
   metadataBase: new URL(brand.siteUrl),
   title: brand.name,
   description: brand.tagline,
+};
+
+export const viewport: Viewport = {
+  themeColor: "#0b5b33",
 };
 
 const gaId = process.env.NEXT_PUBLIC_GA_ID;

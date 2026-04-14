@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0e6e3e"/>
+      <stop offset="100%" stop-color="#083d21"/>
+    </linearGradient>
+  </defs>
+  <!-- Forest green background -->
+  <rect width="32" height="32" rx="6" fill="url(#bg)"/>
+  <!-- Table Mountain silhouette: flat plateau flanked by sloping shoulders -->
+  <path d="M3 27 L9 17 L12 9 L20 9 L23 17 L29 27 Z" fill="white" fill-opacity="0.94"/>
+</svg>
