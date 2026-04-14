@@ -2,7 +2,6 @@
 
 import { useEffect, useRef } from "react";
 import styled from "styled-components";
-import Image from "next/image";
 import { testimonials } from "./data";
 
 const GOOGLE_REVIEWS_URL = "https://share.google/P13pnsYwTEQGoPaSh";
@@ -160,14 +159,19 @@ const CardHeader = styled.div`
   margin-bottom: 16px;
 `;
 
-const Avatar = styled.div`
-  width: 64px;
-  height: 64px;
+const Initial = styled.div`
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
-  overflow: hidden;
   flex: 0 0 auto;
-  border: 2px solid rgba(11, 91, 51, 0.12);
-  box-shadow: 0 8px 20px rgba(11, 91, 51, 0.1);
+  background: rgba(11, 91, 51, 0.1);
+  border: 1px solid rgba(11, 91, 51, 0.15);
+  color: ${({ theme }) => theme.colors.primary};
+  font-weight: 700;
+  font-size: 1.15rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 const ClientMeta = styled.div`
@@ -352,15 +356,7 @@ export default function TestimonialsSection() {
           {testimonials.map((item, index) => (
             <Card key={`${item.name}-${index}`}>
               <CardHeader>
-                <Avatar>
-                  <Image
-                    src={item.image}
-                    alt={item.name}
-                    width={64}
-                    height={64}
-                    style={{ width: "100%", height: "100%", objectFit: "cover" }}
-                  />
-                </Avatar>
+                <Initial>{item.name.charAt(0)}</Initial>
 
                 <ClientMeta>
                   <Name>{item.name}</Name>
