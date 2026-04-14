@@ -37,6 +37,49 @@ const VerifiedLine = styled.p`
   font-size: 0.9rem;
 `;
 
+const GoogleRow = styled.div`
+  margin-top: 28px;
+  display: flex;
+  justify-content: center;
+`;
+
+const GoogleButton = styled.a`
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border-radius: 12px;
+  background: white;
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  text-decoration: none;
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: ${({ theme }) => theme.colors.heading};
+  box-shadow: ${({ theme }) => theme.shadows.soft};
+  transition: border-color 0.18s ease;
+  white-space: nowrap;
+
+  &:hover {
+    border-color: #4285f4;
+  }
+`;
+
+const GoogleG = styled.span`
+  font-size: 1.05rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #4285f4 0%, #34a853 40%, #fbbc05 70%, #ea4335 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1;
+`;
+
+const GoogleStars = styled.span`
+  color: #fbbc05;
+  font-size: 0.78rem;
+  letter-spacing: 1px;
+`;
+
 const ReviewsGrid = styled.div`
   display: grid;
   gap: 18px;
@@ -106,7 +149,7 @@ export default function PrivateTourReviews({ reviews }: Props) {
       <ReviewsGrid>
         {reviews.map((review, index) => (
           <ReviewCard key={`${review.name}-${index}`}>
-            <QuoteMark>“</QuoteMark>
+            <QuoteMark>”</QuoteMark>
             <ReviewQuote>{review.quote}</ReviewQuote>
             <ReviewFooter>
               <ReviewName>{review.name}</ReviewName>
@@ -115,6 +158,19 @@ export default function PrivateTourReviews({ reviews }: Props) {
           </ReviewCard>
         ))}
       </ReviewsGrid>
+
+      <GoogleRow>
+        <GoogleButton
+          href=”https://share.google/P13pnsYwTEQGoPaSh”
+          target=”_blank”
+          rel=”noopener noreferrer”
+          aria-label=”Read all reviews on Google”
+        >
+          <GoogleG>G</GoogleG>
+          <GoogleStars>★★★★★</GoogleStars>
+          4.9 · See all reviews on Google
+        </GoogleButton>
+      </GoogleRow>
     </>
   );
 }

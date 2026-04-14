@@ -40,21 +40,21 @@ const Section = styled.section`
 const reviewItems: ReviewItem[] = [
   {
     quote:
-      "Absolutely incredible from start to finish. The route, comfort, and attention to detail made this one of the highlights of our Cape Town trip.",
-    name: "James R.",
-    subtitle: "London, UK",
+      "The private Cape Peninsula tour was the highlight of our Cape Town trip. Penguins, two oceans, Chapman's Peak — all in one day without being on a crowded bus. Our driver was knowledgeable, warm, and completely flexible. Cannot recommend this highly enough.",
+    name: "Sarah",
+    subtitle: "Cape Peninsula Private Tour",
   },
   {
     quote:
-      "The perfect way to experience Cape Town privately. Everything felt smooth, premium, and beautifully organised.",
-    name: "Sophie & Daniel",
-    subtitle: "Dubai, UAE",
+      "We did the Stellenbosch Winelands private tour and it was exceptional. Three estates, a long lunch, and not a single moment of being rushed. The driver knew which farms were worth visiting and gave brilliant recommendations throughout.",
+    name: "Asad",
+    subtitle: "Stellenbosch Winelands Tour",
   },
   {
     quote:
-      "A polished and memorable experience with amazing scenery throughout the day. Far better than a standard group tour.",
-    name: "Nadia K.",
-    subtitle: "Johannesburg, South Africa",
+      "Travelled with my husband for our anniversary and booked a private city tour. The driver took us to all the iconic spots but also knew hidden viewpoints the tourist buses skip. We ended the day watching sunset from Signal Hill. Absolutely magical.",
+    name: "Noor",
+    subtitle: "City & Table Mountain Tour",
   },
 ];
 
