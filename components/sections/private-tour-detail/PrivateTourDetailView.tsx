@@ -40,13 +40,13 @@ const Section = styled.section`
 const reviewItems: ReviewItem[] = [
   {
     quote:
-      "The private Cape Peninsula tour was the highlight of our Cape Town trip. Penguins, two oceans, Chapman's Peak — all in one day without being on a crowded bus. Our driver was knowledgeable, warm, and completely flexible. Cannot recommend this highly enough.",
+      "The private Cape Peninsula tour was the highlight of our Cape Town trip. Penguins, two oceans, and Chapman's Peak all in one day without being on a crowded bus. Our driver was knowledgeable, warm, and completely flexible. Cannot recommend this highly enough.",
     name: "Sarah",
     subtitle: "Cape Peninsula Private Tour",
   },
   {
     quote:
-      "We did the Stellenbosch Winelands private tour and it was exceptional. Three estates, a long lunch, and not a single moment of being rushed. The driver knew which farms were worth visiting and gave brilliant recommendations throughout.",
+      "We did the Stellenbosch Winelands private tour and it was exceptional. Three estates, a long lunch, and not a single moment of being rushed. The driver knew which farms were worth visiting and gave brilliant recommendations the whole way.",
     name: "Asad",
     subtitle: "Stellenbosch Winelands Tour",
   },
