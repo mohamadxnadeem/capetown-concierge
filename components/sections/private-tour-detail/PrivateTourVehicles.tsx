@@ -456,7 +456,7 @@ export default function PrivateTourVehicles({ items, tourTitle }: Props) {
                     }
                   >
                     <Button as="span" $variant="secondary">
-                      Check Availability
+                      Get a Price for My Dates
                     </Button>
                   </CTAAnchor>
                 </CardBody>

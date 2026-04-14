@@ -77,7 +77,7 @@ export default function TestimonialsCta() {
             })
           }
         >
-          <Button as="span">Plan My Cape Town Trip</Button>
+          <Button as="span">Get in Touch on WhatsApp</Button>
         </Anchor>
       </Container>
     </Section>

@@ -65,7 +65,7 @@ export default function PrivateTourMidCta({
           })
         }
       >
-        <Button as="span">{buttonLabel || "Plan My Cape Town Day →"}</Button>
+        <Button as="span">{buttonLabel || "Check Availability — We Respond in 30 Minutes"}</Button>
       </CTA>
     </Wrapper>
   );

@@ -14,6 +14,7 @@ import PrivateTourWhatToExpect from "./PrivateTourWhatToExpect";
 import PrivateTourItinerary from "./PrivateTourItinerary";
 import PrivateTourMidCta from "./PrivateTourMidCta";
 import PrivateTourVehicles from "./PrivateTourVehicles";
+import PrivateTourInclusions from "./PrivateTourInclusions";
 import PrivateTourHighlights from "./PrivateTourHighlights";
 import PrivateTourReviews from "./PrivateTourReviews";
 import PrivateTourFaq from "./PrivateTourFaq";
@@ -149,6 +150,12 @@ export default function PrivateTourDetailView({
 
       <Section>
         <Container>
+          <PrivateTourInclusions />
+        </Container>
+      </Section>
+
+      <Section>
+        <Container>
           <PrivateTourHighlights
             tourTitle={safeTourTitle}
             title={content.highlightsTitle}
@@ -161,7 +168,7 @@ export default function PrivateTourDetailView({
 
       <Section>
         <Container>
-          <PrivateTourFaq items={content.faqItems} />
+          <PrivateTourFaq items={content.faqItems} lowestVehiclePrice={lowestVehiclePrice} />
         </Container>
       </Section>
 

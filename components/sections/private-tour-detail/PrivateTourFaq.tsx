@@ -81,9 +81,9 @@ const FAQIcon = styled.span<{ $open: boolean }>`
 `;
 
 const FAQAnswerWrap = styled.div<{ $open: boolean }>`
-  max-height: ${({ $open }) => ($open ? "260px" : "0")};
+  max-height: ${({ $open }) => ($open ? "600px" : "0")};
   opacity: ${({ $open }) => ($open ? 1 : 0)};
-  transition: max-height 0.25s ease, opacity 0.2s ease;
+  transition: max-height 0.3s ease, opacity 0.2s ease;
   overflow: hidden;
 `;
 
@@ -95,10 +95,21 @@ const FAQAnswerInner = styled.div`
 
 type Props = {
   items: FAQItem[];
+  lowestVehiclePrice?: number;
 };
 
-export default function PrivateTourFaq({ items }: Props) {
+export default function PrivateTourFaq({ items, lowestVehiclePrice }: Props) {
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
+
+  const vehiclePrice = lowestVehiclePrice ? Math.round(lowestVehiclePrice) : 350;
+  const perPersonPrice = Math.floor(vehiclePrice / 4);
+
+  const pricingFaq: FAQItem = {
+    question: "How much does this private tour cost?",
+    answer: `This tour is priced per vehicle, not per person — so your whole group travels together at one flat rate. Pricing starts from $${vehiclePrice} per vehicle for the full day depending on which vehicle you choose. For a group of 4, that works out to around $${perPersonPrice} per person — fully private, with a professional chauffeur, hotel pickup, fuel, and toll fees all included. Send us a WhatsApp with your group size and preferred dates and we'll confirm exact pricing within 30 minutes.`,
+  };
+
+  const allItems = [pricingFaq, ...items];
 
   return (
     <>
@@ -111,11 +122,11 @@ export default function PrivateTourFaq({ items }: Props) {
       </SectionHeader>
 
       <FAQList>
-        {items.map((item, index) => {
+        {allItems.map((item, index) => {
           const isOpen = openFaqIndex === index;
 
           return (
-            <FAQItemWrap key={item.question}>
+            <FAQItemWrap key={`${index}-${item.question}`}>
               <FAQButton
                 type="button"
                 onClick={() => setOpenFaqIndex(isOpen ? null : index)}
