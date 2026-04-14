@@ -363,7 +363,7 @@ export async function generateMetadata({
   const socialTitle = override?.title || getSocialTitle(experience);
   const socialDescription = override?.description || getSocialDescription(experience);
   const image = getPrimaryImage(experience);
-  const canonicalUrl = `${SITE_URL}/private-tours/${slug}`;
+  const canonicalUrl = `${SITE_URL}/private-tours/${slug.toLowerCase()}`;
   const ogImage = `${SITE_URL}/images/og-cape-town-concierge.jpg`;
 
   const keyword = getSeoKeyword(experience);
@@ -456,7 +456,7 @@ export default async function PrivateTourDetailPage({ params }: PageProps) {
   const primaryImage = getPrimaryImage(experience);
   const ogImage = `${SITE_URL}/images/og-cape-town-concierge.jpg`;
   const schemaImage = primaryImage || ogImage;
-  const canonicalUrl = `${SITE_URL}/private-tours/${slug}`;
+  const canonicalUrl = `${SITE_URL}/private-tours/${slug.toLowerCase()}`;
   const price = experience.price_from || experience.price_to || "";
 
   const tourName = experience.title || "private tour";

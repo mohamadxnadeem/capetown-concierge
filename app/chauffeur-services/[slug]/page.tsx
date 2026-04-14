@@ -346,7 +346,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const title = override?.title || getPageTitle(car);
   const description = override?.description || getPageDescription(car);
   const image = getPrimaryImage(car);
-  const canonicalUrl = `${SITE_URL}/chauffeur-services/${slug}`;
+  const canonicalUrl = `${SITE_URL}/chauffeur-services/${slug.toLowerCase()}`;
   const keyword = getSeoKeyword(car);
   const ogImage = `${SITE_URL}/images/og-cape-town-concierge.jpg`;
 
@@ -413,7 +413,7 @@ export default async function ChauffeurServiceDetailPage({ params }: PageProps) 
   const image = getPrimaryImage(car);
   const ogImage = `${SITE_URL}/images/og-cape-town-concierge.jpg`;
   const schemaImage = image || ogImage;
-  const canonicalUrl = `${SITE_URL}/chauffeur-services/${slug}`;
+  const canonicalUrl = `${SITE_URL}/chauffeur-services/${slug.toLowerCase()}`;
   const pageTitle = getPageTitle(car);
   const pageDescription = getPageDescription(car);
   const keyword = getSeoKeyword(car);
