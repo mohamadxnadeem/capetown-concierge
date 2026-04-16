@@ -233,29 +233,21 @@ function getShortVehicleDescription(car: Car) {
   );
 }
 
-// Slug overrides for CMS data mismatches (e.g. wrong slug associated with a vehicle title)
-const VEHICLE_SLUG_OVERRIDES: Record<string, string> = {
-  "BMW 5-Series": "bmw-5-series-for-hire-with-driver",
-};
-
 function mapRelatedVehicles(cars: Car[], currentSlug: string): RelatedVehicle[] {
   return cars
     .filter((car) => car.slug && car.slug !== currentSlug)
-    .map((car) => {
-      const slugOverride = VEHICLE_SLUG_OVERRIDES[car.title || ""];
-      return {
-        title: car.title || "Vehicle",
-        image: getPrimaryImage(car),
-        description:
-          car.short_description ||
-          car.highlight ||
-          truncateText(car.body, 120) ||
-          "Premium chauffeur-driven vehicle for Cape Town travel.",
-        seats: car.number_of_seats,
-        price: formatPrice(car.price),
-        href: `/chauffeur-services/${slugOverride || car.slug}`,
-      };
-    });
+    .map((car) => ({
+      title: car.title || "Vehicle",
+      image: getPrimaryImage(car),
+      description:
+        car.short_description ||
+        car.highlight ||
+        truncateText(car.body, 120) ||
+        "Premium chauffeur-driven vehicle for Cape Town travel.",
+      seats: car.number_of_seats,
+      price: formatPrice(car.price),
+      href: `/chauffeur-services/${car.slug}`,
+    }));
 }
 
 // ─────────────────────────────────────────────
@@ -322,14 +314,9 @@ function buildVehicleFaqs(car: Car, formattedPrice: string) {
 // Without this, every visit triggers a server render — slower TTFB, worse Core Web Vitals
 // With it, pages are pre-rendered and served from CDN edge instantly
 // ─────────────────────────────────────────────
-const FALLBACK_VEHICLE_SLUGS = [
-  "bmw-5-series-for-hire-with-driver",
-  "bmw-x5-for-hire-with-driver",
-  "8-seater-staria-van-with-driver",
-  "mercedes-sprinter-with-driver-cape-town",
-  "mercedes-v-class-private-chauffeur-service",
-  "range-rover-sport-chauffeur-service-cape-town",
-];
+// Fallback slugs intentionally empty — wrong slugs here cause pre-built 404 pages.
+// dynamicParams = true (Next.js default) renders all real CMS slugs on-demand.
+const FALLBACK_VEHICLE_SLUGS: string[] = [];
 
 export async function generateStaticParams() {
   try {

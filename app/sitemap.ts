@@ -12,14 +12,9 @@ const FALLBACK_TOUR_SLUGS = [
   "sunset-safari-experience",
 ];
 
-const FALLBACK_VEHICLE_SLUGS = [
-  "bmw-5-series-for-hire-with-driver",
-  "bmw-x5-for-hire-with-driver",
-  "8-seater-staria-van-with-driver",
-  "mercedes-sprinter-with-driver-cape-town",
-  "mercedes-v-class-private-chauffeur-service",
-  "range-rover-sport-chauffeur-service-cape-town",
-];
+// Vehicle fallbacks intentionally empty — wrong slugs here would pollute the sitemap.
+// The sitemap uses real CMS slugs when the API is reachable.
+const FALLBACK_VEHICLE_SLUGS: string[] = [];
 
 type CarsApiItem = {
   car?: { slug?: string };
