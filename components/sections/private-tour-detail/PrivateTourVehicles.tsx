@@ -10,6 +10,7 @@ import {
   buildVehicleForTourWhatsAppMessage,
 } from "../../../lib/whatsapp";
 import { trackWhatsAppClick } from "../../../lib/tracking";
+import { useCurrency } from "../../../context/CurrencyContext";
 
 type Props = {
   items: TourVehicle[];
@@ -335,6 +336,7 @@ const VEHICLE_COPY: Record<string, string> = {
 export default function PrivateTourVehicles({ items, tourTitle }: Props) {
   const sliderRef = useRef<HTMLDivElement | null>(null);
   const autoScrollRef = useRef<NodeJS.Timeout | null>(null);
+  const { rates, format } = useCurrency();
 
   const scrollByAmount = (direction: "left" | "right") => {
     if (!sliderRef.current) return;
@@ -427,6 +429,9 @@ export default function PrivateTourVehicles({ items, tourTitle }: Props) {
                   <MetaRow>
                     {item.seats ? (
                       <MetaBadge>Up to {item.seats} guests</MetaBadge>
+                    ) : null}
+                    {item.priceRaw ? (
+                      <MetaBadge>From {format(item.priceRaw / rates.ZAR)} per vehicle</MetaBadge>
                     ) : null}
                     <MetaBadge>Fuel Included</MetaBadge>
                     <MetaBadge>Toll Fees Included</MetaBadge>

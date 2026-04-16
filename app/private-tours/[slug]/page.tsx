@@ -313,12 +313,20 @@ function mapVehicles(items: CarsApiItem[]): TourVehicle[] {
         truncateText(car.body, 120) ||
         "A premium chauffeur-driven vehicle suitable for private touring in Cape Town.";
 
+      const rawZar = (() => {
+        const p = car.price ?? car.price_from;
+        if (!p) return undefined;
+        const n = Number(String(p).replace(/[^0-9.]/g, ""));
+        return isNaN(n) || n === 0 ? undefined : n;
+      })();
+
       return {
         title: car.title || "Vehicle",
         image: featuredPhoto,
         seats: car.number_of_seats,
         description,
         price: formatVehiclePrice(car.price),
+        priceRaw: rawZar,
       };
     });
 }

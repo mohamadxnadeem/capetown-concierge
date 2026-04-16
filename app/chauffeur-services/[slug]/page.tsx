@@ -328,7 +328,7 @@ const FALLBACK_VEHICLE_SLUGS = [
   "8-seater-staria-van-with-driver",
   "mercedes-sprinter-with-driver-cape-town",
   "mercedes-v-class-private-chauffeur-service",
-  "range-rover-sport-chauffeur-service",
+  "range-rover-sport-chauffeur-service-cape-town",
 ];
 
 export async function generateStaticParams() {
