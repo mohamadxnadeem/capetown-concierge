@@ -3,6 +3,24 @@ import { brand } from "../lib/brand";
 
 const SITE_URL = brand.siteUrl;
 
+// Fallback slugs used when the Railway API is unreachable during build.
+// Update this list whenever a new tour or vehicle is added to the CMS.
+const FALLBACK_TOUR_SLUGS = [
+  "cape-peninsula-tour",
+  "winelands-chauffeur-drive",
+  "cape-town-city-tour",
+  "sunset-safari-experience",
+];
+
+const FALLBACK_VEHICLE_SLUGS = [
+  "bmw-5-series-for-hire-with-driver",
+  "bmw-x5-for-hire-with-driver",
+  "8-seater-staria-van-with-driver",
+  "mercedes-sprinter-with-driver-cape-town",
+  "mercedes-v-class-private-chauffeur-service",
+  "range-rover-sport-chauffeur-service",
+];
+
 type CarsApiItem = {
   car?: { slug?: string };
   slug?: string;
@@ -19,19 +37,20 @@ async function getVehicleSlugs(): Promise<string[]> {
       "https://web-production-1ab9.up.railway.app/api/cars-for-hire/all/",
       { next: { revalidate: 3600 } }
     );
-    if (!res.ok) return [];
+    if (!res.ok) return FALLBACK_VEHICLE_SLUGS;
     const data = await res.json();
     const items: CarsApiItem[] = Array.isArray(data)
       ? data
       : Array.isArray(data?.results)
       ? data.results
       : [];
-    return items
+    const apiSlugs = items
       .map((item) => item?.car?.slug || item?.slug)
       .filter((slug): slug is string => Boolean(slug))
       .map((slug) => slug.toLowerCase());
+    return Array.from(new Set([...apiSlugs, ...FALLBACK_VEHICLE_SLUGS]));
   } catch {
-    return [];
+    return FALLBACK_VEHICLE_SLUGS;
   }
 }
 
@@ -41,14 +60,15 @@ async function getExperienceSlugs(): Promise<string[]> {
       "https://web-production-1ab9.up.railway.app/api/experiences/all/",
       { next: { revalidate: 3600 } }
     );
-    if (!res.ok) return [];
+    if (!res.ok) return FALLBACK_TOUR_SLUGS;
     const data: ExperienceListItem[] = await res.json();
-    return data
+    const apiSlugs = data
       .map((item) => item?.experience?.slug || item?.slug)
       .filter((slug): slug is string => Boolean(slug))
       .map((slug) => slug.toLowerCase());
+    return Array.from(new Set([...apiSlugs, ...FALLBACK_TOUR_SLUGS]));
   } catch {
-    return [];
+    return FALLBACK_TOUR_SLUGS;
   }
 }
 

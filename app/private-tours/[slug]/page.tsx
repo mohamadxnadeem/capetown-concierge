@@ -323,12 +323,26 @@ function mapVehicles(items: CarsApiItem[]): TourVehicle[] {
     });
 }
 
+const FALLBACK_TOUR_SLUGS = [
+  "cape-peninsula-tour",
+  "winelands-chauffeur-drive",
+  "cape-town-city-tour",
+  "sunset-safari-experience",
+];
+
 export async function generateStaticParams() {
-  const data = await getAllExperiences();
-  return data
-    .map((item) => item?.experience?.slug)
-    .filter((slug): slug is string => Boolean(slug))
-    .map((slug) => ({ slug: slug.toLowerCase() }));
+  try {
+    const data = await getAllExperiences();
+    const apiSlugs = data
+      .map((item) => item?.experience?.slug)
+      .filter((slug): slug is string => Boolean(slug))
+      .map((slug) => slug.toLowerCase());
+    return Array.from(new Set([...apiSlugs, ...FALLBACK_TOUR_SLUGS])).map(
+      (slug) => ({ slug })
+    );
+  } catch {
+    return FALLBACK_TOUR_SLUGS.map((slug) => ({ slug }));
+  }
 }
 
 export async function generateMetadata({

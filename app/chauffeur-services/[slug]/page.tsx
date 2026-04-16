@@ -320,11 +320,27 @@ function buildVehicleFaqs(car: Car, formattedPrice: string) {
 // Without this, every visit triggers a server render — slower TTFB, worse Core Web Vitals
 // With it, pages are pre-rendered and served from CDN edge instantly
 // ─────────────────────────────────────────────
+const FALLBACK_VEHICLE_SLUGS = [
+  "bmw-5-series-for-hire-with-driver",
+  "bmw-x5-for-hire-with-driver",
+  "8-seater-staria-van-with-driver",
+  "mercedes-sprinter-with-driver-cape-town",
+  "mercedes-v-class-private-chauffeur-service",
+  "range-rover-sport-chauffeur-service",
+];
+
 export async function generateStaticParams() {
-  const vehicles = normalizeCars(await getAllVehicles());
-  return vehicles
-    .filter((car) => Boolean(car.slug))
-    .map((car) => ({ slug: (car.slug as string).toLowerCase() }));
+  try {
+    const vehicles = normalizeCars(await getAllVehicles());
+    const apiSlugs = vehicles
+      .filter((car) => Boolean(car.slug))
+      .map((car) => (car.slug as string).toLowerCase());
+    return Array.from(new Set([...apiSlugs, ...FALLBACK_VEHICLE_SLUGS])).map(
+      (slug) => ({ slug })
+    );
+  } catch {
+    return FALLBACK_VEHICLE_SLUGS.map((slug) => ({ slug }));
+  }
 }
 
 // ─────────────────────────────────────────────
