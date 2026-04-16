@@ -456,16 +456,19 @@ export default async function PrivateTourDetailPage({ params }: PageProps) {
   const relatedTours = mapRelatedTours(allExperiences, slug);
   const vehicles = mapVehicles(allVehicles);
 
-  const lowestVehiclePrice = allVehicles
-    .map((item) => {
-      const car = (item as CarsApiItem).car || (item as unknown as Car);
-      const p = car?.price;
-      if (!p) return null;
-      const n = Number(String(p).replace(/[^0-9.]/g, ""));
-      return isNaN(n) || n === 0 ? null : n;
-    })
-    .filter((p): p is number => p !== null)
-    .sort((a, b) => a - b)[0];
+  const lowestVehiclePrice = (() => {
+    const zarPrice = allVehicles
+      .map((item) => {
+        const car = (item as CarsApiItem).car || (item as unknown as Car);
+        const p = car?.price;
+        if (!p) return null;
+        const n = Number(String(p).replace(/[^0-9.]/g, ""));
+        return isNaN(n) || n === 0 ? null : n;
+      })
+      .filter((p): p is number => p !== null)
+      .sort((a, b) => a - b)[0];
+    return zarPrice ? Math.round(zarPrice / 18.5) : undefined;
+  })();
 
   const primaryImage = getPrimaryImage(experience);
   const ogImage = `${SITE_URL}/images/og-cape-town-concierge.jpg`;

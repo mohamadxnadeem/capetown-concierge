@@ -3,6 +3,7 @@
 import styled from "styled-components";
 import { useState } from "react";
 import { FAQItem } from "./types";
+import { useCurrency } from "../../../context/CurrencyContext";
 
 const SectionHeader = styled.div`
   max-width: 760px;
@@ -100,13 +101,14 @@ type Props = {
 
 export default function PrivateTourFaq({ items, lowestVehiclePrice }: Props) {
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
+  const { format } = useCurrency();
 
-  const vehiclePrice = lowestVehiclePrice ? Math.round(lowestVehiclePrice) : 350;
+  const vehiclePrice = lowestVehiclePrice ?? 350;
   const perPersonPrice = Math.floor(vehiclePrice / 4);
 
   const pricingFaq: FAQItem = {
     question: "How much does this private tour cost?",
-    answer: `This tour is priced per vehicle, not per person — so your whole group travels together at one flat rate. Pricing starts from $${vehiclePrice} per vehicle for the full day depending on which vehicle you choose. For a group of 4, that works out to around $${perPersonPrice} per person — fully private, with a professional chauffeur, hotel pickup, fuel, and toll fees all included. Send us a WhatsApp with your group size and preferred dates and we'll confirm exact pricing within 30 minutes.`,
+    answer: `This tour is priced per vehicle, not per person — so your whole group travels together at one flat rate. Pricing starts from ${format(vehiclePrice)} per vehicle for the full day depending on which vehicle you choose. For a group of 4, that works out to around ${format(perPersonPrice)} per person — fully private, with a professional chauffeur, hotel pickup, fuel, and toll fees all included. Send us a WhatsApp with your group size and preferred dates and we'll confirm exact pricing within 30 minutes.`,
   };
 
   const allItems = [pricingFaq, ...items];

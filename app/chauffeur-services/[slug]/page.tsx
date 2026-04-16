@@ -81,7 +81,9 @@ function getSeoKeyword(car: Car): string {
 function formatPrice(price?: string | number) {
   if (price === undefined || price === null || price === "") return "";
   const num = Number(String(price).replace(/[^0-9.]/g, ""));
-  return isNaN(num) || num === 0 ? "" : `From $${Math.round(num)} per day`;
+  if (isNaN(num) || num === 0) return "";
+  const usd = Math.round(num / 18.5);
+  return `From $${usd} per day`;
 }
 
 function getNumericPriceValue(
@@ -488,8 +490,8 @@ export default async function ChauffeurServiceDetailPage({ params }: PageProps) 
           ? {
               offers: {
                 "@type": "Offer",
-                priceCurrency: car.currency || "USD",
-                price: numericPrice,
+                priceCurrency: "USD",
+                price: Math.round(Number(String(numericPrice).replace(/[^0-9.]/g, "")) / 18.5),
                 availability: "https://schema.org/InStock",
                 url: canonicalUrl,
               },

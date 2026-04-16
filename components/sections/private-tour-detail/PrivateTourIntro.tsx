@@ -163,7 +163,8 @@ export default function PrivateTourIntro({
 
       {lowestVehiclePrice ? (
         <PriceNote>
-          Travelling as a group? A party of 4 works out to around ${Math.floor(lowestVehiclePrice / 4)} per person — fully private, all day, door to door.
+          Travelling as a group? A party of 4 works out to around{" "}
+          <Money usd={Math.floor(lowestVehiclePrice / 4)} prefix="" suffix="" /> per person — fully private, all day, door to door.
         </PriceNote>
       ) : null}
 
