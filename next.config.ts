@@ -21,25 +21,9 @@ const nextConfig: NextConfig = {
   reactStrictMode: true,
   async redirects() {
     return [
-      // Mixed-case slug corrections (301 permanent)
       {
         source: "/private-tours/cape-peninsular-tour",
         destination: "/private-tours/cape-peninsula-tour",
-        permanent: true,
-      },
-      {
-        source: "/chauffeur-services/BMW-X5-for-hire-with-driver",
-        destination: "/chauffeur-services/bmw-x5-for-hire-with-driver",
-        permanent: true,
-      },
-      {
-        source: "/chauffeur-services/Mercedes-sprinter-with-driver-cape-town",
-        destination: "/chauffeur-services/mercedes-sprinter-with-driver-cape-town",
-        permanent: true,
-      },
-      {
-        source: "/chauffeur-services/Mercedes-v-class-private-chauffeur-service",
-        destination: "/chauffeur-services/mercedes-v-class-private-chauffeur-service",
         permanent: true,
       },
     ];
