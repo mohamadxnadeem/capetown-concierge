@@ -600,13 +600,6 @@ export default async function PrivateTourDetailPage({ params }: PageProps) {
       priceRange: "$$$$",
     },
     touristType: ["Luxury Travelers", "Couples", "Families"],
-    aggregateRating: {
-      "@type": "AggregateRating",
-      ratingValue: "4.9",
-      reviewCount: "28",
-      bestRating: "5",
-      worstRating: "1",
-    },
     offers: price
       ? {
           "@type": "Offer",
