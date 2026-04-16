@@ -6,6 +6,7 @@ import { useRef, useState } from "react";
 import styled, { keyframes } from "styled-components";
 import Container from "../common/Container";
 import Money from "../common/Money";
+import { shimmerPlaceholder } from "../../lib/shimmer";
 
 type VehicleItem = {
   title: string;
@@ -307,6 +308,8 @@ function VehicleImageCard({
           src={image}
           alt={alt || getVehicleAltText(title)}
           fill
+          placeholder="blur"
+          blurDataURL={shimmerPlaceholder(700, 500)}
           sizes="(max-width: 768px) 85vw, (max-width: 1200px) 48vw, 32vw"
           style={{ objectFit: "cover" }}
           onLoad={() => setLoaded(true)}
