@@ -107,26 +107,42 @@ function truncateText(text?: string, maxLength = 155) {
 // DATA FETCHING
 // ─────────────────────────────────────────────
 async function getAllVehicles(): Promise<CarsApiItem[]> {
-  const response = await fetch(
-    "https://web-production-1ab9.up.railway.app/api/cars-for-hire/all/",
-    { next: { revalidate: 3600 } } // FIX 2: Cache for 1hr instead of no-store — better Core Web Vitals & crawl efficiency
-  );
-  if (!response.ok) throw new Error("Failed to fetch vehicles");
-  const data = await response.json();
-  if (Array.isArray(data)) return data;
-  if (Array.isArray(data?.results)) return data.results;
-  return [];
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 10000);
+  try {
+    const response = await fetch(
+      "https://web-production-1ab9.up.railway.app/api/cars-for-hire/all/",
+      { next: { revalidate: 3600 }, signal: controller.signal }
+    );
+    clearTimeout(timeout);
+    if (!response.ok) throw new Error("Failed to fetch vehicles");
+    const data = await response.json();
+    if (Array.isArray(data)) return data;
+    if (Array.isArray(data?.results)) return data.results;
+    return [];
+  } catch (err) {
+    clearTimeout(timeout);
+    throw err;
+  }
 }
 
 function normalizeCars(items: CarsApiItem[]): Car[] {
   return items
     .map((item) => item?.car || item)
-    .filter((car): car is Car => Boolean(car?.title));
+    .filter((car): car is Car => Boolean(car?.slug || car?.title));
 }
 
 function getVehicleBySlug(cars: Car[], slug: string) {
   const lower = slug.toLowerCase();
-  return cars.find((car) => car.slug?.toLowerCase() === lower) || null;
+  // Exact slug match first
+  const exact = cars.find((car) => car.slug?.toLowerCase() === lower);
+  if (exact) return exact;
+  // Fallback: find by title-derived slug (e.g. "BMW X5" → "bmw-x5")
+  return cars.find((car) => {
+    if (!car.title) return false;
+    const titleSlug = car.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+    return lower.includes(titleSlug) || titleSlug.includes(lower);
+  }) || null;
 }
 
 // Slug-based meta title/description overrides (used when CMS meta_title is not set)
@@ -314,8 +330,10 @@ function buildVehicleFaqs(car: Car, formattedPrice: string) {
 // Without this, every visit triggers a server render — slower TTFB, worse Core Web Vitals
 // With it, pages are pre-rendered and served from CDN edge instantly
 // ─────────────────────────────────────────────
+// Ensure any slug not pre-built at build time is rendered on-demand.
+export const dynamicParams = true;
+
 // Fallback slugs intentionally empty — wrong slugs here cause pre-built 404 pages.
-// dynamicParams = true (Next.js default) renders all real CMS slugs on-demand.
 const FALLBACK_VEHICLE_SLUGS: string[] = [];
 
 export async function generateStaticParams() {
