@@ -525,8 +525,7 @@ export default async function ChauffeurServiceDetailPage({ params }: PageProps) 
           },
           priceRange: "$$$$",
           sameAs: [
-            "https://www.facebook.com/capetownconcierge",
-            // Add your actual social profiles here
+            "https://share.google/xrWoPQWHwQYfzukgz",
           ],
         },
         areaServed: [

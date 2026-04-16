@@ -597,6 +597,7 @@ export default async function PrivateTourDetailPage({ params }: PageProps) {
       name: brand.name,
       url: SITE_URL,
       telephone: brand.phone,
+      sameAs: ["https://share.google/xrWoPQWHwQYfzukgz"],
       address: {
         "@type": "PostalAddress",
         addressLocality: brand.address.locality,
