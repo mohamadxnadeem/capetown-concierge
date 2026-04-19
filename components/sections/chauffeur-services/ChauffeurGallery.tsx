@@ -133,7 +133,8 @@ const ThumbnailRow = styled.div`
   }
 `;
 
-const ThumbButton = styled.button<{ $active: boolean; $image?: string }>`
+const ThumbButton = styled.button<{ $active: boolean }>`
+  position: relative;
   width: 100%;
   height: 76px;
   border: none;
@@ -141,9 +142,7 @@ const ThumbButton = styled.button<{ $active: boolean; $image?: string }>`
   border-radius: 16px;
   overflow: hidden;
   cursor: pointer;
-  background:
-    linear-gradient(180deg, rgba(0,0,0,0.08) 0%, rgba(0,0,0,0.02) 100%),
-    ${({ $image }) => ($image ? `url(${$image}) center/cover no-repeat` : "none")};
+  background: linear-gradient(135deg, rgba(11, 91, 51, 0.12), rgba(6, 62, 35, 0.06));
   box-shadow: ${({ theme, $active }) =>
     $active ? theme.shadows.card : theme.shadows.soft};
   outline: ${({ $active, theme }) =>
@@ -227,10 +226,21 @@ export default function ChauffeurGallery({ images }: Props) {
               key={image.id}
               type="button"
               $active={index === activeImageIndex}
-              $image={image.cover_photos}
               onClick={() => setActiveImageIndex(index)}
               aria-label={`Show image ${index + 1}`}
-            />
+            >
+              {image.cover_photos && (
+                <Image
+                  src={image.cover_photos}
+                  alt=""
+                  fill
+                  placeholder="blur"
+                  blurDataURL={shimmerPlaceholder(108, 88)}
+                  sizes="108px"
+                  style={{ objectFit: "cover" }}
+                />
+              )}
+            </ThumbButton>
           ))}
         </ThumbnailRow>
       )}
