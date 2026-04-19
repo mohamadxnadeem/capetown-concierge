@@ -1,8 +1,10 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import Image from "next/image";
 import styled, { keyframes } from "styled-components";
 import { CarPhoto } from "./types";
+import { shimmerPlaceholder } from "../../../lib/shimmer";
 
 type Props = {
   images: CarPhoto[];
@@ -56,18 +58,23 @@ const ActiveImageLayer = styled.div`
   animation: ${fadeIn} 0.5s ease;
 `;
 
-const CinematicLayer = styled.div<{ $image?: string }>`
+const CinematicLayer = styled.div`
   position: absolute;
   inset: 0;
-  background:
-    linear-gradient(
-      180deg,
-      rgba(0, 0, 0, 0.14) 0%,
-      rgba(0, 0, 0, 0.02) 24%,
-      rgba(0, 0, 0, 0.08) 100%
-    ),
-    ${({ $image }) => ($image ? `url(${$image}) center/cover no-repeat` : "none")};
+  overflow: hidden;
   animation: ${cinematicPan} 10s ease-in-out forwards;
+`;
+
+const GalleryOverlay = styled.div`
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.14) 0%,
+    rgba(0, 0, 0, 0.02) 24%,
+    rgba(0, 0, 0, 0.08) 100%
+  );
 `;
 
 const Counter = styled.div`
@@ -194,7 +201,21 @@ export default function ChauffeurGallery({ images }: Props) {
           )}
 
           <ActiveImageLayer key={activeImage}>
-            <CinematicLayer $image={activeImage} />
+            <CinematicLayer>
+              {activeImage && (
+                <Image
+                  src={activeImage}
+                  alt=""
+                  fill
+                  priority
+                  placeholder="blur"
+                  blurDataURL={shimmerPlaceholder(900, 560)}
+                  sizes="(max-width: 1200px) 100vw, 60vw"
+                  style={{ objectFit: "cover" }}
+                />
+              )}
+            </CinematicLayer>
+            <GalleryOverlay />
           </ActiveImageLayer>
         </MainImageFrame>
       </MainStage>

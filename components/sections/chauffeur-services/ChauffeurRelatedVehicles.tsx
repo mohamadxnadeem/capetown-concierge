@@ -1,8 +1,10 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import styled from "styled-components";
 import { RelatedVehicle } from "./types";
+import { shimmerPlaceholder } from "../../../lib/shimmer";
 
 type Props = {
   items: RelatedVehicle[];
@@ -43,15 +45,11 @@ const RelatedCard = styled(Link)`
   box-shadow: ${({ theme }) => theme.shadows.soft};
 `;
 
-const RelatedImage = styled.div<{ $image?: string }>`
+const RelatedImageWrap = styled.div`
+  position: relative;
   height: 230px;
-  background: ${({ $image }) =>
-    $image
-      ? `linear-gradient(to top, rgba(0,0,0,0.18), rgba(0,0,0,0.04)), url(${$image})`
-      : `linear-gradient(135deg, rgba(11, 91, 51, 0.16), rgba(6, 62, 35, 0.08))`};
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  overflow: hidden;
+  background: linear-gradient(135deg, rgba(11, 91, 51, 0.16), rgba(6, 62, 35, 0.08));
 `;
 
 const RelatedBody = styled.div`
@@ -100,7 +98,19 @@ export default function ChauffeurRelatedVehicles({ items }: Props) {
       <RelatedGrid>
         {items.map((vehicle, index) => (
           <RelatedCard key={`${vehicle.title}-${index}`} href={vehicle.href}>
-            <RelatedImage $image={vehicle.image} />
+            <RelatedImageWrap>
+              {vehicle.image && (
+                <Image
+                  src={vehicle.image}
+                  alt={vehicle.title}
+                  fill
+                  placeholder="blur"
+                  blurDataURL={shimmerPlaceholder(600, 230)}
+                  sizes="(max-width: 768px) 100vw, 33vw"
+                  style={{ objectFit: "cover" }}
+                />
+              )}
+            </RelatedImageWrap>
             <RelatedBody>
               <RelatedTitle>{vehicle.title}</RelatedTitle>
 
