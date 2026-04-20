@@ -10,11 +10,11 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "why-cpt-storage.s3.amazonaws.com",
+        hostname: "**.amazonaws.com",
       },
       {
         protocol: "https",
-        hostname: "web-production-1ab9.up.railway.app",
+        hostname: "**.railway.app",
       },
     ],
   },

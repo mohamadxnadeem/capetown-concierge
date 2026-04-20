@@ -312,18 +312,20 @@ export default function PrivateTourGallery({ title, photos }: Props) {
 
           <ActiveImageLayer key={activePhoto}>
             <CinematicLayer>
-              <Image
-                src={activePhoto}
-                alt={title}
-                fill
-                priority={activeIndex === 0}
-                placeholder="blur"
-                blurDataURL={`data:image/svg+xml;base64,${toBase64(
-                  shimmer(1400, 900)
-                )}`}
-                sizes="100vw"
-                style={{ objectFit: "cover" }}
-              />
+              {activePhoto && (
+                <Image
+                  src={activePhoto}
+                  alt={title}
+                  fill
+                  priority={activeIndex === 0}
+                  placeholder="blur"
+                  blurDataURL={`data:image/svg+xml;base64,${toBase64(
+                    shimmer(1400, 900)
+                  )}`}
+                  sizes="100vw"
+                  style={{ objectFit: "cover" }}
+                />
+              )}
             </CinematicLayer>
           </ActiveImageLayer>
 
@@ -341,17 +343,19 @@ export default function PrivateTourGallery({ title, photos }: Props) {
               onClick={() => setActiveIndex(index)}
               aria-label={`Show ${title} image ${index + 1}`}
             >
-              <Image
-                src={photo.cover_photos}
-                alt={title}
-                fill
-                placeholder="blur"
-                blurDataURL={`data:image/svg+xml;base64,${toBase64(
-                  shimmer(240, 180)
-                )}`}
-                sizes="120px"
-                style={{ objectFit: "cover" }}
-              />
+              {photo.cover_photos && (
+                <Image
+                  src={photo.cover_photos}
+                  alt={title}
+                  fill
+                  placeholder="blur"
+                  blurDataURL={`data:image/svg+xml;base64,${toBase64(
+                    shimmer(240, 180)
+                  )}`}
+                  sizes="120px"
+                  style={{ objectFit: "cover" }}
+                />
+              )}
             </ThumbButton>
           ))}
         </ThumbnailRow>
