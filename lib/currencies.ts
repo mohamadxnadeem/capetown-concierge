@@ -41,10 +41,7 @@ export const COUNTRY_TO_CURRENCY: Partial<Record<string, CurrencyCode>> = {
 
 export async function fetchLiveRates(): Promise<Record<CurrencyCode, number>> {
   try {
-    const res = await fetch(
-      "https://api.frankfurter.app/latest?from=USD&to=GBP,EUR,ZAR,AUD,CAD",
-      { cache: "no-store" }
-    );
+    const res = await fetch("/api/rates", { cache: "no-store" });
     if (!res.ok) return FALLBACK_RATES;
     const data = await res.json();
     return {
