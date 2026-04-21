@@ -109,7 +109,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <link rel="preconnect" href="https://why-cpt-storage.s3.amazonaws.com" />
+        <link rel="preconnect" href="https://cape-town-concierge.s3.eu-north-1.amazonaws.com" />
         <link rel="dns-prefetch" href="//wa.me" />
       </head>
       <body>
