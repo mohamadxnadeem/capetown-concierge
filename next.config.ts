@@ -8,10 +8,16 @@ const nextConfig: NextConfig = {
     qualities: [75, 90],
     formats: ["image/avif", "image/webp"],
     remotePatterns: [
+      // S3 buckets — covers any bucket/region (*.s3.amazonaws.com,
+      // *.s3.eu-north-1.amazonaws.com, etc.)
+      // Current bucket: cape-town-concierge (eu-north-1)
+      // Legacy bucket:  why-cpt-storage (us-east-1)
       {
         protocol: "https",
         hostname: "**.amazonaws.com",
       },
+      // TODO: when CloudFront is added in front of S3, add its domain here, e.g.:
+      // { protocol: "https", hostname: "d123abc.cloudfront.net" },
       {
         protocol: "https",
         hostname: "**.railway.app",
