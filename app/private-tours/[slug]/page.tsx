@@ -125,6 +125,14 @@ function zarToUsd(val: string | number): string {
   return isNaN(num) || num === 0 ? String(val) : `${Math.round(num)}`;
 }
 
+// For schema / meta only — converts ZAR amount to USD integer
+function zarToUsdNum(val: string | number | undefined): number | undefined {
+  if (val === undefined || val === null || val === "") return undefined;
+  const num = Number(String(val).replace(/[^0-9.]/g, ""));
+  if (isNaN(num) || num === 0) return undefined;
+  return Math.round(num / 18.5);
+}
+
 function formatPriceRange(
   priceFrom?: string | number,
   priceTo?: string | number,
@@ -237,10 +245,8 @@ function getSeoKeyword(experience: Experience): string {
 function getPageTitle(experience: Experience) {
   if (experience.meta_title) return experience.meta_title;
   const keyword = getSeoKeyword(experience);
-  const priceStr =
-    experience.price_from
-      ? ` | From $${zarToUsd(experience.price_from!)}`
-      : "";
+  const priceUsd = zarToUsdNum(experience.price_from);
+  const priceStr = priceUsd ? ` | From $${priceUsd}` : "";
   return `${keyword} | Private Chauffeur Tour${priceStr} | ${brand.name}`;
 }
 
@@ -483,11 +489,13 @@ export default async function PrivateTourDetailPage({ params }: PageProps) {
   const schemaImage = primaryImage || ogImage;
   const canonicalUrl = `${SITE_URL}/private-tours/${slug.toLowerCase()}`;
   const price = experience.price_from || experience.price_to || "";
+  const priceUsdForSchema = zarToUsdNum(price);
 
   const tourName = experience.title || "private tour";
   const tourKeyword = getSeoKeyword(experience);
-  const priceAnswer = experience.price_from
-    ? `${tourKeyword} starts from $${zarToUsd(experience.price_from!)} per vehicle. This is an all-inclusive private experience — contact us via WhatsApp for a personalised quote based on your group size and requirements.`
+  const priceFromUsd = zarToUsdNum(experience.price_from);
+  const priceAnswer = priceFromUsd
+    ? `${tourKeyword} starts from $${priceFromUsd} per vehicle. This is an all-inclusive private experience — contact us via WhatsApp for a personalised quote based on your group size and requirements.`
     : `Pricing for ${tourKeyword} depends on your group size and any custom requirements. Contact us via WhatsApp for a tailored quote — we typically respond within 30 minutes.`;
 
   const faqJsonLd = {
@@ -612,11 +620,11 @@ export default async function PrivateTourDetailPage({ params }: PageProps) {
       priceRange: "$$$$",
     },
     touristType: ["Luxury Travelers", "Couples", "Families"],
-    offers: price
+    offers: priceUsdForSchema
       ? {
           "@type": "Offer",
           priceCurrency: "USD",
-          price: price,
+          price: priceUsdForSchema,
           availability: "https://schema.org/InStock",
           url: canonicalUrl,
         }
