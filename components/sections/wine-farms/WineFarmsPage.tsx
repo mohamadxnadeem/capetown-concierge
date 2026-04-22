@@ -2,34 +2,30 @@
 
 import { PageWrap } from "./shared";
 import WineHero from "./WineHero";
-import WineTimeline from "./WineTimeline";
+import WineRegionalTimeline from "./WineRegionalTimeline";
 import WineRegions from "./WineRegions";
 import WineByTravelStyle from "./WineByTravelStyle";
+import WinePlanningGuide from "./WinePlanningGuide";
+import WineBestTime from "./WineBestTime";
 import WineServices from "./WineServices";
+import WineTestimonials from "./WineTestimonials";
 import WineFaq from "./WineFaq";
 import WineFinalCta from "./WineFinalCta";
 import AvailableVehicles from "../shared/AvailableVehicles";
-import TestimonialsSection from "../testimonials/TestimonialsSection";
-import TestimonialsCta from "../testimonials/TestimonialsCta";
-import { wineFarms, wineFaqItems } from "./data";
+import { wineFarmRegions, wineFaqItems } from "./data";
 
 export default function WineFarmsPage() {
   return (
     <PageWrap>
       <WineHero />
-      <WineTimeline items={wineFarms} />
-      <TestimonialsSection />
-      <TestimonialsCta />
-      <AvailableVehicles title="Private Wine Tour in Cape Town" />
-
+      <WineRegionalTimeline regions={wineFarmRegions} />
       <WineRegions />
       <WineByTravelStyle />
+      <WinePlanningGuide />
+      <WineBestTime />
       <WineServices />
-
-      
-
-      
-
+      <WineTestimonials />
+      <AvailableVehicles title="Private Wine Tour in Cape Town" />
       <WineFaq items={wineFaqItems} />
       <WineFinalCta />
     </PageWrap>

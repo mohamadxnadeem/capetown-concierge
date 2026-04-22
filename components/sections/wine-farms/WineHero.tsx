@@ -72,12 +72,15 @@ export default function WineHero() {
           <Title>Best Wine Farms in Cape Town</Title>
 
           <Description>
-            Discover some of the most beautiful wine estates in Stellenbosch,
-            Franschhoek, and the surrounding Cape Winelands — from luxury wine
-            tastings and fine dining to relaxed countryside escapes. The best
-            way to experience them is with a private chauffeur-driven wine tour
-            that lets you enjoy the day without worrying about driving, timing,
-            or planning the route.
+            Cape Town sits at the edge of one of the world's great wine regions.
+            Within an hour of the city centre you can be tasting at a five-star
+            estate on a mountain pass, picnicking in a heritage vineyard, or
+            lingering over a long lunch with panoramic views across the vines.
+            This guide covers the best wine farms to visit near Cape Town —
+            organised by region, with honest estate descriptions, planning advice,
+            and guidance on the best time to visit. Whether you want Stellenbosch,
+            Franschhoek, Constantia, or all three, a private chauffeur-driven wine
+            tour is the best way to experience them without the stress of driving.
           </Description>
 
           <ButtonRow>
