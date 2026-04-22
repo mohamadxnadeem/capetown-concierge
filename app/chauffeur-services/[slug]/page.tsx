@@ -332,8 +332,16 @@ function buildVehicleFaqs(car: Car, formattedPrice: string) {
 // Ensure any slug not pre-built at build time is rendered on-demand.
 export const dynamicParams = true;
 
-// Fallback slugs intentionally empty — wrong slugs here cause pre-built 404 pages.
-const FALLBACK_VEHICLE_SLUGS: string[] = [];
+// Fallback slugs used if the API is unreachable at build time.
+// These match the exact slugs in the database — keep in sync if vehicles are renamed.
+const FALLBACK_VEHICLE_SLUGS: string[] = [
+  "bmw-x5-for-hire-with-driver",
+  "bmw-5-series-for-hire-with-driver",
+  "mercedes-v-class-private-chauffeur-service",
+  "mercedes-sprinter-with-driver-cape-town",
+  "range-rover-sport-chauffeur-service-cape-town",
+  "8-seater-staria-van-with-driver",
+];
 
 export async function generateStaticParams() {
   try {
