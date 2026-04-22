@@ -84,9 +84,9 @@ const Panel = styled.div<{ $visible: boolean }>`
   width: 260px;
 
   @media (max-width: 767px) {
-    right: auto;
-    left: 0;
-    width: 240px;
+    width: min(260px, calc(100vw - 24px));
+    right: 0;
+    left: auto;
   }
   border-radius: 18px;
   background: rgba(6, 32, 18, 0.97);
@@ -233,10 +233,10 @@ export default function CurrencySelector() {
   const current = CURRENCIES[currency];
 
   const formatRate = (code: CurrencyCode) => {
-    if (code === "USD") return "";
+    if (code === "ZAR") return "";
     const rate = rates[code];
     if (!rate) return "";
-    return `1 USD = ${code === "ZAR" || code === "AUD" || code === "CAD" ? rate.toFixed(2) : rate.toFixed(2)} ${code}`;
+    return `1 ZAR = ${rate.toFixed(4)} ${code}`;
   };
 
   return (
