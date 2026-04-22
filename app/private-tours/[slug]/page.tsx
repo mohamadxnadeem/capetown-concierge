@@ -122,7 +122,7 @@ const TOUR_META: Record<string, { title: string; description: string }> = {
 
 function zarToUsd(val: string | number): string {
   const num = Number(String(val).replace(/[^0-9.]/g, ""));
-  return isNaN(num) || num === 0 ? String(val) : `${Math.round(num / 18.5)}`;
+  return isNaN(num) || num === 0 ? String(val) : `${Math.round(num)}`;
 }
 
 function formatPriceRange(
@@ -475,7 +475,7 @@ export default async function PrivateTourDetailPage({ params }: PageProps) {
       })
       .filter((p): p is number => p !== null)
       .sort((a, b) => a - b)[0];
-    return zarPrice ? Math.round(zarPrice / 18.5) : undefined;
+    return zarPrice ? Math.round(zarPrice) : undefined;
   })();
 
   const primaryImage = getPrimaryImage(experience);
