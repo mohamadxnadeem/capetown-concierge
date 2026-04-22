@@ -17,14 +17,14 @@ export const CURRENCIES: Record<CurrencyCode, CurrencyMeta> = {
 
 export const CURRENCY_LIST = Object.keys(CURRENCIES) as CurrencyCode[];
 
-// Fallback rates relative to 1 USD (used if API fails)
+// Fallback rates relative to 1 ZAR (used if API fails)
 export const FALLBACK_RATES: Record<CurrencyCode, number> = {
-  USD: 1,
-  GBP: 0.79,
-  EUR: 0.92,
-  ZAR: 18.5,
-  AUD: 1.54,
-  CAD: 1.36,
+  ZAR: 1,
+  USD: 0.054,
+  GBP: 0.043,
+  EUR: 0.050,
+  AUD: 0.083,
+  CAD: 0.073,
 };
 
 // Country code → preferred currency
@@ -41,17 +41,14 @@ export const COUNTRY_TO_CURRENCY: Partial<Record<string, CurrencyCode>> = {
 
 export async function fetchLiveRates(): Promise<Record<CurrencyCode, number>> {
   try {
-    const res = await fetch(
-      "https://api.frankfurter.app/latest?from=USD&to=GBP,EUR,ZAR,AUD,CAD",
-      { cache: "no-store" }
-    );
+    const res = await fetch("/api/rates", { cache: "no-store" });
     if (!res.ok) return FALLBACK_RATES;
     const data = await res.json();
     return {
-      USD: 1,
+      ZAR: 1,
+      USD: data.rates?.USD ?? FALLBACK_RATES.USD,
       GBP: data.rates?.GBP ?? FALLBACK_RATES.GBP,
       EUR: data.rates?.EUR ?? FALLBACK_RATES.EUR,
-      ZAR: data.rates?.ZAR ?? FALLBACK_RATES.ZAR,
       AUD: data.rates?.AUD ?? FALLBACK_RATES.AUD,
       CAD: data.rates?.CAD ?? FALLBACK_RATES.CAD,
     };

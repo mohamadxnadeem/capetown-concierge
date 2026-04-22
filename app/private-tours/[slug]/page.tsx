@@ -100,9 +100,37 @@ type PageProps = {
 
 const SITE_URL = brand.siteUrl;
 
+// Slug-based meta overrides (used when CMS meta_title is not set)
+const TOUR_META: Record<string, { title: string; description: string }> = {
+  "cape-peninsula-tour": {
+    title: "Cape Peninsula Private Tour Cape Town | Full Day",
+    description: "Two oceans, Boulders Beach penguins & Chapman's Peak in one private day. No shared groups, flexible pace. Book your Peninsula tour on WhatsApp.",
+  },
+  "cape-town-city-tour": {
+    title: "Cape Town City Tour | Table Mountain Private Driver",
+    description: "Explore Table Mountain, Bo-Kaap, Camps Bay & the Waterfront privately. Dedicated chauffeur, your schedule. Book your Cape Town city tour today.",
+  },
+  "winelands-chauffeur-drive": {
+    title: "Romantic Stellenbosch Winelands Experience | Private Tour Cape Town",
+    description: "Private chauffeur through Stellenbosch & Franschhoek — no shuttles, no timetables. Cape Dutch estates & world-class tastings. Book on WhatsApp.",
+  },
+  "safari-day-trip": {
+    title: "Cape Town Safari Day Trip | Aquila Private Reserve",
+    description: "Big 5 game drive from Cape Town with private transport & meals included. Back by dinner. Book your Aquila safari experience on WhatsApp.",
+  },
+};
+
 function zarToUsd(val: string | number): string {
   const num = Number(String(val).replace(/[^0-9.]/g, ""));
-  return isNaN(num) || num === 0 ? String(val) : `${Math.round(num / 18.5)}`;
+  return isNaN(num) || num === 0 ? String(val) : `${Math.round(num)}`;
+}
+
+// For schema / meta only — converts ZAR amount to USD integer
+function zarToUsdNum(val: string | number | undefined): number | undefined {
+  if (val === undefined || val === null || val === "") return undefined;
+  const num = Number(String(val).replace(/[^0-9.]/g, ""));
+  if (isNaN(num) || num === 0) return undefined;
+  return Math.round(num / 18.5);
 }
 
 function formatPriceRange(
@@ -164,23 +192,33 @@ async function getAllVehicles(): Promise<CarsApiItem[]> {
 
 async function getExperienceIdBySlug(slug: string) {
   const data = await getAllExperiences();
-  const match = data.find((item) => item?.experience?.slug === slug);
+  const lower = slug.toLowerCase();
+  const match = data.find((item) => item?.experience?.slug?.toLowerCase() === lower);
   return match?.experience?.id || null;
 }
 
 async function getExperienceDetails(
   id: number
 ): Promise<ExperienceDetailResponse | Experience> {
-  const response = await fetch(
-    `https://web-production-1ab9.up.railway.app/api/experiences/${id}/details/`,
-    { next: { revalidate: 3600 } }
-  );
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 10000);
 
-  if (!response.ok) {
-    throw new Error("Failed to fetch experience details");
+  try {
+    const response = await fetch(
+      `https://web-production-1ab9.up.railway.app/api/experiences/${id}/details/`,
+      { next: { revalidate: 3600 }, signal: controller.signal }
+    );
+    clearTimeout(timeout);
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch experience details");
+    }
+
+    return response.json();
+  } catch (err) {
+    clearTimeout(timeout);
+    throw err;
   }
-
-  return response.json();
 }
 
 function normalizeExperience(data: ExperienceDetailResponse | Experience): Experience {
@@ -207,10 +245,8 @@ function getSeoKeyword(experience: Experience): string {
 function getPageTitle(experience: Experience) {
   if (experience.meta_title) return experience.meta_title;
   const keyword = getSeoKeyword(experience);
-  const priceStr =
-    experience.price_from
-      ? ` | From $${zarToUsd(experience.price_from!)}`
-      : "";
+  const priceUsd = zarToUsdNum(experience.price_from);
+  const priceStr = priceUsd ? ` | From $${priceUsd}` : "";
   return `${keyword} | Private Chauffeur Tour${priceStr} | ${brand.name}`;
 }
 
@@ -283,22 +319,44 @@ function mapVehicles(items: CarsApiItem[]): TourVehicle[] {
         truncateText(car.body, 120) ||
         "A premium chauffeur-driven vehicle suitable for private touring in Cape Town.";
 
+      const rawZar = (() => {
+        const p = car.price ?? car.price_from;
+        if (!p) return undefined;
+        const n = Number(String(p).replace(/[^0-9.]/g, ""));
+        return isNaN(n) || n === 0 ? undefined : n;
+      })();
+
       return {
         title: car.title || "Vehicle",
         image: featuredPhoto,
         seats: car.number_of_seats,
         description,
         price: formatVehiclePrice(car.price),
+        priceRaw: rawZar,
       };
     });
 }
 
+const FALLBACK_TOUR_SLUGS = [
+  "cape-peninsula-tour",
+  "winelands-chauffeur-drive",
+  "cape-town-city-tour",
+  "sunset-safari-experience",
+];
+
 export async function generateStaticParams() {
-  const data = await getAllExperiences();
-  return data
-    .map((item) => item?.experience?.slug)
-    .filter((slug): slug is string => Boolean(slug))
-    .map((slug) => ({ slug }));
+  try {
+    const data = await getAllExperiences();
+    const apiSlugs = data
+      .map((item) => item?.experience?.slug)
+      .filter((slug): slug is string => Boolean(slug))
+      .map((slug) => slug.toLowerCase());
+    return Array.from(new Set([...apiSlugs, ...FALLBACK_TOUR_SLUGS])).map(
+      (slug) => ({ slug })
+    );
+  } catch {
+    return FALLBACK_TOUR_SLUGS.map((slug) => ({ slug }));
+  }
 }
 
 export async function generateMetadata({
@@ -327,12 +385,14 @@ export async function generateMetadata({
   const raw = await getExperienceDetails(experienceId);
   const experience = normalizeExperience(raw);
 
-  const title = getPageTitle(experience);
-  const description = getPageDescription(experience);
-  const socialTitle = getSocialTitle(experience);
-  const socialDescription = getSocialDescription(experience);
+  const override = TOUR_META[slug.toLowerCase()];
+  const title = override?.title || getPageTitle(experience);
+  const description = override?.description || getPageDescription(experience);
+  const socialTitle = override?.title || getSocialTitle(experience);
+  const socialDescription = override?.description || getSocialDescription(experience);
   const image = getPrimaryImage(experience);
-  const canonicalUrl = `${SITE_URL}/private-tours/${slug}`;
+  const canonicalUrl = `${SITE_URL}/private-tours/${slug.toLowerCase()}`;
+  const ogImage = `${SITE_URL}/images/og-cape-town-concierge.jpg`;
 
   const keyword = getSeoKeyword(experience);
 
@@ -369,22 +429,20 @@ export async function generateMetadata({
       siteName: brand.name,
       type: "website",
       locale: "en_ZA",
-      images: image
-        ? [
-            {
-              url: image,
-              width: 1200,
-              height: 630,
-              alt: socialTitle,
-            },
-          ]
-        : [],
+      images: [
+        {
+          url: image || ogImage,
+          width: 1200,
+          height: 630,
+          alt: "Cape Town Concierge — Luxury Chauffeur Service",
+        },
+      ],
     },
     twitter: {
       card: "summary_large_image",
       title: socialTitle,
       description: socialDescription,
-      images: image ? [image] : [],
+      images: [image || ogImage],
     },
   };
 }
@@ -412,25 +470,32 @@ export default async function PrivateTourDetailPage({ params }: PageProps) {
   const relatedTours = mapRelatedTours(allExperiences, slug);
   const vehicles = mapVehicles(allVehicles);
 
-  const lowestVehiclePrice = allVehicles
-    .map((item) => {
-      const car = (item as CarsApiItem).car || (item as unknown as Car);
-      const p = car?.price;
-      if (!p) return null;
-      const n = Number(String(p).replace(/[^0-9.]/g, ""));
-      return isNaN(n) || n === 0 ? null : n;
-    })
-    .filter((p): p is number => p !== null)
-    .sort((a, b) => a - b)[0];
+  const lowestVehiclePrice = (() => {
+    const zarPrice = allVehicles
+      .map((item) => {
+        const car = (item as CarsApiItem).car || (item as unknown as Car);
+        const p = car?.price;
+        if (!p) return null;
+        const n = Number(String(p).replace(/[^0-9.]/g, ""));
+        return isNaN(n) || n === 0 ? null : n;
+      })
+      .filter((p): p is number => p !== null)
+      .sort((a, b) => a - b)[0];
+    return zarPrice ? Math.round(zarPrice) : undefined;
+  })();
 
   const primaryImage = getPrimaryImage(experience);
-  const canonicalUrl = `${SITE_URL}/private-tours/${slug}`;
+  const ogImage = `${SITE_URL}/images/og-cape-town-concierge.jpg`;
+  const schemaImage = primaryImage || ogImage;
+  const canonicalUrl = `${SITE_URL}/private-tours/${slug.toLowerCase()}`;
   const price = experience.price_from || experience.price_to || "";
+  const priceUsdForSchema = zarToUsdNum(price);
 
   const tourName = experience.title || "private tour";
   const tourKeyword = getSeoKeyword(experience);
-  const priceAnswer = experience.price_from
-    ? `${tourKeyword} starts from $${zarToUsd(experience.price_from!)} per vehicle. This is an all-inclusive private experience — contact us via WhatsApp for a personalised quote based on your group size and requirements.`
+  const priceFromUsd = zarToUsdNum(experience.price_from);
+  const priceAnswer = priceFromUsd
+    ? `${tourKeyword} starts from $${priceFromUsd} per vehicle. This is an all-inclusive private experience — contact us via WhatsApp for a personalised quote based on your group size and requirements.`
     : `Pricing for ${tourKeyword} depends on your group size and any custom requirements. Contact us via WhatsApp for a tailored quote — we typically respond within 30 minutes.`;
 
   const faqJsonLd = {
@@ -533,13 +598,14 @@ export default async function PrivateTourDetailPage({ params }: PageProps) {
     "@type": "TouristTrip",
     name: tourKeyword,
     description: getPageDescription(experience),
-    image: primaryImage ? [primaryImage] : [],
+    image: [schemaImage],
     url: canonicalUrl,
     provider: {
       "@type": "LocalBusiness",
       name: brand.name,
       url: SITE_URL,
       telephone: brand.phone,
+      sameAs: ["https://share.google/xrWoPQWHwQYfzukgz"],
       address: {
         "@type": "PostalAddress",
         addressLocality: brand.address.locality,
@@ -554,18 +620,11 @@ export default async function PrivateTourDetailPage({ params }: PageProps) {
       priceRange: "$$$$",
     },
     touristType: ["Luxury Travelers", "Couples", "Families"],
-    aggregateRating: {
-      "@type": "AggregateRating",
-      ratingValue: "4.9",
-      reviewCount: "28",
-      bestRating: "5",
-      worstRating: "1",
-    },
-    offers: price
+    offers: priceUsdForSchema
       ? {
           "@type": "Offer",
           priceCurrency: "USD",
-          price: price,
+          price: priceUsdForSchema,
           availability: "https://schema.org/InStock",
           url: canonicalUrl,
         }

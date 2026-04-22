@@ -132,9 +132,10 @@ type Props = {
 };
 
 const TOUR_COPY: Record<string, string> = {
-  "City and Table Mountain Tour": "Cape Town's most iconic landmarks in one seamless private day — Table Mountain, the Bo-Kaap, the V&A Waterfront, and more. Your chauffeur, your pace.",
-  "Romantic Stellenbosch Winelands Experience": "A private drive through South Africa's most celebrated wine country — rolling vineyards, Cape Dutch estates, and world-class tastings, without the shared shuttle.",
-  "Sunset Safari Day Trip": "Wild game, golden-hour light, and a full day away from the city. Transport and meals included — just arrive ready for an unforgettable afternoon.",
+  "Cape Peninsula Private Tour": "Two oceans, wild penguins, and the most dramatic coastal drive in Africa. All in one fully private day.",
+  "City and Table Mountain Tour": "Cape Town's most iconic landmarks explored privately — Table Mountain, Bo-Kaap, Camps Bay and the Waterfront.",
+  "Romantic Stellenbosch Winelands Experience": "A private drive through South Africa's most celebrated wine country — rolling vineyards, Cape Dutch estates, and world-class tastings.",
+  "Sunset Safari Day Trip": "The Big 5, golden-hour game drives, and a full day at Aquila Private Game Reserve — private transport and meals included.",
 };
 
 export default function PrivateTourRelatedTours({

@@ -1,10 +1,12 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import styled from "styled-components";
 import Container from "../../common/Container";
 import { trackWhatsAppClick } from "../../../lib/tracking";
 import Money from "../../common/Money";
+import { shimmerPlaceholder } from "../../../lib/shimmer";
 
 type Props = {
   title: string;
@@ -17,24 +19,32 @@ type Props = {
   whatsappLink: string;
 };
 
-const Hero = styled.section<{ $image?: string }>`
+const Hero = styled.section`
   position: relative;
   padding: 120px 0 90px;
-  background:
-    linear-gradient(
-      180deg,
-      rgba(8, 18, 16, 0.72) 0%,
-      rgba(8, 18, 16, 0.52) 38%,
-      rgba(8, 18, 16, 0.72) 100%
-    ),
-    ${({ $image }) =>
-      $image
-        ? `url(${$image}) center/cover no-repeat`
-        : `linear-gradient(135deg, rgba(11, 91, 51, 0.16), rgba(6, 62, 35, 0.08))`};
+  background: linear-gradient(135deg, rgba(11, 91, 51, 0.16), rgba(6, 62, 35, 0.08));
+  overflow: hidden;
 
   @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
     padding: 150px 0 110px;
   }
+`;
+
+const HeroOverlay = styled.div`
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    180deg,
+    rgba(8, 18, 16, 0.72) 0%,
+    rgba(8, 18, 16, 0.52) 38%,
+    rgba(8, 18, 16, 0.72) 100%
+  );
+`;
+
+const HeroContent = styled.div`
+  position: relative;
+  z-index: 2;
 `;
 
 const HeroInner = styled.div`
@@ -56,22 +66,6 @@ const Eyebrow = styled.div`
   margin-bottom: 16px;
 `;
 
-/*
- * CHANGED: h1 → p
- *
- * The real H1 for this page is <AuthorityTitle> in ChauffeurDetailView,
- * which renders the full SEO keyword e.g.
- * "Range Rover Sport Chauffeur Service Cape Town"
- *
- * This hero element is a visual display title only — it shows the short
- * vehicle name ("Range Rover Sport") for aesthetic impact at the top of
- * the page. Making it a <p> with identical styling means:
- *   - Visitors see no difference whatsoever
- *   - Google sees exactly one <h1> per page (the SEO keyword below the hero)
- *   - Heading hierarchy is clean: h1 → h2 → h2 → ...
- *
- * Font size, weight, colour and spacing are all preserved exactly.
- */
 const HeroTitle = styled.p`
   margin: 0 0 16px;
   color: white;
@@ -131,20 +125,6 @@ const PrimaryButton = styled.a`
   box-shadow: ${({ theme }) => theme.shadows.soft};
 `;
 
-const SecondaryButton = styled(Link)`
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 50px;
-  padding: 0 22px;
-  border-radius: 14px;
-  background: rgba(255, 255, 255, 0.12);
-  color: white;
-  font-weight: 700;
-  text-decoration: none;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-`;
-
 export default function ChauffeurHero({
   title,
   description,
@@ -156,45 +136,52 @@ export default function ChauffeurHero({
   whatsappLink,
 }: Props) {
   return (
-    <Hero $image={image}>
-      <Container>
-        <HeroInner>
-          <Eyebrow>Private Chauffeur Vehicle</Eyebrow>
-
-          {/* Renders as <p> — visual title only, NOT the page H1 */}
-          <HeroTitle>{title}</HeroTitle>
-
-          <HeroText>{description}</HeroText>
-
-          <HeroMeta>
-            {vehicleType && <HeroMetaItem>{vehicleType}</HeroMetaItem>}
-            {seats && <HeroMetaItem>{seats} Seats</HeroMetaItem>}
-            {luggage && <HeroMetaItem>{luggage} Luggage</HeroMetaItem>}
-            {priceUsd ? <HeroMetaItem><Money usd={priceUsd} /></HeroMetaItem> : null}
-          </HeroMeta>
-
-          <HeroButtons>
-            <PrimaryButton
-              href={whatsappLink}
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={() =>
-                trackWhatsAppClick({
-                  source: "chauffeur_hero",
-                  label: "Book on WhatsApp",
-                  vehicle: title,
-                })
-              }
-            >
-              Book on WhatsApp
-            </PrimaryButton>
-
-            {/* <SecondaryButton href="/chauffeur-services">
-              View More Vehicles
-            </SecondaryButton> */}
-          </HeroButtons>
-        </HeroInner>
-      </Container>
+    <Hero>
+      {image && (
+        <Image
+          src={image}
+          alt=""
+          fill
+          priority
+          fetchPriority="high"
+          placeholder="blur"
+          blurDataURL={shimmerPlaceholder(1400, 900)}
+          sizes="100vw"
+          style={{ objectFit: "cover", zIndex: 0 }}
+        />
+      )}
+      <HeroOverlay />
+      <HeroContent>
+        <Container>
+          <HeroInner>
+            <Eyebrow>Private Chauffeur Vehicle</Eyebrow>
+            <HeroTitle>{title}</HeroTitle>
+            <HeroText>{description}</HeroText>
+            <HeroMeta>
+              {vehicleType && <HeroMetaItem>{vehicleType}</HeroMetaItem>}
+              {seats && <HeroMetaItem>{seats} Seats</HeroMetaItem>}
+              {luggage && <HeroMetaItem>{luggage} Luggage</HeroMetaItem>}
+              {priceUsd ? <HeroMetaItem><Money usd={priceUsd} /></HeroMetaItem> : null}
+            </HeroMeta>
+            <HeroButtons>
+              <PrimaryButton
+                href={whatsappLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() =>
+                  trackWhatsAppClick({
+                    source: "chauffeur_hero",
+                    label: "Book on WhatsApp",
+                    vehicle: title,
+                  })
+                }
+              >
+                Check Availability on WhatsApp
+              </PrimaryButton>
+            </HeroButtons>
+          </HeroInner>
+        </Container>
+      </HeroContent>
     </Hero>
   );
 }

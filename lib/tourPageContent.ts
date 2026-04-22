@@ -50,7 +50,7 @@ const SHARED_FAQ_TRANSPORT: TourFAQItem = {
 };
 
 const SHARED_CTA_BODY =
-  "Message us on WhatsApp to check availability, ask any questions, and lock in your preferred date. We respond within 30 minutes — usually much faster.";
+  "Send us a WhatsApp with your travel dates and group size. We'll confirm availability and send you a price within 30 minutes. No deposit is required to hold a date while you decide — just message us and we'll take it from there.";
 
 const CAPE_PENINSULA: TourPageContent = {
   trustBadges: [
@@ -74,8 +74,8 @@ const CAPE_PENINSULA: TourPageContent = {
   midCtaTitle: "Ready to See the Cape Peninsula?",
   midCtaBody:
     "Most guests tell us the Peninsula is the highlight of their entire Cape Town trip. Don't leave it to chance with a shared tour bus — message us and we'll plan the day around you.",
-  midCtaButtonLabel: "Plan My Cape Town Day →",
-  ctaTitle: "Book Your Private Cape Peninsula Tour",
+  midCtaButtonLabel: "Check Availability — We Respond in 30 Minutes",
+  ctaTitle: "Ready to book? Here's how it works",
   ctaBody: SHARED_CTA_BODY,
   faqItems: [
     {
@@ -120,8 +120,8 @@ const CAPE_TOWN_CITY: TourPageContent = {
   midCtaTitle: "Ready to See Cape Town Properly?",
   midCtaBody:
     "Most visitors only scratch the surface of what Cape Town offers. A private chauffeur day gives you the full picture — without the crowds, the queues, or the shared bus. Message us and let's plan your day.",
-  midCtaButtonLabel: "Plan My Cape Town Day →",
-  ctaTitle: "Book Your Private City Tour",
+  midCtaButtonLabel: "Check Availability — We Respond in 30 Minutes",
+  ctaTitle: "Ready to book? Here's how it works",
   ctaBody: SHARED_CTA_BODY,
   faqItems: [
     {
@@ -152,7 +152,7 @@ const WINELANDS: TourPageContent = {
   ],
   itineraryTitle: "Every Stop, Yours to Savour",
   itinerarySubheading:
-    "No shared shuttle. No strangers. No being rushed back before you've finished your glass. This is the Stellenbosch Winelands at your pace — linger over the wine and chocolate pairing, wander the gardens at Babylonstoren, or simply sit on the terrace at Delaire Graff and take in the view. Every moment is yours.",
+    "No group timetables. No strangers. No one rushing you between estates. This is the Cape Winelands on your terms — linger over a tasting, take your time exploring the gardens at Babylonstoren, or ask your chauffeur to stop at a viewpoint along the way. Every moment is yours.",
   highlightsTitle: "Why Guests Choose a Private Tour Over a Shared Shuttle",
   highlights: [
     SHARED_HIGHLIGHTS_1,
@@ -166,37 +166,37 @@ const WINELANDS: TourPageContent = {
     },
     SHARED_HIGHLIGHTS_4,
   ],
-  midCtaTitle: "Ready to Experience the Winelands Privately?",
+  midCtaTitle: "Ready to Experience the Cape Winelands?",
   midCtaBody:
-    "The Stellenbosch Winelands deserve more than a shared shuttle and a hurried tasting. Message us and we'll plan a day in the vineyards that's entirely built around you.",
-  midCtaButtonLabel: "Plan My Winelands Day →",
-  ctaTitle: "Book Your Private Winelands Experience",
+    "Most guests tell us the Winelands is the highlight of their entire Cape Town trip. Don't leave it to chance with a shared shuttle — message us and we'll plan your perfect wine day.",
+  midCtaButtonLabel: "Check Availability — We Respond in 30 Minutes",
+  ctaTitle: "Ready to book? Here's how it works",
   ctaBody: SHARED_CTA_BODY,
   faqItems: [
     {
-      question: "How long does the Winelands tour take?",
+      question: "How long does the Romantic Stellenbosch Winelands Experience take?",
       answer:
-        "The full day typically runs 7–9 hours from hotel pickup to drop-off. The pace is yours — if you want to linger at Babylonstoren or add a fourth estate, just say the word.",
+        "The day typically runs 7–9 hours from hotel pickup to drop-off, covering Stellenbosch, Franschhoek, and Constantia at a pace that lets you actually enjoy each estate. If you want to linger over lunch or add a fourth stop, just say the word.",
     },
     {
       question: "Is this a private tour or a shared shuttle?",
       answer:
-        "100% private. You and your group have the entire vehicle to yourselves. We never combine bookings or add other guests to your day.",
+        "100% private. You and your group have the entire vehicle to yourselves for the full day. No strangers, no shared shuttles, no being rushed back before you've finished your glass. We never combine bookings.",
     },
     {
       question: "Can we choose which wine estates to visit?",
       answer:
-        "Absolutely. The suggested route is a starting point. Want to swap an estate, add a cheese tasting, or visit a specific favourite? Tell us when you book and we'll build the day around you.",
+        "Absolutely — the suggested route is a starting point, not a rule. Want to focus on Franschhoek, revisit a favourite estate, or add a cheese tasting at Fairview? Tell us when you book and we'll build the day around your preferences.",
     },
     {
       question: "Is transport included?",
       answer:
-        "Yes — a professional chauffeur handles all driving so your group can taste freely. Hotel pickup, drop-off, all driving, toll fees, and fuel are included.",
+        "Yes. A professional chauffeur drives the entire day so your group can taste freely without worrying about driving. Hotel pickup and drop-off, all fuel, toll fees, and cold water in the car are included.",
     },
     {
       question: "Is this suitable for a romantic trip or anniversary?",
       answer:
-        "It's one of our most popular experiences for couples. A private vehicle, beautiful estates, great wine, and no strangers — it makes for a genuinely special day.",
+        "It's one of our most popular experiences for couples and special occasions. A private vehicle, rolling vineyard views, Cape Dutch architecture, great wine, and no strangers — it's a genuinely special day. Let us know it's a special occasion and we'll make sure everything feels that way.",
     },
   ],
 };
@@ -232,8 +232,8 @@ const SUNSET_SAFARI: TourPageContent = {
   midCtaTitle: "Ready for a Safari Day from Cape Town?",
   midCtaBody:
     "Most visitors don't realise you can do a Big 5 safari and be back in Cape Town for dinner. Message us — we'll sort the transport, the timing, and everything in between.",
-  midCtaButtonLabel: "Plan My Safari Day →",
-  ctaTitle: "Book Your Private Safari Day Trip",
+  midCtaButtonLabel: "Check Availability — We Respond in 30 Minutes",
+  ctaTitle: "Ready to book? Here's how it works",
   ctaBody: SHARED_CTA_BODY,
   faqItems: [
     {
@@ -267,7 +267,7 @@ const SUNSET_SAFARI: TourPageContent = {
 const DEFAULT_CONTENT: TourPageContent = CAPE_PENINSULA;
 
 const TOUR_CONTENT: Record<string, TourPageContent> = {
-  "cape-peninsular-tour": CAPE_PENINSULA,
+  "cape-peninsula-tour": CAPE_PENINSULA,
   "cape-town-city-tour": CAPE_TOWN_CITY,
   "winelands-chauffeur-drive": WINELANDS,
   "sunset-safari-experience": SUNSET_SAFARI,

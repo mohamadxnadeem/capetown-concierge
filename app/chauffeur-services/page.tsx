@@ -101,11 +101,12 @@ async function getVehicles(): Promise<FeaturedVehicleItem[]> {
 }
 
 const SITE_URL = brand.siteUrl;
+const OG_IMAGE = `${SITE_URL}/images/og-cape-town-concierge.jpg`;
 
 export const metadata: Metadata = {
-  title: "Chauffeur Service Cape Town | Luxury Private Driver & Airport Transfers",
+  title: "Chauffeur Service Cape Town | Private Driver Hire",
   description:
-    "Book a luxury chauffeur service in Cape Town for airport transfers, private tours, executive travel, and bespoke day hire. Premium vehicles, professional drivers, and tailored itineraries.",
+    "Book a professional chauffeur in Cape Town for airport transfers, full-day hire & executive travel. Luxury fleet. No shared rides. WhatsApp to book.",
   alternates: {
     canonical: `${SITE_URL}/chauffeur-services`,
   },
@@ -121,27 +122,28 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "Private Chauffeur Service Cape Town — Airport, Tours & Day Hire",
+    title: "Chauffeur Service Cape Town | Private Driver Hire",
     description:
-      "Professional, discreet, and always on time. Mercedes V-Class, BMW X5, and more. Airport transfers, private tours, and executive travel. Book via WhatsApp.",
+      "Book a professional chauffeur in Cape Town for airport transfers, full-day hire & executive travel. Luxury fleet. No shared rides. WhatsApp to book.",
     url: `${SITE_URL}/chauffeur-services`,
     siteName: brand.name,
     type: "website",
+    locale: "en_ZA",
     images: [
       {
-        url: `${SITE_URL}/images/hero-car.jpg`,
+        url: OG_IMAGE,
         width: 1200,
         height: 630,
-        alt: "Private chauffeur service Cape Town — luxury vehicles for hire",
+        alt: "Cape Town Concierge — Luxury Chauffeur Service",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Private Chauffeur Service Cape Town — Airport, Tours & Day Hire",
+    title: "Chauffeur Service Cape Town | Private Driver Hire",
     description:
-      "Professional, discreet, and always on time. Mercedes V-Class, BMW X5, and more. Airport transfers, private tours, and executive travel. Book via WhatsApp.",
-    images: [`${SITE_URL}/images/hero-car.jpg`],
+      "Book a professional chauffeur in Cape Town for airport transfers, full-day hire & executive travel. Luxury fleet. No shared rides. WhatsApp to book.",
+    images: [OG_IMAGE],
   },
 };
 

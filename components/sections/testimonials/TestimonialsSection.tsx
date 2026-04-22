@@ -2,8 +2,9 @@
 
 import { useEffect, useRef } from "react";
 import styled from "styled-components";
-import Image from "next/image";
 import { testimonials } from "./data";
+
+const GOOGLE_REVIEWS_URL = "https://share.google/P13pnsYwTEQGoPaSh";
 
 const Section = styled.section`
   padding: 80px 0;
@@ -158,14 +159,19 @@ const CardHeader = styled.div`
   margin-bottom: 16px;
 `;
 
-const Avatar = styled.div`
-  width: 64px;
-  height: 64px;
+const Initial = styled.div`
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
-  overflow: hidden;
   flex: 0 0 auto;
-  border: 2px solid rgba(11, 91, 51, 0.12);
-  box-shadow: 0 8px 20px rgba(11, 91, 51, 0.1);
+  background: rgba(11, 91, 51, 0.1);
+  border: 1px solid rgba(11, 91, 51, 0.15);
+  color: ${({ theme }) => theme.colors.primary};
+  font-weight: 700;
+  font-size: 1.15rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 const ClientMeta = styled.div`
@@ -213,6 +219,51 @@ const FooterNote = styled.div`
   color: ${({ theme }) => theme.colors.primary};
   font-size: 0.78rem;
   font-weight: 700;
+`;
+
+const GoogleButton = styled.a`
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border-radius: 12px;
+  background: white;
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  text-decoration: none;
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: ${({ theme }) => theme.colors.heading};
+  box-shadow: ${({ theme }) => theme.shadows.soft};
+  transition: border-color 0.18s ease, box-shadow 0.18s ease;
+  white-space: nowrap;
+
+  &:hover {
+    border-color: #4285f4;
+    box-shadow: 0 4px 14px rgba(66, 133, 244, 0.15);
+  }
+`;
+
+const GoogleG = styled.span`
+  font-size: 1.05rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #4285f4 0%, #34a853 40%, #fbbc05 70%, #ea4335 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1;
+`;
+
+const GoogleStars = styled.span`
+  color: #fbbc05;
+  font-size: 0.78rem;
+  letter-spacing: 1px;
+`;
+
+const SliderFooter = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 28px;
 `;
 
 function StarRating({ count = 5 }: { count?: number }) {
@@ -305,15 +356,7 @@ export default function TestimonialsSection() {
           {testimonials.map((item, index) => (
             <Card key={`${item.name}-${index}`}>
               <CardHeader>
-                <Avatar>
-                  <Image
-                    src={item.image}
-                    alt={item.name}
-                    width={64}
-                    height={64}
-                    style={{ width: "100%", height: "100%", objectFit: "cover" }}
-                  />
-                </Avatar>
+                <Initial>{item.name.charAt(0)}</Initial>
 
                 <ClientMeta>
                   <Name>{item.name}</Name>
@@ -325,12 +368,25 @@ export default function TestimonialsSection() {
                 <StarRating />
               </Stars>
 
-              <Review>“{item.review}”</Review>
+              <Review>”{item.review}”</Review>
 
-              <FooterNote>Private Chauffeur & Tour Experience</FooterNote>
+              <FooterNote>{item.service}</FooterNote>
             </Card>
           ))}
         </Slider>
+
+        <SliderFooter>
+          <GoogleButton
+            href={GOOGLE_REVIEWS_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Read all reviews on Google"
+          >
+            <GoogleG>G</GoogleG>
+            <GoogleStars>★★★★★</GoogleStars>
+            4.9 · Read all reviews on Google
+          </GoogleButton>
+        </SliderFooter>
       </Container>
     </Section>
   );

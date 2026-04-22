@@ -46,6 +46,7 @@ export type TourVehicle = {
   seats?: number;
   description?: string;
   price?: string;
+  priceRaw?: number;
 };
 
 export type ReviewItem = {

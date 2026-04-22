@@ -60,10 +60,9 @@ export default function PrivateTourCta({ whatsappLink, title, body }: Props) {
   return (
     <CTASection>
       <CTABox>
-        <CTAEyebrow>Ready to Book?</CTAEyebrow>
-        <CTATitle>{title || "Book Your Private Cape Peninsula Tour"}</CTATitle>
+        <CTATitle>{title || "Ready to book? Here's how it works"}</CTATitle>
         <CTAText>
-          {body || "Message us on WhatsApp to check availability, ask any questions, and lock in your preferred date. We respond within 30 minutes — usually much faster."}
+          {body || "Send us a WhatsApp with your travel dates and group size. We'll confirm availability and send you a price within 30 minutes. No deposit is required to hold a date while you decide — just message us and we'll take it from there."}
         </CTAText>
 
         <CTAButtons>
@@ -74,11 +73,11 @@ export default function PrivateTourCta({ whatsappLink, title, body }: Props) {
             onClick={() =>
               trackWhatsAppClick({
                 source: "private_tour_cta",
-                label: "Book This Tour",
+                label: "Reserve My Date on WhatsApp",
               })
             }
           >
-            <Button as="span">Book This Tour →</Button>
+            <Button as="span">Reserve My Date on WhatsApp</Button>
           </CTAAnchor>
 
           <CTAAnchor
@@ -88,12 +87,12 @@ export default function PrivateTourCta({ whatsappLink, title, body }: Props) {
             onClick={() =>
               trackWhatsAppClick({
                 source: "private_tour_cta",
-                label: "Chat on WhatsApp",
+                label: "Get a Price for My Group",
               })
             }
           >
             <Button as="span" $variant="secondary">
-              Chat on WhatsApp →
+              Get a Price for My Group
             </Button>
           </CTAAnchor>
         </CTAButtons>

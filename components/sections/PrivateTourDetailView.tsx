@@ -146,7 +146,7 @@ function formatPriceRange(
   currency?: string
 ) {
   if (!priceFrom && !priceTo) return "";
-  const symbol = currency === "ZAR" || !currency ? "R" : `${currency} `;
+  const symbol = currency === "USD" || !currency ? "$" : currency === "ZAR" ? "R" : `${currency} `;
   if (priceFrom && priceTo) return `From ${symbol}${priceFrom} - ${symbol}${priceTo}`;
   if (priceFrom) return `From ${symbol}${priceFrom}`;
   return `${symbol}${priceTo}`;

@@ -5,9 +5,7 @@ import Button from "../../common/Button";
 import { buildWhatsAppLink, buildGeneralWhatsAppMessage } from "../../../lib/whatsapp";
 import { trackWhatsAppClick } from "../../../lib/tracking";
 
-const whatsappLink = buildWhatsAppLink(
-  buildGeneralWhatsAppMessage("planning a Cape Town trip")
-);
+const whatsappLink = "https://wa.me/27636746131?text=Hi%2C+I%27d+like+to+book+a+luxury+chauffeur+or+private+tour+in+Cape+Town.+Please+assist.";
 
 const Section = styled.section`
   padding: 80px 0;
@@ -79,7 +77,7 @@ export default function TestimonialsCta() {
             })
           }
         >
-          <Button as="span">Plan My Cape Town Trip</Button>
+          <Button as="span">Get in Touch on WhatsApp</Button>
         </Anchor>
       </Container>
     </Section>

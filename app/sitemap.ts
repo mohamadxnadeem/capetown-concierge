@@ -3,6 +3,19 @@ import { brand } from "../lib/brand";
 
 const SITE_URL = brand.siteUrl;
 
+// Fallback slugs used when the Railway API is unreachable during build.
+// Update this list whenever a new tour or vehicle is added to the CMS.
+const FALLBACK_TOUR_SLUGS = [
+  "cape-peninsula-tour",
+  "winelands-chauffeur-drive",
+  "cape-town-city-tour",
+  "sunset-safari-experience",
+];
+
+// Vehicle fallbacks intentionally empty — wrong slugs here would pollute the sitemap.
+// The sitemap uses real CMS slugs when the API is reachable.
+const FALLBACK_VEHICLE_SLUGS: string[] = [];
+
 type CarsApiItem = {
   car?: { slug?: string };
   slug?: string;
@@ -19,18 +32,20 @@ async function getVehicleSlugs(): Promise<string[]> {
       "https://web-production-1ab9.up.railway.app/api/cars-for-hire/all/",
       { next: { revalidate: 3600 } }
     );
-    if (!res.ok) return [];
+    if (!res.ok) return FALLBACK_VEHICLE_SLUGS;
     const data = await res.json();
     const items: CarsApiItem[] = Array.isArray(data)
       ? data
       : Array.isArray(data?.results)
       ? data.results
       : [];
-    return items
+    const apiSlugs = items
       .map((item) => item?.car?.slug || item?.slug)
-      .filter((slug): slug is string => Boolean(slug));
+      .filter((slug): slug is string => Boolean(slug))
+      .map((slug) => slug.toLowerCase());
+    return Array.from(new Set([...apiSlugs, ...FALLBACK_VEHICLE_SLUGS]));
   } catch {
-    return [];
+    return FALLBACK_VEHICLE_SLUGS;
   }
 }
 
@@ -40,13 +55,15 @@ async function getExperienceSlugs(): Promise<string[]> {
       "https://web-production-1ab9.up.railway.app/api/experiences/all/",
       { next: { revalidate: 3600 } }
     );
-    if (!res.ok) return [];
+    if (!res.ok) return FALLBACK_TOUR_SLUGS;
     const data: ExperienceListItem[] = await res.json();
-    return data
+    const apiSlugs = data
       .map((item) => item?.experience?.slug || item?.slug)
-      .filter((slug): slug is string => Boolean(slug));
+      .filter((slug): slug is string => Boolean(slug))
+      .map((slug) => slug.toLowerCase());
+    return Array.from(new Set([...apiSlugs, ...FALLBACK_TOUR_SLUGS]));
   } catch {
-    return [];
+    return FALLBACK_TOUR_SLUGS;
   }
 }
 
@@ -60,50 +77,59 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     {
       url: SITE_URL,
       lastModified: new Date(),
-      priority: 1,
+      changeFrequency: "weekly",
+      priority: 1.0,
     },
     {
       url: `${SITE_URL}/chauffeur-services`,
       lastModified: new Date(),
-      priority: 0.95,
+      changeFrequency: "weekly",
+      priority: 0.9,
     },
     {
       url: `${SITE_URL}/private-tours`,
       lastModified: new Date(),
+      changeFrequency: "weekly",
       priority: 0.9,
     },
     {
       url: `${SITE_URL}/airport-transfers-cape-town`,
       lastModified: new Date(),
-      priority: 0.95,
+      changeFrequency: "weekly",
+      priority: 0.9,
     },
     {
       url: `${SITE_URL}/best-wine-farms-in-cape-town`,
       lastModified: new Date(),
-      priority: 0.85,
+      changeFrequency: "monthly",
+      priority: 0.8,
     },
     {
       url: `${SITE_URL}/best-activities-to-do-in-cape-town`,
       lastModified: new Date(),
-      priority: 0.85,
+      changeFrequency: "monthly",
+      priority: 0.8,
     },
     {
       url: `${SITE_URL}/7-day-cape-town-itinerary`,
       lastModified: new Date(),
-      priority: 0.85,
+      changeFrequency: "monthly",
+      priority: 0.7,
     },
   ];
 
   const vehicleRoutes: MetadataRoute.Sitemap = vehicleSlugs.map((slug) => ({
     url: `${SITE_URL}/chauffeur-services/${slug}`,
     lastModified: new Date(),
-    priority: 0.9,
+    changeFrequency: "monthly" as const,
+    priority: 0.75,
   }));
 
   const tourRoutes: MetadataRoute.Sitemap = experienceSlugs.map((slug) => ({
     url: `${SITE_URL}/private-tours/${slug}`,
     lastModified: new Date(),
-    priority: 0.9,
+    changeFrequency: "monthly" as const,
+    priority: 0.85,
   }));
 
   return [...staticRoutes, ...vehicleRoutes, ...tourRoutes];

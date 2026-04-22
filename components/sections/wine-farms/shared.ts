@@ -7,9 +7,7 @@ import {
   buildGeneralWhatsAppMessage,
 } from "../../../lib/whatsapp";
 
-export const whatsappLink = buildWhatsAppLink(
-  buildGeneralWhatsAppMessage("planning a private wine tour in Cape Town")
-);
+export const whatsappLink = "https://wa.me/27636746131?text=Hi%2C+I%27d+like+to+book+a+luxury+chauffeur+or+private+tour+in+Cape+Town.+Please+assist.";
 
 export const PageWrap = styled.main`
   background: ${({ theme }) => theme.colors.background};

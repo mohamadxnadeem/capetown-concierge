@@ -81,7 +81,8 @@ function getSeoKeyword(car: Car): string {
 function formatPrice(price?: string | number) {
   if (price === undefined || price === null || price === "") return "";
   const num = Number(String(price).replace(/[^0-9.]/g, ""));
-  return isNaN(num) || num === 0 ? "" : `From $${Math.round(num)} per day`;
+  if (isNaN(num) || num === 0) return "";
+  return `From $${Math.round(num)} per day`;
 }
 
 function getNumericPriceValue(
@@ -105,26 +106,71 @@ function truncateText(text?: string, maxLength = 155) {
 // DATA FETCHING
 // ─────────────────────────────────────────────
 async function getAllVehicles(): Promise<CarsApiItem[]> {
-  const response = await fetch(
-    "https://web-production-1ab9.up.railway.app/api/cars-for-hire/all/",
-    { next: { revalidate: 3600 } } // FIX 2: Cache for 1hr instead of no-store — better Core Web Vitals & crawl efficiency
-  );
-  if (!response.ok) throw new Error("Failed to fetch vehicles");
-  const data = await response.json();
-  if (Array.isArray(data)) return data;
-  if (Array.isArray(data?.results)) return data.results;
-  return [];
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 10000);
+  try {
+    const response = await fetch(
+      "https://web-production-1ab9.up.railway.app/api/cars-for-hire/all/",
+      { next: { revalidate: 3600 }, signal: controller.signal }
+    );
+    clearTimeout(timeout);
+    if (!response.ok) throw new Error("Failed to fetch vehicles");
+    const data = await response.json();
+    if (Array.isArray(data)) return data;
+    if (Array.isArray(data?.results)) return data.results;
+    return [];
+  } catch (err) {
+    clearTimeout(timeout);
+    throw err;
+  }
 }
 
 function normalizeCars(items: CarsApiItem[]): Car[] {
   return items
     .map((item) => item?.car || item)
-    .filter((car): car is Car => Boolean(car?.title));
+    .filter((car): car is Car => Boolean(car?.slug || car?.title));
 }
 
 function getVehicleBySlug(cars: Car[], slug: string) {
-  return cars.find((car) => car.slug === slug) || null;
+  const lower = slug.toLowerCase();
+  // Exact slug match first
+  const exact = cars.find((car) => car.slug?.toLowerCase() === lower);
+  if (exact) return exact;
+  // Fallback: find by title-derived slug (e.g. "BMW X5" → "bmw-x5")
+  return cars.find((car) => {
+    if (!car.title) return false;
+    const titleSlug = car.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+    return lower.includes(titleSlug) || titleSlug.includes(lower);
+  }) || null;
 }
+
+// Slug-based meta title/description overrides (used when CMS meta_title is not set)
+const VEHICLE_META: Record<string, { title: string; description: string }> = {
+  "bmw-5-series-for-hire-with-driver": {
+    title: "BMW 5-Series Chauffeur Cape Town | Executive Hire",
+    description: "Hire a BMW 5-Series with professional driver in Cape Town. Ideal for airport transfers & business travel. From $450/day. Book via WhatsApp.",
+  },
+  "bmw-x5-for-hire-with-driver": {
+    title: "BMW X5 Chauffeur Cape Town | Luxury SUV with Driver",
+    description: "Private BMW X5 hire with professional chauffeur in Cape Town. Perfect for families & small groups. From $450/day. WhatsApp to check availability.",
+  },
+  "8-seater-staria-van-with-driver": {
+    title: "Hyundai Staria 8-Seater Cape Town | Group Transfers",
+    description: "Book an 8-seat Hyundai Staria with driver in Cape Town. Ideal for group airport transfers & tours. From $350/day. WhatsApp to book today.",
+  },
+  "mercedes-sprinter-with-driver-cape-town": {
+    title: "Mercedes Sprinter Cape Town | 14-Seat Group Hire",
+    description: "14-seater Mercedes Sprinter with professional driver for large group tours & transfers in Cape Town. From $600/day. Get a quote on WhatsApp.",
+  },
+  "mercedes-v-class-private-chauffeur-service": {
+    title: "Mercedes V-Class Cape Town | Luxury Group Chauffeur",
+    description: "Premium 6-seat Mercedes V-Class with private chauffeur in Cape Town. Perfect for VIPs & families. From $550/day. Book via WhatsApp today.",
+  },
+  "range-rover-sport-chauffeur-service-cape-town": {
+    title: "Range Rover Sport Cape Town | Luxury SUV Chauffeur",
+    description: "Hire a Range Rover Sport with driver in Cape Town. Bold, refined & fully private. From $500/day. WhatsApp us to check availability & book.",
+  },
+};
 
 function getPrimaryImage(car: Car) {
   const imageArray = car.cover_photos || car.images || [];
@@ -283,11 +329,32 @@ function buildVehicleFaqs(car: Car, formattedPrice: string) {
 // Without this, every visit triggers a server render — slower TTFB, worse Core Web Vitals
 // With it, pages are pre-rendered and served from CDN edge instantly
 // ─────────────────────────────────────────────
+// Ensure any slug not pre-built at build time is rendered on-demand.
+export const dynamicParams = true;
+
+// Fallback slugs used if the API is unreachable at build time.
+// These match the exact slugs in the database — keep in sync if vehicles are renamed.
+const FALLBACK_VEHICLE_SLUGS: string[] = [
+  "bmw-x5-for-hire-with-driver",
+  "bmw-5-series-for-hire-with-driver",
+  "mercedes-v-class-private-chauffeur-service",
+  "mercedes-sprinter-with-driver-cape-town",
+  "range-rover-sport-chauffeur-service-cape-town",
+  "8-seater-staria-van-with-driver",
+];
+
 export async function generateStaticParams() {
-  const vehicles = normalizeCars(await getAllVehicles());
-  return vehicles
-    .filter((car) => Boolean(car.slug))
-    .map((car) => ({ slug: car.slug as string }));
+  try {
+    const vehicles = normalizeCars(await getAllVehicles());
+    const apiSlugs = vehicles
+      .filter((car) => Boolean(car.slug))
+      .map((car) => (car.slug as string).toLowerCase());
+    return Array.from(new Set([...apiSlugs, ...FALLBACK_VEHICLE_SLUGS])).map(
+      (slug) => ({ slug })
+    );
+  } catch {
+    return FALLBACK_VEHICLE_SLUGS.map((slug) => ({ slug }));
+  }
 }
 
 // ─────────────────────────────────────────────
@@ -305,16 +372,17 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     };
   }
 
-  const title = getPageTitle(car);
-  const description = getPageDescription(car);
+  const override = VEHICLE_META[slug.toLowerCase()];
+  const title = override?.title || getPageTitle(car);
+  const description = override?.description || getPageDescription(car);
   const image = getPrimaryImage(car);
-  const canonicalUrl = `${SITE_URL}/chauffeur-services/${slug}`;
+  const canonicalUrl = `${SITE_URL}/chauffeur-services/${slug.toLowerCase()}`;
   const keyword = getSeoKeyword(car);
+  const ogImage = `${SITE_URL}/images/og-cape-town-concierge.jpg`;
 
   return {
     title,
     description,
-    // FIX 8: Add keywords — minor signal but costs nothing
     keywords: [
       keyword,
       `${car.title} chauffeur cape town`,
@@ -341,27 +409,22 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       description,
       url: canonicalUrl,
       siteName: brand.name,
-      // FIX 9: Change type from "article" to "website" — vehicle pages are not articles
-      // "article" type triggers publishedTime/author expectations Google may flag
       type: "website",
       locale: "en_ZA",
-      images: image
-        ? [
-            {
-              url: image,
-              // FIX 10: OG image alt = SEO keyword (indexed by social crawlers)
-              alt: keyword,
-              width: 1200,
-              height: 630,
-            },
-          ]
-        : [],
+      images: [
+        {
+          url: image || ogImage,
+          alt: "Cape Town Concierge — Luxury Chauffeur Service",
+          width: 1200,
+          height: 630,
+        },
+      ],
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
-      images: image ? [image] : [],
+      images: [image || ogImage],
     },
   };
 }
@@ -378,7 +441,9 @@ export default async function ChauffeurServiceDetailPage({ params }: PageProps) 
 
   const relatedVehicles = mapRelatedVehicles(vehicles, slug);
   const image = getPrimaryImage(car);
-  const canonicalUrl = `${SITE_URL}/chauffeur-services/${slug}`;
+  const ogImage = `${SITE_URL}/images/og-cape-town-concierge.jpg`;
+  const schemaImage = image || ogImage;
+  const canonicalUrl = `${SITE_URL}/chauffeur-services/${slug.toLowerCase()}`;
   const pageTitle = getPageTitle(car);
   const pageDescription = getPageDescription(car);
   const keyword = getSeoKeyword(car);
@@ -399,8 +464,8 @@ export default async function ChauffeurServiceDetailPage({ params }: PageProps) 
       // 1. Product schema — vehicle as a bookable product
       {
         "@type": "Product",
-        name: keyword, // FIX: was car.title, now uses SEO keyword
-        image: image ? [image] : [],
+        name: keyword,
+        image: [schemaImage],
         description: getShortVehicleDescription(car),
         brand: {
           "@type": "Brand",
@@ -437,8 +502,8 @@ export default async function ChauffeurServiceDetailPage({ params }: PageProps) 
           ? {
               offers: {
                 "@type": "Offer",
-                priceCurrency: car.currency || "USD",
-                price: numericPrice,
+                priceCurrency: "USD",
+                price: Math.round(Number(String(numericPrice).replace(/[^0-9.]/g, ""))),
                 availability: "https://schema.org/InStock",
                 url: canonicalUrl,
               },
@@ -472,15 +537,14 @@ export default async function ChauffeurServiceDetailPage({ params }: PageProps) 
           },
           priceRange: "$$$$",
           sameAs: [
-            "https://www.facebook.com/capetownconcierge",
-            // Add your actual social profiles here
+            "https://share.google/xrWoPQWHwQYfzukgz",
           ],
         },
         areaServed: [
           { "@type": "City", name: "Cape Town" },
           { "@type": "State", name: "Western Cape" },
         ],
-        image: image ? [image] : [],
+        image: [schemaImage],
         description: car.chauffeur_service_text || getShortVehicleDescription(car),
         url: canonicalUrl,
       },
@@ -525,7 +589,7 @@ export default async function ChauffeurServiceDetailPage({ params }: PageProps) 
         name: pageTitle,
         description: pageDescription,
         url: canonicalUrl,
-        image: image ? [image] : [],
+        image: [schemaImage],
         // FIX 15: Add speakable — helps voice search / AI summaries
         speakable: {
           "@type": "SpeakableSpecification",

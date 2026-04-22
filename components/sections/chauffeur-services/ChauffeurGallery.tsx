@@ -1,8 +1,10 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import Image from "next/image";
 import styled, { keyframes } from "styled-components";
 import { CarPhoto } from "./types";
+import { shimmerPlaceholder } from "../../../lib/shimmer";
 
 type Props = {
   images: CarPhoto[];
@@ -56,18 +58,23 @@ const ActiveImageLayer = styled.div`
   animation: ${fadeIn} 0.5s ease;
 `;
 
-const CinematicLayer = styled.div<{ $image?: string }>`
+const CinematicLayer = styled.div`
   position: absolute;
   inset: 0;
-  background:
-    linear-gradient(
-      180deg,
-      rgba(0, 0, 0, 0.14) 0%,
-      rgba(0, 0, 0, 0.02) 24%,
-      rgba(0, 0, 0, 0.08) 100%
-    ),
-    ${({ $image }) => ($image ? `url(${$image}) center/cover no-repeat` : "none")};
+  overflow: hidden;
   animation: ${cinematicPan} 10s ease-in-out forwards;
+`;
+
+const GalleryOverlay = styled.div`
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.14) 0%,
+    rgba(0, 0, 0, 0.02) 24%,
+    rgba(0, 0, 0, 0.08) 100%
+  );
 `;
 
 const Counter = styled.div`
@@ -126,7 +133,8 @@ const ThumbnailRow = styled.div`
   }
 `;
 
-const ThumbButton = styled.button<{ $active: boolean; $image?: string }>`
+const ThumbButton = styled.button<{ $active: boolean }>`
+  position: relative;
   width: 100%;
   height: 76px;
   border: none;
@@ -134,9 +142,7 @@ const ThumbButton = styled.button<{ $active: boolean; $image?: string }>`
   border-radius: 16px;
   overflow: hidden;
   cursor: pointer;
-  background:
-    linear-gradient(180deg, rgba(0,0,0,0.08) 0%, rgba(0,0,0,0.02) 100%),
-    ${({ $image }) => ($image ? `url(${$image}) center/cover no-repeat` : "none")};
+  background: linear-gradient(135deg, rgba(11, 91, 51, 0.12), rgba(6, 62, 35, 0.06));
   box-shadow: ${({ theme, $active }) =>
     $active ? theme.shadows.card : theme.shadows.soft};
   outline: ${({ $active, theme }) =>
@@ -194,7 +200,21 @@ export default function ChauffeurGallery({ images }: Props) {
           )}
 
           <ActiveImageLayer key={activeImage}>
-            <CinematicLayer $image={activeImage} />
+            <CinematicLayer>
+              {activeImage && (
+                <Image
+                  src={activeImage}
+                  alt=""
+                  fill
+                  priority
+                  placeholder="blur"
+                  blurDataURL={shimmerPlaceholder(900, 560)}
+                  sizes="(max-width: 1200px) 100vw, 60vw"
+                  style={{ objectFit: "cover" }}
+                />
+              )}
+            </CinematicLayer>
+            <GalleryOverlay />
           </ActiveImageLayer>
         </MainImageFrame>
       </MainStage>
@@ -206,10 +226,21 @@ export default function ChauffeurGallery({ images }: Props) {
               key={image.id}
               type="button"
               $active={index === activeImageIndex}
-              $image={image.cover_photos}
               onClick={() => setActiveImageIndex(index)}
               aria-label={`Show image ${index + 1}`}
-            />
+            >
+              {image.cover_photos && (
+                <Image
+                  src={image.cover_photos}
+                  alt=""
+                  fill
+                  placeholder="blur"
+                  blurDataURL={shimmerPlaceholder(108, 88)}
+                  sizes="108px"
+                  style={{ objectFit: "cover" }}
+                />
+              )}
+            </ThumbButton>
           ))}
         </ThumbnailRow>
       )}

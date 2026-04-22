@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { brand } from "../../lib/brand";
 import { buildWhatsAppLink } from "../../lib/whatsapp";
 import HeroBanner from "../../components/sections/HeroBanner";
@@ -9,10 +10,12 @@ import WhyChooseUs from "../../components/sections/WhyChooseUs";
 
 const SITE_URL = brand.siteUrl;
 
+const OG_IMAGE = `${SITE_URL}/images/og-cape-town-concierge.jpg`;
+
 export const metadata: Metadata = {
-  title: "Private Tours Cape Town | Luxury Chauffeur-Driven Experiences",
+  title: "Private Tours Cape Town | Bespoke Day Experiences",
   description:
-    "Book a private tour in Cape Town with a professional chauffeur. Cape Peninsula, Cape Winelands, Table Mountain, and bespoke itineraries tailored to your pace and preferences. All-inclusive luxury travel.",
+    "Explore Cape Town privately — Peninsula, Winelands, Table Mountain & more. Fully tailored, no shared groups. Book your private tour on WhatsApp.",
   alternates: {
     canonical: `${SITE_URL}/private-tours`,
   },
@@ -28,27 +31,28 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "Private Tours in Cape Town — Fully Tailored, Chauffeur-Driven",
+    title: "Private Tours Cape Town | Bespoke Day Experiences",
     description:
-      "Cape Peninsula, Winelands, Table Mountain, and more. Every tour is private, flexible, and designed around you. No shared groups. Book via WhatsApp.",
+      "Explore Cape Town privately — Peninsula, Winelands, Table Mountain & more. Fully tailored, no shared groups. Book your private tour on WhatsApp.",
     url: `${SITE_URL}/private-tours`,
     siteName: brand.name,
     type: "website",
+    locale: "en_ZA",
     images: [
       {
-        url: `${SITE_URL}/images/hero-car.jpg`,
+        url: OG_IMAGE,
         width: 1200,
         height: 630,
-        alt: "Private tours Cape Town — luxury chauffeur-driven experiences",
+        alt: "Cape Town Concierge — Luxury Chauffeur Service",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Private Tours in Cape Town — Fully Tailored, Chauffeur-Driven",
+    title: "Private Tours Cape Town | Bespoke Day Experiences",
     description:
-      "Cape Peninsula, Winelands, Table Mountain, and more. Every tour is private, flexible, and designed around you. No shared groups. Book via WhatsApp.",
-    images: [`${SITE_URL}/images/hero-car.jpg`],
+      "Explore Cape Town privately — Peninsula, Winelands, Table Mountain & more. Fully tailored, no shared groups. Book your private tour on WhatsApp.",
+    images: [OG_IMAGE],
   },
 };
 
@@ -282,13 +286,16 @@ export default async function PrivateToursLandingPage() {
         primaryCtaLabel="Explore Tours"
         primaryCtaHref="#tours"
         secondaryCtaLabel="Book via WhatsApp"
-        secondaryCtaHref={buildWhatsAppLink("I'm interested in booking a private tour in Cape Town. Please can you share more details?")}
+        secondaryCtaHref="https://wa.me/27636746131?text=Hi%2C+I%27d+like+to+book+a+luxury+chauffeur+or+private+tour+in+Cape+Town.+Please+assist."
         image="/images/car.jpg"
         imageAlt="Private tour in Cape Town with luxury chauffeur-driven transport"
       />
 
       <TestimonialsSection />
       <TestimonialsCta />
+      <div style={{textAlign:"center",padding:"8px 0 4px",fontSize:"0.9rem",color:"#6c7a74"}}>
+        Also need an <Link href="/airport-transfers-cape-town" style={{color:"inherit",textDecoration:"underline"}}>airport transfer</Link> to or from Cape Town? We handle that too.
+      </div>
 
       <FeaturedExperiences
         eyebrow="Our Experiences"

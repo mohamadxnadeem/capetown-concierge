@@ -144,6 +144,7 @@ export default function PrivateTourIntro({
       </SubText>
 
       <TrustBar>
+        <TrustBadge>⭐ 4.9 rated — 200+ five-star reviews</TrustBadge>
         {trustBadges.map((badge) => (
           <TrustBadge key={badge}>{badge}</TrustBadge>
         ))}
@@ -155,13 +156,16 @@ export default function PrivateTourIntro({
         <QuickInfoBadge>🚗 Hotel pickup included</QuickInfoBadge>
         {lowestVehiclePrice ? (
           <QuickInfoBadge>
-            <Money usd={lowestVehiclePrice} prefix="From " suffix="per vehicle" />
+            <Money usd={lowestVehiclePrice} prefix="From " suffix="per vehicle — your whole group, not per person" />
           </QuickInfoBadge>
         ) : null}
       </QuickInfoRow>
 
       {lowestVehiclePrice ? (
-        <PriceNote>From ${Math.round(lowestVehiclePrice)} per vehicle — fully private, no per-person pricing</PriceNote>
+        <PriceNote>
+          Travelling as a group? A party of 4 works out to around{" "}
+          <Money usd={Math.floor(lowestVehiclePrice / 4)} prefix="" suffix="" /> per person — fully private, all day, door to door.
+        </PriceNote>
       ) : null}
 
       <AlertCard>

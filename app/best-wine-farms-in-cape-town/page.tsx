@@ -6,11 +6,12 @@ import WineFarmsPage from "../../components/sections/wine-farms/WineFarmsPage";
 
 const SITE_URL = brand.siteUrl;
 
+const OG_IMAGE = `${SITE_URL}/images/og-cape-town-concierge.jpg`;
+
 export const metadata: Metadata = {
-  title:
-    "10 Best Wine Farms in Cape Town, Stellenbosch & Franschhoek (2026 Guide)",
+  title: "Best Wine Farms Cape Town | Private Winelands Tour",
   description:
-    "Discover the best wine farms in Cape Town, Stellenbosch, and Franschhoek. Explore luxury estates like Delaire Graff, Babylonstoren, and Boschendal. Book a private chauffeur-driven wine tour today.",
+    "Visit Stellenbosch & Franschhoek in style with a private chauffeur. Curated wine farm experiences with no set timetable. Book on WhatsApp today.",
 
   alternates: {
     canonical: `${SITE_URL}/best-wine-farms-in-cape-town`,
@@ -28,30 +29,29 @@ export const metadata: Metadata = {
   },
 
   openGraph: {
-    title:
-      "10 Best Wine Farms in Cape Town, Stellenbosch & Franschhoek",
+    title: "Best Wine Farms Cape Town | Private Winelands Tour",
     description:
-      "Explore the top wine farms in Cape Town including Delaire Graff, Babylonstoren, Boschendal, and more. Plan your private wine tour with a chauffeur.",
+      "Visit Stellenbosch & Franschhoek in style with a private chauffeur. Curated wine farm experiences with no set timetable. Book on WhatsApp today.",
     url: `${SITE_URL}/best-wine-farms-in-cape-town`,
     siteName: brand.name,
-    type: "article",
+    type: "website",
+    locale: "en_ZA",
     images: [
       {
-        url: `${SITE_URL}/images/wine/graff.jpg`,
+        url: OG_IMAGE,
         width: 1200,
         height: 630,
-        alt: "Luxury wine estate in Stellenbosch with vineyard views",
+        alt: "Cape Town Concierge — Luxury Chauffeur Service",
       },
     ],
   },
 
   twitter: {
     card: "summary_large_image",
-    title:
-      "10 Best Wine Farms in Cape Town (Luxury Wine Guide)",
+    title: "Best Wine Farms Cape Town | Private Winelands Tour",
     description:
-      "Plan your Cape Winelands experience with the best wine farms in Stellenbosch, Franschhoek, and Constantia.",
-    images: [`${SITE_URL}/images/wine/graff.jpg`],
+      "Visit Stellenbosch & Franschhoek in style with a private chauffeur. Curated wine farm experiences with no set timetable. Book on WhatsApp today.",
+    images: [OG_IMAGE],
   },
 };
 

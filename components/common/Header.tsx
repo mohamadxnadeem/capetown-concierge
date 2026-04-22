@@ -216,7 +216,7 @@ export default function Header() {
                   })
                 }
               >
-                Book Now
+                Book on WhatsApp
               </HeaderCta>
 
               <Hamburger onClick={toggleSidebar} />

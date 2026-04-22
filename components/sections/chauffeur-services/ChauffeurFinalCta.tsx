@@ -69,7 +69,7 @@ export default function ChauffeurFinalCta({ title, whatsappLink }: Props) {
             })
           }
         >
-          Book on WhatsApp
+          Check Availability on WhatsApp
         </PrimaryButton>
       </FinalCtaInner>
     </FinalCta>

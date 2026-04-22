@@ -96,11 +96,12 @@ async function getFeaturedExperiences(): Promise<FeaturedExperienceItem[]> {
 
 const SITE_URL = brand.siteUrl;
 
+const OG_IMAGE = `${SITE_URL}/images/og-cape-town-concierge.jpg`;
+
 export const metadata: Metadata = {
-  title:
-    "Best Activities to Do in Cape Town (2026 Guide) | Private Tours & Chauffeur",
+  title: "Things to Do in Cape Town | Luxury Experiences",
   description:
-    "Discover the best activities to do in Cape Town, from Table Mountain and Cape Point to wine tours, helicopter rides, safaris, and private chauffeur-driven experiences. Plan the perfect Cape Town itinerary with luxury transport and curated experiences.",
+    "Discover Cape Town's best activities — from safaris to scenic drives. Privately curated experiences with a dedicated chauffeur. Plan your trip today.",
   alternates: {
     canonical: `${SITE_URL}/best-activities-to-do-in-cape-town`,
   },
@@ -116,29 +117,28 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title:
-      "Best Activities to Do in Cape Town (2026 Guide) | Private Tours & Chauffeur",
+    title: "Things to Do in Cape Town | Luxury Experiences",
     description:
-      "Explore top Cape Town activities including Table Mountain, Cape Peninsula, wine tours, helicopter rides, and chauffeur-driven private experiences.",
+      "Discover Cape Town's best activities — from safaris to scenic drives. Privately curated experiences with a dedicated chauffeur. Plan your trip today.",
     url: `${SITE_URL}/best-activities-to-do-in-cape-town`,
     siteName: brand.name,
-    type: "article",
+    type: "website",
+    locale: "en_ZA",
     images: [
       {
-        url: `${SITE_URL}/images/activities/table-mountain.jpg`,
+        url: OG_IMAGE,
         width: 1200,
         height: 630,
-        alt: "Best activities to do in Cape Town including Table Mountain and private tours",
+        alt: "Cape Town Concierge — Luxury Chauffeur Service",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title:
-      "Best Activities to Do in Cape Town (2026 Guide) | Private Tours & Chauffeur",
+    title: "Things to Do in Cape Town | Luxury Experiences",
     description:
-      "Discover top Cape Town activities with private chauffeur service, curated tours, scenic routes, and luxury experiences.",
-    images: [`${SITE_URL}/images/activities/table-mountain.jpg`],
+      "Discover Cape Town's best activities — from safaris to scenic drives. Privately curated experiences with a dedicated chauffeur. Plan your trip today.",
+    images: [OG_IMAGE],
   },
 };
 

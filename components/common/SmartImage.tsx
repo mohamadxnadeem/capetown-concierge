@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import styled, { keyframes } from "styled-components";
+import { shimmerPlaceholder } from "../../lib/shimmer";
 
 type Props = {
   src: string;
@@ -89,6 +90,8 @@ export default function SmartImage({
           alt={alt}
           fill
           priority={priority}
+          placeholder="blur"
+          blurDataURL={shimmerPlaceholder(900, 600)}
           sizes={sizes}
           style={{ objectFit: "cover" }}
           onLoad={() => setLoaded(true)}

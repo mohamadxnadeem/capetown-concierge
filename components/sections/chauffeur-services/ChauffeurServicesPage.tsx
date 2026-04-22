@@ -6,6 +6,7 @@ import TestimonialsSection from "../testimonials/TestimonialsSection";
 import TestimonialsCta from "../testimonials/TestimonialsCta";
 import styled from "styled-components";
 import Button from "../../common/Button";
+import Link from "next/link";
 import {
   buildGeneralWhatsAppMessage,
   buildWhatsAppLink,
@@ -333,9 +334,7 @@ const serviceFaqs = [
 
 export default function ChauffeurServicesPage({ vehicles = [] }: { vehicles?: FeaturedVehicleItem[] }) {
 
-  const whatsappLink = buildWhatsAppLink(
-    buildGeneralWhatsAppMessage("booking a chauffeur service in Cape Town")
-  );
+  const whatsappLink = "https://wa.me/27636746131?text=Hi%2C+I%27d+like+to+enquire+about+chauffeur+hire+in+Cape+Town.+Please+assist.";
 
   return (
     <PageWrap>
@@ -344,7 +343,7 @@ export default function ChauffeurServicesPage({ vehicles = [] }: { vehicles?: Fe
         title="Chauffeur Service in Cape Town"
         description="Premium private chauffeur hire for airport transfers, full-day city travel, executive transport, and bespoke touring across Cape Town and the Western Cape."
         primaryCtaLabel="Book Chauffeur Service"
-        primaryCtaHref={buildWhatsAppLink("Hi, I'd like to book a chauffeur service in Cape Town. Please can you assist?")}
+        primaryCtaHref="https://wa.me/27636746131?text=Hi%2C+I%27d+like+to+enquire+about+chauffeur+hire+in+Cape+Town.+Please+assist."
         secondaryCtaLabel="View Fleet"
         secondaryCtaHref="#chauffeur-fleet"
         image="/images/hero-car.jpg"
@@ -399,7 +398,7 @@ export default function ChauffeurServicesPage({ vehicles = [] }: { vehicles?: Fe
               <AuthorityCardTitle>Why clients book us</AuthorityCardTitle>
               <RichText>
                 <p>
-                  Whether you need a seamless airport pickup, a private driver for the day, or a premium vehicle for executive travel — we build every booking around comfort, discretion, and your exact schedule. Our clients range from international travellers arriving at Cape Town International to business executives, VIP guests, and families who simply want to move through the city without the hassle.
+                  Whether you need a seamless <Link href="/airport-transfers-cape-town" style={{color:"inherit"}}>airport transfer</Link>, a private driver for the day, or a premium vehicle for executive travel — we build every booking around comfort, discretion, and your exact schedule. Our clients range from international travellers arriving at Cape Town International to business executives, VIP guests, and families who simply want to move through the city without the hassle.
                 </p>
               </RichText>
             </AuthorityCard>
@@ -426,7 +425,11 @@ export default function ChauffeurServicesPage({ vehicles = [] }: { vehicles?: Fe
               <p>
                 For couples, families, VIP guests, and business visitors, a
                 private chauffeur in Cape Town creates a far more refined travel
-                experience. It gives you the freedom to focus on your schedule,
+                experience. Popular routes include{" "}
+                <Link href="/private-tours/cape-peninsula-tour" style={{color:"inherit"}}>Cape Peninsula travel</Link>
+                {" "}and day trips to the{" "}
+                <Link href="/best-wine-farms-in-cape-town" style={{color:"inherit"}}>wine farms</Link>
+                {" "}of Stellenbosch and Franschhoek. It gives you the freedom to focus on your schedule,
                 your comfort, and the overall quality of the journey rather than
                 the logistics.
               </p>
