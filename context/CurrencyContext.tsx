@@ -29,17 +29,17 @@ interface CurrencyContextValue {
 }
 
 const CurrencyContext = createContext<CurrencyContextValue>({
-  currency: "USD",
-  detectedCurrency: "USD",
+  currency: "ZAR",
+  detectedCurrency: "ZAR",
   rates: FALLBACK_RATES,
   setCurrency: () => {},
-  format: (usd) => `$${usd}`,
+  format: (zar) => `R${zar}`,
   isReady: false,
 });
 
 export function CurrencyProvider({ children }: { children: React.ReactNode }) {
-  const [currency, setCurrencyState] = useState<CurrencyCode>("USD");
-  const [detectedCurrency, setDetectedCurrency] = useState<CurrencyCode>("USD");
+  const [currency, setCurrencyState] = useState<CurrencyCode>("ZAR");
+  const [detectedCurrency, setDetectedCurrency] = useState<CurrencyCode>("ZAR");
   const [rates, setRates] = useState<Record<CurrencyCode, number>>(FALLBACK_RATES);
   const [isReady, setIsReady] = useState(false);
 
@@ -83,7 +83,7 @@ export function CurrencyProvider({ children }: { children: React.ReactNode }) {
         const res = await fetch("/api/geo");
         if (res.ok) {
           const { country } = await res.json();
-          const detected = COUNTRY_TO_CURRENCY[country] ?? "USD";
+          const detected = COUNTRY_TO_CURRENCY[country] ?? "ZAR";
           setDetectedCurrency(detected);
           setCurrencyState(detected);
         }

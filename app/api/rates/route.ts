@@ -6,7 +6,7 @@ export const revalidate = 3600;
 export async function GET() {
   try {
     const res = await fetch(
-      "https://api.frankfurter.app/latest?from=USD&to=GBP,EUR,ZAR,AUD,CAD",
+      "https://api.frankfurter.app/latest?from=ZAR&to=GBP,EUR,USD,AUD,CAD",
       { next: { revalidate: 3600 } }
     );
     if (!res.ok) {
