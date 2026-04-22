@@ -431,7 +431,7 @@ export default function PrivateTourVehicles({ items, tourTitle }: Props) {
                       <MetaBadge>Up to {item.seats} guests</MetaBadge>
                     ) : null}
                     {item.priceRaw ? (
-                      <MetaBadge>From {format(item.priceRaw / rates.ZAR)} per vehicle</MetaBadge>
+                      <MetaBadge>From {format(item.priceRaw)} per vehicle</MetaBadge>
                     ) : null}
                     <MetaBadge>Fuel Included</MetaBadge>
                     <MetaBadge>Toll Fees Included</MetaBadge>
