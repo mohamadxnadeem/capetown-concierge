@@ -9,12 +9,17 @@ const FALLBACK_TOUR_SLUGS = [
   "cape-peninsula-tour",
   "winelands-chauffeur-drive",
   "cape-town-city-tour",
-  "sunset-safari-experience",
+  "safari-day-trip",
 ];
 
-// Vehicle fallbacks intentionally empty — wrong slugs here would pollute the sitemap.
-// The sitemap uses real CMS slugs when the API is reachable.
-const FALLBACK_VEHICLE_SLUGS: string[] = [];
+const FALLBACK_VEHICLE_SLUGS: string[] = [
+  "bmw-x5-for-hire-with-driver",
+  "bmw-5-series-for-hire-with-driver",
+  "mercedes-v-class-private-chauffeur-service",
+  "mercedes-sprinter-with-driver-cape-town",
+  "range-rover-sport-chauffeur-service-cape-town",
+  "8-seater-staria-van-with-driver",
+];
 
 type CarsApiItem = {
   car?: { slug?: string };
@@ -115,6 +120,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.7,
+    },
+    {
+      url: `${SITE_URL}/contact`,
+      lastModified: new Date(),
+      changeFrequency: "yearly",
+      priority: 0.5,
     },
   ];
 
