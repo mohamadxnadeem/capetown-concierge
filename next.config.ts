@@ -29,36 +29,10 @@ const nextConfig: NextConfig = {
   trailingSlash: false,
   async redirects() {
     return [
-      // Typo fix
+      // Typo fix — safe: source and destination differ meaningfully
       {
         source: "/private-tours/cape-peninsular-tour",
         destination: "/private-tours/cape-peninsula-tour",
-        permanent: true,
-      },
-      // Uppercase slug → lowercase (consolidates ranking signals)
-      {
-        source: "/private-tours/Cape-Town-City-Tour",
-        destination: "/private-tours/cape-town-city-tour",
-        permanent: true,
-      },
-      {
-        source: "/chauffeur-services/BMW-X5-for-hire-with-driver",
-        destination: "/chauffeur-services/bmw-x5-for-hire-with-driver",
-        permanent: true,
-      },
-      {
-        source: "/chauffeur-services/BMW-5-series-for-hire-with-driver",
-        destination: "/chauffeur-services/bmw-5-series-for-hire-with-driver",
-        permanent: true,
-      },
-      {
-        source: "/chauffeur-services/Mercedes-v-class-private-chauffeur-service",
-        destination: "/chauffeur-services/mercedes-v-class-private-chauffeur-service",
-        permanent: true,
-      },
-      {
-        source: "/chauffeur-services/Mercedes-sprinter-with-driver-cape-town",
-        destination: "/chauffeur-services/mercedes-sprinter-with-driver-cape-town",
         permanent: true,
       },
     ];
