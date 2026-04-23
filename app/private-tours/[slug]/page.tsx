@@ -161,33 +161,32 @@ function truncateText(text?: string, maxLength = 140) {
 }
 
 async function getAllExperiences(): Promise<ExperienceListItem[]> {
-  const response = await fetch(
-    "https://web-production-1ab9.up.railway.app/api/experiences/all/",
-    { next: { revalidate: 3600 } }
-  );
-
-  if (!response.ok) {
-    throw new Error("Failed to fetch experiences list");
+  try {
+    const response = await fetch(
+      "https://web-production-1ab9.up.railway.app/api/experiences/all/",
+      { next: { revalidate: 3600 } }
+    );
+    if (!response.ok) return [];
+    return response.json();
+  } catch {
+    return [];
   }
-
-  return response.json();
 }
 
 async function getAllVehicles(): Promise<CarsApiItem[]> {
-  const response = await fetch(
-    "https://web-production-1ab9.up.railway.app/api/cars-for-hire/all/",
-    { next: { revalidate: 3600 } }
-  );
-
-  if (!response.ok) {
-    throw new Error("Failed to fetch vehicles");
+  try {
+    const response = await fetch(
+      "https://web-production-1ab9.up.railway.app/api/cars-for-hire/all/",
+      { next: { revalidate: 3600 } }
+    );
+    if (!response.ok) return [];
+    const data = await response.json();
+    if (Array.isArray(data)) return data;
+    if (Array.isArray(data?.results)) return data.results;
+    return [];
+  } catch {
+    return [];
   }
-
-  const data = await response.json();
-
-  if (Array.isArray(data)) return data;
-  if (Array.isArray(data?.results)) return data.results;
-  return [];
 }
 
 async function getExperienceIdBySlug(slug: string) {
@@ -211,13 +210,14 @@ async function getExperienceDetails(
     clearTimeout(timeout);
 
     if (!response.ok) {
-      throw new Error("Failed to fetch experience details");
+      clearTimeout(timeout);
+      return null as unknown as ExperienceDetailResponse;
     }
 
     return response.json();
-  } catch (err) {
+  } catch {
     clearTimeout(timeout);
-    throw err;
+    return null as unknown as ExperienceDetailResponse;
   }
 }
 
@@ -337,11 +337,15 @@ function mapVehicles(items: CarsApiItem[]): TourVehicle[] {
     });
 }
 
+export const dynamicParams = true;
+
 const FALLBACK_TOUR_SLUGS = [
   "cape-peninsula-tour",
   "winelands-chauffeur-drive",
   "cape-town-city-tour",
+  "safari-day-trip",
   "sunset-safari-experience",
+  "table-mountain-tour",
 ];
 
 export async function generateStaticParams() {
@@ -384,6 +388,13 @@ export async function generateMetadata({
 
   const raw = await getExperienceDetails(experienceId);
   const experience = normalizeExperience(raw);
+
+  if (!experience?.title) {
+    return {
+      title: `Private Tour | ${brand.name}`,
+      description: "Luxury private tours in Cape Town",
+    };
+  }
 
   const override = TOUR_META[slug.toLowerCase()];
   const title = override?.title || getPageTitle(experience);

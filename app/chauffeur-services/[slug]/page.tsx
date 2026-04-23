@@ -114,14 +114,14 @@ async function getAllVehicles(): Promise<CarsApiItem[]> {
       { next: { revalidate: 3600 }, signal: controller.signal }
     );
     clearTimeout(timeout);
-    if (!response.ok) throw new Error("Failed to fetch vehicles");
+    if (!response.ok) return [];
     const data = await response.json();
     if (Array.isArray(data)) return data;
     if (Array.isArray(data?.results)) return data.results;
     return [];
-  } catch (err) {
+  } catch {
     clearTimeout(timeout);
-    throw err;
+    return [];
   }
 }
 
