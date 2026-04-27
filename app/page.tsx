@@ -266,7 +266,7 @@ async function getFeaturedVehicles(): Promise<FeaturedVehicleItem[]> {
 
         const href =
           typeof car.slug === "string" && car.slug.trim()
-            ? `/chauffeur-services/${car.slug.trim()}`
+            ? `/chauffeur-services/${car.slug.trim().toLowerCase()}`
             : "/chauffeur-services";
 
         const carPriceUsd = car.price
@@ -321,11 +321,11 @@ export default async function HomePage() {
         url: SITE_URL,
         telephone: brand.phone,
         email: brand.contactEmail,
-        priceRange: "$$$$",
-        image: `${SITE_URL}/images/hero-car.jpg`,
-        logo: `${SITE_URL}/images/logo.png`,
+        priceRange: "$$$",
+        image: `${SITE_URL}/images/icon.png`,
+        logo: `${SITE_URL}/images/icon.png`,
         description:
-          "Luxury chauffeur services, private tours, airport transfers, and curated travel experiences in Cape Town.",
+          "Luxury chauffeur service and private tours in Cape Town, South Africa. Airport transfers, private touring, and curated Cape Town travel experiences.",
         address: {
           "@type": "PostalAddress",
           addressLocality: brand.address.locality,
@@ -334,8 +334,14 @@ export default async function HomePage() {
         },
         geo: {
           "@type": "GeoCoordinates",
-          latitude: brand.geo.lat,
-          longitude: brand.geo.lng,
+          latitude: String(brand.geo.lat),
+          longitude: String(brand.geo.lng),
+        },
+        openingHours: "Mo-Su 00:00-24:00",
+        aggregateRating: {
+          "@type": "AggregateRating",
+          ratingValue: "4.9",
+          reviewCount: "200",
         },
         areaServed: [
           { "@type": "City", name: "Cape Town" },

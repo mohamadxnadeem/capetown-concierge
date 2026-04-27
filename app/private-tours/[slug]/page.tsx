@@ -245,8 +245,8 @@ function getSeoKeyword(experience: Experience): string {
 function getPageTitle(experience: Experience) {
   if (experience.meta_title) return experience.meta_title;
   const keyword = getSeoKeyword(experience);
-  const priceUsd = zarToUsdNum(experience.price_from);
-  const priceStr = priceUsd ? ` | From $${priceUsd}` : "";
+  const priceZar = experience.price_from ? Math.round(Number(String(experience.price_from).replace(/[^0-9.]/g, ""))) || undefined : undefined;
+  const priceStr = priceZar ? ` | From R${priceZar}` : "";
   return `${keyword} | Private Chauffeur Tour${priceStr} | ${brand.name}`;
 }
 
@@ -500,13 +500,12 @@ export default async function PrivateTourDetailPage({ params }: PageProps) {
   const schemaImage = primaryImage || ogImage;
   const canonicalUrl = `${SITE_URL}/private-tours/${slug.toLowerCase()}`;
   const price = experience.price_from || experience.price_to || "";
-  const priceUsdForSchema = zarToUsdNum(price);
+  const priceZarForSchema = price ? Math.round(Number(String(price).replace(/[^0-9.]/g, ""))) || undefined : undefined;
 
   const tourName = experience.title || "private tour";
   const tourKeyword = getSeoKeyword(experience);
-  const priceFromUsd = zarToUsdNum(experience.price_from);
-  const priceAnswer = priceFromUsd
-    ? `${tourKeyword} starts from $${priceFromUsd} per vehicle. This is an all-inclusive private experience — contact us via WhatsApp for a personalised quote based on your group size and requirements.`
+  const priceAnswer = priceZarForSchema
+    ? `${tourKeyword} starts from R${priceZarForSchema} per vehicle. This is an all-inclusive private experience — contact us via WhatsApp for a personalised quote based on your group size and requirements.`
     : `Pricing for ${tourKeyword} depends on your group size and any custom requirements. Contact us via WhatsApp for a tailored quote — we typically respond within 30 minutes.`;
 
   const faqJsonLd = {
@@ -631,11 +630,11 @@ export default async function PrivateTourDetailPage({ params }: PageProps) {
       priceRange: "$$$$",
     },
     touristType: ["Luxury Travelers", "Couples", "Families"],
-    offers: priceUsdForSchema
+    offers: priceZarForSchema
       ? {
           "@type": "Offer",
-          priceCurrency: "USD",
-          price: priceUsdForSchema,
+          priceCurrency: "ZAR",
+          price: priceZarForSchema,
           availability: "https://schema.org/InStock",
           url: canonicalUrl,
         }

@@ -270,7 +270,7 @@ function StarRating({ count = 5 }: { count?: number }) {
   return <>{Array.from({ length: count }).map((_, i) => <span key={i}>★</span>)}</>;
 }
 
-export default function TestimonialsSection() {
+export default function TestimonialsSection({ pinnedNames }: { pinnedNames?: string[] } = {}) {
   const sliderRef = useRef<HTMLDivElement | null>(null);
   const autoScrollRef = useRef<number | null>(null);
 
@@ -353,7 +353,13 @@ export default function TestimonialsSection() {
           onTouchStart={stopAutoScroll}
           onTouchEnd={startAutoScroll}
         >
-          {testimonials.map((item, index) => (
+          {(pinnedNames && pinnedNames.length > 0
+            ? [
+                ...testimonials.filter((t) => pinnedNames.includes(t.name)),
+                ...testimonials.filter((t) => !pinnedNames.includes(t.name)),
+              ]
+            : testimonials
+          ).map((item, index) => (
             <Card key={`${item.name}-${index}`}>
               <CardHeader>
                 <Initial>{item.name.charAt(0)}</Initial>

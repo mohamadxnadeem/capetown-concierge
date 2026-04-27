@@ -47,6 +47,17 @@ const nextConfig: NextConfig = {
         destination: "/private-tours/cape-peninsula-tour",
         permanent: true,
       },
+      // Uppercase slug safety nets (case-sensitive sources only — no loops)
+      {
+        source: "/chauffeur-services/BMW-X5-for-hire-with-driver",
+        destination: "/chauffeur-services/bmw-x5-for-hire-with-driver",
+        permanent: true,
+      },
+      {
+        source: "/private-tours/Cape-Town-City-Tour",
+        destination: "/private-tours/cape-town-city-tour",
+        permanent: true,
+      },
     ];
   },
 };

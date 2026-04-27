@@ -233,34 +233,10 @@ export default async function AirportTransfersCapeTownPage() {
         mainEntity: [
           {
             "@type": "Question",
-            name: "How much does an airport transfer in Cape Town cost?",
+            name: "Do you track flights for airport transfers in Cape Town?",
             acceptedAnswer: {
               "@type": "Answer",
-              text: "Airport transfer pricing in Cape Town depends on your vehicle choice, pickup location, and drop-off destination. Contact us via WhatsApp for a fast, personalised quote — we typically respond within 30 minutes.",
-            },
-          },
-          {
-            "@type": "Question",
-            name: "Do you offer meet and greet at Cape Town International Airport?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "Yes. Your chauffeur tracks your flight in real time and meets you in the arrivals hall with a name board. They will assist with your luggage and escort you directly to the vehicle.",
-            },
-          },
-          {
-            "@type": "Question",
-            name: "Are your Cape Town airport transfers available 24 hours?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "Yes. We operate 24 hours a day, 7 days a week, including early morning, late night, and public holiday flights. Early bookings are recommended for early morning departures.",
-            },
-          },
-          {
-            "@type": "Question",
-            name: "What vehicles are available for airport transfers in Cape Town?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "Our airport transfer fleet includes the BMW X5, Mercedes V-Class, Range Rover Sport, and other premium vehicles. We match the vehicle to your group size and luggage requirements.",
+              text: "Yes. We monitor your flight in real time and adjust your driver's arrival time automatically if your flight is early or delayed. You do not need to contact us — we handle it.",
             },
           },
           {
@@ -268,23 +244,23 @@ export default async function AirportTransfersCapeTownPage() {
             name: "What is included in a Cape Town airport transfer?",
             acceptedAnswer: {
               "@type": "Answer",
-              text: "Your transfer includes a professionally presented chauffeur, premium vehicle with fuel, flight tracking, meet and greet with name board, and luggage assistance. There are no hidden fees — parking and tolls are included.",
+              text: "Your transfer includes a professional meet and greet at arrivals with a name board, luggage assistance, real-time flight tracking, and door-to-door delivery to your accommodation. No hidden fees.",
             },
           },
           {
             "@type": "Question",
-            name: "How do I book an airport transfer in Cape Town?",
+            name: "How far in advance should I book an airport transfer in Cape Town?",
             acceptedAnswer: {
               "@type": "Answer",
-              text: "The fastest way is via WhatsApp. Share your flight details, arrival time, and destination and we will confirm availability and pricing within 30 minutes. Same-day bookings are welcomed.",
+              text: "We recommend booking at least 24 hours in advance, though we can often accommodate same-day requests. Message us on WhatsApp to check availability.",
             },
           },
           {
             "@type": "Question",
-            name: "Do you offer airport transfers from Cape Town to Stellenbosch or Franschhoek?",
+            name: "What happens if my flight is delayed?",
             acceptedAnswer: {
               "@type": "Answer",
-              text: "Yes. We offer airport transfers to all major destinations including Stellenbosch, Franschhoek, Constantia, the Atlantic Seaboard, the City Bowl, and all surrounding areas. Long-distance transfers are also available.",
+              text: "We monitor your flight and automatically adjust. Your driver will be there when you land, not when you were originally scheduled to land. There is no additional charge for flight delays.",
             },
           },
         ],
@@ -321,7 +297,7 @@ export default async function AirportTransfersCapeTownPage() {
         imageAlt="Luxury airport transfer Cape Town with professional chauffeur meet and greet service"
       />
 
-      <TestimonialsSection />
+      <TestimonialsSection pinnedNames={["Achmat", "Jones", "Mampuru"]} />
       <TestimonialsCta />
 
       <FeaturedVehicles
@@ -345,34 +321,24 @@ export default async function AirportTransfersCapeTownPage() {
         title="Common Questions About Airport Transfers in Cape Town"
         items={[
           {
-            question: "Where will my driver meet me at Cape Town International Airport?",
+            question: "Do you track flights for airport transfers in Cape Town?",
             answer:
-              "Your chauffeur will be waiting in the arrivals hall with a name board. Exact meeting point details are included in your booking confirmation.",
+              "Yes. We monitor your flight in real time and adjust your driver's arrival time automatically if your flight is early or delayed. You do not need to contact us — we handle it.",
+          },
+          {
+            question: "What is included in a Cape Town airport transfer?",
+            answer:
+              "Your transfer includes a professional meet and greet at arrivals with a name board, luggage assistance, real-time flight tracking, and door-to-door delivery to your accommodation. No hidden fees.",
+          },
+          {
+            question: "How far in advance should I book an airport transfer in Cape Town?",
+            answer:
+              "We recommend booking at least 24 hours in advance, though we can often accommodate same-day requests. Message us on WhatsApp to check availability.",
           },
           {
             question: "What happens if my flight is delayed?",
             answer:
-              "We track your flight in real time. If your flight is delayed, your chauffeur will adjust their arrival time accordingly — at no extra charge.",
-          },
-          {
-            question: "How far is Cape Town Airport from the city centre?",
-            answer:
-              "Cape Town International Airport is approximately 20km from the city centre, typically a 20–30 minute drive depending on traffic.",
-          },
-          {
-            question: "Is payment required upfront?",
-            answer:
-              "Yes, payment is confirmed at the time of booking. Your quoted price is fixed and inclusive — no surprises on the day.",
-          },
-          {
-            question: "Can I book a return airport transfer at the same time?",
-            answer:
-              "Yes. When you message us on WhatsApp, let us know your outbound and return flight details and we'll arrange both transfers together.",
-          },
-          {
-            question: "Do you offer child seats?",
-            answer:
-              "Yes, child seats can be arranged on request. Please mention this when making your booking so we can prepare the right vehicle.",
+              "We monitor your flight and automatically adjust. Your driver will be there when you land, not when you were originally scheduled to land. There is no additional charge for flight delays.",
           },
         ]}
       />

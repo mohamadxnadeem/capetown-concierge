@@ -306,29 +306,24 @@ const includedItems = [
 
 const serviceFaqs = [
   {
-    question: "What is included in your chauffeur service?",
+    question: "What is included in a full-day chauffeur hire in Cape Town?",
     answer:
-      "Every booking includes the vehicle, a professional PDP-licensed chauffeur, fuel, and toll fees. For airport transfers, your driver will track your flight and meet you at arrivals with a name board. For full-day hire, we plan the route around your schedule.",
+      "Full-day chauffeur hire includes your dedicated professional driver, a premium vehicle, fuel, and unlimited kilometres within the Cape Town area. Hotel pickup and drop-off is included. We tailor the route entirely around your schedule and preferences.",
   },
   {
-    question: "Do you offer airport transfers in Cape Town?",
+    question: "How do I book a chauffeur service in Cape Town?",
     answer:
-      "Yes. We provide 24/7 premium airport transfers to and from Cape Town International Airport — meet and greet at arrivals, flight tracking, and luggage assistance included.",
+      "Message us on WhatsApp and we will confirm your booking, vehicle, and itinerary within 30 minutes. We are available 7 days a week.",
   },
   {
-    question: "Can I book a chauffeur for a full day?",
+    question: "What vehicles are available for chauffeur hire in Cape Town?",
     answer:
-      "Yes. Full-day private chauffeur hire is available for city travel, wine routes, meetings, restaurant runs, scenic drives, and bespoke itineraries. The day runs entirely on your schedule.",
+      "Our fleet includes the BMW 5-Series, BMW X5, Mercedes V-Class, Hyundai Staria, Mercedes Sprinter, and Range Rover Sport. Each vehicle is privately assigned to your group for the full duration of your booking.",
   },
   {
-    question: "Which vehicles are available?",
+    question: "Is the chauffeur service 100% private?",
     answer:
-      "Our fleet includes the BMW 5-Series, BMW X5, Hyundai Staria (8 seats), Mercedes Sprinter (14 seats), Mercedes V-Class (6 seats), and Range Rover Sport. All vehicles are premium, climate-controlled, and privately driven.",
-  },
-  {
-    question: "Is a private chauffeur better than self-driving in Cape Town?",
-    answer:
-      "For most visitors, yes — especially for airport transfers, wine routes, and long scenic drives. You arrive relaxed, your group travels together, and there's no parking, no navigation, and no designated driver required.",
+      "Yes. Every booking is entirely private. We never combine bookings or add strangers to your vehicle. Your group has the vehicle exclusively for the full day.",
   },
 ];
 

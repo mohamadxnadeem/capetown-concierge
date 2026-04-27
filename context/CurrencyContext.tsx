@@ -74,20 +74,8 @@ export function CurrencyProvider({ children }: { children: React.ReactNode }) {
       const saved = localStorage.getItem(STORAGE_KEY) as CurrencyCode | null;
       if (saved && ["USD", "GBP", "EUR", "ZAR", "AUD", "CAD"].includes(saved)) {
         setCurrencyState(saved);
-        setIsReady(true);
-        return;
       }
-
-      // 4. Auto-detect from IP
-      try {
-        const res = await fetch("/api/geo");
-        if (res.ok) {
-          const { country } = await res.json();
-          const detected = COUNTRY_TO_CURRENCY[country] ?? "ZAR";
-          setDetectedCurrency(detected);
-          setCurrencyState(detected);
-        }
-      } catch {}
+      // Default is ZAR (set in useState initialiser) — no geo-detection override
 
       setIsReady(true);
     }
