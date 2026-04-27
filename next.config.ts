@@ -26,6 +26,19 @@ const nextConfig: NextConfig = {
   },
   reactStrictMode: true,
   trailingSlash: false,
+  async headers() {
+    return [
+      {
+        source: "/images/(.*)",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
+          },
+        ],
+      },
+    ];
+  },
   async redirects() {
     return [
       // Typo fix — safe: source and destination differ meaningfully

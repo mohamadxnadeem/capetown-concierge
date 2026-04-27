@@ -148,7 +148,7 @@ export default function HeroBanner({
           fill
           priority
           fetchPriority="high"
-          quality={90}
+          quality={75}
           placeholder="blur"
           blurDataURL={shimmerPlaceholder(1400, 900)}
           sizes="100vw"
