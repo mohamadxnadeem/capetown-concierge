@@ -9,7 +9,7 @@ export const capeTownConciergeBrand: BrandConfig = {
   contactEmail: "zaid@capetown-concierge.co.za",
   phone: "+27 63 674 6131",
   whatsappNumber: "27636746131",
-  logoPath: "/images/logo.svg",
+  logoPath: "/images/icon.png",
   heroImagePath: "/images/hero-car.jpg",
   address: {
     locality: "Cape Town",
