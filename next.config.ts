@@ -42,22 +42,15 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       // Typo fix — safe: source and destination differ meaningfully
+      // (peninsular vs peninsula are genuinely different strings)
       {
         source: "/private-tours/cape-peninsular-tour",
         destination: "/private-tours/cape-peninsula-tour",
         permanent: true,
       },
-      // Uppercase slug safety nets (case-sensitive sources only — no loops)
-      {
-        source: "/chauffeur-services/BMW-X5-for-hire-with-driver",
-        destination: "/chauffeur-services/bmw-x5-for-hire-with-driver",
-        permanent: true,
-      },
-      {
-        source: "/private-tours/Cape-Town-City-Tour",
-        destination: "/private-tours/cape-town-city-tour",
-        permanent: true,
-      },
+      // NOTE: do NOT add case-only redirects (e.g. BMW-X5 → bmw-x5).
+      // Next.js matches sources case-insensitively so they loop on the
+      // lowercase URL. Slug lowercasing is handled in code instead.
     ];
   },
 };
