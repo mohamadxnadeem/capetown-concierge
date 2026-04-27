@@ -5,7 +5,6 @@ const nextConfig: NextConfig = {
     styledComponents: true,
   },
   images: {
-    unoptimized: true,
     qualities: [75, 90],
     formats: ["image/avif", "image/webp"],
     remotePatterns: [
@@ -27,40 +26,31 @@ const nextConfig: NextConfig = {
   },
   reactStrictMode: true,
   trailingSlash: false,
+  async headers() {
+    return [
+      {
+        source: "/images/(.*)",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
+          },
+        ],
+      },
+    ];
+  },
   async redirects() {
     return [
-      // Typo fix
+      // Typo fix — safe: source and destination differ meaningfully
+      // (peninsular vs peninsula are genuinely different strings)
       {
         source: "/private-tours/cape-peninsular-tour",
         destination: "/private-tours/cape-peninsula-tour",
         permanent: true,
       },
-      // Uppercase slug → lowercase (consolidates ranking signals)
-      {
-        source: "/private-tours/Cape-Town-City-Tour",
-        destination: "/private-tours/cape-town-city-tour",
-        permanent: true,
-      },
-      {
-        source: "/chauffeur-services/BMW-X5-for-hire-with-driver",
-        destination: "/chauffeur-services/bmw-x5-for-hire-with-driver",
-        permanent: true,
-      },
-      {
-        source: "/chauffeur-services/BMW-5-series-for-hire-with-driver",
-        destination: "/chauffeur-services/bmw-5-series-for-hire-with-driver",
-        permanent: true,
-      },
-      {
-        source: "/chauffeur-services/Mercedes-v-class-private-chauffeur-service",
-        destination: "/chauffeur-services/mercedes-v-class-private-chauffeur-service",
-        permanent: true,
-      },
-      {
-        source: "/chauffeur-services/Mercedes-sprinter-with-driver-cape-town",
-        destination: "/chauffeur-services/mercedes-sprinter-with-driver-cape-town",
-        permanent: true,
-      },
+      // NOTE: do NOT add case-only redirects (e.g. BMW-X5 → bmw-x5).
+      // Next.js matches sources case-insensitively so they loop on the
+      // lowercase URL. Slug lowercasing is handled in code instead.
     ];
   },
 };
