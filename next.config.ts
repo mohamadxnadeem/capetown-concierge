@@ -5,7 +5,6 @@ const nextConfig: NextConfig = {
     styledComponents: true,
   },
   images: {
-    unoptimized: true,
     qualities: [75, 90],
     formats: ["image/avif", "image/webp"],
     remotePatterns: [
