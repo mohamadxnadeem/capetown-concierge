@@ -7,8 +7,8 @@ import HeroBanner from "../../components/sections/HeroBanner";
 import FeaturedExperiences from "../../components/sections/FeaturedExperiences";
 
 const TestimonialsSection = dynamic(() => import("../../components/sections/testimonials/TestimonialsSection"));
-const TestimonialsCta = dynamic(() => import("../../components/sections/testimonials/TestimonialsCta"), { ssr: false });
-const WhyChooseUs = dynamic(() => import("../../components/sections/WhyChooseUs"), { ssr: false });
+const TestimonialsCta = dynamic(() => import("../../components/sections/testimonials/TestimonialsCta"));
+const WhyChooseUs = dynamic(() => import("../../components/sections/WhyChooseUs"));
 
 const SITE_URL = brand.siteUrl;
 

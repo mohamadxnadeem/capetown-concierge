@@ -6,10 +6,10 @@ import FeaturedExperiences from "../components/sections/FeaturedExperiences";
 import GoogleRatingBadge from "../components/common/GoogleRatingBadge";
 
 const TestimonialsSection = dynamic(() => import("../components/sections/testimonials/TestimonialsSection"));
-const TestimonialsCta = dynamic(() => import("../components/sections/testimonials/TestimonialsCta"), { ssr: false });
-const WhyChooseUs = dynamic(() => import("../components/sections/WhyChooseUs"), { ssr: false });
-const ChauffeurAuthoritySection = dynamic(() => import("../components/sections/ChauffeurAuthoritySection"), { ssr: false });
-const HomepageEnquiryCollapsible = dynamic(() => import("../components/sections/HomepageEnquiryCollapsible"), { ssr: false });
+const TestimonialsCta = dynamic(() => import("../components/sections/testimonials/TestimonialsCta"));
+const WhyChooseUs = dynamic(() => import("../components/sections/WhyChooseUs"));
+const ChauffeurAuthoritySection = dynamic(() => import("../components/sections/ChauffeurAuthoritySection"));
+const HomepageEnquiryCollapsible = dynamic(() => import("../components/sections/HomepageEnquiryCollapsible"));
 import { brand } from "../lib/brand";
 import { buildWhatsAppLink } from "../lib/whatsapp";
 

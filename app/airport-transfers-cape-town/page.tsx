@@ -5,10 +5,10 @@ import dynamic from "next/dynamic";
 import HeroBanner from "../../components/sections/HeroBanner";
 import FeaturedVehicles from "../../components/sections/FeaturedVehicles";
 
-const WhyChooseUs = dynamic(() => import("../../components/sections/WhyChooseUs"), { ssr: false });
-const FaqSection = dynamic(() => import("../../components/sections/FaqSection"), { ssr: false });
+const WhyChooseUs = dynamic(() => import("../../components/sections/WhyChooseUs"));
+const FaqSection = dynamic(() => import("../../components/sections/FaqSection"));
 const TestimonialsSection = dynamic(() => import("../../components/sections/testimonials/TestimonialsSection"));
-const TestimonialsCta = dynamic(() => import("../../components/sections/testimonials/TestimonialsCta"), { ssr: false });
+const TestimonialsCta = dynamic(() => import("../../components/sections/testimonials/TestimonialsCta"));
 
 const SITE_URL = brand.siteUrl;
 const WHATSAPP = "https://wa.me/27636746131?text=Hi%2C+I%27d+like+to+book+an+airport+transfer+in+Cape+Town.+Please+assist.";
