@@ -1,13 +1,15 @@
 import type { Metadata } from "next";
+import dynamic from "next/dynamic";
 import HeroBanner from "../components/sections/HeroBanner";
 import FeaturedVehicles from "../components/sections/FeaturedVehicles";
-import WhyChooseUs from "../components/sections/WhyChooseUs";
 import FeaturedExperiences from "../components/sections/FeaturedExperiences";
-import TestimonialsSection from "../components/sections/testimonials/TestimonialsSection";
-import TestimonialsCta from "../components/sections/testimonials/TestimonialsCta";
-import ChauffeurAuthoritySection from "../components/sections/ChauffeurAuthoritySection";
-import HomepageEnquiryCollapsible from "../components/sections/HomepageEnquiryCollapsible";
 import GoogleRatingBadge from "../components/common/GoogleRatingBadge";
+
+const TestimonialsSection = dynamic(() => import("../components/sections/testimonials/TestimonialsSection"));
+const TestimonialsCta = dynamic(() => import("../components/sections/testimonials/TestimonialsCta"), { ssr: false });
+const WhyChooseUs = dynamic(() => import("../components/sections/WhyChooseUs"), { ssr: false });
+const ChauffeurAuthoritySection = dynamic(() => import("../components/sections/ChauffeurAuthoritySection"), { ssr: false });
+const HomepageEnquiryCollapsible = dynamic(() => import("../components/sections/HomepageEnquiryCollapsible"), { ssr: false });
 import { brand } from "../lib/brand";
 import { buildWhatsAppLink } from "../lib/whatsapp";
 

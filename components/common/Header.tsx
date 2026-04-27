@@ -176,6 +176,7 @@ export default function Header() {
                   alt={brand.name}
                   fill
                   priority
+                  sizes="165px"
                   style={{
                     objectFit: "contain",
                     transform: "scale(1.15)",

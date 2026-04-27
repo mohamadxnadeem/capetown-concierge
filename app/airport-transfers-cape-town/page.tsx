@@ -1,12 +1,14 @@
 import type { Metadata } from "next";
 import { brand } from "../../lib/brand";
 import { buildWhatsAppLink } from "../../lib/whatsapp";
+import dynamic from "next/dynamic";
 import HeroBanner from "../../components/sections/HeroBanner";
-import WhyChooseUs from "../../components/sections/WhyChooseUs";
 import FeaturedVehicles from "../../components/sections/FeaturedVehicles";
-import FaqSection from "../../components/sections/FaqSection";
-import TestimonialsSection from "../../components/sections/testimonials/TestimonialsSection";
-import TestimonialsCta from "../../components/sections/testimonials/TestimonialsCta";
+
+const WhyChooseUs = dynamic(() => import("../../components/sections/WhyChooseUs"), { ssr: false });
+const FaqSection = dynamic(() => import("../../components/sections/FaqSection"), { ssr: false });
+const TestimonialsSection = dynamic(() => import("../../components/sections/testimonials/TestimonialsSection"));
+const TestimonialsCta = dynamic(() => import("../../components/sections/testimonials/TestimonialsCta"), { ssr: false });
 
 const SITE_URL = brand.siteUrl;
 const WHATSAPP = "https://wa.me/27636746131?text=Hi%2C+I%27d+like+to+book+an+airport+transfer+in+Cape+Town.+Please+assist.";

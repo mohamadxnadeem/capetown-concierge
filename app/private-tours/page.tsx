@@ -2,11 +2,13 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { brand } from "../../lib/brand";
 import { buildWhatsAppLink } from "../../lib/whatsapp";
+import dynamic from "next/dynamic";
 import HeroBanner from "../../components/sections/HeroBanner";
 import FeaturedExperiences from "../../components/sections/FeaturedExperiences";
-import TestimonialsSection from "../../components/sections/testimonials/TestimonialsSection";
-import TestimonialsCta from "../../components/sections/testimonials/TestimonialsCta";
-import WhyChooseUs from "../../components/sections/WhyChooseUs";
+
+const TestimonialsSection = dynamic(() => import("../../components/sections/testimonials/TestimonialsSection"));
+const TestimonialsCta = dynamic(() => import("../../components/sections/testimonials/TestimonialsCta"), { ssr: false });
+const WhyChooseUs = dynamic(() => import("../../components/sections/WhyChooseUs"), { ssr: false });
 
 const SITE_URL = brand.siteUrl;
 
