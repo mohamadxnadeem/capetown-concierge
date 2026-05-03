@@ -19,13 +19,13 @@ export function getPrimaryImage(car: Car) {
 
 export function formatCurrency(amount: number) {
   if (!amount || Number.isNaN(amount)) return "";
-  return `$${Math.round(amount)}`;
+  return `R${Math.round(amount).toLocaleString()}`;
 }
 
 export function formatPrice(price?: string | number) {
   if (price === undefined || price === null || price === "") return "";
   const num = Number(String(price).replace(/[^0-9.]/g, ""));
-  return isNaN(num) || num === 0 ? "" : `From $${Math.round(num)} per day`;
+  return isNaN(num) || num === 0 ? "" : `From R${Math.round(num).toLocaleString()} per day`;
 }
 
 export function getBaseDailyRate(

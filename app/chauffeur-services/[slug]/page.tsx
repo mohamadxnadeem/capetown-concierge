@@ -82,7 +82,7 @@ function formatPrice(price?: string | number) {
   if (price === undefined || price === null || price === "") return "";
   const num = Number(String(price).replace(/[^0-9.]/g, ""));
   if (isNaN(num) || num === 0) return "";
-  return `From $${Math.round(num)} per day`;
+  return `From R${Math.round(num).toLocaleString()} per day`;
 }
 
 function getNumericPriceValue(
@@ -148,27 +148,27 @@ function getVehicleBySlug(cars: Car[], slug: string) {
 const VEHICLE_META: Record<string, { title: string; description: string }> = {
   "bmw-5-series-for-hire-with-driver": {
     title: "BMW 5-Series Chauffeur Cape Town | Executive Hire",
-    description: "Hire a BMW 5-Series with professional driver in Cape Town. Ideal for airport transfers & business travel. From $450/day. Book via WhatsApp.",
+    description: "Hire a BMW 5-Series with professional driver in Cape Town. Ideal for airport transfers & business travel. From R8,325/day. Book via WhatsApp.",
   },
   "bmw-x5-for-hire-with-driver": {
     title: "BMW X5 Chauffeur Cape Town | Luxury SUV with Driver",
-    description: "Private BMW X5 hire with professional chauffeur in Cape Town. Perfect for families & small groups. From $450/day. WhatsApp to check availability.",
+    description: "Private BMW X5 hire with professional chauffeur in Cape Town. Perfect for families & small groups. From R8,325/day. WhatsApp to check availability.",
   },
   "8-seater-staria-van-with-driver": {
     title: "Hyundai Staria 8-Seater Cape Town | Group Transfers",
-    description: "Book an 8-seat Hyundai Staria with driver in Cape Town. Ideal for group airport transfers & tours. From $350/day. WhatsApp to book today.",
+    description: "Book an 8-seat Hyundai Staria with driver in Cape Town. Ideal for group airport transfers & tours. From R6,475/day. WhatsApp to book today.",
   },
   "mercedes-sprinter-with-driver-cape-town": {
     title: "Mercedes Sprinter Cape Town | 14-Seat Group Hire",
-    description: "14-seater Mercedes Sprinter with professional driver for large group tours & transfers in Cape Town. From $600/day. Get a quote on WhatsApp.",
+    description: "14-seater Mercedes Sprinter with professional driver for large group tours & transfers in Cape Town. From R11,100/day. Get a quote on WhatsApp.",
   },
   "mercedes-v-class-private-chauffeur-service": {
     title: "Mercedes V-Class Cape Town | Luxury Group Chauffeur",
-    description: "Premium 6-seat Mercedes V-Class with private chauffeur in Cape Town. Perfect for VIPs & families. From $550/day. Book via WhatsApp today.",
+    description: "Premium 6-seat Mercedes V-Class with private chauffeur in Cape Town. Perfect for VIPs & families. From R10,175/day. Book via WhatsApp today.",
   },
   "range-rover-sport-chauffeur-service-cape-town": {
     title: "Range Rover Sport Cape Town | Luxury SUV Chauffeur",
-    description: "Hire a Range Rover Sport with driver in Cape Town. Bold, refined & fully private. From $500/day. WhatsApp us to check availability & book.",
+    description: "Hire a Range Rover Sport with driver in Cape Town. Bold, refined & fully private. From R9,250/day. WhatsApp us to check availability & book.",
   },
 };
 
@@ -502,7 +502,7 @@ export default async function ChauffeurServiceDetailPage({ params }: PageProps) 
           ? {
               offers: {
                 "@type": "Offer",
-                priceCurrency: "USD",
+                priceCurrency: "ZAR",
                 price: Math.round(Number(String(numericPrice).replace(/[^0-9.]/g, ""))),
                 availability: "https://schema.org/InStock",
                 url: canonicalUrl,

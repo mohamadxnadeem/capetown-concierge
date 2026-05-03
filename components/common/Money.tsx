@@ -17,8 +17,8 @@ export default function Money({ usd, suffix = "per day", prefix = "From " }: Mon
 
   if (isNaN(amount) || amount === 0) return null;
 
-  // Show USD immediately during hydration, swap once ready
-  const display = isReady ? format(amount) : `$${Math.round(amount)}`;
+  // Show ZAR immediately during hydration (default currency), swap once ready
+  const display = isReady ? format(amount) : `R${Math.round(amount).toLocaleString()}`;
 
   return (
     <>
