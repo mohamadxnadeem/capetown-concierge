@@ -218,9 +218,57 @@ async function getFeaturedExperiences(): Promise<FeaturedExperienceItem[]> {
     return mapped.filter(isFeaturedExperienceItem);
   } catch (error) {
     console.error("Error loading featured experiences:", error);
-    return [];
+    return FALLBACK_EXPERIENCES;
   }
 }
+
+const FALLBACK_EXPERIENCES: FeaturedExperienceItem[] = [
+  {
+    title: "Cape Peninsula Private Tour",
+    description: "Chapman's Peak, Boulders Beach penguins & Cape Point in one private full day. No shared groups, entirely at your pace.",
+    href: "/private-tours/cape-peninsula-tour",
+    image: "",
+    alt: "Private Cape Peninsula Tour Cape Town with Professional Chauffeur",
+  },
+  {
+    title: "Cape Winelands Private Tour",
+    description: "Private chauffeur through Stellenbosch & Franschhoek. World-class wine estates, no timetables, no strangers.",
+    href: "/private-tours/winelands-chauffeur-drive",
+    image: "",
+    alt: "Private Cape Winelands Tour Stellenbosch Franschhoek Chauffeur",
+  },
+  {
+    title: "Cape Town City Private Tour",
+    description: "Table Mountain, Bo-Kaap, Camps Bay & the V&A Waterfront with a dedicated private driver. Fully flexible itinerary.",
+    href: "/private-tours/cape-town-city-tour",
+    image: "",
+    alt: "Private Cape Town City Tour with Chauffeur Driver",
+  },
+];
+
+const FALLBACK_VEHICLES: FeaturedVehicleItem[] = [
+  {
+    title: "Range Rover Sport Chauffeur",
+    description: "Bold, refined and fully private. Ideal for couples and executives who want presence on the road.",
+    href: "/chauffeur-services/range-rover-sport-chauffeur-service-cape-town",
+    image: "",
+    alt: "Range Rover Sport Chauffeur Service Cape Town",
+  },
+  {
+    title: "Mercedes V-Class Private Chauffeur",
+    description: "Six-seat luxury people carrier for families, VIP groups and executive travel across Cape Town.",
+    href: "/chauffeur-services/mercedes-v-class-private-chauffeur-service",
+    image: "",
+    alt: "Mercedes V-Class Private Chauffeur Cape Town",
+  },
+  {
+    title: "BMW X5 Chauffeur Cape Town",
+    description: "Premium SUV with elevated ride quality. Perfect for airport transfers, day tours and small groups.",
+    href: "/chauffeur-services/bmw-x5-for-hire-with-driver",
+    image: "",
+    alt: "BMW X5 Chauffeur Cape Town with Driver",
+  },
+];
 
 async function getFeaturedVehicles(): Promise<FeaturedVehicleItem[]> {
   try {
@@ -286,7 +334,7 @@ async function getFeaturedVehicles(): Promise<FeaturedVehicleItem[]> {
     return mapped.filter(isFeaturedVehicleItem);
   } catch (error) {
     console.error("Error loading vehicles:", error);
-    return [];
+    return FALLBACK_VEHICLES;
   }
 }
 
