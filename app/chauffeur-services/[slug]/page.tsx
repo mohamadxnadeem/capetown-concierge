@@ -366,9 +366,17 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const car = getVehicleBySlug(vehicles, slug);
 
   if (!car) {
+    const ogImage = `${SITE_URL}/images/og-cape-town-concierge.jpg`;
     return {
       title: `Chauffeur Service | ${brand.name}`,
       description: "Premium chauffeur-driven vehicles in Cape Town",
+      openGraph: {
+        images: [{ url: ogImage, alt: "Cape Town Concierge — Luxury Chauffeur Service" }],
+      },
+      twitter: {
+        card: "summary_large_image",
+        images: [ogImage],
+      },
     };
   }
 

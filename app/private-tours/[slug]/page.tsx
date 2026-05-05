@@ -378,6 +378,22 @@ export async function generateMetadata({
   const raw = await getExperienceDetails(experienceId);
   const experience = normalizeExperience(raw);
 
+  if (!experience?.title) {
+    const ogImage = `${SITE_URL}/images/og-cape-town-concierge.jpg`;
+    return {
+      title: `Private Tour | ${brand.name}`,
+      description: "Luxury private tours in Cape Town",
+      openGraph: {
+        images: [{ url: ogImage, alt: "Cape Town Concierge — Luxury Private Tours" }],
+      },
+      twitter: {
+        card: "summary_large_image",
+        images: [ogImage],
+      },
+    };
+  }
+
+
   const override = TOUR_META[slug.toLowerCase()];
   const title = override?.title || getPageTitle(experience);
   const description = override?.description || getPageDescription(experience);
