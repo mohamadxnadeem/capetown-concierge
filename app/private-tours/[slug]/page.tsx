@@ -436,9 +436,9 @@ export async function generateMetadata({
       images: [
         {
           url: image || ogImage,
-          width: 1200,
-          height: 630,
-          alt: "Cape Town Concierge — Luxury Chauffeur Service",
+          alt: image
+            ? `${experience.title || "Private Tour"} Cape Town — Private Chauffeur Experience`
+            : "Cape Town Concierge — Luxury Private Tours",
         },
       ],
     },
@@ -493,12 +493,13 @@ export default async function PrivateTourDetailPage({ params }: PageProps) {
   const schemaImage = primaryImage || ogImage;
   const canonicalUrl = `${SITE_URL}/private-tours/${slug.toLowerCase()}`;
   const price = experience.price_from || experience.price_to || "";
-  const priceZarForSchema = price ? Math.round(Number(String(price).replace(/[^0-9.]/g, ""))) || undefined : undefined;
+  const priceZarForSchema = toZarNum(price);
 
   const tourName = experience.title || "private tour";
   const tourKeyword = getSeoKeyword(experience);
-  const priceAnswer = priceZarForSchema
-    ? `${tourKeyword} starts from R${priceZarForSchema} per vehicle. This is an all-inclusive private experience — contact us via WhatsApp for a personalised quote based on your group size and requirements.`
+  const priceFromZar = toZarNum(experience.price_from || "");
+  const priceAnswer = priceFromZar
+    ? `${tourKeyword} starts from R${priceFromZar.toLocaleString()} per vehicle. This is an all-inclusive private experience — contact us via WhatsApp for a personalised quote based on your group size and requirements.`
     : `Pricing for ${tourKeyword} depends on your group size and any custom requirements. Contact us via WhatsApp for a tailored quote — we typically respond within 30 minutes.`;
 
   const faqJsonLd = {
