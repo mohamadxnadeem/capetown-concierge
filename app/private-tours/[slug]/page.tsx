@@ -613,11 +613,11 @@ export default async function PrivateTourDetailPage({ params }: PageProps) {
       priceRange: "$$$$",
     },
     touristType: ["Luxury Travelers", "Couples", "Families"],
-    offers: priceUsdForSchema
+    offers: priceZarForSchema
       ? {
           "@type": "Offer",
-          priceCurrency: "USD",
-          price: priceUsdForSchema,
+          priceCurrency: "ZAR",
+          price: priceZarForSchema,
           availability: "https://schema.org/InStock",
           url: canonicalUrl,
         }
