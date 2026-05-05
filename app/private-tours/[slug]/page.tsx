@@ -120,17 +120,8 @@ const TOUR_META: Record<string, { title: string; description: string }> = {
   },
 };
 
-function zarToUsd(val: string | number): string {
-  const num = Number(String(val).replace(/[^0-9.]/g, ""));
-  return isNaN(num) || num === 0 ? String(val) : `${Math.round(num)}`;
-}
-
-// For schema / meta only — converts ZAR amount to USD integer
-function zarToUsdNum(val: string | number | undefined): number | undefined {
-  if (val === undefined || val === null || val === "") return undefined;
-  const num = Number(String(val).replace(/[^0-9.]/g, ""));
-  if (isNaN(num) || num === 0) return undefined;
-  return Math.round(num / 18.5);
+function toZarNum(val: string | number): number {
+  return Math.round(Number(String(val).replace(/[^0-9.]/g, "")));
 }
 
 function formatPriceRange(
@@ -143,15 +134,17 @@ function formatPriceRange(
   ) {
     return "";
   }
-  if (priceFrom && priceTo) return `From $${zarToUsd(priceFrom)} - $${zarToUsd(priceTo)}`;
-  if (priceFrom) return `From $${zarToUsd(priceFrom)}`;
-  return `$${zarToUsd(priceTo!)}`;
+  const from = priceFrom ? toZarNum(priceFrom) : 0;
+  const to = priceTo ? toZarNum(priceTo) : 0;
+  if (from && to) return `From R${from.toLocaleString()} - R${to.toLocaleString()}`;
+  if (from) return `From R${from.toLocaleString()}`;
+  return `R${to.toLocaleString()}`;
 }
 
 function formatVehiclePrice(price?: string | number) {
   if (price === undefined || price === null || price === "") return "";
-  const num = Number(String(price).replace(/[^0-9.]/g, ""));
-  return isNaN(num) || num === 0 ? "" : `From $${Math.round(num)} per day`;
+  const num = toZarNum(price);
+  return num === 0 ? "" : `From R${num.toLocaleString()} per day`;
 }
 
 function truncateText(text?: string, maxLength = 140) {
