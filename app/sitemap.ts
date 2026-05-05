@@ -10,6 +10,8 @@ const FALLBACK_TOUR_SLUGS = [
   "winelands-chauffeur-drive",
   "cape-town-city-tour",
   "safari-day-trip",
+  "sunset-safari-experience",
+  "table-mountain-tour",
 ];
 
 const FALLBACK_VEHICLE_SLUGS: string[] = [

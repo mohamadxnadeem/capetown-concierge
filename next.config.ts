@@ -41,6 +41,15 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     return [
+      // Non-www → www canonical redirect.
+      // Google indexed the www version (canonical siteUrl = www); without
+      // this redirect, clicks from Google land on the bare domain and 404.
+      {
+        source: "/:path*",
+        has: [{ type: "host", value: "capetown-concierge.co.za" }],
+        destination: "https://www.capetown-concierge.co.za/:path*",
+        permanent: true,
+      },
       // Typo fix — safe: source and destination differ meaningfully
       // (peninsular vs peninsula are genuinely different strings)
       {
