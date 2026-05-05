@@ -43,12 +43,6 @@ function truncateText(text: string, maxLength: number) {
   return `${text.slice(0, maxLength).trim()}...`;
 }
 
-function formatPrice(price?: string | number) {
-  if (price === undefined || price === null || price === "") return "";
-  const num = Number(String(price).replace(/[^0-9.]/g, ""));
-  return isNaN(num) || num === 0 ? "" : `From $${Math.round(num)} per day`;
-}
-
 const CHAUFFEUR_VEHICLE_DESC: Record<string, string> = {
   "Hyundai Staria": "A premium people carrier with generous legroom and panoramic windows, designed for groups of up to 8. Comfortable, stylish, and built for a full day on the road — whether that's a city tour, a wine route, or an airport run.",
   "BMW X5": "A luxury SUV with elevated road presence and a spacious, refined interior. Ideal for families or small groups who want serious comfort without compromising on style.",
