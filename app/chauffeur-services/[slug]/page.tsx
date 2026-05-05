@@ -414,9 +414,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       images: [
         {
           url: image || ogImage,
-          alt: "Cape Town Concierge — Luxury Chauffeur Service",
-          width: 1200,
-          height: 630,
+          alt: image
+            ? getVehicleImageAlt(car)
+            : "Cape Town Concierge — Luxury Chauffeur Service",
         },
       ],
     },
