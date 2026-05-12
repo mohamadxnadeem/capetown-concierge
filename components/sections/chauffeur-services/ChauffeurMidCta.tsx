@@ -2,6 +2,7 @@
 
 import styled from "styled-components";
 import Button from "../../common/Button";
+import { trackWhatsAppClick } from "../../../lib/tracking";
 
 const Wrapper = styled.div`
   margin-top: 34px;
@@ -47,7 +48,12 @@ export default function ChauffeurMidCta({
         or chauffeur booking in minutes.
       </Text>
 
-      <CTA href={whatsappLink} target="_blank" rel="noopener noreferrer">
+      <CTA
+        href={whatsappLink}
+        target="_blank"
+        rel="noopener noreferrer"
+        onClick={() => trackWhatsAppClick({ source: "chauffeur_mid_cta", label: "Check Availability on WhatsApp", vehicle: vehicleTitle })}
+      >
         <Button as="span">Check Availability on WhatsApp</Button>
       </CTA>
     </Wrapper>

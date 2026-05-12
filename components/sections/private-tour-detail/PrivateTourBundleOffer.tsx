@@ -2,6 +2,7 @@
 
 import styled from "styled-components";
 import Button from "../../common/Button";
+import { trackWhatsAppClick } from "../../../lib/tracking";
 
 const OfferCard = styled.div`
   background: linear-gradient(
@@ -59,7 +60,12 @@ export default function PrivateTourBundleOffer({ whatsappLink }: Props) {
         smooth, stylish, and well organised.
       </Text>
 
-      <CTAAnchor href={whatsappLink} target="_blank" rel="noopener noreferrer">
+      <CTAAnchor
+        href={whatsappLink}
+        target="_blank"
+        rel="noopener noreferrer"
+        onClick={() => trackWhatsAppClick({ source: "tour_bundle_offer", label: "Get Multi-Tour Offer on WhatsApp" })}
+      >
         <Button as="span">Get Multi-Tour Offer on WhatsApp</Button>
       </CTAAnchor>
     </OfferCard>

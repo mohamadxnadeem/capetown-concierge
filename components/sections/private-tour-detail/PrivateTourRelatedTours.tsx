@@ -3,6 +3,7 @@
 import styled from "styled-components";
 import Image from "next/image";
 import Link from "next/link";
+import { trackWhatsAppClick } from "../../../lib/tracking";
 import Button from "../../common/Button";
 import { RelatedTour } from "./types";
 
@@ -160,7 +161,11 @@ export default function PrivateTourRelatedTours({
           Book any 3 private tours together and ask us about a group rate. It’s the perfect option for travellers who want to see more of Cape Town without compromising on comfort or flexibility.
         </OfferText>
 
-        <OfferCta href={bundleWhatsappLink} target="_blank">
+        <OfferCta
+          href={bundleWhatsappLink}
+          target="_blank"
+          onClick={() => trackWhatsAppClick({ source: "related_tours_bundle", label: "Get 3-Tour Offer on WhatsApp" })}
+        >
           <Button as="span">Get 3-Tour Offer on WhatsApp</Button>
         </OfferCta>
       </OfferCard>

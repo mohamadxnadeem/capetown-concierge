@@ -2,6 +2,7 @@
 
 import styled from "styled-components";
 import Button from "../../common/Button";
+import { trackWhatsAppClick } from "../../../lib/tracking";
 
 const CTASection = styled.section`
   padding: 84px 0;
@@ -65,7 +66,12 @@ export default function ChauffeurCta({ whatsappLink }: Props) {
         </CTAText>
 
         <CTAButtons>
-          <CTAAnchor href={whatsappLink} target="_blank" rel="noopener noreferrer">
+          <CTAAnchor
+            href={whatsappLink}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => trackWhatsAppClick({ source: "chauffeur_cta", label: "Book on WhatsApp" })}
+          >
             <Button as="span">Book on WhatsApp</Button>
           </CTAAnchor>
         </CTAButtons>
