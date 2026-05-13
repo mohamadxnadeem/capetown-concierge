@@ -9,7 +9,8 @@ import { shimmerPlaceholder } from "../../../lib/shimmer";
 import { trackWhatsAppClick } from "../../../lib/tracking";
 import { buildWhatsAppLink } from "../../../lib/whatsapp";
 import ChauffeurGallery from "../chauffeur-services/ChauffeurGallery";
-import type { Booking, BookingCarPhoto, BookingStatus } from "./types";
+import { getBookingCoverPhoto } from "./data";
+import type { Booking, BookingStatus } from "./types";
 
 type Props = {
   booking: Booking;
@@ -319,13 +320,6 @@ const WhatsAppLink = styled.a`
 
 // Helpers -----------------------------------------------------------------
 
-function getHeroImage(photos?: BookingCarPhoto[]): string | null {
-  if (!photos || photos.length === 0) return null;
-  const sorted = [...photos].sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
-  const featured = sorted.find((p) => p.is_featured);
-  return (featured?.cover_photos || sorted[0]?.cover_photos) ?? null;
-}
-
 const DATE_FMT_FULL = new Intl.DateTimeFormat("en-GB", {
   day: "numeric",
   month: "long",
@@ -407,7 +401,7 @@ function reassuranceCopy(status: BookingStatus): string {
 // Component ---------------------------------------------------------------
 
 export default function BookingConfirmationView({ booking }: Props) {
-  const heroImage = getHeroImage(booking.car?.cover_photos);
+  const heroImage = getBookingCoverPhoto(booking.car?.cover_photos);
   const firstDay = booking.days?.[0];
   const lastDay = booking.days?.[booking.days.length - 1];
   const dateRangeLabel = formatDateRange(firstDay?.date, lastDay?.date);

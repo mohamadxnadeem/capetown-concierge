@@ -2,48 +2,86 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import BookingConfirmationView from "../../../components/sections/booking/BookingConfirmationView";
-import type { Booking } from "../../../components/sections/booking/types";
+import {
+  API_BASE,
+  fetchBooking,
+  getBookingCoverPhoto,
+} from "../../../components/sections/booking/data";
 import FeaturedExperiences from "../../../components/sections/FeaturedExperiences";
 import { brand } from "../../../lib/brand";
 
-// The booking endpoint is public (no auth). API base is configurable via
-// NEXT_PUBLIC_API_BASE_URL with a fallback to the production Railway host
-// hardcoded across the rest of the site.
-const API_BASE =
-  process.env.NEXT_PUBLIC_API_BASE_URL?.replace(/\/$/, "") ||
-  "https://web-production-1ab9.up.railway.app";
-
 type PageProps = {
   params: Promise<{ booking_reference: string }>;
-};
-
-// Booking pages contain personal data (customer name, phone, email) and
-// must never be indexed.
-export const metadata: Metadata = {
-  title: `Your booking — ${brand.name}`,
-  description: "Your private chauffeur booking with Cape Town Concierge.",
-  robots: {
-    index: false,
-    follow: false,
-    googleBot: { index: false, follow: false },
-  },
 };
 
 // Make sure no part of the route is statically prerendered — bookings
 // change in the admin app and clients must see the latest state.
 export const dynamic = "force-dynamic";
 
-async function fetchBooking(ref: string): Promise<Booking | null> {
-  try {
-    const res = await fetch(`${API_BASE}/api/client/bookings/${encodeURIComponent(ref)}/`, {
-      cache: "no-store",
-    });
-    if (res.status === 404) return null;
-    if (!res.ok) return null;
-    return (await res.json()) as Booking;
-  } catch {
-    return null;
+// Fallback metadata. Booking pages are noindex, but social platforms
+// (WhatsApp, Twitter, iMessage…) still scrape OG/Twitter tags to render
+// link previews — that's the case we want the vehicle photo for.
+const DEFAULT_OG_IMAGE = `${brand.siteUrl}/images/og-cape-town-concierge.jpg`;
+
+export async function generateMetadata({
+  params,
+}: PageProps): Promise<Metadata> {
+  const { booking_reference } = await params;
+  // Deduped via React `cache` — the same fetch also runs in the page.
+  const booking = await fetchBooking(booking_reference);
+
+  const baseMeta: Metadata = {
+    title: `Your booking — ${brand.name}`,
+    description: "Your private chauffeur booking with Cape Town Concierge.",
+    // Personal data on the page — never index, never follow.
+    robots: {
+      index: false,
+      follow: false,
+      googleBot: { index: false, follow: false },
+    },
+  };
+
+  if (!booking) {
+    return baseMeta;
   }
+
+  const vehicleTitle = booking.car?.title || "your booking";
+  const coverPhoto = getBookingCoverPhoto(booking.car?.cover_photos);
+  const previewImage = coverPhoto || DEFAULT_OG_IMAGE;
+  const previewAlt = coverPhoto
+    ? `${vehicleTitle} — ${brand.name}`
+    : `${brand.name} — Luxury Chauffeur Service`;
+
+  // Keep social preview text generic (vehicle + brand) so PII like the
+  // customer name doesn't leak into WhatsApp link previews if the
+  // recipient forwards the link.
+  const previewTitle = `Your booking · ${vehicleTitle}`;
+  const previewDescription = `Booking details for your chauffeur service with ${brand.name}.`;
+
+  return {
+    ...baseMeta,
+    title: previewTitle,
+    description: previewDescription,
+    openGraph: {
+      title: previewTitle,
+      description: previewDescription,
+      siteName: brand.name,
+      type: "website",
+      locale: "en_ZA",
+      images: [
+        {
+          url: previewImage,
+          alt: previewAlt,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: previewTitle,
+      description: previewDescription,
+      images: [previewImage],
+    },
+  };
 }
 
 // Upsell — same shape used by the existing tours grid.
