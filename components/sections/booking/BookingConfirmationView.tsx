@@ -8,6 +8,7 @@ import { brand } from "../../../lib/brand";
 import { shimmerPlaceholder } from "../../../lib/shimmer";
 import { trackWhatsAppClick } from "../../../lib/tracking";
 import { buildWhatsAppLink } from "../../../lib/whatsapp";
+import ChauffeurGallery from "../chauffeur-services/ChauffeurGallery";
 import type { Booking, BookingCarPhoto, BookingStatus } from "./types";
 
 type Props = {
@@ -44,13 +45,19 @@ const HeroImageLayer = styled.div`
   inset: 0;
 `;
 
+// Dark, neutral overlay (no green tint) so the vehicle photo's real
+// colours show through. Heavier at the bottom so the title and meta
+// row stay readable.
 const HeroOverlay = styled.div`
   position: absolute;
   inset: 0;
   z-index: 1;
-  background:
-    linear-gradient(135deg, rgba(11, 91, 51, 0.65) 0%, rgba(6, 62, 35, 0.85) 100%),
-    linear-gradient(to top, rgba(0, 0, 0, 0.55) 0%, rgba(0, 0, 0, 0.15) 60%);
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.75) 0%,
+    rgba(0, 0, 0, 0.45) 40%,
+    rgba(0, 0, 0, 0.1) 75%
+  );
 `;
 
 const HeroContent = styled.div`
@@ -392,9 +399,8 @@ function reassuranceCopy(status: BookingStatus): string {
   if (status === "completed") {
     return "Thanks for travelling with us. We've kept the details below for your records — and we'd love to welcome you back next time you're in Cape Town.";
   }
-  if (status === "pending") {
-    return "We've received your details and we're finalising the last pieces. You'll get a WhatsApp from us shortly with the final confirmation.";
-  }
+  // Clients only see this page after we've confirmed the booking on
+  // WhatsApp, so treat `pending` and `confirmed` the same.
   return "All the details for your trip are below. Save this page or screenshot it — you'll only need it on the day. Anything to change? WhatsApp us and we'll handle it.";
 }
 
@@ -454,9 +460,9 @@ export default function BookingConfirmationView({ booking }: Props) {
             <CardEyebrow>Booking confirmation</CardEyebrow>
             <CardTitle>
               Hi {customerFirstName} — your booking is{" "}
-              {booking.status === "confirmed"
-                ? "confirmed"
-                : STATUS_LABEL[booking.status].toLowerCase()}
+              {booking.status === "cancelled" || booking.status === "completed"
+                ? STATUS_LABEL[booking.status].toLowerCase()
+                : "confirmed"}
             </CardTitle>
             <CardCopy>{reassuranceCopy(booking.status)}</CardCopy>
 
@@ -509,6 +515,20 @@ export default function BookingConfirmationView({ booking }: Props) {
               </>
             ) : null}
           </Card>
+
+          {booking.car?.cover_photos && booking.car.cover_photos.length > 0 ? (
+            <Card>
+              <CardEyebrow>Your vehicle</CardEyebrow>
+              <CardTitle>{booking.car.title}</CardTitle>
+              {booking.car.short_description ? (
+                <CardCopy>{booking.car.short_description}</CardCopy>
+              ) : null}
+              <ChauffeurGallery
+                images={booking.car.cover_photos}
+                title={null}
+              />
+            </Card>
+          ) : null}
 
           {booking.is_multi_day && booking.days?.length > 1 ? (
             <Card>

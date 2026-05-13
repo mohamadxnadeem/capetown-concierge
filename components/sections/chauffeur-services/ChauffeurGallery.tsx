@@ -8,6 +8,10 @@ import { shimmerPlaceholder } from "../../../lib/shimmer";
 
 type Props = {
   images: CarPhoto[];
+  // Optional override for the section heading. Pass `null` to hide it
+  // entirely (useful when the gallery is embedded inside another card
+  // that already provides its own heading).
+  title?: string | null;
 };
 
 const fadeIn = keyframes`
@@ -154,7 +158,10 @@ const ThumbButton = styled.button<{ $active: boolean }>`
   }
 `;
 
-export default function ChauffeurGallery({ images }: Props) {
+export default function ChauffeurGallery({
+  images,
+  title = "Vehicle Gallery",
+}: Props) {
   const galleryImages = useMemo(
     () => [...images].sort((a, b) => (a.order || 0) - (b.order || 0)),
     [images]
@@ -180,7 +187,7 @@ export default function ChauffeurGallery({ images }: Props) {
 
   return (
     <GalleryWrap>
-      <Title>Vehicle Gallery</Title>
+      {title ? <Title>{title}</Title> : null}
 
       <MainStage>
         <MainImageFrame>
