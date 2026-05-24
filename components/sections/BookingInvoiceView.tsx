@@ -257,6 +257,17 @@ function formatTime(t: string | null): string {
   return `${parts[0]}:${parts[1]}`;
 }
 
+function parseAmount(value: string | null | undefined): number | null {
+  if (!value) return null;
+  const num = Number(String(value).replace(/[^0-9.]/g, ""));
+  return Number.isFinite(num) && num > 0 ? num : null;
+}
+
+function formatZar(amount: number, currency: string = "ZAR"): string {
+  const symbol = currency === "ZAR" ? "R" : `${currency} `;
+  return `${symbol}${Math.round(amount).toLocaleString()}`;
+}
+
 function describeDay(day: BookingDay): string {
   const start = formatTime(day.start_time);
   const end = formatTime(day.end_time);
@@ -390,6 +401,33 @@ export default function BookingInvoiceView({ booking }: Props) {
                 <RowValue>{booking.car.features.join(", ")}</RowValue>
               </Row>
             ) : null}
+            {(() => {
+              const from = parseAmount(booking.car.price_from);
+              const to = parseAmount(booking.car.price_to);
+              const single = parseAmount(booking.car.price);
+              const currency = booking.car.currency || "ZAR";
+              if (from && to && to > from) {
+                return (
+                  <Row>
+                    <RowLabel>Daily rate</RowLabel>
+                    <RowValue>
+                      {formatZar(from, currency)} – {formatZar(to, currency)} per day
+                    </RowValue>
+                  </Row>
+                );
+              }
+              const base = from ?? single;
+              if (!base) return null;
+              return (
+                <Row>
+                  <RowLabel>Daily rate</RowLabel>
+                  <RowValue>
+                    {from ? "From " : ""}
+                    {formatZar(base, currency)} per day
+                  </RowValue>
+                </Row>
+              );
+            })()}
           </Section>
         ) : null}
 

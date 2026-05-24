@@ -14,6 +14,7 @@ import type {
 import type { CarPhoto } from "./chauffeur-services/types";
 import ChauffeurGallery from "./chauffeur-services/ChauffeurGallery";
 import SmartImage from "../common/SmartImage";
+import Money from "../common/Money";
 
 const Wrapper = styled.main`
   background: ${({ theme }) => theme.colors.background};
@@ -450,6 +451,22 @@ function vehicleSummary(car: NonNullable<Booking["car"]>): string {
   return bits.join(" · ");
 }
 
+function parseAmount(value: string | null | undefined): number | null {
+  if (!value) return null;
+  const num = Number(String(value).replace(/[^0-9.]/g, ""));
+  return Number.isFinite(num) && num > 0 ? num : null;
+}
+
+function getDailyRate(car: NonNullable<Booking["car"]>) {
+  const from = parseAmount(car.price_from);
+  const to = parseAmount(car.price_to);
+  const single = parseAmount(car.price);
+  if (from && to && to > from) return { from, to };
+  if (from) return { from, to: null };
+  if (single) return { from: single, to: null };
+  return null;
+}
+
 interface Props {
   booking: Booking;
   carPhotos: CarPhoto[];
@@ -509,6 +526,31 @@ export default function BookingDetailView({
                     </Tags>
                   ) : null}
                 </Detail>
+
+                {(() => {
+                  const rate = getDailyRate(booking.car);
+                  if (!rate) return null;
+                  return (
+                    <>
+                      <Term>Daily rate</Term>
+                      <Detail>
+                        {rate.to ? (
+                          <>
+                            <Money usd={rate.from} prefix="From " suffix="" />
+                            {" – "}
+                            <Money usd={rate.to} prefix="" suffix="per day" />
+                          </>
+                        ) : (
+                          <Money
+                            usd={rate.from}
+                            prefix={booking.car.price_from ? "From " : ""}
+                            suffix="per day"
+                          />
+                        )}
+                      </Detail>
+                    </>
+                  );
+                })()}
               </>
             ) : null}
 

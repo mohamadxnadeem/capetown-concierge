@@ -32,6 +32,10 @@ export interface BookingCar {
   highlight: string | null;
   chauffeur_service_text: string | null;
   luggage_capacity: number | null;
+  price: string | null;
+  price_from: string | null;
+  price_to: string | null;
+  currency: string;
   features: string[];
   ideal_for: string[];
   driver: BookingDriver | null;
