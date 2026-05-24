@@ -41,6 +41,7 @@ export interface BookingCar {
   driver: BookingDriver | null;
   registration_number?: string | null;
   is_active?: boolean;
+  cover_photos?: CarPhoto[];
 }
 
 export interface Booking {
@@ -60,6 +61,7 @@ export interface Booking {
   total_days: number;
   is_multi_day: boolean;
   created_at: string;
+  cover_photos?: CarPhoto[];
 }
 
 export type BookingLookupResult =

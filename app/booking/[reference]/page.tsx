@@ -41,12 +41,24 @@ export default async function BookingPage({ params }: PageProps) {
   }
 
   const { booking } = result;
-  const [carPhotos, upsellTours] = await Promise.all([
-    booking.car?.slug
+
+  // Prefer photos embedded in the booking response (the customer endpoint
+  // ignores is_public, so this works for hidden vehicles too). Fall back to
+  // the public car list only if the booking doesn't include any photos.
+  const embeddedPhotos =
+    (booking.car?.cover_photos?.filter((p) => p?.cover_photos) ?? []).length > 0
+      ? booking.car!.cover_photos!.filter((p) => p?.cover_photos)
+      : (booking.cover_photos?.filter((p) => p?.cover_photos) ?? []);
+
+  const [fallbackPhotos, upsellTours] = await Promise.all([
+    embeddedPhotos.length === 0 && booking.car?.slug
       ? fetchCarPhotosBySlug(booking.car.slug)
       : Promise.resolve([]),
     fetchUpsellTours(6),
   ]);
+
+  const carPhotos =
+    embeddedPhotos.length > 0 ? embeddedPhotos : fallbackPhotos;
 
   return (
     <BookingDetailView
