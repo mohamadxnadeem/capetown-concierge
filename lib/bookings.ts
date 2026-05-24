@@ -1,4 +1,5 @@
 import { BACKEND_URL } from "./api";
+import type { CarPhoto } from "../components/sections/chauffeur-services/types";
 
 export type BookingStatus = "pending" | "confirmed" | "completed" | "cancelled";
 export type BookingDayType = "full_day" | "half_day";
@@ -61,6 +62,128 @@ export type BookingLookupResult =
   | { kind: "ok"; booking: Booking }
   | { kind: "not_found" }
   | { kind: "error"; message: string };
+
+interface CarsApiCar {
+  slug?: string;
+  title?: string;
+  cover_photos?: CarPhoto[];
+  images?: CarPhoto[];
+}
+interface CarsApiItem {
+  car?: CarsApiCar;
+  slug?: string;
+  title?: string;
+  cover_photos?: CarPhoto[];
+  images?: CarPhoto[];
+}
+
+export async function fetchCarPhotosBySlug(slug: string): Promise<CarPhoto[]> {
+  try {
+    const res = await fetch(
+      `${BACKEND_URL}/api/cars-for-hire/all/`,
+      { next: { revalidate: 3600 } }
+    );
+    if (!res.ok) return [];
+    const data = await res.json();
+    const items: CarsApiItem[] = Array.isArray(data)
+      ? data
+      : Array.isArray(data?.results)
+      ? data.results
+      : [];
+    const target = slug.toLowerCase();
+    const match = items
+      .map((item) => item?.car || item)
+      .find((car) => car?.slug?.toLowerCase() === target);
+    const photos = (match?.cover_photos ?? match?.images ?? []) as CarPhoto[];
+    return photos.filter((p) => Boolean(p?.cover_photos));
+  } catch {
+    return [];
+  }
+}
+
+export interface UpsellTour {
+  title: string;
+  description: string;
+  href: string;
+  image: string;
+  alt: string;
+  priceUsd?: number;
+}
+
+interface ExperiencePhoto {
+  cover_photos?: string;
+  is_featured?: boolean;
+}
+interface ExperienceCore {
+  title?: string;
+  slug?: string;
+  short_description?: string;
+  highlight?: string;
+  body?: string;
+  cover_photos?: ExperiencePhoto[];
+  price?: string | number;
+}
+interface ExperienceApiItem {
+  experience?: ExperienceCore;
+  title?: string;
+  slug?: string;
+  short_description?: string;
+  highlight?: string;
+  body?: string;
+  cover_photos?: ExperiencePhoto[];
+  price?: string | number;
+}
+
+function stripHtml(html: string): string {
+  return html.replace(/<[^>]*>/g, "").replace(/\s+/g, " ").trim();
+}
+
+function truncate(text: string, max: number): string {
+  if (!text) return "";
+  if (text.length <= max) return text;
+  return `${text.slice(0, max).trim()}...`;
+}
+
+export async function fetchUpsellTours(limit = 6): Promise<UpsellTour[]> {
+  try {
+    const res = await fetch(
+      `${BACKEND_URL}/api/experiences/all/`,
+      { next: { revalidate: 3600 } }
+    );
+    if (!res.ok) return [];
+    const data: ExperienceApiItem[] = await res.json();
+
+    const mapped = data
+      .map((item) => item?.experience || item)
+      .filter((exp): exp is ExperienceCore => Boolean(exp?.title))
+      .map<UpsellTour>((exp) => {
+        const featured =
+          exp.cover_photos?.find((p) => p.is_featured)?.cover_photos ||
+          exp.cover_photos?.[0]?.cover_photos ||
+          "";
+        const description =
+          exp.short_description ||
+          exp.highlight ||
+          truncate(stripHtml(exp.body || ""), 140) ||
+          "Discover a premium private tour in Cape Town.";
+        const priceUsd = exp.price
+          ? Number(String(exp.price).replace(/[^0-9.]/g, "")) || undefined
+          : undefined;
+        return {
+          title: exp.title!,
+          description,
+          href: exp.slug ? `/private-tours/${exp.slug}` : "/private-tours",
+          image: featured,
+          alt: `Private ${exp.title} in Cape Town with Professional Driver`,
+          priceUsd,
+        };
+      });
+
+    return mapped.slice(0, limit);
+  } catch {
+    return [];
+  }
+}
 
 export async function fetchBookingByReference(
   reference: string

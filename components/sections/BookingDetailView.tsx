@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import styled, { css } from "styled-components";
 import { brand } from "../../lib/brand";
 import { trackWhatsAppClick } from "../../lib/tracking";
@@ -8,29 +9,36 @@ import type {
   BookingDay,
   BookingDriver,
   BookingStatus,
+  UpsellTour,
 } from "../../lib/bookings";
+import type { CarPhoto } from "./chauffeur-services/types";
+import ChauffeurGallery from "./chauffeur-services/ChauffeurGallery";
+import SmartImage from "../common/SmartImage";
 
 const Wrapper = styled.main`
   background: ${({ theme }) => theme.colors.background};
-  padding: 48px 20px 80px;
+  padding: 40px 20px 80px;
   min-height: calc(100vh - 82px);
 `;
 
 const Article = styled.article`
   max-width: 820px;
   margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
 `;
 
-const Header = styled.header`
+const HeaderCard = styled.header`
   background: ${({ theme }) => theme.colors.white};
   border: 1px solid ${({ theme }) => theme.colors.border};
-  border-radius: 24px 24px 0 0;
-  padding: 32px 36px;
-  border-bottom: none;
+  border-radius: 22px;
+  padding: 28px 32px;
+  box-shadow: ${({ theme }) => theme.shadows.soft};
 
   @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
-    padding: 24px 22px;
-    border-radius: 18px 18px 0 0;
+    padding: 22px;
+    border-radius: 18px;
   }
 `;
 
@@ -54,14 +62,14 @@ const HeadingRow = styled.div`
 const Heading = styled.h1`
   margin: 0;
   color: ${({ theme }) => theme.colors.heading};
-  font-size: 1.9rem;
+  font-size: 1.85rem;
   line-height: 1.15;
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   letter-spacing: 0.02em;
   word-break: break-all;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
-    font-size: 1.45rem;
+    font-size: 1.4rem;
   }
 `;
 
@@ -72,22 +80,23 @@ const Subtitle = styled.p`
   line-height: 1.6;
 `;
 
-const statusPalette: Record<BookingStatus, { bg: string; fg: string; border: string }> = {
-  pending: { bg: "#fff5e0", fg: "#7a5300", border: "#f1d28a" },
+type DisplayStatus = "confirmed" | "completed" | "cancelled";
+
+const statusPalette: Record<DisplayStatus, { bg: string; fg: string; border: string }> = {
   confirmed: { bg: "#e6f4ec", fg: "#0b5b33", border: "#bcdfc8" },
   completed: { bg: "#eef0f3", fg: "#34414c", border: "#d4dae0" },
   cancelled: { bg: "#fbe9e9", fg: "#9a1f1f", border: "#eec3c3" },
 };
 
-const StatusBadge = styled.span<{ $status: BookingStatus }>`
+const StatusBadge = styled.span<{ $status: DisplayStatus }>`
   display: inline-flex;
   align-items: center;
   gap: 6px;
   padding: 6px 14px;
   border-radius: 999px;
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   font-weight: 700;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
   ${({ $status }) => {
     const p = statusPalette[$status];
@@ -99,37 +108,16 @@ const StatusBadge = styled.span<{ $status: BookingStatus }>`
   }}
 `;
 
-const StatusBanner = styled.div<{ $status: BookingStatus }>`
-  padding: 14px 20px;
-  font-size: 0.95rem;
-  line-height: 1.5;
-  ${({ $status }) => {
-    const p = statusPalette[$status];
-    return css`
-      background: ${p.bg};
-      color: ${p.fg};
-      border-top: 1px solid ${p.border};
-      border-bottom: 1px solid ${p.border};
-    `;
-  }}
-`;
-
 const Card = styled.section`
   background: ${({ theme }) => theme.colors.white};
   border: 1px solid ${({ theme }) => theme.colors.border};
-  padding: 28px 36px;
-  border-top: none;
-
-  &:last-of-type {
-    border-radius: 0 0 24px 24px;
-  }
+  border-radius: 22px;
+  padding: 28px 32px;
+  box-shadow: ${({ theme }) => theme.shadows.soft};
 
   @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
     padding: 22px;
-
-    &:last-of-type {
-      border-radius: 0 0 18px 18px;
-    }
+    border-radius: 18px;
   }
 `;
 
@@ -300,21 +288,6 @@ const PrimaryAction = styled.a`
   }
 `;
 
-const SecondaryAction = styled.button`
-  ${ButtonBase}
-  background: white;
-  color: ${({ theme }) => theme.colors.heading};
-  border-color: ${({ theme }) => theme.colors.border};
-
-  &:hover {
-    background: ${({ theme }) => theme.colors.background};
-  }
-
-  @media print {
-    display: none;
-  }
-`;
-
 const TertiaryAction = styled.a`
   ${ButtonBase}
   background: white;
@@ -326,20 +299,110 @@ const TertiaryAction = styled.a`
   }
 `;
 
-const STATUS_LABELS: Record<BookingStatus, string> = {
-  pending: "Pending",
+const UpsellSection = styled.section`
+  margin-top: 28px;
+`;
+
+const UpsellHeader = styled.div`
+  margin-bottom: 18px;
+`;
+
+const UpsellEyebrow = styled.div`
+  color: ${({ theme }) => theme.colors.primary};
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+`;
+
+const UpsellTitle = styled.h2`
+  margin: 0 0 6px;
+  color: ${({ theme }) => theme.colors.heading};
+  font-size: 1.6rem;
+  line-height: 1.2;
+`;
+
+const UpsellSubtitle = styled.p`
+  margin: 0;
+  color: ${({ theme }) => theme.colors.textMuted};
+  font-size: 0.95rem;
+  line-height: 1.6;
+`;
+
+const UpsellGrid = styled.div`
+  display: grid;
+  gap: 16px;
+  grid-template-columns: 1fr;
+
+  @media (min-width: ${({ theme }) => theme.breakpoints.sm}) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+`;
+
+const UpsellCard = styled(Link)`
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  background: ${({ theme }) => theme.colors.white};
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: ${({ theme }) => theme.shadows.soft};
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: ${({ theme }) => theme.shadows.card};
+    border-color: rgba(11, 91, 51, 0.22);
+  }
+`;
+
+const UpsellImageWrap = styled.div`
+  position: relative;
+  height: 200px;
+  background: linear-gradient(135deg, rgba(11, 91, 51, 0.18), rgba(6, 62, 35, 0.1));
+`;
+
+const UpsellBody = styled.div`
+  padding: 18px 20px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+`;
+
+const UpsellName = styled.h3`
+  margin: 0;
+  color: ${({ theme }) => theme.colors.heading};
+  font-size: 1.1rem;
+  line-height: 1.25;
+`;
+
+const UpsellText = styled.p`
+  margin: 0;
+  color: ${({ theme }) => theme.colors.textMuted};
+  font-size: 0.92rem;
+  line-height: 1.6;
+  flex: 1;
+`;
+
+const UpsellCta = styled.span`
+  margin-top: 6px;
+  color: ${({ theme }) => theme.colors.primary};
+  font-weight: 700;
+  font-size: 0.9rem;
+`;
+
+const STATUS_LABELS: Record<DisplayStatus, string> = {
   confirmed: "Confirmed",
   completed: "Completed",
   cancelled: "Cancelled",
 };
 
-const STATUS_HINTS: Record<BookingStatus, string> = {
-  pending:
-    "We've received your booking and are confirming availability. We'll email you shortly.",
-  confirmed: "Your booking is confirmed. See you soon!",
-  completed: "Trip complete. Thank you!",
-  cancelled: "This booking has been cancelled.",
-};
+function toDisplayStatus(status: BookingStatus): DisplayStatus {
+  return status === "pending" ? "confirmed" : status;
+}
 
 function formatDate(iso: string): string {
   const d = new Date(`${iso}T00:00:00`);
@@ -389,10 +452,17 @@ function vehicleSummary(car: NonNullable<Booking["car"]>): string {
 
 interface Props {
   booking: Booking;
+  carPhotos: CarPhoto[];
+  upsellTours: UpsellTour[];
 }
 
-export default function BookingDetailView({ booking }: Props) {
+export default function BookingDetailView({
+  booking,
+  carPhotos,
+  upsellTours,
+}: Props) {
   const driver: BookingDriver | null = booking.driver ?? booking.car?.driver ?? null;
+  const displayStatus = toDisplayStatus(booking.status);
   const supportMailto = `mailto:${brand.contactEmail}?subject=${encodeURIComponent(
     `Booking ${booking.booking_reference}`
   )}`;
@@ -403,20 +473,22 @@ export default function BookingDetailView({ booking }: Props) {
   return (
     <Wrapper>
       <Article>
-        <Header>
+        <HeaderCard>
           <Eyebrow>{brand.name} · Booking</Eyebrow>
           <HeadingRow>
             <Heading>{booking.booking_reference}</Heading>
-            <StatusBadge $status={booking.status}>
-              {STATUS_LABELS[booking.status]}
+            <StatusBadge $status={displayStatus}>
+              {STATUS_LABELS[displayStatus]}
             </StatusBadge>
           </HeadingRow>
           {booking.title ? <Subtitle>{booking.title}</Subtitle> : null}
-        </Header>
+        </HeaderCard>
 
-        <StatusBanner $status={booking.status}>
-          {STATUS_HINTS[booking.status]}
-        </StatusBanner>
+        {carPhotos.length > 0 ? (
+          <Card>
+            <ChauffeurGallery images={carPhotos} />
+          </Card>
+        ) : null}
 
         <Card>
           <SectionTitle>Booking summary</SectionTitle>
@@ -567,17 +639,49 @@ export default function BookingDetailView({ booking }: Props) {
             >
               💬&nbsp; Message us on WhatsApp
             </PrimaryAction>
-            <TertiaryAction href={supportMailto}>Email support</TertiaryAction>
-            <SecondaryAction
-              type="button"
-              onClick={() => {
-                if (typeof window !== "undefined") window.print();
-              }}
+            <TertiaryAction
+              href={`/booking/${booking.booking_reference}/invoice?print=1`}
+              target="_blank"
+              rel="noopener noreferrer"
             >
-              Print
-            </SecondaryAction>
+              ⬇&nbsp; Download invoice
+            </TertiaryAction>
+            <TertiaryAction href={supportMailto}>Email support</TertiaryAction>
           </Actions>
         </Card>
+
+        {upsellTours.length > 0 ? (
+          <UpsellSection>
+            <UpsellHeader>
+              <UpsellEyebrow>Private Tours</UpsellEyebrow>
+              <UpsellTitle>Other experiences you might enjoy</UpsellTitle>
+              <UpsellSubtitle>
+                Hand-picked private tours across Cape Town — add one to your
+                trip with a quick WhatsApp.
+              </UpsellSubtitle>
+            </UpsellHeader>
+            <UpsellGrid>
+              {upsellTours.map((tour) => (
+                <UpsellCard key={tour.href} href={tour.href}>
+                  <UpsellImageWrap>
+                    {tour.image ? (
+                      <SmartImage
+                        src={tour.image}
+                        alt={tour.alt}
+                        sizes="(max-width: 768px) 100vw, 400px"
+                      />
+                    ) : null}
+                  </UpsellImageWrap>
+                  <UpsellBody>
+                    <UpsellName>{tour.title}</UpsellName>
+                    <UpsellText>{tour.description}</UpsellText>
+                    <UpsellCta>View tour →</UpsellCta>
+                  </UpsellBody>
+                </UpsellCard>
+              ))}
+            </UpsellGrid>
+          </UpsellSection>
+        ) : null}
       </Article>
     </Wrapper>
   );
