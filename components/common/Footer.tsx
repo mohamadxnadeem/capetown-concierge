@@ -242,6 +242,7 @@ export default function Footer() {
           </Copyright>
           <LegalLinks>
             <LegalLink href="/contact">Contact</LegalLink>
+            <LegalLink href="/privacy">Privacy Policy</LegalLink>
           </LegalLinks>
         </Bottom>
       </Container>
