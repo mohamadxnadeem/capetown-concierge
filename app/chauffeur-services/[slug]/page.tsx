@@ -111,7 +111,7 @@ async function getAllVehicles(): Promise<CarsApiItem[]> {
   const timeout = setTimeout(() => controller.abort(), 10000);
   try {
     const response = await fetch(
-      "https://web-production-1ab9.up.railway.app/api/cars-for-hire/",
+      "https://web-production-1ab9.up.railway.app/api/cars-for-hire/all/",
       { next: { revalidate: 300 }, signal: controller.signal }
     );
     clearTimeout(timeout);
@@ -129,8 +129,7 @@ async function getAllVehicles(): Promise<CarsApiItem[]> {
 function normalizeCars(items: CarsApiItem[]): Car[] {
   return items
     .map((item) => item?.car || item)
-    .filter((car): car is Car => Boolean(car?.slug || car?.title))
-    .filter((car) => car.is_active !== false);
+    .filter((car): car is Car => Boolean(car?.slug || car?.title));
 }
 
 function getVehicleBySlug(cars: Car[], slug: string) {

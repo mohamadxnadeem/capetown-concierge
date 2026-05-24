@@ -274,7 +274,7 @@ const FALLBACK_VEHICLES: FeaturedVehicleItem[] = [
 async function getFeaturedVehicles(): Promise<FeaturedVehicleItem[]> {
   try {
     const response = await fetch(
-      "https://web-production-1ab9.up.railway.app/api/cars-for-hire/",
+      "https://web-production-1ab9.up.railway.app/api/cars-for-hire/all/",
       { next: { revalidate: 300 } }
     );
 
@@ -295,7 +295,6 @@ async function getFeaturedVehicles(): Promise<FeaturedVehicleItem[]> {
         const car = item?.car || item;
 
         if (!car?.title) return null;
-        if (car.is_active === false) return null;
 
         const imageArray = car.cover_photos || car.images || [];
 

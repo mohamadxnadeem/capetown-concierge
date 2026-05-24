@@ -19,9 +19,8 @@ const FALLBACK_TOUR_SLUGS = [
 const FALLBACK_VEHICLE_SLUGS: string[] = [];
 
 type CarsApiItem = {
-  car?: { slug?: string; is_active?: boolean };
+  car?: { slug?: string };
   slug?: string;
-  is_active?: boolean;
 };
 
 type ExperienceListItem = {
@@ -32,7 +31,7 @@ type ExperienceListItem = {
 async function getVehicleSlugs(): Promise<string[]> {
   try {
     const res = await fetch(
-      "https://web-production-1ab9.up.railway.app/api/cars-for-hire/",
+      "https://web-production-1ab9.up.railway.app/api/cars-for-hire/all/",
       { next: { revalidate: 300 } }
     );
     if (!res.ok) return FALLBACK_VEHICLE_SLUGS;
@@ -43,10 +42,6 @@ async function getVehicleSlugs(): Promise<string[]> {
       ? data.results
       : [];
     const apiSlugs = items
-      .filter((item) => {
-        const active = item?.car?.is_active ?? item?.is_active;
-        return active !== false;
-      })
       .map((item) => item?.car?.slug || item?.slug)
       .filter((slug): slug is string => Boolean(slug))
       .map((slug) => slug.toLowerCase());

@@ -116,7 +116,7 @@ const AIRPORT_VEHICLE_DESC: Record<string, string> = {
 async function getVehicles(): Promise<FeaturedVehicleItem[]> {
   try {
     const res = await fetch(
-      "https://web-production-1ab9.up.railway.app/api/cars-for-hire/",
+      "https://web-production-1ab9.up.railway.app/api/cars-for-hire/all/",
       { next: { revalidate: 300 } }
     );
     if (!res.ok) return [];
@@ -131,7 +131,6 @@ async function getVehicles(): Promise<FeaturedVehicleItem[]> {
       .map((item) => {
         const car = item?.car || item;
         if (!car?.title) return null;
-        if (car.is_active === false) return null;
         const imageArray = car.cover_photos || car.images || [];
         const image =
           imageArray.find((p: CarPhoto) => p?.is_featured)?.cover_photos ||

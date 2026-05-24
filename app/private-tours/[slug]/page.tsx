@@ -170,7 +170,7 @@ async function getAllExperiences(): Promise<ExperienceListItem[]> {
 async function getAllVehicles(): Promise<CarsApiItem[]> {
   try {
     const response = await fetch(
-      "https://web-production-1ab9.up.railway.app/api/cars-for-hire/",
+      "https://web-production-1ab9.up.railway.app/api/cars-for-hire/all/",
       { next: { revalidate: 300 } }
     );
     if (!response.ok) return [];
@@ -296,7 +296,6 @@ function mapVehicles(items: CarsApiItem[]): TourVehicle[] {
   return items
     .map((item) => item?.car || item)
     .filter((car) => car?.title)
-    .filter((car) => car.is_active !== false)
     .map((car) => {
       const imageArray = car.cover_photos || car.images || [];
       const sortedImages = [...imageArray].sort(
@@ -485,7 +484,6 @@ export default async function PrivateTourDetailPage({ params }: PageProps) {
     const zarPrice = allVehicles
       .map((item) => {
         const car = (item as CarsApiItem).car || (item as unknown as Car);
-        if (car?.is_active === false) return null;
         const p = car?.price;
         if (!p) return null;
         const n = Number(String(p).replace(/[^0-9.]/g, ""));
