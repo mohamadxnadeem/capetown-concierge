@@ -2,29 +2,8 @@
 
 import { useEffect, useMemo, useState } from "react";
 import styled, { keyframes } from "styled-components";
-import Image from "next/image";
+import SmartImage from "../../common/SmartImage";
 import { ExperiencePhoto } from "./types";
-
-function shimmer(w: number, h: number) {
-  return `
-    <svg width="${w}" height="${h}" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <linearGradient id="g">
-          <stop stop-color="#f2f4f3" offset="20%" />
-          <stop stop-color="#e8ece9" offset="50%" />
-          <stop stop-color="#f2f4f3" offset="70%" />
-        </linearGradient>
-      </defs>
-      <rect width="${w}" height="${h}" fill="#f2f4f3" />
-      <rect id="r" width="${w}" height="${h}" fill="url(#g)" />
-      <animate attributeName="x" from="-${w}" to="${w}" dur="1.2s" repeatCount="indefinite" />
-    </svg>`;
-}
-
-const toBase64 = (str: string) =>
-  typeof window === "undefined"
-    ? Buffer.from(str).toString("base64")
-    : window.btoa(str);
 
 const cinematicPan = keyframes`
   0% {
@@ -313,17 +292,11 @@ export default function PrivateTourGallery({ title, photos }: Props) {
           <ActiveImageLayer key={activePhoto}>
             <CinematicLayer>
               {activePhoto && (
-                <Image
+                <SmartImage
                   src={activePhoto}
                   alt={title}
-                  fill
                   priority={activeIndex === 0}
-                  placeholder="blur"
-                  blurDataURL={`data:image/svg+xml;base64,${toBase64(
-                    shimmer(1400, 900)
-                  )}`}
                   sizes="100vw"
-                  style={{ objectFit: "cover" }}
                 />
               )}
             </CinematicLayer>
@@ -344,16 +317,10 @@ export default function PrivateTourGallery({ title, photos }: Props) {
               aria-label={`Show ${title} image ${index + 1}`}
             >
               {photo.cover_photos && (
-                <Image
+                <SmartImage
                   src={photo.cover_photos}
                   alt={title}
-                  fill
-                  placeholder="blur"
-                  blurDataURL={`data:image/svg+xml;base64,${toBase64(
-                    shimmer(240, 180)
-                  )}`}
                   sizes="120px"
-                  style={{ objectFit: "cover" }}
                 />
               )}
             </ThumbButton>

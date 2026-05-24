@@ -1,29 +1,31 @@
 "use client";
 
 import { useState } from "react";
+import type { CSSProperties } from "react";
 import Image from "next/image";
 import styled, { keyframes } from "styled-components";
-import { shimmerPlaceholder } from "../../lib/shimmer";
+
+type ObjectFit = "cover" | "contain" | "fill" | "none" | "scale-down";
 
 type Props = {
   src: string;
   alt: string;
   sizes?: string;
   priority?: boolean;
+  quality?: number;
+  objectFit?: ObjectFit;
+  objectPosition?: string;
+  className?: string;
 };
 
 const shimmerSweep = keyframes`
-  0% {
-    transform: translateX(-120%);
-    opacity: 0.4;
-  }
-  50% {
-    opacity: 0.7;
-  }
-  100% {
-    transform: translateX(120%);
-    opacity: 0.4;
-  }
+  0% { transform: translateX(-140%) skewX(-12deg); }
+  100% { transform: translateX(140%) skewX(-12deg); }
+`;
+
+const subtlePulse = keyframes`
+  0%, 100% { opacity: 0.55; }
+  50% { opacity: 0.9; }
 `;
 
 const Wrapper = styled.div`
@@ -31,45 +33,73 @@ const Wrapper = styled.div`
   width: 100%;
   height: 100%;
   overflow: hidden;
+  background: linear-gradient(
+    135deg,
+    #eef2f0 0%,
+    #e6ebe8 50%,
+    #eef2f0 100%
+  );
 `;
 
-const ShimmerMask = styled.div`
+const Skeleton = styled.div<{ $visible: boolean }>`
   position: absolute;
   inset: 0;
   z-index: 2;
-  overflow: hidden;
+  pointer-events: none;
+  opacity: ${({ $visible }) => ($visible ? 1 : 0)};
+  transition: opacity 0.5s ease;
 
-  background: linear-gradient(
-    135deg,
-    rgba(11, 91, 51, 0.06),
-    rgba(6, 62, 35, 0.03)
-  );
+  background:
+    radial-gradient(
+      circle at 30% 20%,
+      rgba(11, 91, 51, 0.08),
+      transparent 60%
+    ),
+    radial-gradient(
+      circle at 70% 80%,
+      rgba(6, 62, 35, 0.06),
+      transparent 60%
+    );
+
+  animation: ${subtlePulse} 2.4s ease-in-out infinite;
+`;
+
+const Sheen = styled.div<{ $visible: boolean }>`
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  overflow: hidden;
+  opacity: ${({ $visible }) => ($visible ? 1 : 0)};
+  transition: opacity 0.5s ease;
 
   &::after {
     content: "";
     position: absolute;
-    top: 0;
-    left: -140%;
-    width: 60%;
-    height: 100%;
+    top: -10%;
+    left: 0;
+    width: 55%;
+    height: 120%;
+    transform: translateX(-140%) skewX(-12deg);
     background: linear-gradient(
       90deg,
-      transparent,
-      rgba(255, 255, 255, 0.25),
-      transparent
+      transparent 0%,
+      rgba(255, 255, 255, 0.2) 45%,
+      rgba(255, 255, 255, 0.4) 50%,
+      rgba(255, 255, 255, 0.2) 55%,
+      transparent 100%
     );
     animation: ${shimmerSweep} 1.8s ease-in-out infinite;
   }
 `;
 
-const FadeLayer = styled.div<{ $loaded: boolean }>`
+const ImageLayer = styled.div<{ $loaded: boolean }>`
   position: absolute;
   inset: 0;
-
+  z-index: 1;
   opacity: ${({ $loaded }) => ($loaded ? 1 : 0)};
-  transform: ${({ $loaded }) => ($loaded ? "scale(1)" : "scale(1.04)")};
-
-  transition: opacity 0.6s ease, transform 0.8s ease;
+  transform: ${({ $loaded }) => ($loaded ? "scale(1)" : "scale(1.03)")};
+  transition: opacity 0.55s ease, transform 0.7s ease;
 `;
 
 export default function SmartImage({
@@ -77,26 +107,40 @@ export default function SmartImage({
   alt,
   sizes = "100vw",
   priority = false,
+  quality,
+  objectFit = "cover",
+  objectPosition,
+  className,
 }: Props) {
   const [loaded, setLoaded] = useState(false);
+  const [errored, setErrored] = useState(false);
+
+  const showSkeleton = !loaded || errored;
+  const imageStyle: CSSProperties = {
+    objectFit,
+    ...(objectPosition ? { objectPosition } : null),
+  };
 
   return (
-    <Wrapper>
-      {!loaded && <ShimmerMask />}
+    <Wrapper className={className}>
+      <Skeleton $visible={showSkeleton} aria-hidden="true" />
+      <Sheen $visible={showSkeleton} aria-hidden="true" />
 
-      <FadeLayer $loaded={loaded}>
-        <Image
-          src={src}
-          alt={alt}
-          fill
-          priority={priority}
-          placeholder="blur"
-          blurDataURL={shimmerPlaceholder(900, 600)}
-          sizes={sizes}
-          style={{ objectFit: "cover" }}
-          onLoad={() => setLoaded(true)}
-        />
-      </FadeLayer>
+      {!errored && src ? (
+        <ImageLayer $loaded={loaded}>
+          <Image
+            src={src}
+            alt={alt}
+            fill
+            priority={priority}
+            quality={quality}
+            sizes={sizes}
+            style={imageStyle}
+            onLoad={() => setLoaded(true)}
+            onError={() => setErrored(true)}
+          />
+        </ImageLayer>
+      ) : null}
     </Wrapper>
   );
 }

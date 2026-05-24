@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import styled, { keyframes } from "styled-components";
-import Image from "next/image";
 import Button from "../../common/Button";
+import SmartImage from "../../common/SmartImage";
 import { TourVehicle } from "./types";
 import {
   buildWhatsAppLink,
@@ -17,26 +17,6 @@ type Props = {
   tourTitle: string;
 };
 
-function shimmer(w: number, h: number) {
-  return `
-    <svg width="${w}" height="${h}" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <linearGradient id="g">
-          <stop stop-color="#f2f4f3" offset="20%" />
-          <stop stop-color="#e8ece9" offset="50%" />
-          <stop stop-color="#f2f4f3" offset="70%" />
-        </linearGradient>
-      </defs>
-      <rect width="${w}" height="${h}" fill="#f2f4f3" />
-      <rect id="r" width="${w}" height="${h}" fill="url(#g)" />
-      <animate attributeName="x" from="-${w}" to="${w}" dur="1.2s" repeatCount="indefinite" />
-    </svg>`;
-}
-
-const toBase64 = (str: string) =>
-  typeof window === "undefined"
-    ? Buffer.from(str).toString("base64")
-    : window.btoa(str);
 
 const cinematicPan = keyframes`
   0% {
@@ -47,15 +27,6 @@ const cinematicPan = keyframes`
   }
   100% {
     transform: scale(1.06) translate3d(-1.4%, -0.7%, 0);
-  }
-`;
-
-const shimmerSweep = keyframes`
-  0% {
-    transform: translateX(-120%);
-  }
-  100% {
-    transform: translateX(120%);
   }
 `;
 
@@ -212,30 +183,6 @@ const ImageOverlay = styled.div`
   );
 `;
 
-const ShimmerMask = styled.div`
-  position: absolute;
-  inset: 0;
-  z-index: 3;
-  overflow: hidden;
-  background: linear-gradient(135deg, rgba(11, 91, 51, 0.08), rgba(6, 62, 35, 0.04));
-
-  &::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: -140%;
-    width: 50%;
-    height: 100%;
-    background: linear-gradient(
-      90deg,
-      rgba(255, 255, 255, 0) 0%,
-      rgba(255, 255, 255, 0.55) 50%,
-      rgba(255, 255, 255, 0) 100%
-    );
-    animation: ${shimmerSweep} 1.5s infinite;
-  }
-`;
-
 const CardBody = styled.div`
   padding: 22px;
 `;
@@ -298,25 +245,15 @@ function VehicleImage({
   image?: string;
   alt: string;
 }) {
-  const [loaded, setLoaded] = useState(false);
-
   if (!image) return null;
 
   return (
     <>
-      {!loaded && <ShimmerMask />}
       <ImageLayer>
-        <Image
+        <SmartImage
           src={image}
           alt={alt}
-          fill
-          placeholder="blur"
-          blurDataURL={`data:image/svg+xml;base64,${toBase64(
-            shimmer(700, 500)
-          )}`}
           sizes="(max-width: 640px) 82vw, (max-width: 768px) 62vw, (max-width: 1200px) 44vw, 34vw"
-          style={{ objectFit: "cover" }}
-          onLoad={() => setLoaded(true)}
         />
       </ImageLayer>
       <ImageOverlay />

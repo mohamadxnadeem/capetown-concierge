@@ -4,36 +4,11 @@ import { useState } from "react";
 import styled from "styled-components";
 import Container from "../common/Container";
 import Button from "../common/Button";
-import Image from "next/image";
+import SmartImage from "../common/SmartImage";
 import {
   buildWhatsAppLink,
   buildTourWhatsAppMessage,
 } from "../../lib/whatsapp";
-
-/* =========================
-   SHIMMER IMAGE
-========================= */
-
-function shimmer(w: number, h: number) {
-  return `
-    <svg width="${w}" height="${h}" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <linearGradient id="g">
-          <stop stop-color="#f2f4f3" offset="20%" />
-          <stop stop-color="#e8ece9" offset="50%" />
-          <stop stop-color="#f2f4f3" offset="70%" />
-        </linearGradient>
-      </defs>
-      <rect width="${w}" height="${h}" fill="#f2f4f3" />
-      <rect id="r" width="${w}" height="${h}" fill="url(#g)" />
-      <animate attributeName="x" from="-${w}" to="${w}" dur="1.2s" repeatCount="indefinite" />
-    </svg>`;
-}
-
-const toBase64 = (str: string) =>
-  typeof window === "undefined"
-    ? Buffer.from(str).toString("base64")
-    : window.btoa(str);
 
 /* =========================
    TYPES
@@ -646,17 +621,11 @@ export default function PrivateTourDetailView({
           <Gallery>
             <MainImage>
               {mainImage ? (
-                <Image
+                <SmartImage
                   src={mainImage}
                   alt={`${safeTourTitle} private tour in Cape Town`}
-                  fill
                   priority
-                  placeholder="blur"
-                  blurDataURL={`data:image/svg+xml;base64,${toBase64(
-                    shimmer(1200, 800)
-                  )}`}
                   sizes="(max-width: 768px) 100vw, 66vw"
-                  style={{ objectFit: "cover" }}
                 />
               ) : null}
             </MainImage>
@@ -665,16 +634,10 @@ export default function PrivateTourDetailView({
               {sideImages.length ? (
                 sideImages.map((img) => (
                   <SideImage key={img.id}>
-                    <Image
+                    <SmartImage
                       src={img.cover_photos}
                       alt={`${safeTourTitle} tour gallery image`}
-                      fill
-                      placeholder="blur"
-                      blurDataURL={`data:image/svg+xml;base64,${toBase64(
-                        shimmer(600, 400)
-                      )}`}
                       sizes="(max-width: 768px) 100vw, 34vw"
-                      style={{ objectFit: "cover" }}
                     />
                   </SideImage>
                 ))
@@ -683,29 +646,17 @@ export default function PrivateTourDetailView({
                   {mainImage ? (
                     <>
                       <SideImage>
-                        <Image
+                        <SmartImage
                           src={mainImage}
                           alt={`${safeTourTitle} tour gallery image`}
-                          fill
-                          placeholder="blur"
-                          blurDataURL={`data:image/svg+xml;base64,${toBase64(
-                            shimmer(600, 400)
-                          )}`}
                           sizes="(max-width: 768px) 100vw, 34vw"
-                          style={{ objectFit: "cover" }}
                         />
                       </SideImage>
                       <SideImage>
-                        <Image
+                        <SmartImage
                           src={mainImage}
                           alt={`${safeTourTitle} tour gallery image`}
-                          fill
-                          placeholder="blur"
-                          blurDataURL={`data:image/svg+xml;base64,${toBase64(
-                            shimmer(600, 400)
-                          )}`}
                           sizes="(max-width: 768px) 100vw, 34vw"
-                          style={{ objectFit: "cover" }}
                         />
                       </SideImage>
                     </>
@@ -781,16 +732,10 @@ export default function PrivateTourDetailView({
                       <StopTop>
                         <StopImage>
                           {stop.image ? (
-                            <Image
+                            <SmartImage
                               src={stop.image}
                               alt={`${stop.title} on the ${safeTourTitle}`}
-                              fill
-                              placeholder="blur"
-                              blurDataURL={`data:image/svg+xml;base64,${toBase64(
-                                shimmer(600, 400)
-                              )}`}
                               sizes="(max-width: 768px) 100vw, 220px"
-                              style={{ objectFit: "cover" }}
                             />
                           ) : null}
                         </StopImage>
