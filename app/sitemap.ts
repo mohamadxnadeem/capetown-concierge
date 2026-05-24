@@ -33,7 +33,7 @@ async function getVehicleSlugs(): Promise<string[]> {
   try {
     const res = await fetch(
       "https://web-production-1ab9.up.railway.app/api/cars-for-hire/",
-      { next: { revalidate: 60 } }
+      { next: { revalidate: 300 } }
     );
     if (!res.ok) return FALLBACK_VEHICLE_SLUGS;
     const data = await res.json();

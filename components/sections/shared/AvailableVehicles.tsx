@@ -84,7 +84,7 @@ export default function AvailableVehicles({
         setLoading(true);
         setHasError(false);
 
-        const res = await fetch(API_URL, { cache: "no-store" });
+        const res = await fetch(API_URL);
         if (!res.ok) {
           throw new Error(`Failed to fetch vehicles: ${res.status}`);
         }
