@@ -62,8 +62,6 @@ export interface Booking {
   total_days: number;
   is_multi_day: boolean;
   created_at: string;
-  client_rate?: string | null;
-  client_rate_currency?: string | null;
   total_client_amount?: string | null;
 }
 
