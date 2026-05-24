@@ -170,8 +170,8 @@ async function getAllExperiences(): Promise<ExperienceListItem[]> {
 async function getAllVehicles(): Promise<CarsApiItem[]> {
   try {
     const response = await fetch(
-      "https://web-production-1ab9.up.railway.app/api/cars-for-hire/all/",
-      { next: { revalidate: 3600 } }
+      "https://web-production-1ab9.up.railway.app/api/cars-for-hire/",
+      { next: { revalidate: 60 } }
     );
     if (!response.ok) return [];
     const data = await response.json();

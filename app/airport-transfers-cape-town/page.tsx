@@ -116,8 +116,8 @@ const AIRPORT_VEHICLE_DESC: Record<string, string> = {
 async function getVehicles(): Promise<FeaturedVehicleItem[]> {
   try {
     const res = await fetch(
-      "https://web-production-1ab9.up.railway.app/api/cars-for-hire/all/",
-      { next: { revalidate: 3600 } }
+      "https://web-production-1ab9.up.railway.app/api/cars-for-hire/",
+      { next: { revalidate: 60 } }
     );
     if (!res.ok) return [];
     const data = await res.json();

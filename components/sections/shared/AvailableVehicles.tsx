@@ -41,7 +41,7 @@ type Props = {
 };
 
 const API_URL =
-  "https://web-production-1ab9.up.railway.app/api/cars-for-hire/all/";
+  "https://web-production-1ab9.up.railway.app/api/cars-for-hire/";
 
 function pickImage(item: CarsForHireApiItem): string | undefined {
   const carImages = item.car?.cover_photos || [];
