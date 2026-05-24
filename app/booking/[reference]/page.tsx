@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
-import BookingConfirmationContent from "../../../components/sections/BookingConfirmationContent";
+import BookingDetailView from "../../../components/sections/BookingDetailView";
+import BookingNotFoundView from "../../../components/sections/BookingNotFoundView";
+import { fetchBookingByReference } from "../../../lib/bookings";
 import { brand } from "../../../lib/brand";
 
 const SITE_URL = brand.siteUrl;
@@ -8,9 +9,9 @@ const SITE_URL = brand.siteUrl;
 const REFERENCE_PATTERN = /^[A-Za-z0-9-]{4,64}$/;
 
 export const metadata: Metadata = {
-  title: "Booking Confirmation | Cape Town Concierge",
+  title: "Booking | Cape Town Concierge",
   description:
-    "Your Cape Town Concierge booking is confirmed. Keep your reference handy and message us anytime for full trip details.",
+    "Your Cape Town Concierge booking details — vehicle, dates, pickup, and driver contact.",
   alternates: {
     canonical: `${SITE_URL}/booking`,
   },
@@ -26,8 +27,14 @@ export default async function BookingPage({ params }: PageProps) {
   const decoded = decodeURIComponent(reference).trim();
 
   if (!REFERENCE_PATTERN.test(decoded)) {
-    notFound();
+    return <BookingNotFoundView reference={decoded || "—"} />;
   }
 
-  return <BookingConfirmationContent reference={decoded.toUpperCase()} />;
+  const result = await fetchBookingByReference(decoded);
+
+  if (result.kind === "ok") {
+    return <BookingDetailView booking={result.booking} />;
+  }
+
+  return <BookingNotFoundView reference={decoded.toUpperCase()} />;
 }
