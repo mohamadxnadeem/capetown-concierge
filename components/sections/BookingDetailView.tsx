@@ -467,6 +467,51 @@ function getDailyRate(car: NonNullable<Booking["car"]>) {
   return null;
 }
 
+type RateView =
+  | { kind: "uniform"; rate: number; days: number; total: number }
+  | { kind: "varied"; perDay: number[]; total: number }
+  | { kind: "totalOnly"; total: number }
+  | null;
+
+function getBookingRateView(booking: Booking): RateView {
+  const perDayRates = booking.days
+    .map((d) => parseAmount(d.client_rate))
+    .filter((v): v is number => v !== null);
+  const allHaveRates = perDayRates.length === booking.days.length;
+  const totalFromAPI = parseAmount(booking.total_client_amount);
+  const rootRate = parseAmount(booking.client_rate);
+
+  if (allHaveRates && perDayRates.length > 0) {
+    const allEqual = perDayRates.every((r) => r === perDayRates[0]);
+    const sum = perDayRates.reduce((a, b) => a + b, 0);
+    const total = totalFromAPI ?? sum;
+    if (allEqual) {
+      return {
+        kind: "uniform",
+        rate: perDayRates[0],
+        days: perDayRates.length,
+        total,
+      };
+    }
+    return { kind: "varied", perDay: perDayRates, total };
+  }
+
+  if (rootRate && booking.days.length > 0) {
+    return {
+      kind: "uniform",
+      rate: rootRate,
+      days: booking.days.length,
+      total: totalFromAPI ?? rootRate * booking.days.length,
+    };
+  }
+
+  if (totalFromAPI) {
+    return { kind: "totalOnly", total: totalFromAPI };
+  }
+
+  return null;
+}
+
 interface Props {
   booking: Booking;
   carPhotos: CarPhoto[];
@@ -528,21 +573,38 @@ export default function BookingDetailView({
                 </Detail>
 
                 {(() => {
-                  const rate = getDailyRate(booking.car);
-                  if (!rate) return null;
+                  const rateView = getBookingRateView(booking);
+                  if (rateView?.kind === "uniform") {
+                    return (
+                      <>
+                        <Term>Daily rate</Term>
+                        <Detail>
+                          <Money usd={rateView.rate} prefix="" suffix="per day" />
+                          {rateView.days > 1 ? (
+                            <Muted> · {rateView.days} days</Muted>
+                          ) : null}
+                        </Detail>
+                      </>
+                    );
+                  }
+                  if (rateView?.kind === "varied") {
+                    return null;
+                  }
+                  const fallback = getDailyRate(booking.car);
+                  if (!fallback) return null;
                   return (
                     <>
                       <Term>Daily rate</Term>
                       <Detail>
-                        {rate.to ? (
+                        {fallback.to ? (
                           <>
-                            <Money usd={rate.from} prefix="From " suffix="" />
+                            <Money usd={fallback.from} prefix="From " suffix="" />
                             {" – "}
-                            <Money usd={rate.to} prefix="" suffix="per day" />
+                            <Money usd={fallback.to} prefix="" suffix="per day" />
                           </>
                         ) : (
                           <Money
-                            usd={rate.from}
+                            usd={fallback.from}
                             prefix={booking.car.price_from ? "From " : ""}
                             suffix="per day"
                           />
@@ -559,6 +621,9 @@ export default function BookingDetailView({
               <DayList>
                 {booking.days.map((day, idx) => {
                   const meta = describeDay(day);
+                  const dayRate = parseAmount(day.client_rate);
+                  const showPerDayRate =
+                    getBookingRateView(booking)?.kind === "varied" && dayRate;
                   return (
                     <DayItem key={day.id}>
                       <DayHead>
@@ -567,6 +632,11 @@ export default function BookingDetailView({
                         ) : null}
                         <DayLabel>{formatDate(day.date)}</DayLabel>
                         {meta ? <DayTime>{meta}</DayTime> : null}
+                        {showPerDayRate ? (
+                          <DayTime>
+                            <Money usd={dayRate} prefix="" suffix="" />
+                          </DayTime>
+                        ) : null}
                       </DayHead>
                       {day.notes ? <DayNotes>{day.notes}</DayNotes> : null}
                     </DayItem>
@@ -574,6 +644,21 @@ export default function BookingDetailView({
                 })}
               </DayList>
             </Detail>
+
+            {(() => {
+              const rateView = getBookingRateView(booking);
+              if (!rateView) return null;
+              return (
+                <>
+                  <Term>Total</Term>
+                  <Detail>
+                    <strong>
+                      <Money usd={rateView.total} prefix="" suffix="" />
+                    </strong>
+                  </Detail>
+                </>
+              );
+            })()}
 
             {booking.customer_name ? (
               <>

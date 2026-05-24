@@ -277,6 +277,45 @@ function describeDay(day: BookingDay): string {
   return base;
 }
 
+type InvoiceRateView =
+  | { kind: "uniform"; rate: number; days: number; total: number }
+  | { kind: "varied"; perDay: (number | null)[]; total: number }
+  | { kind: "totalOnly"; total: number }
+  | null;
+
+function getInvoiceRateView(booking: Booking): InvoiceRateView {
+  const perDayRates = booking.days.map((d) => parseAmount(d.client_rate));
+  const allHaveRates = perDayRates.every((r) => r !== null);
+  const totalFromAPI = parseAmount(booking.total_client_amount);
+  const rootRate = parseAmount(booking.client_rate);
+
+  if (allHaveRates && perDayRates.length > 0) {
+    const numbers = perDayRates as number[];
+    const allEqual = numbers.every((r) => r === numbers[0]);
+    const sum = numbers.reduce((a, b) => a + b, 0);
+    const total = totalFromAPI ?? sum;
+    if (allEqual) {
+      return { kind: "uniform", rate: numbers[0], days: numbers.length, total };
+    }
+    return { kind: "varied", perDay: perDayRates, total };
+  }
+
+  if (rootRate && booking.days.length > 0) {
+    return {
+      kind: "uniform",
+      rate: rootRate,
+      days: booking.days.length,
+      total: totalFromAPI ?? rootRate * booking.days.length,
+    };
+  }
+
+  if (totalFromAPI) {
+    return { kind: "totalOnly", total: totalFromAPI };
+  }
+
+  return null;
+}
+
 interface Props {
   booking: Booking;
 }
@@ -402,10 +441,26 @@ export default function BookingInvoiceView({ booking }: Props) {
               </Row>
             ) : null}
             {(() => {
+              const currency =
+                booking.client_rate_currency || booking.car.currency || "ZAR";
+              const rateView = getInvoiceRateView(booking);
+              if (rateView?.kind === "uniform") {
+                return (
+                  <Row>
+                    <RowLabel>Daily rate</RowLabel>
+                    <RowValue>
+                      {formatZar(rateView.rate, currency)} per day
+                      {rateView.days > 1 ? ` · ${rateView.days} days` : ""}
+                    </RowValue>
+                  </Row>
+                );
+              }
+              if (rateView?.kind === "varied") {
+                return null;
+              }
               const from = parseAmount(booking.car.price_from);
               const to = parseAmount(booking.car.price_to);
               const single = parseAmount(booking.car.price);
-              const currency = booking.car.currency || "ZAR";
               if (from && to && to > from) {
                 return (
                   <Row>
@@ -435,26 +490,53 @@ export default function BookingInvoiceView({ booking }: Props) {
           <SectionTitle>
             {booking.is_multi_day ? "Trip dates" : "Trip date"}
           </SectionTitle>
-          <DayTable>
-            <thead>
-              <tr>
-                {booking.is_multi_day ? <th style={{ width: 60 }}>#</th> : null}
-                <th>Date</th>
-                <th>Duration</th>
-                <th>Notes</th>
-              </tr>
-            </thead>
-            <tbody>
-              {booking.days.map((day, idx) => (
-                <tr key={day.id}>
-                  {booking.is_multi_day ? <td>Day {idx + 1}</td> : null}
-                  <td>{formatDate(day.date)}</td>
-                  <td>{describeDay(day)}</td>
-                  <td className="notes">{day.notes || "—"}</td>
-                </tr>
-              ))}
-            </tbody>
-          </DayTable>
+          {(() => {
+            const rateView = getInvoiceRateView(booking);
+            const currency =
+              booking.client_rate_currency || booking.car?.currency || "ZAR";
+            const showRateCol = rateView?.kind === "varied";
+            return (
+              <>
+                <DayTable>
+                  <thead>
+                    <tr>
+                      {booking.is_multi_day ? <th style={{ width: 60 }}>#</th> : null}
+                      <th>Date</th>
+                      <th>Duration</th>
+                      {showRateCol ? <th style={{ textAlign: "right" }}>Rate</th> : null}
+                      <th>Notes</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {booking.days.map((day, idx) => {
+                      const rate = parseAmount(day.client_rate);
+                      return (
+                        <tr key={day.id}>
+                          {booking.is_multi_day ? <td>Day {idx + 1}</td> : null}
+                          <td>{formatDate(day.date)}</td>
+                          <td>{describeDay(day)}</td>
+                          {showRateCol ? (
+                            <td style={{ textAlign: "right" }}>
+                              {rate ? formatZar(rate, currency) : "—"}
+                            </td>
+                          ) : null}
+                          <td className="notes">{day.notes || "—"}</td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </DayTable>
+                {rateView ? (
+                  <Row style={{ marginTop: 12, borderTop: "2px solid #0b5b33", paddingTop: 10 }}>
+                    <RowLabel style={{ fontWeight: 700, color: "#123d2b" }}>Total</RowLabel>
+                    <RowValue style={{ fontWeight: 800, fontSize: "1.05rem" }}>
+                      {formatZar(rateView.total, currency)}
+                    </RowValue>
+                  </Row>
+                ) : null}
+              </>
+            );
+          })()}
         </Section>
 
         {(booking.pickup_location || booking.dropoff_location) && (

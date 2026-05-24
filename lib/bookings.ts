@@ -11,6 +11,7 @@ export interface BookingDay {
   start_time: string | null;
   end_time: string | null;
   notes: string | null;
+  client_rate?: string | null;
 }
 
 export interface BookingDriver {
@@ -61,6 +62,9 @@ export interface Booking {
   total_days: number;
   is_multi_day: boolean;
   created_at: string;
+  client_rate?: string | null;
+  client_rate_currency?: string | null;
+  total_client_amount?: string | null;
 }
 
 export type BookingLookupResult =
