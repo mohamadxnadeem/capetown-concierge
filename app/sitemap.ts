@@ -19,8 +19,9 @@ const FALLBACK_TOUR_SLUGS = [
 const FALLBACK_VEHICLE_SLUGS: string[] = [];
 
 type CarsApiItem = {
-  car?: { slug?: string };
+  car?: { slug?: string; is_active?: boolean };
   slug?: string;
+  is_active?: boolean;
 };
 
 type ExperienceListItem = {
@@ -42,6 +43,10 @@ async function getVehicleSlugs(): Promise<string[]> {
       ? data.results
       : [];
     const apiSlugs = items
+      .filter((item) => {
+        const active = item?.car?.is_active ?? item?.is_active;
+        return active !== false;
+      })
       .map((item) => item?.car?.slug || item?.slug)
       .filter((slug): slug is string => Boolean(slug))
       .map((slug) => slug.toLowerCase());

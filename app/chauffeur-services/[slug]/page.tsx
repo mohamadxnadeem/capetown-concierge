@@ -42,6 +42,7 @@ type Car = {
   // FIX 2: Add aggregate review data if your API returns it
   review_count?: number;
   review_rating?: number;
+  is_active?: boolean;
 };
 
 type CarsApiItem = {
@@ -128,7 +129,8 @@ async function getAllVehicles(): Promise<CarsApiItem[]> {
 function normalizeCars(items: CarsApiItem[]): Car[] {
   return items
     .map((item) => item?.car || item)
-    .filter((car): car is Car => Boolean(car?.slug || car?.title));
+    .filter((car): car is Car => Boolean(car?.slug || car?.title))
+    .filter((car) => car.is_active !== false);
 }
 
 function getVehicleBySlug(cars: Car[], slug: string) {

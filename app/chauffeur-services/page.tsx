@@ -17,6 +17,7 @@ type CarItem = {
   images?: CarPhoto[];
   number_of_seats?: number;
   price?: string | number;
+  is_active?: boolean;
 };
 
 type CarsApiItem = {
@@ -65,6 +66,7 @@ async function getVehicles(): Promise<FeaturedVehicleItem[]> {
       sourceArray.map((item: CarsApiItem) => {
         const car = item?.car || item;
         if (!car?.title) return null;
+        if (car.is_active === false) return null;
         const imageArray = car.cover_photos || car.images || [];
         const featuredPhoto =
           imageArray.find((photo: CarPhoto) => photo?.is_featured)?.cover_photos ||

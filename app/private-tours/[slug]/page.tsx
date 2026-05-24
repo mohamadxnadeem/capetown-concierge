@@ -78,6 +78,7 @@ type Car = {
   currency?: string;
   cover_photos?: CarPhoto[];
   images?: CarPhoto[];
+  is_active?: boolean;
 };
 
 type CarsApiItem = {
@@ -295,6 +296,7 @@ function mapVehicles(items: CarsApiItem[]): TourVehicle[] {
   return items
     .map((item) => item?.car || item)
     .filter((car) => car?.title)
+    .filter((car) => car.is_active !== false)
     .map((car) => {
       const imageArray = car.cover_photos || car.images || [];
       const sortedImages = [...imageArray].sort(
@@ -483,6 +485,7 @@ export default async function PrivateTourDetailPage({ params }: PageProps) {
     const zarPrice = allVehicles
       .map((item) => {
         const car = (item as CarsApiItem).car || (item as unknown as Car);
+        if (car?.is_active === false) return null;
         const p = car?.price;
         if (!p) return null;
         const n = Number(String(p).replace(/[^0-9.]/g, ""));
