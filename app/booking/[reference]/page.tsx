@@ -3,7 +3,6 @@ import BookingDetailView from "../../../components/sections/BookingDetailView";
 import BookingNotFoundView from "../../../components/sections/BookingNotFoundView";
 import {
   fetchBookingByReference,
-  fetchCarPhotosBySlug,
   fetchUpsellTours,
 } from "../../../lib/bookings";
 import { brand } from "../../../lib/brand";
@@ -42,23 +41,12 @@ export default async function BookingPage({ params }: PageProps) {
 
   const { booking } = result;
 
-  // Prefer photos embedded in the booking response (the customer endpoint
-  // ignores is_public, so this works for hidden vehicles too). Fall back to
-  // the public car list only if the booking doesn't include any photos.
-  const embeddedPhotos =
-    (booking.car?.cover_photos?.filter((p) => p?.cover_photos) ?? []).length > 0
-      ? booking.car!.cover_photos!.filter((p) => p?.cover_photos)
-      : (booking.cover_photos?.filter((p) => p?.cover_photos) ?? []);
-
-  const [fallbackPhotos, upsellTours] = await Promise.all([
-    embeddedPhotos.length === 0 && booking.car?.slug
-      ? fetchCarPhotosBySlug(booking.car.slug)
-      : Promise.resolve([]),
-    fetchUpsellTours(6),
-  ]);
-
+  // Photos are embedded on booking.car.cover_photos. The customer endpoint
+  // ignores is_public, so this works for hidden vehicles too.
   const carPhotos =
-    embeddedPhotos.length > 0 ? embeddedPhotos : fallbackPhotos;
+    booking.car?.cover_photos?.filter((p) => p?.cover_photos) ?? [];
+
+  const upsellTours = await fetchUpsellTours(6);
 
   return (
     <BookingDetailView

@@ -61,51 +61,12 @@ export interface Booking {
   total_days: number;
   is_multi_day: boolean;
   created_at: string;
-  cover_photos?: CarPhoto[];
 }
 
 export type BookingLookupResult =
   | { kind: "ok"; booking: Booking }
   | { kind: "not_found" }
   | { kind: "error"; message: string };
-
-interface CarsApiCar {
-  slug?: string;
-  title?: string;
-  cover_photos?: CarPhoto[];
-  images?: CarPhoto[];
-}
-interface CarsApiItem {
-  car?: CarsApiCar;
-  slug?: string;
-  title?: string;
-  cover_photos?: CarPhoto[];
-  images?: CarPhoto[];
-}
-
-export async function fetchCarPhotosBySlug(slug: string): Promise<CarPhoto[]> {
-  try {
-    const res = await fetch(
-      `${BACKEND_URL}/api/cars-for-hire/all/`,
-      { next: { revalidate: 3600 } }
-    );
-    if (!res.ok) return [];
-    const data = await res.json();
-    const items: CarsApiItem[] = Array.isArray(data)
-      ? data
-      : Array.isArray(data?.results)
-      ? data.results
-      : [];
-    const target = slug.toLowerCase();
-    const match = items
-      .map((item) => item?.car || item)
-      .find((car) => car?.slug?.toLowerCase() === target);
-    const photos = (match?.cover_photos ?? match?.images ?? []) as CarPhoto[];
-    return photos.filter((p) => Boolean(p?.cover_photos));
-  } catch {
-    return [];
-  }
-}
 
 export interface UpsellTour {
   title: string;
