@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { BACKEND_URL } from "./api";
 import type { CarPhoto } from "../components/sections/chauffeur-services/types";
 
@@ -154,7 +155,9 @@ export async function fetchUpsellTours(limit = 6): Promise<UpsellTour[]> {
   }
 }
 
-export async function fetchBookingByReference(
+export const fetchBookingByReference = cache(_fetchBookingByReference);
+
+async function _fetchBookingByReference(
   reference: string
 ): Promise<BookingLookupResult> {
   try {
