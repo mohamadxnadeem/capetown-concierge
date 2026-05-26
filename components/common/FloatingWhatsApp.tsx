@@ -66,6 +66,7 @@ export default function FloatingWhatsApp() {
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Get in Touch on WhatsApp"
+      data-floating-whatsapp
       onClick={() =>
         trackWhatsAppClick({
           source: "floating_button",

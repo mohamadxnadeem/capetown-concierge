@@ -1,12 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import styled from "styled-components";
 import Container from "../../common/Container";
+import SmartImage from "../../common/SmartImage";
 import { trackWhatsAppClick } from "../../../lib/tracking";
 import Money from "../../common/Money";
-import { shimmerPlaceholder } from "../../../lib/shimmer";
 
 type Props = {
   title: string;
@@ -28,6 +27,12 @@ const Hero = styled.section`
   @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
     padding: 150px 0 110px;
   }
+`;
+
+const HeroImageLayer = styled.div`
+  position: absolute;
+  inset: 0;
+  z-index: 0;
 `;
 
 const HeroOverlay = styled.div`
@@ -138,17 +143,9 @@ export default function ChauffeurHero({
   return (
     <Hero>
       {image && (
-        <Image
-          src={image}
-          alt=""
-          fill
-          priority
-          fetchPriority="high"
-          placeholder="blur"
-          blurDataURL={shimmerPlaceholder(1400, 900)}
-          sizes="100vw"
-          style={{ objectFit: "cover", zIndex: 0 }}
-        />
+        <HeroImageLayer>
+          <SmartImage src={image} alt={title} priority sizes="100vw" />
+        </HeroImageLayer>
       )}
       <HeroOverlay />
       <HeroContent>

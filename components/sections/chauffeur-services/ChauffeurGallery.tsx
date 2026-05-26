@@ -1,10 +1,9 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import Image from "next/image";
 import styled, { keyframes } from "styled-components";
 import { CarPhoto } from "./types";
-import { shimmerPlaceholder } from "../../../lib/shimmer";
+import SmartImage from "../../common/SmartImage";
 
 type Props = {
   images: CarPhoto[];
@@ -202,15 +201,11 @@ export default function ChauffeurGallery({ images }: Props) {
           <ActiveImageLayer key={activeImage}>
             <CinematicLayer>
               {activeImage && (
-                <Image
+                <SmartImage
                   src={activeImage}
                   alt=""
-                  fill
                   priority
-                  placeholder="blur"
-                  blurDataURL={shimmerPlaceholder(900, 560)}
                   sizes="(max-width: 1200px) 100vw, 60vw"
-                  style={{ objectFit: "cover" }}
                 />
               )}
             </CinematicLayer>
@@ -230,14 +225,10 @@ export default function ChauffeurGallery({ images }: Props) {
               aria-label={`Show image ${index + 1}`}
             >
               {image.cover_photos && (
-                <Image
+                <SmartImage
                   src={image.cover_photos}
                   alt=""
-                  fill
-                  placeholder="blur"
-                  blurDataURL={shimmerPlaceholder(108, 88)}
                   sizes="108px"
-                  style={{ objectFit: "cover" }}
                 />
               )}
             </ThumbButton>

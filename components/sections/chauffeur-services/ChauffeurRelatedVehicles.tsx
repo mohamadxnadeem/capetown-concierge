@@ -1,10 +1,9 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import styled from "styled-components";
 import { RelatedVehicle } from "./types";
-import { shimmerPlaceholder } from "../../../lib/shimmer";
+import SmartImage from "../../common/SmartImage";
 
 type Props = {
   items: RelatedVehicle[];
@@ -92,14 +91,10 @@ export default function ChauffeurRelatedVehicles({ items }: Props) {
           <RelatedCard key={`${vehicle.title}-${index}`} href={vehicle.href}>
             <RelatedImageWrap>
               {vehicle.image && (
-                <Image
+                <SmartImage
                   src={vehicle.image}
                   alt={vehicle.title}
-                  fill
-                  placeholder="blur"
-                  blurDataURL={shimmerPlaceholder(600, 230)}
                   sizes="(max-width: 768px) 100vw, 33vw"
-                  style={{ objectFit: "cover" }}
                 />
               )}
             </RelatedImageWrap>

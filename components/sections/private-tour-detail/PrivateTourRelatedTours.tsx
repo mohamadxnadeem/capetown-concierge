@@ -1,31 +1,10 @@
 "use client";
 
 import styled from "styled-components";
-import Image from "next/image";
 import Link from "next/link";
 import Button from "../../common/Button";
+import SmartImage from "../../common/SmartImage";
 import { RelatedTour } from "./types";
-
-function shimmer(w: number, h: number) {
-  return `
-    <svg width="${w}" height="${h}" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <linearGradient id="g">
-          <stop stop-color="#f2f4f3" offset="20%" />
-          <stop stop-color="#e8ece9" offset="50%" />
-          <stop stop-color="#f2f4f3" offset="70%" />
-        </linearGradient>
-      </defs>
-      <rect width="${w}" height="${h}" fill="#f2f4f3" />
-      <rect id="r" width="${w}" height="${h}" fill="url(#g)" />
-      <animate attributeName="x" from="-${w}" to="${w}" dur="1.2s" repeatCount="indefinite" />
-    </svg>`;
-}
-
-const toBase64 = (str: string) =>
-  typeof window === "undefined"
-    ? Buffer.from(str).toString("base64")
-    : window.btoa(str);
 
 /* ===== styles unchanged ===== */
 
@@ -170,16 +149,10 @@ export default function PrivateTourRelatedTours({
           <Card key={`${item.title}-${index}`}>
             <CardImage>
               {item.image ? (
-                <Image
+                <SmartImage
                   src={item.image}
                   alt={`${item.title} private tour`}
-                  fill
-                  placeholder="blur"
-                  blurDataURL={`data:image/svg+xml;base64,${toBase64(
-                    shimmer(700, 500)
-                  )}`}
                   sizes="(max-width: 768px) 100vw, 33vw"
-                  style={{ objectFit: "cover" }}
                 />
               ) : null}
             </CardImage>

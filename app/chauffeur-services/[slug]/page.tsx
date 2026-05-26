@@ -42,6 +42,7 @@ type Car = {
   // FIX 2: Add aggregate review data if your API returns it
   review_count?: number;
   review_rating?: number;
+  is_active?: boolean;
 };
 
 type CarsApiItem = {
@@ -111,7 +112,7 @@ async function getAllVehicles(): Promise<CarsApiItem[]> {
   try {
     const response = await fetch(
       "https://web-production-1ab9.up.railway.app/api/cars-for-hire/all/",
-      { next: { revalidate: 3600 }, signal: controller.signal }
+      { next: { revalidate: 300 }, signal: controller.signal }
     );
     clearTimeout(timeout);
     if (!response.ok) return [];

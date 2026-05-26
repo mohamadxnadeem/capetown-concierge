@@ -78,6 +78,7 @@ type Car = {
   currency?: string;
   cover_photos?: CarPhoto[];
   images?: CarPhoto[];
+  is_active?: boolean;
 };
 
 type CarsApiItem = {
@@ -170,7 +171,7 @@ async function getAllVehicles(): Promise<CarsApiItem[]> {
   try {
     const response = await fetch(
       "https://web-production-1ab9.up.railway.app/api/cars-for-hire/all/",
-      { next: { revalidate: 3600 } }
+      { next: { revalidate: 300 } }
     );
     if (!response.ok) return [];
     const data = await response.json();

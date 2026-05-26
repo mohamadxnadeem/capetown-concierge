@@ -200,6 +200,7 @@ export default function Footer() {
               <NavItem><NavLink href="/airport-transfers-cape-town">Airport Transfers</NavLink></NavItem>
               <NavItem><NavLink href="/best-activities-to-do-in-cape-town">Best Activities</NavLink></NavItem>
               <NavItem><NavLink href="/contact">Contact Us</NavLink></NavItem>
+              <NavItem><NavLink href="/privacy">Privacy Policy</NavLink></NavItem>
             </NavList>
           </Column>
 
@@ -242,6 +243,7 @@ export default function Footer() {
           </Copyright>
           <LegalLinks>
             <LegalLink href="/contact">Contact</LegalLink>
+            <LegalLink href="/privacy">Privacy Policy</LegalLink>
           </LegalLinks>
         </Bottom>
       </Container>

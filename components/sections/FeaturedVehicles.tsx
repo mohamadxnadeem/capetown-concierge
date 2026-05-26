@@ -1,12 +1,11 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
-import { useRef, useState } from "react";
-import styled, { keyframes } from "styled-components";
+import { useRef } from "react";
+import styled from "styled-components";
 import Container from "../common/Container";
 import Money from "../common/Money";
-import { shimmerPlaceholder } from "../../lib/shimmer";
+import SmartImage from "../common/SmartImage";
 
 type VehicleItem = {
   title: string;
@@ -25,15 +24,6 @@ type FeaturedVehiclesProps = {
   items?: VehicleItem[];
 };
 
-
-const shimmer = keyframes`
-  0% {
-    transform: translateX(-100%);
-  }
-  100% {
-    transform: translateX(100%);
-  }
-`;
 
 const Wrapper = styled.section`
   padding: 72px 0;
@@ -176,30 +166,6 @@ const ImageOverlay = styled.div`
   background: linear-gradient(to top, rgba(0, 0, 0, 0.22), rgba(0, 0, 0, 0.06));
 `;
 
-const ShimmerLayer = styled.div`
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  overflow: hidden;
-  background: linear-gradient(135deg, rgba(11, 91, 51, 0.12), rgba(6, 62, 35, 0.06));
-
-  &::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: -150%;
-    width: 50%;
-    height: 100%;
-    background: linear-gradient(
-      90deg,
-      rgba(255, 255, 255, 0) 0%,
-      rgba(255, 255, 255, 0.55) 50%,
-      rgba(255, 255, 255, 0) 100%
-    );
-    animation: ${shimmer} 1.4s infinite;
-  }
-`;
-
 const CardContent = styled.div`
   display: flex;
   flex: 1;
@@ -298,21 +264,13 @@ function VehicleImageCard({
   title: string;
   alt?: string;
 }) {
-  const [loaded, setLoaded] = useState(false);
-
   return (
     <CardImageWrap>
-      {!loaded && <ShimmerLayer />}
       {image ? (
-        <Image
+        <SmartImage
           src={image}
           alt={alt || getVehicleAltText(title)}
-          fill
-          placeholder="blur"
-          blurDataURL={shimmerPlaceholder(700, 500)}
           sizes="(max-width: 768px) 85vw, (max-width: 1200px) 48vw, 32vw"
-          style={{ objectFit: "cover" }}
-          onLoad={() => setLoaded(true)}
         />
       ) : null}
       <ImageOverlay />

@@ -32,7 +32,7 @@ async function getVehicleSlugs(): Promise<string[]> {
   try {
     const res = await fetch(
       "https://web-production-1ab9.up.railway.app/api/cars-for-hire/all/",
-      { next: { revalidate: 3600 } }
+      { next: { revalidate: 300 } }
     );
     if (!res.ok) return FALLBACK_VEHICLE_SLUGS;
     const data = await res.json();
@@ -117,6 +117,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.7,
+    },
+    {
+      url: `${SITE_URL}/privacy`,
+      lastModified: new Date(),
+      changeFrequency: "yearly",
+      priority: 0.3,
     },
   ];
 

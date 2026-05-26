@@ -1,11 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import styled from "styled-components";
 import Button from "../common/Button";
+import SmartImage from "../common/SmartImage";
 import { trackWhatsAppClick } from "../../lib/tracking";
-import { shimmerPlaceholder } from "../../lib/shimmer";
 
 type HeroBannerProps = {
   eyebrow?: string;
@@ -142,17 +141,12 @@ export default function HeroBanner({
   return (
     <Wrapper>
       <ImageLayer>
-        <Image
+        <SmartImage
           src={image}
           alt={imageAlt}
-          fill
           priority
-          fetchPriority="high"
           quality={90}
-          placeholder="blur"
-          blurDataURL={shimmerPlaceholder(1400, 900)}
           sizes="100vw"
-          style={{ objectFit: "cover" }}
         />
       </ImageLayer>
 
