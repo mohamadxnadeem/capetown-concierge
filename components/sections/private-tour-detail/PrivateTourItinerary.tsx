@@ -113,7 +113,7 @@ const StopTop = styled.div`
 
 const StopImage = styled.div`
   position: relative;
-  min-height: 180px;
+  height: 180px;
   border-radius: 16px;
   overflow: hidden;
   background: linear-gradient(135deg, rgba(11, 91, 51, 0.12), rgba(6, 62, 35, 0.06));
