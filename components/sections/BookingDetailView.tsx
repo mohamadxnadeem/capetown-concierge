@@ -14,7 +14,6 @@ import type {
 import type { CarPhoto } from "./chauffeur-services/types";
 import ChauffeurGallery from "./chauffeur-services/ChauffeurGallery";
 import SmartImage from "../common/SmartImage";
-import Money from "../common/Money";
 
 const Wrapper = styled.main`
   background: ${({ theme }) => theme.colors.background};
@@ -451,12 +450,6 @@ function vehicleSummary(car: NonNullable<Booking["car"]>): string {
   return bits.join(" · ");
 }
 
-function parseAmount(value: string | null | undefined): number | null {
-  if (!value) return null;
-  const num = Number(String(value).replace(/[^0-9.]/g, ""));
-  return Number.isFinite(num) ? num : null;
-}
-
 interface Props {
   booking: Booking;
   carPhotos: CarPhoto[];
@@ -525,7 +518,6 @@ export default function BookingDetailView({
               <DayList>
                 {booking.days.map((day, idx) => {
                   const meta = describeDay(day);
-                  const dayRate = parseAmount(day.client_rate);
                   return (
                     <DayItem key={day.id}>
                       <DayHead>
@@ -534,15 +526,6 @@ export default function BookingDetailView({
                         ) : null}
                         <DayLabel>{formatDate(day.date)}</DayLabel>
                         {meta ? <DayTime>{meta}</DayTime> : null}
-                        {booking.is_multi_day ? (
-                          <DayTime>
-                            {dayRate !== null ? (
-                              <Money usd={dayRate} prefix="" suffix="" />
-                            ) : (
-                              <span aria-label="Price to be confirmed">—</span>
-                            )}
-                          </DayTime>
-                        ) : null}
                       </DayHead>
                       {day.notes ? <DayNotes>{day.notes}</DayNotes> : null}
                     </DayItem>
@@ -550,24 +533,6 @@ export default function BookingDetailView({
                 })}
               </DayList>
             </Detail>
-
-            {(() => {
-              const total = parseAmount(booking.total_client_amount);
-              return (
-                <>
-                  <Term>Total</Term>
-                  <Detail>
-                    {total !== null && total > 0 ? (
-                      <strong>
-                        <Money usd={total} prefix="" suffix="" />
-                      </strong>
-                    ) : (
-                      <Muted>Price to be confirmed</Muted>
-                    )}
-                  </Detail>
-                </>
-              );
-            })()}
 
             {booking.customer_name ? (
               <>
