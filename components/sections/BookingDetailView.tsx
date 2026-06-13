@@ -640,13 +640,6 @@ export default function BookingDetailView({
             >
               💬&nbsp; Message us on WhatsApp
             </PrimaryAction>
-            <TertiaryAction
-              href={`/booking/${booking.booking_reference}/invoice?print=1`}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              ⬇&nbsp; Download invoice
-            </TertiaryAction>
             <TertiaryAction href={supportMailto}>Email support</TertiaryAction>
           </Actions>
         </Card>
