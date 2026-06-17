@@ -9,7 +9,7 @@ import TestimonialsSection from "../components/sections/testimonials/Testimonial
 import TestimonialsCta from "../components/sections/testimonials/TestimonialsCta";
 import HomepageEnquiryCollapsible from "../components/sections/HomepageEnquiryCollapsible";
 import GoogleRatingBadge from "../components/common/GoogleRatingBadge";
-import { fetchFeaturedVillas } from "../lib/villas";
+import { fetchFeaturedVillas, getVillaPrimaryPhoto } from "../lib/villas";
 import { brand } from "../lib/brand";
 
 const SITE_URL = brand.siteUrl;
@@ -348,6 +348,51 @@ export default async function HomePage() {
       fetchFeaturedVillas().catch(() => []),
     ]);
 
+  // Cover images for the service tiles — pull from real CMS data, fall
+  // back to bundled assets if a category has none yet.
+  const villaTileImages = villas
+    .slice(0, 4)
+    .map((v) => getVillaPrimaryPhoto(v))
+    .filter((u): u is string => Boolean(u));
+  const vehicleTileImages = featuredVehicleItems
+    .slice(0, 4)
+    .map((v) => v.image)
+    .filter((u): u is string => Boolean(u));
+  const tourTileImages = featuredExperienceItems
+    .slice(0, 4)
+    .map((t) => t.image)
+    .filter((u): u is string => Boolean(u));
+
+  const serviceTiles = [
+    {
+      href: "/villas",
+      eyebrow: "Stay",
+      title: "Luxury Villas",
+      description:
+        "Hand-picked villas in Camps Bay, Clifton, Constantia and the Winelands — concierge from arrival to departure.",
+      images: villaTileImages.length ? villaTileImages : ["/images/hero-image.jpg"],
+      alt: "Luxury Cape Town villa rentals with concierge service",
+    },
+    {
+      href: "/chauffeur-hire",
+      eyebrow: "Drive",
+      title: "Chauffeur Hire",
+      description:
+        "Hourly, daily, and multi-day private chauffeur hire in a Mercedes, Range Rover, or BMW with a professional driver.",
+      images: vehicleTileImages.length ? vehicleTileImages : ["/images/car.jpg"],
+      alt: "Private chauffeur hire in Cape Town with luxury vehicle and driver",
+    },
+    {
+      href: "/tours",
+      eyebrow: "Explore",
+      title: "Day Tours",
+      description:
+        "Curated private day tours — Cape Point, Winelands, Table Mountain — entirely at your own pace.",
+      images: tourTileImages.length ? tourTileImages : ["/images/hero-car.jpg"],
+      alt: "Private day tours in Cape Town with chauffeur guide",
+    },
+  ];
+
   const structuredData = {
     "@context": "https://schema.org",
     "@graph": [
@@ -518,7 +563,7 @@ export default async function HomePage() {
         imageAlt="Cape Town Concierge — luxury villas, chauffeur hire and private day tours"
       />
 
-      <ServiceTiles />
+      <ServiceTiles tiles={serviceTiles} />
 
       <div style={{ textAlign: "center", padding: "20px 20px 0" }}>
         <GoogleRatingBadge />

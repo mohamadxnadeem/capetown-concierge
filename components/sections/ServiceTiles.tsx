@@ -3,46 +3,20 @@
 import Link from "next/link";
 import styled from "styled-components";
 import Container from "../common/Container";
-import SmartImage from "../common/SmartImage";
+import RotatingImage from "../common/RotatingImage";
 
-interface Tile {
+export interface ServiceTile {
   href: string;
   eyebrow: string;
   title: string;
   description: string;
-  image: string;
+  images: string[];
   alt: string;
 }
 
-const TILES: Tile[] = [
-  {
-    href: "/villas",
-    eyebrow: "Stay",
-    title: "Luxury Villas",
-    description:
-      "Hand-picked villas in Camps Bay, Clifton, Constantia and the Winelands — concierge from arrival to departure.",
-    image: "/images/hero-image.jpg",
-    alt: "Luxury Cape Town villa rentals with concierge service",
-  },
-  {
-    href: "/chauffeur-hire",
-    eyebrow: "Drive",
-    title: "Chauffeur Hire",
-    description:
-      "Hourly, daily, and multi-day private chauffeur hire in a Mercedes, Range Rover, or BMW with a professional driver.",
-    image: "/images/car.jpg",
-    alt: "Private chauffeur hire in Cape Town with luxury vehicle and driver",
-  },
-  {
-    href: "/tours",
-    eyebrow: "Explore",
-    title: "Day Tours",
-    description:
-      "Curated private day tours — Cape Point, Winelands, Table Mountain — entirely at your own pace.",
-    image: "/images/hero-car.jpg",
-    alt: "Private day tours in Cape Town with chauffeur guide",
-  },
-];
+interface Props {
+  tiles: ServiceTile[];
+}
 
 const Wrapper = styled.section`
   padding: 32px 0 16px;
@@ -149,15 +123,19 @@ const TileCta = styled.div`
   }
 `;
 
-export default function ServiceTiles() {
+export default function ServiceTiles({ tiles }: Props) {
   return (
     <Wrapper>
       <Container>
         <Grid>
-          {TILES.map((tile) => (
+          {tiles.map((tile) => (
             <Tile key={tile.href} href={tile.href}>
               <ImageLayer>
-                <SmartImage src={tile.image} alt={tile.alt} sizes="(max-width: 768px) 100vw, 33vw" />
+                <RotatingImage
+                  images={tile.images}
+                  alt={tile.alt}
+                  sizes="(max-width: 768px) 100vw, 33vw"
+                />
               </ImageLayer>
               <Overlay />
               <TileContent>
