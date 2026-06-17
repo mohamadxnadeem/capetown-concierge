@@ -4,6 +4,7 @@ import Link from "next/link";
 import styled from "styled-components";
 import Container from "../../common/Container";
 import SmartImage from "../../common/SmartImage";
+import RotatingImage from "../../common/RotatingImage";
 import Money from "../../common/Money";
 import { trackWhatsAppClick } from "../../../lib/tracking";
 import { brand } from "../../../lib/brand";
@@ -251,6 +252,10 @@ interface Props {
 
 export default function VillaDetailView({ villa }: Props) {
   const photo = getVillaPrimaryPhoto(villa);
+  const heroImages = [...(villa.cover_photos ?? [])]
+    .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
+    .map((p) => p?.cover_photos)
+    .filter((u): u is string => Boolean(u));
   const area = getVillaAreaDisplay(villa);
   const rate = getVillaNightlyRate(villa);
 
@@ -263,7 +268,16 @@ export default function VillaDetailView({ villa }: Props) {
 
   return (
     <Wrapper>
-      {photo ? (
+      {heroImages.length > 1 ? (
+        <HeroImage>
+          <RotatingImage
+            images={heroImages}
+            alt={`${villa.name} — luxury villa in ${area}`}
+            priority
+            sizes="100vw"
+          />
+        </HeroImage>
+      ) : photo ? (
         <HeroImage>
           <SmartImage
             src={photo}

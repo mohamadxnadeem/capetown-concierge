@@ -4,6 +4,7 @@ import Link from "next/link";
 import styled from "styled-components";
 import Button from "../common/Button";
 import SmartImage from "../common/SmartImage";
+import RotatingImage from "../common/RotatingImage";
 import { trackWhatsAppClick } from "../../lib/tracking";
 
 type HeroBannerProps = {
@@ -16,7 +17,8 @@ type HeroBannerProps = {
   secondaryCtaLabel?: string;
   secondaryCtaHref?: string;
   secondaryCtaOnClick?: () => void;
-  image: string;
+  image?: string;
+  images?: string[];
   imageAlt?: string;
 };
 
@@ -133,21 +135,28 @@ export default function HeroBanner({
   secondaryCtaHref = "/chauffeur-hire",
   secondaryCtaOnClick,
   image,
+  images,
   imageAlt = "Luxury chauffeur fleet in Cape Town including premium private transport vehicles",
 }: HeroBannerProps) {
   const handlePrimaryClick = makeClickHandler(primaryCtaHref, primaryCtaLabel, primaryCtaOnClick);
   const handleSecondaryClick = makeClickHandler(secondaryCtaHref, secondaryCtaLabel, secondaryCtaOnClick);
 
+  const rotation = (images ?? []).filter(Boolean);
+  const single = image && !rotation.length ? image : null;
+
   return (
     <Wrapper>
       <ImageLayer>
-        <SmartImage
-          src={image}
-          alt={imageAlt}
-          priority
-          quality={90}
-          sizes="100vw"
-        />
+        {rotation.length > 0 ? (
+          <RotatingImage
+            images={rotation}
+            alt={imageAlt}
+            sizes="100vw"
+            priority
+          />
+        ) : single ? (
+          <SmartImage src={single} alt={imageAlt} priority quality={90} sizes="100vw" />
+        ) : null}
       </ImageLayer>
 
       <Overlay />

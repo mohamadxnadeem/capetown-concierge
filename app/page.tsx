@@ -363,6 +363,22 @@ export default async function HomePage() {
     .map((t) => t.image)
     .filter((u): u is string => Boolean(u));
 
+  // Interleave villas / vehicles / tours for the hero rotation so a
+  // visitor sees variety in the first few seconds. Round-robin keeps
+  // it deterministic between SSR and client (no Math.random hydration
+  // mismatch).
+  const heroRotationImages: string[] = [];
+  const maxRotation = Math.max(
+    villaTileImages.length,
+    vehicleTileImages.length,
+    tourTileImages.length
+  );
+  for (let i = 0; i < maxRotation; i++) {
+    if (villaTileImages[i]) heroRotationImages.push(villaTileImages[i]);
+    if (vehicleTileImages[i]) heroRotationImages.push(vehicleTileImages[i]);
+    if (tourTileImages[i]) heroRotationImages.push(tourTileImages[i]);
+  }
+
   const serviceTiles = [
     {
       href: "/villas",
@@ -560,6 +576,7 @@ export default async function HomePage() {
         secondaryCtaLabel="Explore villas"
         secondaryCtaHref="/villas"
         image="/images/car.jpg"
+        images={heroRotationImages}
         imageAlt="Cape Town Concierge — luxury villas, chauffeur hire and private day tours"
       />
 

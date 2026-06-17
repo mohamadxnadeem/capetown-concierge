@@ -4,6 +4,7 @@ import Link from "next/link";
 import styled from "styled-components";
 import Container from "../../common/Container";
 import SmartImage from "../../common/SmartImage";
+import RotatingImage from "../../common/RotatingImage";
 import Money from "../../common/Money";
 import { trackWhatsAppClick } from "../../../lib/tracking";
 import { brand } from "../../../lib/brand";
@@ -21,16 +22,38 @@ const WHATSAPP = `https://wa.me/${brand.whatsappNumber}?text=${encodeURIComponen
 )}`;
 
 const Hero = styled.section`
+  position: relative;
   background: linear-gradient(135deg, ${({ theme }) => theme.colors.primary} 0%, ${({ theme }) => theme.colors.primaryDark} 100%);
   color: white;
   padding: 96px 0 72px;
+  overflow: hidden;
+  isolation: isolate;
 
   @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
     padding: 128px 0 96px;
   }
 `;
 
+const HeroImageLayer = styled.div`
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+`;
+
+const HeroOverlay = styled.div`
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(
+    180deg,
+    rgba(8, 18, 16, 0.55) 0%,
+    rgba(8, 18, 16, 0.65) 60%,
+    rgba(8, 18, 16, 0.78) 100%
+  );
+`;
+
 const HeroInner = styled.div`
+  position: relative;
   max-width: 820px;
 `;
 
@@ -344,9 +367,27 @@ export default function VillasLandingPage({ villas }: Props) {
   });
   const areasShown = new Set<VillaArea>(featuredFirst.map((v) => v.area));
 
+  const heroImages = featuredFirst
+    .slice(0, 6)
+    .map((v) => getVillaPrimaryPhoto(v))
+    .filter((u): u is string => Boolean(u));
+
   return (
     <>
       <Hero>
+        {heroImages.length > 0 ? (
+          <>
+            <HeroImageLayer>
+              <RotatingImage
+                images={heroImages}
+                alt="Luxury Cape Town villa rentals"
+                sizes="100vw"
+                priority
+              />
+            </HeroImageLayer>
+            <HeroOverlay />
+          </>
+        ) : null}
         <Container>
           <HeroInner>
             <Eyebrow>{brand.name}</Eyebrow>
