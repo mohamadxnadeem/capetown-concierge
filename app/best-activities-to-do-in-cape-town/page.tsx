@@ -80,7 +80,7 @@ async function getFeaturedExperiences(): Promise<FeaturedExperienceItem[]> {
       return {
         title: experience.title,
         description,
-        href: experience.slug ? `/private-tours/${experience.slug}` : "/private-tours",
+        href: experience.slug ? `/tours/${experience.slug}` : "/tours",
         image: featuredPhoto,
         alt: `Private ${experience.title} in Cape Town with Professional Driver`,
         price: formatApiPrice(experience.price),

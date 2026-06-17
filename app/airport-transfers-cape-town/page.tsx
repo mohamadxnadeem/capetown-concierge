@@ -146,7 +146,7 @@ async function getVehicles(): Promise<FeaturedVehicleItem[]> {
         return {
           title: car.title,
           description,
-          href: car.slug ? `/chauffeur-services/${car.slug}` : "/chauffeur-services",
+          href: car.slug ? `/chauffeur-hire/${car.slug}` : "/chauffeur-hire",
           image,
           alt: `${car.title} airport transfer Cape Town`,
           seats: car.number_of_seats,
@@ -330,7 +330,7 @@ export default async function AirportTransfersCapeTownPage() {
         items={vehicles}
       />
       <div style={{textAlign:"center",padding:"0 0 24px",fontSize:"0.9rem",color:"#6c7a74"}}>
-        Also available for <a href="/chauffeur-services" style={{color:"inherit",textDecoration:"underline"}}>full-day chauffeur hire</a> across Cape Town.
+        Also available for <a href="/chauffeur-hire" style={{color:"inherit",textDecoration:"underline"}}>full-day chauffeur hire</a> across Cape Town.
       </div>
 
       <WhyChooseUs

@@ -207,8 +207,8 @@ async function getFeaturedExperiences(): Promise<FeaturedExperienceItem[]> {
           title: experience.title,
           description,
           href: experience.slug
-            ? `/private-tours/${experience.slug}`
-            : "/private-tours",
+            ? `/tours/${experience.slug}`
+            : "/tours",
           image: featuredPhoto,
           alt: `Private ${experience.title} in Cape Town with Professional Driver`,
           priceUsd: expPriceUsd,
@@ -227,21 +227,21 @@ const FALLBACK_EXPERIENCES: FeaturedExperienceItem[] = [
   {
     title: "Cape Peninsula Private Tour",
     description: "Chapman's Peak, Boulders Beach penguins & Cape Point in one private full day. No shared groups, entirely at your pace.",
-    href: "/private-tours/cape-peninsula-tour",
+    href: "/tours/cape-peninsula-tour",
     image: "",
     alt: "Private Cape Peninsula Tour Cape Town with Professional Chauffeur",
   },
   {
     title: "Cape Winelands Private Tour",
     description: "Private chauffeur through Stellenbosch & Franschhoek. World-class wine estates, no timetables, no strangers.",
-    href: "/private-tours/winelands-chauffeur-drive",
+    href: "/tours/winelands-chauffeur-drive",
     image: "",
     alt: "Private Cape Winelands Tour Stellenbosch Franschhoek Chauffeur",
   },
   {
     title: "Cape Town City Private Tour",
     description: "Table Mountain, Bo-Kaap, Camps Bay & the V&A Waterfront with a dedicated private driver. Fully flexible itinerary.",
-    href: "/private-tours/cape-town-city-tour",
+    href: "/tours/cape-town-city-tour",
     image: "",
     alt: "Private Cape Town City Tour with Chauffeur Driver",
   },
@@ -251,21 +251,21 @@ const FALLBACK_VEHICLES: FeaturedVehicleItem[] = [
   {
     title: "Range Rover Sport Chauffeur",
     description: "Bold, refined and fully private. Ideal for couples and executives who want presence on the road.",
-    href: "/chauffeur-services/range-rover-sport-chauffeur-service-cape-town",
+    href: "/chauffeur-hire/range-rover-sport-chauffeur-service-cape-town",
     image: "",
     alt: "Range Rover Sport Chauffeur Service Cape Town",
   },
   {
     title: "Mercedes V-Class Private Chauffeur",
     description: "Six-seat luxury people carrier for families, VIP groups and executive travel across Cape Town.",
-    href: "/chauffeur-services/mercedes-v-class-private-chauffeur-service",
+    href: "/chauffeur-hire/mercedes-v-class-private-chauffeur-service",
     image: "",
     alt: "Mercedes V-Class Private Chauffeur Cape Town",
   },
   {
     title: "BMW X5 Chauffeur Cape Town",
     description: "Premium SUV with elevated ride quality. Perfect for airport transfers, day tours and small groups.",
-    href: "/chauffeur-services/bmw-x5-for-hire-with-driver",
+    href: "/chauffeur-hire/bmw-x5-for-hire-with-driver",
     image: "",
     alt: "BMW X5 Chauffeur Cape Town with Driver",
   },
@@ -313,8 +313,8 @@ async function getFeaturedVehicles(): Promise<FeaturedVehicleItem[]> {
 
         const href =
           typeof car.slug === "string" && car.slug.trim()
-            ? `/chauffeur-services/${car.slug.trim()}`
-            : "/chauffeur-services";
+            ? `/chauffeur-hire/${car.slug.trim()}`
+            : "/chauffeur-hire";
 
         const carPriceUsd = car.price
           ? Number(String(car.price).replace(/[^0-9.]/g, "")) || undefined
@@ -510,7 +510,7 @@ export default async function HomePage() {
         primaryCtaLabel="Book on WhatsApp"
         primaryCtaHref="https://wa.me/27636746131?text=Hi%2C+I%27d+like+to+book+a+luxury+chauffeur+or+private+tour+in+Cape+Town.+Please+assist."
         secondaryCtaLabel="Explore Services"
-        secondaryCtaHref="/chauffeur-services"
+        secondaryCtaHref="/chauffeur-hire"
         image="/images/car.jpg"
         imageAlt="Luxury chauffeur fleet in Cape Town featuring premium private transport vehicles"
       />

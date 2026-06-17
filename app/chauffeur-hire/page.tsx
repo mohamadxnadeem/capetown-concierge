@@ -81,8 +81,8 @@ async function getVehicles(): Promise<FeaturedVehicleItem[]> {
             "Luxury chauffeur vehicle available for private travel in Cape Town.",
           href:
             typeof car.slug === "string" && car.slug.trim()
-              ? `/chauffeur-services/${car.slug.trim()}`
-              : "/chauffeur-services",
+              ? `/chauffeur-hire/${car.slug.trim()}`
+              : "/chauffeur-hire",
           image: featuredPhoto,
           alt: `Luxury ${car.title} Chauffeur Service Cape Town - VIP Transport`,
           seats: car.number_of_seats,
@@ -103,7 +103,7 @@ export const metadata: Metadata = {
   description:
     "Book a professional chauffeur in Cape Town for airport transfers, full-day hire & executive travel. Luxury fleet. No shared rides. WhatsApp to book.",
   alternates: {
-    canonical: `${SITE_URL}/chauffeur-services`,
+    canonical: `${SITE_URL}/chauffeur-hire`,
   },
   robots: {
     index: true,
@@ -120,7 +120,7 @@ export const metadata: Metadata = {
     title: "Chauffeur Service Cape Town | Private Driver Hire",
     description:
       "Book a professional chauffeur in Cape Town for airport transfers, full-day hire & executive travel. Luxury fleet. No shared rides. WhatsApp to book.",
-    url: `${SITE_URL}/chauffeur-services`,
+    url: `${SITE_URL}/chauffeur-hire`,
     siteName: brand.name,
     type: "website",
     locale: "en_ZA",
@@ -150,7 +150,7 @@ export default async function ChauffeurServicesLandingPage() {
       {
         "@type": "WebPage",
         name: "Chauffeur Service Cape Town",
-        url: `${SITE_URL}/chauffeur-services`,
+        url: `${SITE_URL}/chauffeur-hire`,
         description:
           "Luxury chauffeur service in Cape Town for airport transfers, private tours, executive travel, and bespoke day hire.",
         image: [`${SITE_URL}/images/hero-car.jpg`],
@@ -171,7 +171,7 @@ export default async function ChauffeurServicesLandingPage() {
         image: [`${SITE_URL}/images/hero-car.jpg`],
         description:
           "Luxury chauffeur-driven transport in Cape Town for airport transfers, executive travel, bespoke itineraries, and private day hire.",
-        url: `${SITE_URL}/chauffeur-services`,
+        url: `${SITE_URL}/chauffeur-hire`,
       },
       {
         "@type": "FAQPage",
@@ -231,7 +231,7 @@ export default async function ChauffeurServicesLandingPage() {
             "@type": "ListItem",
             position: 2,
             name: "Chauffeur Services",
-            item: `${SITE_URL}/chauffeur-services`,
+            item: `${SITE_URL}/chauffeur-hire`,
           },
         ],
       },

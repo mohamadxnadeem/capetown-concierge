@@ -195,8 +195,8 @@ export default function Footer() {
           <Column>
             <ColTitle>Services</ColTitle>
             <NavList>
-              <NavItem><NavLink href="/chauffeur-services">Chauffeur Services</NavLink></NavItem>
-              <NavItem><NavLink href="/private-tours">Private Tours</NavLink></NavItem>
+              <NavItem><NavLink href="/chauffeur-hire">Chauffeur Services</NavLink></NavItem>
+              <NavItem><NavLink href="/tours">Private Tours</NavLink></NavItem>
               <NavItem><NavLink href="/airport-transfers-cape-town">Airport Transfers</NavLink></NavItem>
               <NavItem><NavLink href="/best-activities-to-do-in-cape-town">Best Activities</NavLink></NavItem>
               <NavItem><NavLink href="/contact">Contact Us</NavLink></NavItem>

@@ -109,10 +109,10 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
           <NavLink href="/" onClick={onClose}>
             Home
           </NavLink>
-          <NavLink href="/chauffeur-services" onClick={onClose}>
+          <NavLink href="/chauffeur-hire" onClick={onClose}>
             Chauffeur Services
           </NavLink>
-          <NavLink href="/private-tours" onClick={onClose}>
+          <NavLink href="/tours" onClick={onClose}>
             Private Tours
           </NavLink>
           <NavLink href="/airport-transfers-cape-town" onClick={onClose}>

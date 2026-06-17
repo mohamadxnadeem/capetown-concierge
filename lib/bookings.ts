@@ -142,7 +142,7 @@ export async function fetchUpsellTours(limit = 6): Promise<UpsellTour[]> {
         return {
           title: exp.title!,
           description,
-          href: exp.slug ? `/private-tours/${exp.slug}` : "/private-tours",
+          href: exp.slug ? `/tours/${exp.slug}` : "/tours",
           image: featured,
           alt: `Private ${exp.title} in Cape Town with Professional Driver`,
           priceUsd,

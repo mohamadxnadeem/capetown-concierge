@@ -75,7 +75,7 @@ const localBusinessSchema = {
         itemOffered: {
           "@type": "Service",
           name: "Private Chauffeur Service Cape Town",
-          url: `${brand.siteUrl}/chauffeur-services`,
+          url: `${brand.siteUrl}/chauffeur-hire`,
         },
       },
       {
@@ -83,7 +83,7 @@ const localBusinessSchema = {
         itemOffered: {
           "@type": "Service",
           name: "Private Tours Cape Town",
-          url: `${brand.siteUrl}/private-tours`,
+          url: `${brand.siteUrl}/tours`,
         },
       },
       {
