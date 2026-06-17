@@ -135,14 +135,14 @@ export const services: ServiceItem[] = [
     title: "Private Tours",
     description:
       "Explore Cape Town with a private chauffeur-driven experience tailored around your pace, preferred stops, and travel style.",
-    href: "/private-tours",
+    href: "/tours",
     cta: "Explore Private Tours",
   },
   {
     title: "Chauffeur Services",
     description:
       "Travel in comfort with private chauffeur service for full-day hire, scenic touring, airport transfers, and premium transport.",
-    href: "/chauffeur-services",
+    href: "/chauffeur-hire",
     cta: "View Chauffeur Options",
   },
 ];

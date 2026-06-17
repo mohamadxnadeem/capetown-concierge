@@ -433,7 +433,7 @@ export default function ChauffeurDetailView({
               {authorityIntro}
             </AuthorityIntro>
             <p style={{fontSize:"0.88rem",color:"#6c7a74",margin:"8px 0 0",lineHeight:1.7}}>
-              Available for <Link href="/airport-transfers-cape-town" style={{color:"inherit",textDecoration:"underline"}}>airport transfers</Link> and <Link href="/private-tours" style={{color:"inherit",textDecoration:"underline"}}>private tours</Link> across Cape Town.
+              Available for <Link href="/airport-transfers-cape-town" style={{color:"inherit",textDecoration:"underline"}}>airport transfers</Link> and <Link href="/tours" style={{color:"inherit",textDecoration:"underline"}}>private tours</Link> across Cape Town.
             </p>
           </AuthorityHeader>
 

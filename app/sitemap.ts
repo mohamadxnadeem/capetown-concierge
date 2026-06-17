@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { brand } from "../lib/brand";
+import { fetchVillas } from "../lib/villas";
 
 const SITE_URL = brand.siteUrl;
 
@@ -70,9 +71,10 @@ async function getExperienceSlugs(): Promise<string[]> {
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [vehicleSlugs, experienceSlugs] = await Promise.all([
+  const [vehicleSlugs, experienceSlugs, villas] = await Promise.all([
     getVehicleSlugs(),
     getExperienceSlugs(),
+    fetchVillas().catch(() => []),
   ]);
 
   const staticRoutes: MetadataRoute.Sitemap = [
@@ -83,13 +85,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 1.0,
     },
     {
-      url: `${SITE_URL}/chauffeur-services`,
+      url: `${SITE_URL}/chauffeur-hire`,
       lastModified: new Date(),
       changeFrequency: "weekly",
       priority: 0.9,
     },
     {
-      url: `${SITE_URL}/private-tours`,
+      url: `${SITE_URL}/tours`,
       lastModified: new Date(),
       changeFrequency: "weekly",
       priority: 0.9,
@@ -119,6 +121,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.7,
     },
     {
+      url: `${SITE_URL}/villas`,
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 0.9,
+    },
+    {
+      url: `${SITE_URL}/contact`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.5,
+    },
+    {
       url: `${SITE_URL}/privacy`,
       lastModified: new Date(),
       changeFrequency: "yearly",
@@ -127,18 +141,27 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   ];
 
   const vehicleRoutes: MetadataRoute.Sitemap = vehicleSlugs.map((slug) => ({
-    url: `${SITE_URL}/chauffeur-services/${slug}`,
+    url: `${SITE_URL}/chauffeur-hire/${slug}`,
     lastModified: new Date(),
     changeFrequency: "monthly" as const,
     priority: 0.75,
   }));
 
   const tourRoutes: MetadataRoute.Sitemap = experienceSlugs.map((slug) => ({
-    url: `${SITE_URL}/private-tours/${slug}`,
+    url: `${SITE_URL}/tours/${slug}`,
     lastModified: new Date(),
     changeFrequency: "monthly" as const,
     priority: 0.85,
   }));
 
-  return [...staticRoutes, ...vehicleRoutes, ...tourRoutes];
+  const villaRoutes: MetadataRoute.Sitemap = villas
+    .filter((v) => v.is_active !== false && v.slug)
+    .map((v) => ({
+      url: `${SITE_URL}/villas/${v.slug.toLowerCase()}`,
+      lastModified: new Date(),
+      changeFrequency: "monthly" as const,
+      priority: 0.8,
+    }));
+
+  return [...staticRoutes, ...vehicleRoutes, ...tourRoutes, ...villaRoutes];
 }

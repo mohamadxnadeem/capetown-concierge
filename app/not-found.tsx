@@ -74,7 +74,7 @@ export default function NotFound() {
       </Body>
       <Actions>
         <Primary href="/">Back to home</Primary>
-        <Secondary href="/private-tours">Browse tours</Secondary>
+        <Secondary href="/tours">Browse tours</Secondary>
       </Actions>
     </Wrap>
   );
