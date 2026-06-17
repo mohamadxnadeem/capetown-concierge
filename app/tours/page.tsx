@@ -288,6 +288,10 @@ export default async function PrivateToursLandingPage() {
         secondaryCtaLabel="Book via WhatsApp"
         secondaryCtaHref="https://wa.me/27636746131?text=Hi%2C+I%27d+like+to+book+a+luxury+chauffeur+or+private+tour+in+Cape+Town.+Please+assist."
         image="/images/car.jpg"
+        images={experiences
+          .slice(0, 6)
+          .map((e) => e.image)
+          .filter((u): u is string => Boolean(u))}
         imageAlt="Private tour in Cape Town with luxury chauffeur-driven transport"
       />
 

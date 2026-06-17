@@ -336,6 +336,11 @@ export default function ChauffeurServicesPage({ vehicles = [] }: { vehicles?: Fe
 
   const whatsappLink = "https://wa.me/27636746131?text=Hi%2C+I%27d+like+to+enquire+about+chauffeur+hire+in+Cape+Town.+Please+assist.";
 
+  const heroImages = vehicles
+    .slice(0, 6)
+    .map((v) => v.image)
+    .filter((u): u is string => Boolean(u));
+
   return (
     <PageWrap>
       <HeroBanner
@@ -347,6 +352,7 @@ export default function ChauffeurServicesPage({ vehicles = [] }: { vehicles?: Fe
         secondaryCtaLabel="View Fleet"
         secondaryCtaHref="#chauffeur-fleet"
         image="/images/hero-car.jpg"
+        images={heroImages}
         imageAlt="Luxury chauffeur service in Cape Town with premium private transport vehicles"
       />
 

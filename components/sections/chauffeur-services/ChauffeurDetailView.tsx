@@ -338,6 +338,11 @@ export default function ChauffeurDetailView({
   const bodyHtml = car.body && stripHtml(car.body) ? car.body : undefined;
   const baseRate = getBaseDailyRate(car.price, car.price_from);
   const galleryImages = [...(car.cover_photos || car.images || [])];
+  const heroRotationImages = [...galleryImages]
+    .sort((a, b) => (a.order || 0) - (b.order || 0))
+    .map((p) => p?.cover_photos)
+    .filter((u): u is string => Boolean(u))
+    .slice(0, 6);
 
   // ── Authority section content ─────────────
   // Dynamic per vehicle — no more identical cards across all pages
@@ -375,6 +380,7 @@ export default function ChauffeurDetailView({
         luggage={car.luggage_capacity}
         priceUsd={priceUsd}
         image={heroImage}
+        images={heroRotationImages}
         whatsappLink={mainWhatsAppLink}
       />
 
