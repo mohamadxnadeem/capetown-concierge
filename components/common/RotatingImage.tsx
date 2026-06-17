@@ -17,8 +17,8 @@ const Layer = styled.div<{ $active: boolean }>`
   position: absolute;
   inset: 0;
   opacity: ${({ $active }) => ($active ? 1 : 0)};
-  transition: opacity 1.6s ease-in-out;
-  animation: ${kenBurns} 14s ease-in-out infinite alternate;
+  transition: opacity 2.6s ease-in-out;
+  animation: ${kenBurns} 24s ease-in-out infinite alternate;
   will-change: opacity, transform;
 `;
 
@@ -34,7 +34,7 @@ export default function RotatingImage({
   images,
   alt,
   sizes = "100vw",
-  intervalMs = 5500,
+  intervalMs = 9000,
   priority = false,
 }: Props) {
   const [active, setActive] = useState(0);
