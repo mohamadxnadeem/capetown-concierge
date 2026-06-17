@@ -1,15 +1,16 @@
 import type { Metadata } from "next";
 import HeroBanner from "../components/sections/HeroBanner";
+import ServiceTiles from "../components/sections/ServiceTiles";
+import FeaturedVillas from "../components/sections/FeaturedVillas";
 import FeaturedVehicles from "../components/sections/FeaturedVehicles";
 import WhyChooseUs from "../components/sections/WhyChooseUs";
 import FeaturedExperiences from "../components/sections/FeaturedExperiences";
 import TestimonialsSection from "../components/sections/testimonials/TestimonialsSection";
 import TestimonialsCta from "../components/sections/testimonials/TestimonialsCta";
-import ChauffeurAuthoritySection from "../components/sections/ChauffeurAuthoritySection";
 import HomepageEnquiryCollapsible from "../components/sections/HomepageEnquiryCollapsible";
 import GoogleRatingBadge from "../components/common/GoogleRatingBadge";
+import { fetchVillas } from "../lib/villas";
 import { brand } from "../lib/brand";
-import { buildWhatsAppLink } from "../lib/whatsapp";
 
 const SITE_URL = brand.siteUrl;
 
@@ -340,10 +341,12 @@ async function getFeaturedVehicles(): Promise<FeaturedVehicleItem[]> {
 }
 
 export default async function HomePage() {
-  const [featuredVehicleItems, featuredExperienceItems] = await Promise.all([
-    getFeaturedVehicles(),
-    getFeaturedExperiences(),
-  ]);
+  const [featuredVehicleItems, featuredExperienceItems, villas] =
+    await Promise.all([
+      getFeaturedVehicles(),
+      getFeaturedExperiences(),
+      fetchVillas().catch(() => []),
+    ]);
 
   const structuredData = {
     "@context": "https://schema.org",
@@ -505,30 +508,32 @@ export default async function HomePage() {
 
       <HeroBanner
         eyebrow={brand.name}
-        title="Luxury Chauffeur Services in Cape Town"
-        description="Premium airport transfers, private chauffeur services, and curated travel experiences designed for clients who value comfort, elegance, and reliability."
-        primaryCtaLabel="Book on WhatsApp"
-        primaryCtaHref="https://wa.me/27636746131?text=Hi%2C+I%27d+like+to+book+a+luxury+chauffeur+or+private+tour+in+Cape+Town.+Please+assist."
-        secondaryCtaLabel="Explore Services"
-        secondaryCtaHref="/chauffeur-hire"
+        title="Cape Town's luxury concierge — villas, chauffeurs, and curated day tours."
+        description="A single team that plans, books, and runs the whole trip. Villas in the city's best addresses, private chauffeur hire in luxury vehicles, and concierge-led day tours of Cape Town and the Winelands."
+        primaryCtaLabel="Chat on WhatsApp"
+        primaryCtaHref="https://wa.me/27636746131?text=Hi%2C+I%27d+like+to+plan+a+stay+with+Cape+Town+Concierge.+Please+assist."
+        secondaryCtaLabel="Explore villas"
+        secondaryCtaHref="/villas"
         image="/images/car.jpg"
-        imageAlt="Luxury chauffeur fleet in Cape Town featuring premium private transport vehicles"
+        imageAlt="Cape Town Concierge — luxury villas, chauffeur hire and private day tours"
       />
+
+      <ServiceTiles />
 
       <div style={{ textAlign: "center", padding: "20px 20px 0" }}>
         <GoogleRatingBadge />
       </div>
 
-      <TestimonialsSection />
-      <TestimonialsCta />
+      <FeaturedVillas villas={villas} />
 
       <FeaturedVehicles items={featuredVehicleItems} />
 
+      <FeaturedExperiences items={featuredExperienceItems} />
+
       <WhyChooseUs items={trustItems} />
 
-      <ChauffeurAuthoritySection />
-
-      <FeaturedExperiences items={featuredExperienceItems} />
+      <TestimonialsSection />
+      <TestimonialsCta />
 
       <HomepageEnquiryCollapsible />
     </>
