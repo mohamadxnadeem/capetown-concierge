@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { brand } from "../lib/brand";
+import { fetchVillas } from "../lib/villas";
 
 const SITE_URL = brand.siteUrl;
 
@@ -70,9 +71,10 @@ async function getExperienceSlugs(): Promise<string[]> {
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [vehicleSlugs, experienceSlugs] = await Promise.all([
+  const [vehicleSlugs, experienceSlugs, villas] = await Promise.all([
     getVehicleSlugs(),
     getExperienceSlugs(),
+    fetchVillas().catch(() => []),
   ]);
 
   const staticRoutes: MetadataRoute.Sitemap = [
@@ -152,5 +154,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.85,
   }));
 
-  return [...staticRoutes, ...vehicleRoutes, ...tourRoutes];
+  const villaRoutes: MetadataRoute.Sitemap = villas
+    .filter((v) => v.is_active !== false && v.slug)
+    .map((v) => ({
+      url: `${SITE_URL}/villas/${v.slug.toLowerCase()}`,
+      lastModified: new Date(),
+      changeFrequency: "monthly" as const,
+      priority: 0.8,
+    }));
+
+  return [...staticRoutes, ...vehicleRoutes, ...tourRoutes, ...villaRoutes];
 }
