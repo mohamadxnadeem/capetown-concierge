@@ -3,8 +3,7 @@ import { notFound } from "next/navigation";
 import VillaDetailView from "../../../components/sections/villas/VillaDetailView";
 import {
   fetchVillaBySlug,
-  getVillaArea,
-  getVillaCapacity,
+  getVillaAreaDisplay,
   getVillaPrimaryPhoto,
 } from "../../../lib/villas";
 import { brand } from "../../../lib/brand";
@@ -29,21 +28,17 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     };
   }
 
-  const area = getVillaArea(villa);
-  const capacity = getVillaCapacity(villa);
+  const area = getVillaAreaDisplay(villa);
   const ogImage = getVillaPrimaryPhoto(villa) ?? FALLBACK_OG;
   const canonical = `${SITE_URL}/villas/${villa.slug.toLowerCase()}`;
 
-  const title = area
-    ? `${villa.title} — Luxury Villa in ${area}, Cape Town`
-    : `${villa.title} — Luxury Villa in Cape Town`;
+  const title = `${villa.name} — Luxury Villa in ${area}, Cape Town`;
 
   const description =
     villa.short_description ||
-    villa.highlight ||
-    `${villa.title}: ${villa.bedrooms ?? ""}${villa.bedrooms ? "-bedroom " : ""}luxury villa${
-      area ? ` in ${area}` : ""
-    }${capacity ? `, sleeps ${capacity}` : ""}. Book with full concierge service.`;
+    `${villa.name}: ${villa.bedrooms ?? ""}${villa.bedrooms ? "-bedroom " : ""}luxury villa in ${area}${
+      villa.max_guests ? `, sleeps ${villa.max_guests}` : ""
+    }. Book with full concierge service.`;
 
   return {
     title,
@@ -67,7 +62,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       siteName: brand.name,
       type: "website",
       locale: "en_ZA",
-      images: [{ url: ogImage, alt: villa.title }],
+      images: [{ url: ogImage, alt: villa.name }],
     },
     twitter: {
       card: "summary_large_image",
@@ -83,25 +78,23 @@ export default async function VillaPage({ params }: PageProps) {
   const villa = await fetchVillaBySlug(slug);
   if (!villa) notFound();
 
-  const area = getVillaArea(villa);
+  const area = getVillaAreaDisplay(villa);
   const photo = getVillaPrimaryPhoto(villa);
   const canonical = `${SITE_URL}/villas/${villa.slug.toLowerCase()}`;
 
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "LodgingBusiness",
-    name: villa.title,
+    name: villa.name,
     url: canonical,
-    description: villa.short_description || villa.highlight || undefined,
+    description: villa.short_description || undefined,
     image: photo || undefined,
-    address: area
-      ? {
-          "@type": "PostalAddress",
-          addressLocality: area,
-          addressRegion: brand.address.region,
-          addressCountry: brand.address.country,
-        }
-      : undefined,
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: area,
+      addressRegion: brand.address.region,
+      addressCountry: brand.address.country,
+    },
     numberOfRooms: villa.bedrooms || undefined,
   };
 

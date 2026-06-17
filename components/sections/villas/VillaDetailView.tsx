@@ -8,8 +8,7 @@ import Money from "../../common/Money";
 import { trackWhatsAppClick } from "../../../lib/tracking";
 import { brand } from "../../../lib/brand";
 import {
-  getVillaArea,
-  getVillaCapacity,
+  getVillaAreaDisplay,
   getVillaNightlyRate,
   getVillaPrimaryPhoto,
   type Villa,
@@ -187,6 +186,27 @@ const WhatsAppButton = styled.a`
   }
 `;
 
+const BookButton = styled.a`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 52px;
+  border-radius: 14px;
+  background: white;
+  border: 1px solid ${({ theme }) => theme.colors.primary};
+  color: ${({ theme }) => theme.colors.primary};
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.98rem;
+  margin-bottom: 10px;
+
+  &:hover {
+    background: ${({ theme }) => `${theme.colors.primary}08`};
+  }
+`;
+
 const AsideNote = styled.p`
   margin: 12px 0 0;
   color: ${({ theme }) => theme.colors.textMuted};
@@ -231,17 +251,15 @@ interface Props {
 
 export default function VillaDetailView({ villa }: Props) {
   const photo = getVillaPrimaryPhoto(villa);
-  const area = getVillaArea(villa);
-  const capacity = getVillaCapacity(villa);
+  const area = getVillaAreaDisplay(villa);
   const rate = getVillaNightlyRate(villa);
 
-  const whatsappMessage = `Hi, I'd like to enquire about ${villa.title}${area ? ` in ${area}` : ""}. Could you share availability?`;
+  const whatsappMessage = `Hi, I'd like to enquire about ${villa.name} in ${area}. Could you share availability?`;
   const whatsappHref = `https://wa.me/${brand.whatsappNumber}?text=${encodeURIComponent(whatsappMessage)}`;
 
-  const description =
+  const lead =
     villa.short_description ||
-    villa.highlight ||
-    `${villa.title} is a luxury villa${area ? ` in ${area}` : ""} available through Cape Town Concierge.`;
+    `${villa.name} is a luxury villa in ${area} available through Cape Town Concierge.`;
 
   return (
     <Wrapper>
@@ -249,7 +267,7 @@ export default function VillaDetailView({ villa }: Props) {
         <HeroImage>
           <SmartImage
             src={photo}
-            alt={`${villa.title} — luxury villa ${area ? `in ${area}` : "in Cape Town"}`}
+            alt={`${villa.name} — luxury villa in ${area}`}
             priority
             sizes="100vw"
           />
@@ -260,10 +278,8 @@ export default function VillaDetailView({ villa }: Props) {
         <Container>
           <Layout>
             <div>
-              <Eyebrow>
-                {area ? `Luxury villa · ${area}` : "Luxury villa"}
-              </Eyebrow>
-              <Title>{villa.title}</Title>
+              <Eyebrow>Luxury villa · {area}</Eyebrow>
+              <Title>{villa.name}</Title>
               <MetaRow>
                 {villa.bedrooms ? (
                   <MetaPill>{villa.bedrooms} bedrooms</MetaPill>
@@ -271,13 +287,15 @@ export default function VillaDetailView({ villa }: Props) {
                 {villa.bathrooms ? (
                   <MetaPill>{villa.bathrooms} bathrooms</MetaPill>
                 ) : null}
-                {capacity ? <MetaPill>sleeps {capacity}</MetaPill> : null}
+                {villa.max_guests ? (
+                  <MetaPill>sleeps {villa.max_guests}</MetaPill>
+                ) : null}
               </MetaRow>
 
-              <Lead>{description}</Lead>
+              <Lead>{lead}</Lead>
 
-              {villa.body ? (
-                <Body dangerouslySetInnerHTML={{ __html: villa.body }} />
+              {villa.description ? (
+                <Body dangerouslySetInnerHTML={{ __html: villa.description }} />
               ) : null}
 
               {villa.features?.length ? (
@@ -318,10 +336,17 @@ export default function VillaDetailView({ villa }: Props) {
                   </PriceValue>
                 </>
               ) : (
-                <>
-                  <PriceLabel>Rates available on enquiry</PriceLabel>
-                </>
+                <PriceLabel>Rates available on enquiry</PriceLabel>
               )}
+              {villa.nox_booking_url ? (
+                <BookButton
+                  href={villa.nox_booking_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Check availability & book →
+                </BookButton>
+              ) : null}
               <WhatsAppButton
                 href={whatsappHref}
                 target="_blank"
@@ -329,7 +354,7 @@ export default function VillaDetailView({ villa }: Props) {
                 onClick={() =>
                   trackWhatsAppClick({
                     source: "villa_detail",
-                    label: villa.title,
+                    label: villa.name,
                   })
                 }
               >

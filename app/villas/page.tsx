@@ -69,7 +69,7 @@ export default async function VillasPage() {
           "@type": "ListItem",
           position: idx + 1,
           url: `${SITE_URL}/villas/${v.slug}`,
-          name: v.title,
+          name: v.name,
         })),
       },
     ],

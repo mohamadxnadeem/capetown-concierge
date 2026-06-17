@@ -7,8 +7,7 @@ import Container from "../common/Container";
 import SmartImage from "../common/SmartImage";
 import Money from "../common/Money";
 import {
-  getVillaArea,
-  getVillaCapacity,
+  getVillaAreaDisplay,
   getVillaNightlyRate,
   getVillaPrimaryPhoto,
   type Villa,
@@ -197,14 +196,9 @@ interface Props {
 
 export default function FeaturedVillas({ villas }: Props) {
   const sliderRef = useRef<HTMLDivElement | null>(null);
-  const items = villas
-    .filter((v) => v.is_active !== false)
-    .sort((a, b) => {
-      if (a.is_featured && !b.is_featured) return -1;
-      if (!a.is_featured && b.is_featured) return 1;
-      return 0;
-    })
-    .slice(0, 6);
+  // Backend already filters is_active and sorts by sort_order, then
+  // is_featured desc — render in order.
+  const items = villas.slice(0, 6);
 
   const scrollByAmount = (direction: "left" | "right") => {
     if (!sliderRef.current) return;
@@ -249,8 +243,7 @@ export default function FeaturedVillas({ villas }: Props) {
           <Slider ref={sliderRef}>
             {items.map((villa) => {
               const photo = getVillaPrimaryPhoto(villa);
-              const area = getVillaArea(villa);
-              const capacity = getVillaCapacity(villa);
+              const area = getVillaAreaDisplay(villa);
               const rate = getVillaNightlyRate(villa);
               return (
                 <Card key={villa.id} href={`/villas/${villa.slug}`}>
@@ -258,17 +251,17 @@ export default function FeaturedVillas({ villas }: Props) {
                     {photo ? (
                       <SmartImage
                         src={photo}
-                        alt={`${villa.title} — luxury villa in ${area ?? "Cape Town"}`}
+                        alt={`${villa.name} — luxury villa in ${area}`}
                         sizes="(max-width: 768px) 85vw, (max-width: 1200px) 48vw, 32vw"
                       />
                     ) : null}
                   </CardImage>
                   <CardBody>
-                    {area ? <AreaBadge>{area}</AreaBadge> : null}
-                    <CardTitle>{villa.title}</CardTitle>
+                    <AreaBadge>{area}</AreaBadge>
+                    <CardTitle>{villa.name}</CardTitle>
                     <CardMeta>
                       {villa.bedrooms ? <span>{villa.bedrooms} bed</span> : null}
-                      {capacity ? <span>sleeps {capacity}</span> : null}
+                      {villa.max_guests ? <span>sleeps {villa.max_guests}</span> : null}
                       {rate ? (
                         <span>
                           from <Money usd={rate} prefix="" suffix="/ night" />

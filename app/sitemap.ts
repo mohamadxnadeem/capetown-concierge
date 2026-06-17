@@ -155,7 +155,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }));
 
   const villaRoutes: MetadataRoute.Sitemap = villas
-    .filter((v) => v.is_active !== false && v.slug)
+    .filter((v) => Boolean(v.slug))
     .map((v) => ({
       url: `${SITE_URL}/villas/${v.slug.toLowerCase()}`,
       lastModified: new Date(),

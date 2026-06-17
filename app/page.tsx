@@ -9,7 +9,7 @@ import TestimonialsSection from "../components/sections/testimonials/Testimonial
 import TestimonialsCta from "../components/sections/testimonials/TestimonialsCta";
 import HomepageEnquiryCollapsible from "../components/sections/HomepageEnquiryCollapsible";
 import GoogleRatingBadge from "../components/common/GoogleRatingBadge";
-import { fetchVillas } from "../lib/villas";
+import { fetchFeaturedVillas } from "../lib/villas";
 import { brand } from "../lib/brand";
 
 const SITE_URL = brand.siteUrl;
@@ -345,7 +345,7 @@ export default async function HomePage() {
     await Promise.all([
       getFeaturedVehicles(),
       getFeaturedExperiences(),
-      fetchVillas().catch(() => []),
+      fetchFeaturedVillas().catch(() => []),
     ]);
 
   const structuredData = {

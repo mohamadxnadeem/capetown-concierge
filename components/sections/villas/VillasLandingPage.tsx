@@ -8,11 +8,12 @@ import Money from "../../common/Money";
 import { trackWhatsAppClick } from "../../../lib/tracking";
 import { brand } from "../../../lib/brand";
 import {
-  getVillaArea,
-  getVillaCapacity,
+  AREA_DISPLAY,
+  getVillaAreaDisplay,
   getVillaNightlyRate,
   getVillaPrimaryPhoto,
   type Villa,
+  type VillaArea,
 } from "../../../lib/villas";
 
 const WHATSAPP = `https://wa.me/${brand.whatsappNumber}?text=${encodeURIComponent(
@@ -316,18 +317,18 @@ const CrossLinkCard = styled(Link)`
   }
 `;
 
-const AREA_BLURBS: Record<string, string> = {
-  "Camps Bay":
+const AREA_BLURBS: Partial<Record<VillaArea, string>> = {
+  camps_bay:
     "Cape Town's beachfront postcode. Mountain-backed villas overlooking the Atlantic — most with a pool, many within a short walk of the promenade. Ideal for guests who want sea views and easy access to restaurants and beach clubs.",
-  Clifton:
+  clifton:
     "Four cove beaches and some of the most sought-after villa addresses in the country. Sheltered, sunset-facing, and intensely private. Perfect for honeymoons, milestone trips, and clients who want presence and quiet in equal measure.",
-  "Bantry Bay":
+  bantry_bay:
     "Quieter neighbour to Camps Bay with sweeping ocean views and modern architectural villas. Excellent value if you want the Atlantic Seaboard look without the Camps Bay tariff.",
-  Constantia:
+  constantia:
     "Cape Town's old-money valley — sprawling estates, oak-lined lanes, and the original Cape vineyards on the doorstep. Best for families, wine-focused trips, and longer stays where you want garden, pool, and space.",
-  Franschhoek:
+  franschhoek:
     "The Winelands village — French-Huguenot heritage, fine-dining institutions, and farm villas within walking distance of cellar doors. Pair with a chauffeured wine-tour day.",
-  Stellenbosch:
+  stellenbosch:
     "University town in the heart of the Winelands. Vineyard villas with mountain backdrops, a 30-minute hop from the city, and the densest cluster of world-class restaurants outside Cape Town itself.",
 };
 
@@ -336,15 +337,12 @@ interface Props {
 }
 
 export default function VillasLandingPage({ villas }: Props) {
-  const activeVillas = villas.filter((v) => v.is_active !== false);
-  const featuredFirst = [...activeVillas].sort((a, b) => {
+  const featuredFirst = [...villas].sort((a, b) => {
     if (a.is_featured && !b.is_featured) return -1;
     if (!a.is_featured && b.is_featured) return 1;
-    return 0;
+    return a.sort_order - b.sort_order;
   });
-  const areasShown = new Set(
-    featuredFirst.map((v) => getVillaArea(v)).filter((a): a is string => Boolean(a))
-  );
+  const areasShown = new Set<VillaArea>(featuredFirst.map((v) => v.area));
 
   return (
     <>
@@ -424,8 +422,7 @@ export default function VillasLandingPage({ villas }: Props) {
             <Grid>
               {featuredFirst.map((villa) => {
                 const photo = getVillaPrimaryPhoto(villa);
-                const area = getVillaArea(villa);
-                const capacity = getVillaCapacity(villa);
+                const area = getVillaAreaDisplay(villa);
                 const rate = getVillaNightlyRate(villa);
                 return (
                   <Card key={villa.id} href={`/villas/${villa.slug}`}>
@@ -433,19 +430,19 @@ export default function VillasLandingPage({ villas }: Props) {
                       {photo ? (
                         <SmartImage
                           src={photo}
-                          alt={`${villa.title} — luxury villa rental in ${area ?? "Cape Town"}`}
+                          alt={`${villa.name} — luxury villa rental in ${area}`}
                           sizes="(max-width: 768px) 100vw, 33vw"
                         />
                       ) : null}
                     </CardImage>
                     <CardBody>
-                      {area ? <AreaBadge>{area}</AreaBadge> : null}
-                      <CardTitle>{villa.title}</CardTitle>
+                      <AreaBadge>{area}</AreaBadge>
+                      <CardTitle>{villa.name}</CardTitle>
                       <CardMeta>
                         {villa.bedrooms ? (
                           <span>{villa.bedrooms} bed</span>
                         ) : null}
-                        {capacity ? <span>sleeps {capacity}</span> : null}
+                        {villa.max_guests ? <span>sleeps {villa.max_guests}</span> : null}
                         {rate ? (
                           <span>
                             from <Money usd={rate} prefix="" suffix="/ night" />
@@ -470,13 +467,11 @@ export default function VillasLandingPage({ villas }: Props) {
             — what each area is best for and the kind of stay you should expect.
           </SectionLead>
           <AreaGrid>
-            {Object.entries(AREA_BLURBS)
-              .filter(
-                ([area]) => areasShown.size === 0 || areasShown.has(area)
-              )
+            {(Object.entries(AREA_BLURBS) as [VillaArea, string][])
+              .filter(([area]) => areasShown.size === 0 || areasShown.has(area))
               .map(([area, blurb]) => (
                 <AreaCard key={area}>
-                  <AreaName>{area} villas</AreaName>
+                  <AreaName>{AREA_DISPLAY[area]} villas</AreaName>
                   <AreaDescription>{blurb}</AreaDescription>
                 </AreaCard>
               ))}
