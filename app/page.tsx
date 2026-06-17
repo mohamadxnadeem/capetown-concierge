@@ -9,7 +9,7 @@ import TestimonialsSection from "../components/sections/testimonials/Testimonial
 import TestimonialsCta from "../components/sections/testimonials/TestimonialsCta";
 import HomepageEnquiryCollapsible from "../components/sections/HomepageEnquiryCollapsible";
 import GoogleRatingBadge from "../components/common/GoogleRatingBadge";
-import { fetchFeaturedVillas, getVillaPrimaryPhoto } from "../lib/villas";
+import { fetchVillas, getVillaPrimaryPhoto } from "../lib/villas";
 import { brand } from "../lib/brand";
 
 const SITE_URL = brand.siteUrl;
@@ -345,7 +345,7 @@ export default async function HomePage() {
     await Promise.all([
       getFeaturedVehicles(),
       getFeaturedExperiences(),
-      fetchFeaturedVillas().catch(() => []),
+      fetchVillas().catch(() => []),
     ]);
 
   // Cover images for the service tiles — pull from real CMS data, fall
