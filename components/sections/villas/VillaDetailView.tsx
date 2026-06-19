@@ -6,6 +6,7 @@ import Container from "../../common/Container";
 import SmartImage from "../../common/SmartImage";
 import RotatingImage from "../../common/RotatingImage";
 import Money from "../../common/Money";
+import ChauffeurGallery from "../chauffeur-services/ChauffeurGallery";
 import { trackWhatsAppClick } from "../../../lib/tracking";
 import { brand } from "../../../lib/brand";
 import {
@@ -28,6 +29,14 @@ const HeroImage = styled.div`
 
   @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
     height: 520px;
+  }
+`;
+
+const GallerySection = styled.section`
+  padding: 40px 0 0;
+
+  @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
+    padding: 56px 0 0;
   }
 `;
 
@@ -286,6 +295,14 @@ export default function VillaDetailView({ villa }: Props) {
             sizes="100vw"
           />
         </HeroImage>
+      ) : null}
+
+      {villa.cover_photos && villa.cover_photos.length > 1 ? (
+        <GallerySection>
+          <Container>
+            <ChauffeurGallery images={villa.cover_photos} title="Villa Gallery" />
+          </Container>
+        </GallerySection>
       ) : null}
 
       <ContentSection>

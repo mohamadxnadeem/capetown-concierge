@@ -7,6 +7,7 @@ import SmartImage from "../../common/SmartImage";
 
 type Props = {
   images: CarPhoto[];
+  title?: string;
 };
 
 const fadeIn = keyframes`
@@ -153,7 +154,7 @@ const ThumbButton = styled.button<{ $active: boolean }>`
   }
 `;
 
-export default function ChauffeurGallery({ images }: Props) {
+export default function ChauffeurGallery({ images, title = "Vehicle Gallery" }: Props) {
   const galleryImages = useMemo(
     () => [...images].sort((a, b) => (a.order || 0) - (b.order || 0)),
     [images]
@@ -179,7 +180,7 @@ export default function ChauffeurGallery({ images }: Props) {
 
   return (
     <GalleryWrap>
-      <Title>Vehicle Gallery</Title>
+      <Title>{title}</Title>
 
       <MainStage>
         <MainImageFrame>
