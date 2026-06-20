@@ -1,8 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import styled, { keyframes } from "styled-components";
 import SmartImage from "./SmartImage";
+
+const MAX_LAYERS = 4;
 
 const kenBurns = keyframes`
   from {
@@ -28,6 +30,7 @@ interface Props {
   sizes?: string;
   intervalMs?: number;
   priority?: boolean;
+  maxLayers?: number;
 }
 
 export default function RotatingImage({
@@ -36,22 +39,27 @@ export default function RotatingImage({
   sizes = "100vw",
   intervalMs = 9000,
   priority = false,
+  maxLayers = MAX_LAYERS,
 }: Props) {
+  // Cap mounted layers — iOS Safari can crash on memory pressure when too
+  // many <Image> elements are stacked with perpetual transform animations.
+  // Even opacity:0 images are still decoded and animated by the compositor.
+  const visible = useMemo(() => images.slice(0, maxLayers), [images, maxLayers]);
   const [active, setActive] = useState(0);
 
   useEffect(() => {
-    if (images.length < 2) return;
+    if (visible.length < 2) return;
     const id = window.setInterval(() => {
-      setActive((i) => (i + 1) % images.length);
+      setActive((i) => (i + 1) % visible.length);
     }, intervalMs);
     return () => window.clearInterval(id);
-  }, [images.length, intervalMs]);
+  }, [visible.length, intervalMs]);
 
-  if (images.length === 0) return null;
+  if (visible.length === 0) return null;
 
   return (
     <>
-      {images.map((src, i) => (
+      {visible.map((src, i) => (
         <Layer key={`${src}-${i}`} $active={i === active}>
           <SmartImage
             src={src}
