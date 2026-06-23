@@ -7,6 +7,8 @@ import SmartImage from "../../common/SmartImage";
 import RotatingImage from "../../common/RotatingImage";
 import Money from "../../common/Money";
 import ChauffeurGallery from "../chauffeur-services/ChauffeurGallery";
+import VillaAvailability from "./VillaAvailability";
+import type { VillaAvailability as VillaAvailabilityData } from "../../../lib/villas";
 import { trackWhatsAppClick } from "../../../lib/tracking";
 import { brand } from "../../../lib/brand";
 import {
@@ -224,6 +226,10 @@ const AsideNote = styled.p`
   line-height: 1.6;
 `;
 
+const AvailabilityBlock = styled.div`
+  margin-top: 32px;
+`;
+
 const CrossLinkRow = styled.div`
   display: grid;
   gap: 14px;
@@ -257,9 +263,10 @@ const CrossLinkCard = styled(Link)`
 
 interface Props {
   villa: Villa;
+  availability?: VillaAvailabilityData;
 }
 
-export default function VillaDetailView({ villa }: Props) {
+export default function VillaDetailView({ villa, availability }: Props) {
   const photo = getVillaPrimaryPhoto(villa);
   const heroImages = [...(villa.cover_photos ?? [])]
     .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
@@ -338,6 +345,12 @@ export default function VillaDetailView({ villa }: Props) {
                     ))}
                   </FeatureGrid>
                 </FeatureSection>
+              ) : null}
+
+              {availability ? (
+                <AvailabilityBlock>
+                  <VillaAvailability villa={villa} availability={availability} />
+                </AvailabilityBlock>
               ) : null}
 
               <CrossLinkRow>
