@@ -8,9 +8,14 @@ import type {
   Booking,
   BookingDay,
   BookingDriver,
+  BookingExperience,
+  BookingPackage,
+  BookingPhoto,
   BookingStatus,
+  BookingVilla,
   UpsellTour,
 } from "../../lib/bookings";
+import Money from "../common/Money";
 import type { CarPhoto } from "./chauffeur-services/types";
 import ChauffeurGallery from "./chauffeur-services/ChauffeurGallery";
 import SmartImage from "../common/SmartImage";
@@ -450,6 +455,205 @@ function vehicleSummary(car: NonNullable<Booking["car"]>): string {
   return bits.join(" · ");
 }
 
+// ─── Bundle cards (villa / experience / package) ─────────────────────
+
+const BundleGrid = styled.div`
+  display: grid;
+  gap: 14px;
+  grid-template-columns: 1fr;
+
+  @media (min-width: ${({ theme }) => theme.breakpoints.sm}) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+`;
+
+const BundleCard = styled(Link)`
+  display: flex;
+  flex-direction: column;
+  background: ${({ theme }) => theme.colors.white};
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  border-radius: 16px;
+  overflow: hidden;
+  text-decoration: none;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: ${({ theme }) => theme.shadows.soft};
+    border-color: rgba(11, 91, 51, 0.22);
+  }
+`;
+
+const BundleImage = styled.div`
+  position: relative;
+  height: 180px;
+  background: ${({ theme }) => theme.colors.background};
+`;
+
+const BundleBody = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 14px 16px 16px;
+  flex: 1;
+`;
+
+const BundleBadge = styled.span`
+  align-self: flex-start;
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: ${({ theme }) => `${theme.colors.primary}14`};
+  color: ${({ theme }) => theme.colors.primary};
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+`;
+
+const BundleTitle = styled.h3`
+  margin: 0;
+  color: ${({ theme }) => theme.colors.heading};
+  font-size: 1.05rem;
+  line-height: 1.25;
+`;
+
+const BundleMeta = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  color: ${({ theme }) => theme.colors.textMuted};
+  font-size: 0.88rem;
+`;
+
+const BundleText = styled.p`
+  margin: 0;
+  color: ${({ theme }) => theme.colors.textMuted};
+  font-size: 0.9rem;
+  line-height: 1.55;
+`;
+
+function pickPhoto(
+  photos: BookingPhoto[] | undefined | null
+): string | null {
+  if (!photos?.length) return null;
+  const valid = photos.filter((p) => Boolean(p?.cover_photos));
+  if (!valid.length) return null;
+  const sorted = [...valid].sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+  return (sorted.find((p) => p.is_featured) ?? sorted[0]).cover_photos ?? null;
+}
+
+function parseMoney(value: string | number | null | undefined): number | null {
+  if (value === null || value === undefined || value === "") return null;
+  const n = Number(String(value).replace(/[^0-9.]/g, ""));
+  return Number.isFinite(n) && n > 0 ? n : null;
+}
+
+function VillaBundleCard({ villa }: { villa: BookingVilla }) {
+  const photo = pickPhoto(villa.cover_photos);
+  const area = villa.location ?? villa.area ?? null;
+  const rate = parseMoney(villa.price_per_night);
+  return (
+    <BundleCard href={`/villas/${villa.slug}`}>
+      <BundleImage>
+        {photo ? (
+          <SmartImage
+            src={photo}
+            alt={`${villa.name} — luxury villa`}
+            sizes="(max-width: 768px) 100vw, 50vw"
+          />
+        ) : null}
+      </BundleImage>
+      <BundleBody>
+        {area ? <BundleBadge>{area}</BundleBadge> : null}
+        <BundleTitle>{villa.name}</BundleTitle>
+        <BundleMeta>
+          {villa.bedrooms ? <span>{villa.bedrooms} bed</span> : null}
+          {villa.bathrooms ? <span>{villa.bathrooms} bath</span> : null}
+          {villa.max_guests ? <span>sleeps {villa.max_guests}</span> : null}
+          {rate ? (
+            <span>
+              from <Money usd={rate} prefix="" suffix="/ night" />
+            </span>
+          ) : null}
+        </BundleMeta>
+        {villa.short_description ? (
+          <BundleText>{villa.short_description}</BundleText>
+        ) : null}
+      </BundleBody>
+    </BundleCard>
+  );
+}
+
+function ExperienceBundleCard({ experience }: { experience: BookingExperience }) {
+  const photo = pickPhoto(experience.cover_photos);
+  const rate = parseMoney(experience.price_from);
+  const description = experience.short_description ?? experience.highlight ?? null;
+  const href = experience.slug ? `/tours/${experience.slug}` : "/tours";
+  return (
+    <BundleCard href={href}>
+      <BundleImage>
+        {photo ? (
+          <SmartImage
+            src={photo}
+            alt={`${experience.title} — private tour`}
+            sizes="(max-width: 768px) 100vw, 50vw"
+          />
+        ) : null}
+      </BundleImage>
+      <BundleBody>
+        <BundleBadge>Private tour</BundleBadge>
+        <BundleTitle>{experience.title}</BundleTitle>
+        <BundleMeta>
+          {experience.duration ? <span>{experience.duration}</span> : null}
+          {rate ? (
+            <span>
+              from <Money usd={rate} prefix="" suffix="" />
+            </span>
+          ) : null}
+        </BundleMeta>
+        {description ? <BundleText>{description}</BundleText> : null}
+      </BundleBody>
+    </BundleCard>
+  );
+}
+
+function PackageBundleCard({ pkg }: { pkg: BookingPackage }) {
+  const photo = pickPhoto(pkg.cover_photos);
+  const rate = parseMoney(pkg.price_from);
+  const tagline = pkg.tagline ?? pkg.short_description ?? null;
+  return (
+    <BundleCard href={`/packages/${pkg.slug}`}>
+      <BundleImage>
+        {photo ? (
+          <SmartImage
+            src={photo}
+            alt={`${pkg.name} — travel package`}
+            sizes="(max-width: 768px) 100vw, 50vw"
+          />
+        ) : null}
+      </BundleImage>
+      <BundleBody>
+        <BundleBadge>Package</BundleBadge>
+        <BundleTitle>{pkg.name}</BundleTitle>
+        <BundleMeta>
+          {pkg.duration_nights ? (
+            <span>
+              {pkg.duration_nights} night{pkg.duration_nights === 1 ? "" : "s"}
+            </span>
+          ) : null}
+          {pkg.max_guests ? <span>up to {pkg.max_guests} guests</span> : null}
+          {rate ? (
+            <span>
+              from <Money usd={rate} prefix="" suffix="" />
+            </span>
+          ) : null}
+        </BundleMeta>
+        {tagline ? <BundleText>{tagline}</BundleText> : null}
+      </BundleBody>
+    </BundleCard>
+  );
+}
+
 interface Props {
   booking: Booking;
   carPhotos: CarPhoto[];
@@ -617,6 +821,37 @@ export default function BookingDetailView({
           <Card>
             <SectionTitle>Trip notes</SectionTitle>
             <Prose>{booking.trip_description}</Prose>
+          </Card>
+        ) : null}
+
+        {booking.villa ? (
+          <Card>
+            <SectionTitle>Your villa</SectionTitle>
+            <BundleGrid>
+              <VillaBundleCard villa={booking.villa} />
+            </BundleGrid>
+          </Card>
+        ) : null}
+
+        {booking.experiences && booking.experiences.length > 0 ? (
+          <Card>
+            <SectionTitle>Included experiences</SectionTitle>
+            <BundleGrid>
+              {booking.experiences.map((exp) => (
+                <ExperienceBundleCard key={exp.id} experience={exp} />
+              ))}
+            </BundleGrid>
+          </Card>
+        ) : null}
+
+        {booking.included_packages && booking.included_packages.length > 0 ? (
+          <Card>
+            <SectionTitle>Included packages</SectionTitle>
+            <BundleGrid>
+              {booking.included_packages.map((pkg) => (
+                <PackageBundleCard key={pkg.id} pkg={pkg} />
+              ))}
+            </BundleGrid>
           </Card>
         ) : null}
 
