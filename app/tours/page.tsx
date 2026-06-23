@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   description:
     "Explore Cape Town privately — Peninsula, Winelands, Table Mountain & more. Fully tailored, no shared groups. Book your private tour on WhatsApp.",
   alternates: {
-    canonical: `${SITE_URL}/private-tours`,
+    canonical: `${SITE_URL}/tours`,
   },
   robots: {
     index: true,
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
     title: "Private Tours Cape Town | Bespoke Day Experiences",
     description:
       "Explore Cape Town privately — Peninsula, Winelands, Table Mountain & more. Fully tailored, no shared groups. Book your private tour on WhatsApp.",
-    url: `${SITE_URL}/private-tours`,
+    url: `${SITE_URL}/tours`,
     siteName: brand.name,
     type: "website",
     locale: "en_ZA",
@@ -132,7 +132,7 @@ async function getAllExperiences(): Promise<FeaturedExperienceItem[]> {
         return {
           title: exp.title,
           description,
-          href: exp.slug ? `/private-tours/${exp.slug}` : "/private-tours",
+          href: exp.slug ? `/tours/${exp.slug}` : "/tours",
           image: featuredPhoto,
           alt: `Private ${exp.title} Cape Town with professional chauffeur`,
           price: formatApiPrice(exp.price),
@@ -176,7 +176,7 @@ export default async function PrivateToursLandingPage() {
       {
         "@type": "WebPage",
         name: "Private Tours Cape Town | Luxury Chauffeur-Driven Experiences",
-        url: `${SITE_URL}/private-tours`,
+        url: `${SITE_URL}/tours`,
         description:
           "Book a private tour in Cape Town with a professional chauffeur. Cape Peninsula, Cape Winelands, Table Mountain, and bespoke itineraries.",
         image: [`${SITE_URL}/images/hero-car.jpg`],
@@ -210,7 +210,7 @@ export default async function PrivateToursLandingPage() {
         image: [`${SITE_URL}/images/hero-car.jpg`],
         description:
           "Luxury private tours in Cape Town including Cape Peninsula, Cape Winelands, Table Mountain, and fully bespoke chauffeur-driven itineraries.",
-        url: `${SITE_URL}/private-tours`,
+        url: `${SITE_URL}/tours`,
       },
       {
         "@type": "FAQPage",
@@ -265,7 +265,7 @@ export default async function PrivateToursLandingPage() {
             "@type": "ListItem",
             position: 2,
             name: "Private Tours",
-            item: `${SITE_URL}/private-tours`,
+            item: `${SITE_URL}/tours`,
           },
         ],
       },
@@ -288,6 +288,10 @@ export default async function PrivateToursLandingPage() {
         secondaryCtaLabel="Book via WhatsApp"
         secondaryCtaHref="https://wa.me/27636746131?text=Hi%2C+I%27d+like+to+book+a+luxury+chauffeur+or+private+tour+in+Cape+Town.+Please+assist."
         image="/images/car.jpg"
+        images={experiences
+          .slice(0, 6)
+          .map((e) => e.image)
+          .filter((u): u is string => Boolean(u))}
         imageAlt="Private tour in Cape Town with luxury chauffeur-driven transport"
       />
 

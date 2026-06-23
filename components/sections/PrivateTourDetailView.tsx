@@ -5,6 +5,7 @@ import styled from "styled-components";
 import Container from "../common/Container";
 import Button from "../common/Button";
 import SmartImage from "../common/SmartImage";
+import RotatingImage from "../common/RotatingImage";
 import {
   buildWhatsAppLink,
   buildTourWhatsAppMessage,
@@ -606,6 +607,10 @@ export default function PrivateTourDetailView({
   const stops = [...(experience.stops || [])].sort((a, b) => a.order - b.order);
 
   const mainImage = images[0]?.cover_photos || "";
+  const mainRotationImages = images
+    .map((i) => i?.cover_photos)
+    .filter((u): u is string => Boolean(u))
+    .slice(0, 6);
   const sideImages = images.slice(1, 3);
 
   const priceText = formatPriceRange(
@@ -620,7 +625,14 @@ export default function PrivateTourDetailView({
         <Container>
           <Gallery>
             <MainImage>
-              {mainImage ? (
+              {mainRotationImages.length > 1 ? (
+                <RotatingImage
+                  images={mainRotationImages}
+                  alt={`${safeTourTitle} private tour in Cape Town`}
+                  priority
+                  sizes="(max-width: 768px) 100vw, 66vw"
+                />
+              ) : mainImage ? (
                 <SmartImage
                   src={mainImage}
                   alt={`${safeTourTitle} private tour in Cape Town`}

@@ -287,7 +287,7 @@ function mapRelatedTours(
       image:
         [...(tour.cover_photos || [])].sort((a, b) => a.order - b.order)[0]
           ?.cover_photos || "",
-      href: `/private-tours/${tour.slug}`,
+      href: `/tours/${tour.slug}`,
       price: formatPriceRange(tour.price_from, tour.price_to),
     }));
 }
@@ -401,7 +401,7 @@ export async function generateMetadata({
   const socialTitle = override?.title || getSocialTitle(experience);
   const socialDescription = override?.description || getSocialDescription(experience);
   const image = getPrimaryImage(experience);
-  const canonicalUrl = `${SITE_URL}/private-tours/${slug.toLowerCase()}`;
+  const canonicalUrl = `${SITE_URL}/tours/${slug.toLowerCase()}`;
   const ogImage = `${SITE_URL}/images/og-cape-town-concierge.jpg`;
 
   const keyword = getSeoKeyword(experience);
@@ -497,7 +497,7 @@ export default async function PrivateTourDetailPage({ params }: PageProps) {
   const primaryImage = getPrimaryImage(experience);
   const ogImage = `${SITE_URL}/images/og-cape-town-concierge.jpg`;
   const schemaImage = primaryImage || ogImage;
-  const canonicalUrl = `${SITE_URL}/private-tours/${slug.toLowerCase()}`;
+  const canonicalUrl = `${SITE_URL}/tours/${slug.toLowerCase()}`;
   const price = experience.price_from || experience.price_to || "";
   const priceZarForSchema = toZarNum(price);
 
@@ -592,7 +592,7 @@ export default async function PrivateTourDetailPage({ params }: PageProps) {
         "@type": "ListItem",
         position: 2,
         name: "Private Tours",
-        item: `${SITE_URL}/private-tours`,
+        item: `${SITE_URL}/tours`,
       },
       {
         "@type": "ListItem",

@@ -109,7 +109,7 @@ export default function WineServices() {
             <Button as="span">Plan My Wine Tour</Button>
           </Anchor>
 
-          <StyledLink href="/chauffeur-services">
+          <StyledLink href="/chauffeur-hire">
             <Button as="span" $variant="secondary">
               View Chauffeur Services
             </Button>

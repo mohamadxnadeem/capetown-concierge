@@ -282,7 +282,7 @@ export default function ActivitiesTimeline({ activities }: Props) {
                         <Button as="span">Plan This Experience</Button>
                       </Anchor>
 
-                      <StyledLink href="/chauffeur-services">
+                      <StyledLink href="/chauffeur-hire">
                         <Button as="span" $variant="secondary">
                           View Chauffeur Options
                         </Button>

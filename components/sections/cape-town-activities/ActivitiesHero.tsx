@@ -84,7 +84,7 @@ export default function ActivitiesHero() {
               <Button as="span">Plan My Cape Town Itinerary</Button>
             </Anchor>
 
-            {/* <StyledLink href="/private-tours">
+            {/* <StyledLink href="/tours">
               <Button as="span" $variant="secondary">
                 Explore Private Tours
               </Button>

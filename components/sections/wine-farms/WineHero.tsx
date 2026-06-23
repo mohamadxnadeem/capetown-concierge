@@ -95,7 +95,7 @@ export default function WineHero() {
               <Button as="span">Plan My Private Wine Tour</Button>
             </Anchor>
 
-            <StyledLink href="/chauffeur-services">
+            <StyledLink href="/chauffeur-hire">
               <Button as="span" $variant="secondary">
                 View Chauffeur Services
               </Button>

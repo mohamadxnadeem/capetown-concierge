@@ -46,6 +46,49 @@ export interface BookingCar {
   cover_photos?: CarPhoto[];
 }
 
+export interface BookingPhoto {
+  cover_photos?: string;
+  is_featured?: boolean;
+  order?: number;
+}
+
+export interface BookingVilla {
+  id: number;
+  name: string;
+  slug: string;
+  location?: string | null;
+  area?: string | null;
+  bedrooms?: number | null;
+  bathrooms?: number | null;
+  max_guests?: number | null;
+  price_per_night?: string | null;
+  short_description?: string | null;
+  cover_photos?: BookingPhoto[];
+}
+
+export interface BookingExperience {
+  id: number;
+  title: string;
+  slug?: string | null;
+  short_description?: string | null;
+  highlight?: string | null;
+  duration?: string | null;
+  price_from?: string | number | null;
+  cover_photos?: BookingPhoto[];
+}
+
+export interface BookingPackage {
+  id: number;
+  name: string;
+  slug: string;
+  tagline?: string | null;
+  short_description?: string | null;
+  duration_nights?: number | null;
+  max_guests?: number | null;
+  price_from?: string | null;
+  cover_photos?: BookingPhoto[];
+}
+
 export interface Booking {
   id: number;
   booking_reference: string;
@@ -64,6 +107,9 @@ export interface Booking {
   is_multi_day: boolean;
   created_at: string;
   total_client_amount?: string | null;
+  villa?: BookingVilla | null;
+  experiences?: BookingExperience[];
+  included_packages?: BookingPackage[];
 }
 
 export type BookingLookupResult =
@@ -142,7 +188,7 @@ export async function fetchUpsellTours(limit = 6): Promise<UpsellTour[]> {
         return {
           title: exp.title!,
           description,
-          href: exp.slug ? `/private-tours/${exp.slug}` : "/private-tours",
+          href: exp.slug ? `/tours/${exp.slug}` : "/tours",
           image: featured,
           alt: `Private ${exp.title} in Cape Town with Professional Driver`,
           priceUsd,

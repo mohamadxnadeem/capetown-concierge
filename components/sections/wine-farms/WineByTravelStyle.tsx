@@ -60,7 +60,7 @@ export default function WineByTravelStyle() {
               Delaire Graff, Waterford Estate, Lanzerac, and Postcard Café are
               especially good for couples thanks to their views, elegant
               atmosphere, and more intimate overall feel. Book our{" "}
-              <Link href="/private-tours/winelands-chauffeur-drive" style={{color:"inherit",textDecoration:"underline"}}>
+              <Link href="/tours/winelands-chauffeur-drive" style={{color:"inherit",textDecoration:"underline"}}>
                 Romantic Stellenbosch Winelands Experience
               </Link>{" "}
               for a fully curated day.

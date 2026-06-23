@@ -1,15 +1,16 @@
 import type { Metadata } from "next";
 import HeroBanner from "../components/sections/HeroBanner";
+import ServiceTiles from "../components/sections/ServiceTiles";
+import FeaturedVillas from "../components/sections/FeaturedVillas";
 import FeaturedVehicles from "../components/sections/FeaturedVehicles";
 import WhyChooseUs from "../components/sections/WhyChooseUs";
 import FeaturedExperiences from "../components/sections/FeaturedExperiences";
 import TestimonialsSection from "../components/sections/testimonials/TestimonialsSection";
 import TestimonialsCta from "../components/sections/testimonials/TestimonialsCta";
-import ChauffeurAuthoritySection from "../components/sections/ChauffeurAuthoritySection";
 import HomepageEnquiryCollapsible from "../components/sections/HomepageEnquiryCollapsible";
 import GoogleRatingBadge from "../components/common/GoogleRatingBadge";
+import { fetchVillas, getVillaPrimaryPhoto } from "../lib/villas";
 import { brand } from "../lib/brand";
-import { buildWhatsAppLink } from "../lib/whatsapp";
 
 const SITE_URL = brand.siteUrl;
 
@@ -207,8 +208,8 @@ async function getFeaturedExperiences(): Promise<FeaturedExperienceItem[]> {
           title: experience.title,
           description,
           href: experience.slug
-            ? `/private-tours/${experience.slug}`
-            : "/private-tours",
+            ? `/tours/${experience.slug}`
+            : "/tours",
           image: featuredPhoto,
           alt: `Private ${experience.title} in Cape Town with Professional Driver`,
           priceUsd: expPriceUsd,
@@ -227,21 +228,21 @@ const FALLBACK_EXPERIENCES: FeaturedExperienceItem[] = [
   {
     title: "Cape Peninsula Private Tour",
     description: "Chapman's Peak, Boulders Beach penguins & Cape Point in one private full day. No shared groups, entirely at your pace.",
-    href: "/private-tours/cape-peninsula-tour",
+    href: "/tours/cape-peninsula-tour",
     image: "",
     alt: "Private Cape Peninsula Tour Cape Town with Professional Chauffeur",
   },
   {
     title: "Cape Winelands Private Tour",
     description: "Private chauffeur through Stellenbosch & Franschhoek. World-class wine estates, no timetables, no strangers.",
-    href: "/private-tours/winelands-chauffeur-drive",
+    href: "/tours/winelands-chauffeur-drive",
     image: "",
     alt: "Private Cape Winelands Tour Stellenbosch Franschhoek Chauffeur",
   },
   {
     title: "Cape Town City Private Tour",
     description: "Table Mountain, Bo-Kaap, Camps Bay & the V&A Waterfront with a dedicated private driver. Fully flexible itinerary.",
-    href: "/private-tours/cape-town-city-tour",
+    href: "/tours/cape-town-city-tour",
     image: "",
     alt: "Private Cape Town City Tour with Chauffeur Driver",
   },
@@ -251,21 +252,21 @@ const FALLBACK_VEHICLES: FeaturedVehicleItem[] = [
   {
     title: "Range Rover Sport Chauffeur",
     description: "Bold, refined and fully private. Ideal for couples and executives who want presence on the road.",
-    href: "/chauffeur-services/range-rover-sport-chauffeur-service-cape-town",
+    href: "/chauffeur-hire/range-rover-sport-chauffeur-service-cape-town",
     image: "",
     alt: "Range Rover Sport Chauffeur Service Cape Town",
   },
   {
     title: "Mercedes V-Class Private Chauffeur",
     description: "Six-seat luxury people carrier for families, VIP groups and executive travel across Cape Town.",
-    href: "/chauffeur-services/mercedes-v-class-private-chauffeur-service",
+    href: "/chauffeur-hire/mercedes-v-class-private-chauffeur-service",
     image: "",
     alt: "Mercedes V-Class Private Chauffeur Cape Town",
   },
   {
     title: "BMW X5 Chauffeur Cape Town",
     description: "Premium SUV with elevated ride quality. Perfect for airport transfers, day tours and small groups.",
-    href: "/chauffeur-services/bmw-x5-for-hire-with-driver",
+    href: "/chauffeur-hire/bmw-x5-for-hire-with-driver",
     image: "",
     alt: "BMW X5 Chauffeur Cape Town with Driver",
   },
@@ -313,8 +314,8 @@ async function getFeaturedVehicles(): Promise<FeaturedVehicleItem[]> {
 
         const href =
           typeof car.slug === "string" && car.slug.trim()
-            ? `/chauffeur-services/${car.slug.trim()}`
-            : "/chauffeur-services";
+            ? `/chauffeur-hire/${car.slug.trim()}`
+            : "/chauffeur-hire";
 
         const carPriceUsd = car.price
           ? Number(String(car.price).replace(/[^0-9.]/g, "")) || undefined
@@ -340,10 +341,73 @@ async function getFeaturedVehicles(): Promise<FeaturedVehicleItem[]> {
 }
 
 export default async function HomePage() {
-  const [featuredVehicleItems, featuredExperienceItems] = await Promise.all([
-    getFeaturedVehicles(),
-    getFeaturedExperiences(),
-  ]);
+  const [featuredVehicleItems, featuredExperienceItems, villas] =
+    await Promise.all([
+      getFeaturedVehicles(),
+      getFeaturedExperiences(),
+      fetchVillas().catch(() => []),
+    ]);
+
+  // Cover images for the service tiles — pull from real CMS data, fall
+  // back to bundled assets if a category has none yet.
+  const villaTileImages = villas
+    .slice(0, 4)
+    .map((v) => getVillaPrimaryPhoto(v))
+    .filter((u): u is string => Boolean(u));
+  const vehicleTileImages = featuredVehicleItems
+    .slice(0, 4)
+    .map((v) => v.image)
+    .filter((u): u is string => Boolean(u));
+  const tourTileImages = featuredExperienceItems
+    .slice(0, 4)
+    .map((t) => t.image)
+    .filter((u): u is string => Boolean(u));
+
+  // Interleave villas / vehicles / tours for the hero rotation so a
+  // visitor sees variety in the first few seconds. Round-robin keeps
+  // it deterministic between SSR and client (no Math.random hydration
+  // mismatch).
+  const heroRotationImages: string[] = [];
+  const maxRotation = Math.max(
+    villaTileImages.length,
+    vehicleTileImages.length,
+    tourTileImages.length
+  );
+  for (let i = 0; i < maxRotation; i++) {
+    if (villaTileImages[i]) heroRotationImages.push(villaTileImages[i]);
+    if (vehicleTileImages[i]) heroRotationImages.push(vehicleTileImages[i]);
+    if (tourTileImages[i]) heroRotationImages.push(tourTileImages[i]);
+  }
+
+  const serviceTiles = [
+    {
+      href: "/villas",
+      eyebrow: "Stay",
+      title: "Luxury Villas",
+      description:
+        "Hand-picked villas in Camps Bay, Clifton, Constantia and the Winelands — concierge from arrival to departure.",
+      images: villaTileImages.length ? villaTileImages : ["/images/hero-image.jpg"],
+      alt: "Luxury Cape Town villa rentals with concierge service",
+    },
+    {
+      href: "/chauffeur-hire",
+      eyebrow: "Drive",
+      title: "Chauffeur Hire",
+      description:
+        "Hourly, daily, and multi-day private chauffeur hire in a Mercedes, Range Rover, or BMW with a professional driver.",
+      images: vehicleTileImages.length ? vehicleTileImages : ["/images/car.jpg"],
+      alt: "Private chauffeur hire in Cape Town with luxury vehicle and driver",
+    },
+    {
+      href: "/tours",
+      eyebrow: "Explore",
+      title: "Day Tours",
+      description:
+        "Curated private day tours — Cape Point, Winelands, Table Mountain — entirely at your own pace.",
+      images: tourTileImages.length ? tourTileImages : ["/images/hero-car.jpg"],
+      alt: "Private day tours in Cape Town with chauffeur guide",
+    },
+  ];
 
   const structuredData = {
     "@context": "https://schema.org",
@@ -505,30 +569,33 @@ export default async function HomePage() {
 
       <HeroBanner
         eyebrow={brand.name}
-        title="Luxury Chauffeur Services in Cape Town"
-        description="Premium airport transfers, private chauffeur services, and curated travel experiences designed for clients who value comfort, elegance, and reliability."
-        primaryCtaLabel="Book on WhatsApp"
-        primaryCtaHref="https://wa.me/27636746131?text=Hi%2C+I%27d+like+to+book+a+luxury+chauffeur+or+private+tour+in+Cape+Town.+Please+assist."
-        secondaryCtaLabel="Explore Services"
-        secondaryCtaHref="/chauffeur-services"
+        title="Cape Town's luxury concierge — villas, chauffeurs, and curated day tours."
+        description="A single team that plans, books, and runs the whole trip. Villas in the city's best addresses, private chauffeur hire in luxury vehicles, and concierge-led day tours of Cape Town and the Winelands."
+        primaryCtaLabel="Chat on WhatsApp"
+        primaryCtaHref="https://wa.me/27636746131?text=Hi%2C+I%27d+like+to+plan+a+stay+with+Cape+Town+Concierge.+Please+assist."
+        secondaryCtaLabel="Explore villas"
+        secondaryCtaHref="/villas"
         image="/images/car.jpg"
-        imageAlt="Luxury chauffeur fleet in Cape Town featuring premium private transport vehicles"
+        images={heroRotationImages}
+        imageAlt="Cape Town Concierge — luxury villas, chauffeur hire and private day tours"
       />
+
+      <ServiceTiles tiles={serviceTiles} />
 
       <div style={{ textAlign: "center", padding: "20px 20px 0" }}>
         <GoogleRatingBadge />
       </div>
 
-      <TestimonialsSection />
-      <TestimonialsCta />
+      <FeaturedVillas villas={villas} />
 
       <FeaturedVehicles items={featuredVehicleItems} />
 
+      <FeaturedExperiences items={featuredExperienceItems} />
+
       <WhyChooseUs items={trustItems} />
 
-      <ChauffeurAuthoritySection />
-
-      <FeaturedExperiences items={featuredExperienceItems} />
+      <TestimonialsSection />
+      <TestimonialsCta />
 
       <HomepageEnquiryCollapsible />
     </>

@@ -336,6 +336,11 @@ export default function ChauffeurServicesPage({ vehicles = [] }: { vehicles?: Fe
 
   const whatsappLink = "https://wa.me/27636746131?text=Hi%2C+I%27d+like+to+enquire+about+chauffeur+hire+in+Cape+Town.+Please+assist.";
 
+  const heroImages = vehicles
+    .slice(0, 6)
+    .map((v) => v.image)
+    .filter((u): u is string => Boolean(u));
+
   return (
     <PageWrap>
       <HeroBanner
@@ -347,6 +352,7 @@ export default function ChauffeurServicesPage({ vehicles = [] }: { vehicles?: Fe
         secondaryCtaLabel="View Fleet"
         secondaryCtaHref="#chauffeur-fleet"
         image="/images/hero-car.jpg"
+        images={heroImages}
         imageAlt="Luxury chauffeur service in Cape Town with premium private transport vehicles"
       />
 
@@ -426,7 +432,7 @@ export default function ChauffeurServicesPage({ vehicles = [] }: { vehicles?: Fe
                 For couples, families, VIP guests, and business visitors, a
                 private chauffeur in Cape Town creates a far more refined travel
                 experience. Popular routes include{" "}
-                <Link href="/private-tours/cape-peninsula-tour" style={{color:"inherit"}}>Cape Peninsula travel</Link>
+                <Link href="/tours/cape-peninsula-tour" style={{color:"inherit"}}>Cape Peninsula travel</Link>
                 {" "}and day trips to the{" "}
                 <Link href="/best-wine-farms-in-cape-town" style={{color:"inherit"}}>wine farms</Link>
                 {" "}of Stellenbosch and Franschhoek. It gives you the freedom to focus on your schedule,

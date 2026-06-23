@@ -4,6 +4,7 @@ import Link from "next/link";
 import styled from "styled-components";
 import Container from "../../common/Container";
 import SmartImage from "../../common/SmartImage";
+import RotatingImage from "../../common/RotatingImage";
 import { trackWhatsAppClick } from "../../../lib/tracking";
 import Money from "../../common/Money";
 
@@ -15,6 +16,7 @@ type Props = {
   luggage?: number;
   priceUsd?: number;
   image?: string;
+  images?: string[];
   whatsappLink: string;
 };
 
@@ -138,15 +140,21 @@ export default function ChauffeurHero({
   luggage,
   priceUsd,
   image,
+  images,
   whatsappLink,
 }: Props) {
+  const rotation = (images ?? []).filter(Boolean);
   return (
     <Hero>
-      {image && (
+      {rotation.length > 0 ? (
+        <HeroImageLayer>
+          <RotatingImage images={rotation} alt={title} priority sizes="100vw" />
+        </HeroImageLayer>
+      ) : image ? (
         <HeroImageLayer>
           <SmartImage src={image} alt={title} priority sizes="100vw" />
         </HeroImageLayer>
-      )}
+      ) : null}
       <HeroOverlay />
       <HeroContent>
         <Container>

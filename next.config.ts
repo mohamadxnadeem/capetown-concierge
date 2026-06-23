@@ -50,11 +50,33 @@ const nextConfig: NextConfig = {
         destination: "https://www.capetown-concierge.co.za/:path*",
         permanent: true,
       },
+      // IA rename: chauffeur-services → chauffeur-hire
+      {
+        source: "/chauffeur-services",
+        destination: "/chauffeur-hire",
+        permanent: true,
+      },
+      {
+        source: "/chauffeur-services/:slug",
+        destination: "/chauffeur-hire/:slug",
+        permanent: true,
+      },
+      // IA rename: private-tours → tours
+      {
+        source: "/private-tours",
+        destination: "/tours",
+        permanent: true,
+      },
+      {
+        source: "/private-tours/:slug",
+        destination: "/tours/:slug",
+        permanent: true,
+      },
       // Typo fix — safe: source and destination differ meaningfully
       // (peninsular vs peninsula are genuinely different strings)
       {
-        source: "/private-tours/cape-peninsular-tour",
-        destination: "/private-tours/cape-peninsula-tour",
+        source: "/tours/cape-peninsular-tour",
+        destination: "/tours/cape-peninsula-tour",
         permanent: true,
       },
       // NOTE: do NOT add case-only redirects (e.g. BMW-X5 → bmw-x5).
