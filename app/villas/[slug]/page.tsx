@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import VillaDetailView from "../../../components/sections/villas/VillaDetailView";
 import {
+  fetchVillaAvailability,
   fetchVillaBySlug,
   getVillaAreaDisplay,
   getVillaPrimaryPhoto,
@@ -78,6 +79,7 @@ export default async function VillaPage({ params }: PageProps) {
   const villa = await fetchVillaBySlug(slug);
   if (!villa) notFound();
 
+  const availability = await fetchVillaAvailability(villa.slug);
   const area = getVillaAreaDisplay(villa);
   const photo = getVillaPrimaryPhoto(villa);
   const canonical = `${SITE_URL}/villas/${villa.slug.toLowerCase()}`;
@@ -104,7 +106,7 @@ export default async function VillaPage({ params }: PageProps) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
       />
-      <VillaDetailView villa={villa} />
+      <VillaDetailView villa={villa} availability={availability} />
     </>
   );
 }

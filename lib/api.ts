@@ -9,5 +9,7 @@ export const endpoints = {
     all: () => join(`/api/villas/`),
     featured: () => join(`/api/villas/featured/`),
     detail: (slug: string) => join(`/api/villas/${encodeURIComponent(slug)}/`),
+    availability: (slug: string) =>
+      join(`/api/villas/${encodeURIComponent(slug)}/availability/`),
   },
 } as const;

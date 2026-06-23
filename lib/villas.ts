@@ -95,6 +95,38 @@ async function _fetchVillaBySlug(slug: string): Promise<Villa | null> {
   return villa ?? null;
 }
 
+export interface VillaAvailability {
+  unavailable: string[];
+  checkin_only: string[];
+  checkout_only: string[];
+  max_allowed_date: string | null;
+  fetched_at: string | null;
+}
+
+export const fetchVillaAvailability = cache(_fetchVillaAvailability);
+async function _fetchVillaAvailability(
+  slug: string
+): Promise<VillaAvailability> {
+  const empty: VillaAvailability = {
+    unavailable: [],
+    checkin_only: [],
+    checkout_only: [],
+    max_allowed_date: null,
+    fetched_at: null,
+  };
+  const data = await fetchJson<Partial<VillaAvailability>>(
+    endpoints.villas.availability(slug)
+  );
+  if (!data) return empty;
+  return {
+    unavailable: Array.isArray(data.unavailable) ? data.unavailable : [],
+    checkin_only: Array.isArray(data.checkin_only) ? data.checkin_only : [],
+    checkout_only: Array.isArray(data.checkout_only) ? data.checkout_only : [],
+    max_allowed_date: data.max_allowed_date ?? null,
+    fetched_at: data.fetched_at ?? null,
+  };
+}
+
 export function getVillaAreaDisplay(villa: Villa): string {
   return villa.location || AREA_DISPLAY[villa.area] || "Cape Town";
 }
