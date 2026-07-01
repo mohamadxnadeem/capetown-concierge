@@ -18,6 +18,11 @@ import type {
   UpsellTour,
 } from "../../lib/bookings";
 import Money from "../common/Money";
+import BookingPayNow from "./BookingPayNow";
+import BookingUpsell from "./BookingUpsell";
+import type { Hotel } from "../../lib/hotels";
+import type { Villa } from "../../lib/villas";
+import type { UpsellVehicle } from "../../lib/vehicles";
 import type { CarPhoto } from "./chauffeur-services/types";
 import ChauffeurGallery from "./chauffeur-services/ChauffeurGallery";
 import SmartImage from "../common/SmartImage";
@@ -982,12 +987,22 @@ interface Props {
   booking: Booking;
   carPhotos: CarPhoto[];
   upsellTours: UpsellTour[];
+  hasVehicle: boolean;
+  hasAccommodation: boolean;
+  featuredHotels: Hotel[];
+  featuredVillas: Villa[];
+  featuredVehicles: UpsellVehicle[];
 }
 
 export default function BookingDetailView({
   booking,
   carPhotos,
   upsellTours,
+  hasVehicle,
+  hasAccommodation,
+  featuredHotels,
+  featuredVillas,
+  featuredVehicles,
 }: Props) {
   const driver: BookingDriver | null = booking.driver ?? booking.car?.driver ?? null;
   const displayStatus = toDisplayStatus(booking.status);
@@ -1148,6 +1163,8 @@ export default function BookingDetailView({
           </Card>
         ) : null}
 
+        <BookingPayNow booking={booking} />
+
         {(() => {
           const itinerary = buildItineraryEntries(booking);
           if (itinerary.length === 0) return null;
@@ -1184,6 +1201,15 @@ export default function BookingDetailView({
             </BundleGrid>
           </Card>
         ) : null}
+
+        <BookingUpsell
+          bookingReference={booking.booking_reference}
+          hasVehicle={hasVehicle}
+          hasAccommodation={hasAccommodation}
+          featuredHotels={featuredHotels}
+          featuredVillas={featuredVillas}
+          featuredVehicles={featuredVehicles}
+        />
 
         <Card>
           <SectionTitle>Need to change something?</SectionTitle>
