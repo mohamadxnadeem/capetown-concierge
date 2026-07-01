@@ -89,6 +89,35 @@ export interface BookingPackage {
   cover_photos?: BookingPhoto[];
 }
 
+export interface BookingHotel {
+  id: number;
+  name: string;
+  slug: string;
+  location?: string | null;
+  area?: string | null;
+  star_rating?: number | null;
+  bedrooms?: number | null;
+  bathrooms?: number | null;
+  max_guests?: number | null;
+  price_per_night_from?: string | null;
+  room_types?: string[];
+  short_description?: string | null;
+  cover_photos?: BookingPhoto[];
+}
+
+export type AccommodationKind = "villa" | "hotel";
+
+export interface AccommodationSegment {
+  id: number;
+  start_date: string;
+  end_date: string;
+  kind: AccommodationKind;
+  villa: BookingVilla | null;
+  hotel: BookingHotel | null;
+  notes: string | null;
+  order: number;
+}
+
 export interface Booking {
   id: number;
   booking_reference: string;
@@ -108,6 +137,7 @@ export interface Booking {
   created_at: string;
   total_client_amount?: string | null;
   villa?: BookingVilla | null;
+  accommodation_segments?: AccommodationSegment[];
   experiences?: BookingExperience[];
   included_packages?: BookingPackage[];
 }

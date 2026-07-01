@@ -5,10 +5,12 @@ import styled, { css } from "styled-components";
 import { brand } from "../../lib/brand";
 import { trackWhatsAppClick } from "../../lib/tracking";
 import type {
+  AccommodationSegment,
   Booking,
   BookingDay,
   BookingDriver,
   BookingExperience,
+  BookingHotel,
   BookingPackage,
   BookingPhoto,
   BookingStatus,
@@ -548,42 +550,6 @@ function parseMoney(value: string | number | null | undefined): number | null {
   return Number.isFinite(n) && n > 0 ? n : null;
 }
 
-function VillaBundleCard({ villa }: { villa: BookingVilla }) {
-  const photo = pickPhoto(villa.cover_photos);
-  const area = villa.location ?? villa.area ?? null;
-  const rate = parseMoney(villa.price_per_night);
-  return (
-    <BundleCard href={`/villas/${villa.slug}`}>
-      <BundleImage>
-        {photo ? (
-          <SmartImage
-            src={photo}
-            alt={`${villa.name} — luxury villa`}
-            sizes="(max-width: 768px) 100vw, 50vw"
-          />
-        ) : null}
-      </BundleImage>
-      <BundleBody>
-        {area ? <BundleBadge>{area}</BundleBadge> : null}
-        <BundleTitle>{villa.name}</BundleTitle>
-        <BundleMeta>
-          {villa.bedrooms ? <span>{villa.bedrooms} bed</span> : null}
-          {villa.bathrooms ? <span>{villa.bathrooms} bath</span> : null}
-          {villa.max_guests ? <span>sleeps {villa.max_guests}</span> : null}
-          {rate ? (
-            <span>
-              from <Money usd={rate} prefix="" suffix="/ night" />
-            </span>
-          ) : null}
-        </BundleMeta>
-        {villa.short_description ? (
-          <BundleText>{villa.short_description}</BundleText>
-        ) : null}
-      </BundleBody>
-    </BundleCard>
-  );
-}
-
 function ExperienceBundleCard({ experience }: { experience: BookingExperience }) {
   const photo = pickPhoto(experience.cover_photos);
   const rate = parseMoney(experience.price_from);
@@ -652,6 +618,364 @@ function PackageBundleCard({ pkg }: { pkg: BookingPackage }) {
       </BundleBody>
     </BundleCard>
   );
+}
+
+// ─── Accommodation itinerary ─────────────────────────────────────────
+
+const ItineraryList = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+`;
+
+const ItineraryCard = styled.article`
+  background: ${({ theme }) => theme.colors.white};
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: ${({ theme }) => theme.shadows.soft};
+`;
+
+const ItineraryHeader = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  align-items: center;
+  padding: 12px 16px;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.border};
+  background: ${({ theme }) => theme.colors.background};
+  font-size: 0.86rem;
+  color: ${({ theme }) => theme.colors.text};
+`;
+
+const KindPill = styled.span<{ $kind: "villa" | "hotel" }>`
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: ${({ theme, $kind }) =>
+    $kind === "villa" ? `${theme.colors.primary}14` : "#f2e6d0"};
+  color: ${({ theme, $kind }) =>
+    $kind === "villa" ? theme.colors.primary : "#6b4a10"};
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+`;
+
+const DateRange = styled.span`
+  font-weight: 700;
+  color: ${({ theme }) => theme.colors.heading};
+`;
+
+const NightsBadge = styled.span`
+  color: ${({ theme }) => theme.colors.textMuted};
+  font-size: 0.85rem;
+`;
+
+const HeroPhoto = styled.div`
+  position: relative;
+  height: 220px;
+  background: ${({ theme }) => theme.colors.background};
+
+  @media (min-width: ${({ theme }) => theme.breakpoints.sm}) {
+    height: 280px;
+  }
+`;
+
+const ItineraryBody = styled.div`
+  padding: 16px 18px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+`;
+
+const PropertyName = styled.h3`
+  margin: 0;
+  color: ${({ theme }) => theme.colors.heading};
+  font-size: 1.15rem;
+  line-height: 1.25;
+`;
+
+const PropertyMeta = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 12px;
+  color: ${({ theme }) => theme.colors.textMuted};
+  font-size: 0.9rem;
+`;
+
+const Stars = styled.span`
+  color: #c99a2b;
+  letter-spacing: 0.05em;
+`;
+
+const RateLine = styled.div`
+  color: ${({ theme }) => theme.colors.heading};
+  font-weight: 700;
+  font-size: 0.98rem;
+`;
+
+const GalleryStrip = styled.div`
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 120px;
+  gap: 8px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding-bottom: 4px;
+
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+`;
+
+const Thumb = styled.div`
+  position: relative;
+  height: 82px;
+  border-radius: 10px;
+  overflow: hidden;
+  scroll-snap-align: start;
+  background: ${({ theme }) => theme.colors.background};
+`;
+
+const ItineraryNotes = styled.p`
+  margin: 0;
+  padding: 10px 12px;
+  border-left: 3px solid ${({ theme }) => theme.colors.primary};
+  background: ${({ theme }) => theme.colors.background};
+  color: ${({ theme }) => theme.colors.text};
+  font-size: 0.92rem;
+  line-height: 1.6;
+  font-style: italic;
+`;
+
+const DeepLink = styled(Link)`
+  align-self: flex-start;
+  color: ${({ theme }) => theme.colors.primary};
+  font-weight: 700;
+  font-size: 0.92rem;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+`;
+
+function parseIsoDate(iso: string): Date | null {
+  if (!iso) return null;
+  const [y, m, d] = iso.split("-").map((n) => Number(n));
+  if (!y || !m || !d) return null;
+  const dt = new Date(y, m - 1, d);
+  return Number.isNaN(dt.getTime()) ? null : dt;
+}
+
+function formatItineraryRange(startIso: string, endIso: string): string {
+  const s = parseIsoDate(startIso);
+  const e = parseIsoDate(endIso);
+  if (!s || !e) return `${startIso} → ${endIso}`;
+  const sameYear = s.getFullYear() === e.getFullYear();
+  const startFmt = new Intl.DateTimeFormat("en-ZA", {
+    day: "numeric",
+    month: "short",
+    ...(sameYear ? {} : { year: "numeric" }),
+  }).format(s);
+  const endFmt = new Intl.DateTimeFormat("en-ZA", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  }).format(e);
+  return `${startFmt} → ${endFmt}`;
+}
+
+function nightsBetween(startIso: string, endIso: string): number | null {
+  const s = parseIsoDate(startIso);
+  const e = parseIsoDate(endIso);
+  if (!s || !e) return null;
+  const ms = e.getTime() - s.getTime();
+  const n = Math.round(ms / (1000 * 60 * 60 * 24));
+  return n > 0 ? n : null;
+}
+
+interface SegmentEntry {
+  segment: AccommodationSegment;
+  start: string;
+  end: string;
+  notes: string[];
+}
+
+function mergeConsecutiveSegments(
+  segments: AccommodationSegment[]
+): SegmentEntry[] {
+  const sorted = [...segments].sort((a, b) => a.order - b.order);
+  const out: SegmentEntry[] = [];
+  for (const seg of sorted) {
+    const propId =
+      seg.kind === "villa" ? seg.villa?.id ?? null : seg.hotel?.id ?? null;
+    const last = out[out.length - 1];
+    const lastPropId =
+      last?.segment.kind === "villa"
+        ? last.segment.villa?.id ?? null
+        : last?.segment.hotel?.id ?? null;
+    if (
+      last &&
+      last.segment.kind === seg.kind &&
+      propId !== null &&
+      lastPropId === propId
+    ) {
+      last.end = seg.end_date;
+      if (seg.notes) last.notes.push(seg.notes);
+    } else {
+      out.push({
+        segment: seg,
+        start: seg.start_date,
+        end: seg.end_date,
+        notes: seg.notes ? [seg.notes] : [],
+      });
+    }
+  }
+  return out;
+}
+
+function bookingDateRange(booking: Booking): { start: string; end: string } | null {
+  if (!booking.days.length) return null;
+  const sorted = [...booking.days].sort((a, b) =>
+    a.date.localeCompare(b.date)
+  );
+  return { start: sorted[0].date, end: sorted[sorted.length - 1].date };
+}
+
+function pickThumbs(
+  photos: BookingPhoto[] | undefined | null
+): { key: string; url: string }[] {
+  if (!photos?.length) return [];
+  const valid = photos.filter((p) => Boolean(p?.cover_photos));
+  const sorted = [...valid].sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+  return sorted.slice(0, 6).map((p, i) => ({
+    key: `${p.cover_photos}-${i}`,
+    url: p.cover_photos as string,
+  }));
+}
+
+function starDisplay(stars: number | null | undefined): string | null {
+  if (!stars || stars <= 0) return null;
+  const rounded = Math.min(5, Math.max(1, Math.round(stars)));
+  return "★".repeat(rounded) + "☆".repeat(5 - rounded);
+}
+
+function ItinerarySegmentCard({ entry }: { entry: SegmentEntry }) {
+  const { segment, start, end, notes } = entry;
+  const property: BookingVilla | BookingHotel | null =
+    segment.kind === "villa" ? segment.villa : segment.hotel;
+  if (!property) return null;
+
+  const photo = pickPhoto(property.cover_photos);
+  const thumbs = pickThumbs(property.cover_photos);
+  const nights = nightsBetween(start, end);
+  const dateLabel = formatItineraryRange(start, end);
+  const kindLabel = segment.kind === "villa" ? "Villa" : "Hotel";
+  const location =
+    (property as BookingVilla).location ??
+    (property as BookingVilla).area ??
+    (property as BookingHotel).location ??
+    null;
+  const hotel = segment.kind === "hotel" ? (property as BookingHotel) : null;
+  const villa = segment.kind === "villa" ? (property as BookingVilla) : null;
+  const stars = starDisplay(hotel?.star_rating);
+  const rate = parseMoney(
+    villa?.price_per_night ?? hotel?.price_per_night_from ?? null
+  );
+  const rateLabel = rate
+    ? villa
+      ? `R${Math.round(rate).toLocaleString()} / night`
+      : `from R${Math.round(rate).toLocaleString()} / night`
+    : null;
+  const href =
+    segment.kind === "villa"
+      ? `/villas/${property.slug}`
+      : `/hotels/${property.slug}`;
+
+  return (
+    <ItineraryCard>
+      <ItineraryHeader>
+        <KindPill $kind={segment.kind}>{kindLabel}</KindPill>
+        <DateRange>{dateLabel}</DateRange>
+        {nights ? (
+          <NightsBadge>· {nights} night{nights === 1 ? "" : "s"}</NightsBadge>
+        ) : null}
+      </ItineraryHeader>
+
+      <HeroPhoto>
+        {photo ? (
+          <SmartImage
+            src={photo}
+            alt={`${property.name} — ${kindLabel.toLowerCase()}`}
+            sizes="(max-width: 768px) 100vw, 720px"
+          />
+        ) : null}
+      </HeroPhoto>
+
+      <ItineraryBody>
+        <PropertyName>{property.name}</PropertyName>
+        <PropertyMeta>
+          {location ? <span>{location}</span> : null}
+          {stars ? <Stars aria-label={`${hotel?.star_rating} star hotel`}>{stars}</Stars> : null}
+        </PropertyMeta>
+        {rateLabel ? <RateLine>{rateLabel}</RateLine> : null}
+
+        {thumbs.length > 1 ? (
+          <GalleryStrip>
+            {thumbs.map((t) => (
+              <Thumb key={t.key}>
+                <SmartImage
+                  src={t.url}
+                  alt=""
+                  sizes="120px"
+                />
+              </Thumb>
+            ))}
+          </GalleryStrip>
+        ) : null}
+
+        {notes.map((n, i) => (
+          <ItineraryNotes key={i}>{n}</ItineraryNotes>
+        ))}
+
+        <DeepLink href={href}>
+          View {segment.kind === "villa" ? "villa" : "hotel"} details →
+        </DeepLink>
+      </ItineraryBody>
+    </ItineraryCard>
+  );
+}
+
+function buildItineraryEntries(booking: Booking): SegmentEntry[] {
+  const segments = booking.accommodation_segments ?? [];
+  if (segments.length > 0) return mergeConsecutiveSegments(segments);
+
+  // Legacy fallback: single villa spanning the whole booking
+  if (booking.villa) {
+    const range = bookingDateRange(booking);
+    if (!range) return [];
+    return [
+      {
+        segment: {
+          id: -1,
+          start_date: range.start,
+          end_date: range.end,
+          kind: "villa",
+          villa: booking.villa,
+          hotel: null,
+          notes: null,
+          order: 0,
+        },
+        start: range.start,
+        end: range.end,
+        notes: [],
+      },
+    ];
+  }
+
+  return [];
 }
 
 interface Props {
@@ -824,14 +1148,20 @@ export default function BookingDetailView({
           </Card>
         ) : null}
 
-        {booking.villa ? (
-          <Card>
-            <SectionTitle>Your villa</SectionTitle>
-            <BundleGrid>
-              <VillaBundleCard villa={booking.villa} />
-            </BundleGrid>
-          </Card>
-        ) : null}
+        {(() => {
+          const itinerary = buildItineraryEntries(booking);
+          if (itinerary.length === 0) return null;
+          return (
+            <Card>
+              <SectionTitle>Your accommodation itinerary</SectionTitle>
+              <ItineraryList>
+                {itinerary.map((entry) => (
+                  <ItinerarySegmentCard key={entry.segment.id} entry={entry} />
+                ))}
+              </ItineraryList>
+            </Card>
+          );
+        })()}
 
         {booking.experiences && booking.experiences.length > 0 ? (
           <Card>
