@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { brand } from "../lib/brand";
 import { fetchVillas } from "../lib/villas";
+import { fetchHotels } from "../lib/hotels";
 
 const SITE_URL = brand.siteUrl;
 
@@ -71,10 +72,11 @@ async function getExperienceSlugs(): Promise<string[]> {
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [vehicleSlugs, experienceSlugs, villas] = await Promise.all([
+  const [vehicleSlugs, experienceSlugs, villas, hotels] = await Promise.all([
     getVehicleSlugs(),
     getExperienceSlugs(),
     fetchVillas().catch(() => []),
+    fetchHotels().catch(() => []),
   ]);
 
   const staticRoutes: MetadataRoute.Sitemap = [
@@ -127,6 +129,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.9,
     },
     {
+      url: `${SITE_URL}/hotels`,
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 0.9,
+    },
+    {
       url: `${SITE_URL}/contact`,
       lastModified: new Date(),
       changeFrequency: "monthly",
@@ -163,5 +171,20 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.8,
     }));
 
-  return [...staticRoutes, ...vehicleRoutes, ...tourRoutes, ...villaRoutes];
+  const hotelRoutes: MetadataRoute.Sitemap = hotels
+    .filter((h) => Boolean(h.slug))
+    .map((h) => ({
+      url: `${SITE_URL}/hotels/${h.slug.toLowerCase()}`,
+      lastModified: new Date(),
+      changeFrequency: "monthly" as const,
+      priority: 0.8,
+    }));
+
+  return [
+    ...staticRoutes,
+    ...vehicleRoutes,
+    ...tourRoutes,
+    ...villaRoutes,
+    ...hotelRoutes,
+  ];
 }
