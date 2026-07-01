@@ -112,6 +112,9 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
           <NavLink href="/villas" onClick={onClose}>
             Luxury Villas
           </NavLink>
+          <NavLink href="/hotels" onClick={onClose}>
+            Luxury Hotels
+          </NavLink>
           <NavLink href="/chauffeur-hire" onClick={onClose}>
             Chauffeur Hire
           </NavLink>

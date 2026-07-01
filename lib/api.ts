@@ -12,4 +12,16 @@ export const endpoints = {
     availability: (slug: string) =>
       join(`/api/villas/${encodeURIComponent(slug)}/availability/`),
   },
+  hotels: {
+    all: () => join(`/api/hotels/`),
+    featured: () => join(`/api/hotels/featured/`),
+    detail: (slug: string) => join(`/api/hotels/${encodeURIComponent(slug)}/`),
+  },
+  carsForHire: {
+    all: () => join(`/api/cars-for-hire/`),
+  },
+  bookings: {
+    publicDetail: (ref: string) =>
+      join(`/api/public/bookings/${encodeURIComponent(ref)}/`),
+  },
 } as const;

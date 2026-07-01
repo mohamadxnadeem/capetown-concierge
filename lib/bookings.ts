@@ -136,6 +136,8 @@ export interface Booking {
   is_multi_day: boolean;
   created_at: string;
   total_client_amount?: string | null;
+  payment_link?: string | null;
+  is_paid?: boolean;
   villa?: BookingVilla | null;
   accommodation_segments?: AccommodationSegment[];
   experiences?: BookingExperience[];

@@ -196,6 +196,7 @@ export default function Footer() {
             <ColTitle>Services</ColTitle>
             <NavList>
               <NavItem><NavLink href="/villas">Luxury Villas</NavLink></NavItem>
+              <NavItem><NavLink href="/hotels">Luxury Hotels</NavLink></NavItem>
               <NavItem><NavLink href="/chauffeur-hire">Chauffeur Hire</NavLink></NavItem>
               <NavItem><NavLink href="/tours">Day Tours</NavLink></NavItem>
               <NavItem><NavLink href="/airport-transfers-cape-town">Airport Transfers</NavLink></NavItem>
@@ -244,6 +245,7 @@ export default function Footer() {
           </Copyright>
           <LegalLinks>
             <LegalLink href="/contact">Contact</LegalLink>
+            <LegalLink href="/cancellation-policy">Cancellation Policy</LegalLink>
             <LegalLink href="/privacy">Privacy Policy</LegalLink>
           </LegalLinks>
         </Bottom>
