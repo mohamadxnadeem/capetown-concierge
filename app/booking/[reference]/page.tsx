@@ -5,8 +5,6 @@ import {
   fetchBookingByReference,
   fetchUpsellTours,
 } from "../../../lib/bookings";
-import { fetchFeaturedHotels, fetchHotels } from "../../../lib/hotels";
-import { fetchFeaturedVillas, fetchVillas } from "../../../lib/villas";
 import { fetchUpsellVehicles } from "../../../lib/vehicles";
 import { brand } from "../../../lib/brand";
 
@@ -120,24 +118,11 @@ export default async function BookingPage({ params }: PageProps) {
     (booking.accommodation_segments?.length ?? 0) > 0 ||
     Boolean(booking.villa);
 
-  // Only fetch upsell data for the case we'll actually render.
-  let featuredHotels: Awaited<ReturnType<typeof fetchHotels>> = [];
-  let featuredVillas: Awaited<ReturnType<typeof fetchVillas>> = [];
-  let featuredVehicles: Awaited<ReturnType<typeof fetchUpsellVehicles>> = [];
+  // Chauffeur upsell only renders for accommodation-only bookings.
+  const featuredVehicles =
+    hasAccommodation && !hasVehicle ? await fetchUpsellVehicles(8) : [];
 
-  if (hasVehicle && !hasAccommodation) {
-    const [hots, vils] = await Promise.all([
-      fetchFeaturedHotels(),
-      fetchFeaturedVillas(),
-    ]);
-    // Fall back to full list if featured returns fewer than 4.
-    featuredHotels = hots.length >= 4 ? hots : await fetchHotels();
-    featuredVillas = vils.length >= 4 ? vils : await fetchVillas();
-  } else if (hasAccommodation && !hasVehicle) {
-    featuredVehicles = await fetchUpsellVehicles(8);
-  }
-
-  const [upsellTours] = await Promise.all([fetchUpsellTours(6)]);
+  const upsellTours = await fetchUpsellTours(6);
 
   return (
     <BookingDetailView
@@ -146,8 +131,6 @@ export default async function BookingPage({ params }: PageProps) {
       upsellTours={upsellTours}
       hasVehicle={hasVehicle}
       hasAccommodation={hasAccommodation}
-      featuredHotels={featuredHotels}
-      featuredVillas={featuredVillas}
       featuredVehicles={featuredVehicles}
     />
   );
