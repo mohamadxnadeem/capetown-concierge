@@ -5,19 +5,6 @@ import styled from "styled-components";
 import SmartImage from "../common/SmartImage";
 import { brand } from "../../lib/brand";
 import { trackWhatsAppClick } from "../../lib/tracking";
-import {
-  getHotelAreaDisplay,
-  getHotelNightlyRate,
-  getHotelPrimaryPhoto,
-  starsDisplay,
-  type Hotel,
-} from "../../lib/hotels";
-import {
-  getVillaAreaDisplay,
-  getVillaNightlyRate,
-  getVillaPrimaryPhoto,
-  type Villa,
-} from "../../lib/villas";
 import type { UpsellVehicle } from "../../lib/vehicles";
 
 const Section = styled.section`
@@ -160,12 +147,6 @@ const CardPrice = styled.span`
   margin-top: 2px;
 `;
 
-const Stars = styled.span`
-  color: #c99a2b;
-  letter-spacing: 0.05em;
-  font-size: 0.82rem;
-`;
-
 const WhatsAppRow = styled.div`
   display: flex;
   justify-content: center;
@@ -196,67 +177,9 @@ function formatZar(n?: number | null): string {
   return `R${Math.round(n).toLocaleString()}`;
 }
 
-function buildWhatsappHref(bookingRef: string, want: "accommodation" | "chauffeur") {
-  const wantText = want === "accommodation" ? "accommodation" : "a chauffeur";
-  const msg = `Hi ${brand.name}, I saw my booking ${bookingRef} and I'd like to add ${wantText} to my trip. Please share options. Thank you!`;
+function buildChauffeurWhatsapp(bookingRef: string) {
+  const msg = `Hi ${brand.name}, I saw my booking ${bookingRef} and I'd like to add a chauffeur to my trip. Please share options. Thank you!`;
   return `https://wa.me/${brand.whatsappNumber}?text=${encodeURIComponent(msg)}`;
-}
-
-function HotelCard({ hotel }: { hotel: Hotel }) {
-  const photo = getHotelPrimaryPhoto(hotel);
-  const area = getHotelAreaDisplay(hotel);
-  const rate = getHotelNightlyRate(hotel);
-  const stars = starsDisplay(hotel.star_rating);
-  return (
-    <Card href={`/hotels/${hotel.slug}`}>
-      <CardImage>
-        {photo ? (
-          <SmartImage
-            src={photo}
-            alt={`${hotel.name} — luxury hotel in ${area}`}
-            sizes="(max-width: 768px) 82vw, 25vw"
-          />
-        ) : null}
-      </CardImage>
-      <CardBody>
-        <CardTitle>{hotel.name}</CardTitle>
-        <CardMeta>
-          {area}
-          {stars ? (
-            <>
-              {" · "}
-              <Stars>{stars}</Stars>
-            </>
-          ) : null}
-        </CardMeta>
-        {rate ? <CardPrice>from {formatZar(rate)} / night</CardPrice> : null}
-      </CardBody>
-    </Card>
-  );
-}
-
-function VillaCard({ villa }: { villa: Villa }) {
-  const photo = getVillaPrimaryPhoto(villa);
-  const area = getVillaAreaDisplay(villa);
-  const rate = getVillaNightlyRate(villa);
-  return (
-    <Card href={`/villas/${villa.slug}`}>
-      <CardImage>
-        {photo ? (
-          <SmartImage
-            src={photo}
-            alt={`${villa.name} — luxury villa in ${area}`}
-            sizes="(max-width: 768px) 82vw, 25vw"
-          />
-        ) : null}
-      </CardImage>
-      <CardBody>
-        <CardTitle>{villa.name}</CardTitle>
-        <CardMeta>{area}</CardMeta>
-        {rate ? <CardPrice>from {formatZar(rate)} / night</CardPrice> : null}
-      </CardBody>
-    </Card>
-  );
 }
 
 function VehicleCard({ vehicle }: { vehicle: UpsellVehicle }) {
@@ -286,8 +209,6 @@ interface Props {
   bookingReference: string;
   hasVehicle: boolean;
   hasAccommodation: boolean;
-  featuredHotels: Hotel[];
-  featuredVillas: Villa[];
   featuredVehicles: UpsellVehicle[];
 }
 
@@ -295,97 +216,39 @@ export default function BookingUpsell({
   bookingReference,
   hasVehicle,
   hasAccommodation,
-  featuredHotels,
-  featuredVillas,
   featuredVehicles,
 }: Props) {
-  // Case: proposal complete → nothing to add
-  if (hasVehicle && hasAccommodation) return null;
-  if (!hasVehicle && !hasAccommodation) return null;
+  // Only render the "add a chauffeur" upsell for accommodation-only bookings.
+  // Vehicle-only bookings no longer show the villas/hotels upsell.
+  if (hasVehicle || !hasAccommodation) return null;
 
-  // Case: vehicle only → suggest accommodation
-  if (hasVehicle) {
-    const hotels = featuredHotels.slice(0, 6);
-    const villas = featuredVillas.slice(0, 6);
-    if (hotels.length === 0 && villas.length === 0) return null;
-    const wa = buildWhatsappHref(bookingReference, "accommodation");
-    return (
-      <Section>
-        <IntroCard>
-          <IntroEyebrow>Complete your trip</IntroEyebrow>
-          <IntroHeading>Need accommodation in Cape Town?</IntroHeading>
-          <IntroSub>
-            Add a villa or hotel to your trip — we&apos;ll take care of the rest.
-          </IntroSub>
-        </IntroCard>
-
-        {hotels.length ? (
-          <Row>
-            <RowHeader>
-              <RowTitle>Featured hotels</RowTitle>
-              <Link href="/hotels" style={{ color: "#0b5b33", fontWeight: 700, fontSize: "0.88rem", textDecoration: "none" }}>
-                See all →
-              </Link>
-            </RowHeader>
-            <Slider>
-              {hotels.map((h) => (
-                <HotelCard key={h.id} hotel={h} />
-              ))}
-            </Slider>
-          </Row>
-        ) : null}
-
-        {villas.length ? (
-          <Row>
-            <RowHeader>
-              <RowTitle>Featured villas</RowTitle>
-              <Link href="/villas" style={{ color: "#0b5b33", fontWeight: 700, fontSize: "0.88rem", textDecoration: "none" }}>
-                See all →
-              </Link>
-            </RowHeader>
-            <Slider>
-              {villas.map((v) => (
-                <VillaCard key={v.id} villa={v} />
-              ))}
-            </Slider>
-          </Row>
-        ) : null}
-
-        <WhatsAppRow>
-          <WhatsAppButton
-            href={wa}
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={() =>
-              trackWhatsAppClick({
-                source: "booking_upsell_accommodation",
-                label: bookingReference,
-              })
-            }
-          >
-            💬&nbsp; Enquire on WhatsApp
-          </WhatsAppButton>
-        </WhatsAppRow>
-      </Section>
-    );
-  }
-
-  // Case: accommodation only → suggest a chauffeur
   const vehicles = featuredVehicles.slice(0, 6);
   if (vehicles.length === 0) return null;
-  const wa = buildWhatsappHref(bookingReference, "chauffeur");
+
+  const wa = buildChauffeurWhatsapp(bookingReference);
+
   return (
     <Section>
       <IntroCard>
         <IntroEyebrow>Complete your trip</IntroEyebrow>
-        <IntroHeading>Need a private chauffeur for your trip to Cape Town?</IntroHeading>
+        <IntroHeading>
+          Need a private chauffeur for your trip to Cape Town?
+        </IntroHeading>
         <IntroSub>Add a chauffeured luxury vehicle for your stay.</IntroSub>
       </IntroCard>
 
       <Row>
         <RowHeader>
           <RowTitle>Featured vehicles</RowTitle>
-          <Link href="/chauffeur-hire" style={{ color: "#0b5b33", fontWeight: 700, fontSize: "0.88rem", textDecoration: "none" }}>
+          <Link
+            href="/chauffeur-hire"
+            style={{
+              color: "#0b5b33",
+              fontWeight: 700,
+              fontSize: "0.88rem",
+              textDecoration: "none",
+            }}
+          >
             See all →
           </Link>
         </RowHeader>

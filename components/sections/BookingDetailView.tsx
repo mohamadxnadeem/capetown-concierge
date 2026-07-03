@@ -20,8 +20,6 @@ import type {
 import Money from "../common/Money";
 import BookingPayNow from "./BookingPayNow";
 import BookingUpsell from "./BookingUpsell";
-import type { Hotel } from "../../lib/hotels";
-import type { Villa } from "../../lib/villas";
 import type { UpsellVehicle } from "../../lib/vehicles";
 import type { CarPhoto } from "./chauffeur-services/types";
 import ChauffeurGallery from "./chauffeur-services/ChauffeurGallery";
@@ -989,8 +987,6 @@ interface Props {
   upsellTours: UpsellTour[];
   hasVehicle: boolean;
   hasAccommodation: boolean;
-  featuredHotels: Hotel[];
-  featuredVillas: Villa[];
   featuredVehicles: UpsellVehicle[];
 }
 
@@ -1000,8 +996,6 @@ export default function BookingDetailView({
   upsellTours,
   hasVehicle,
   hasAccommodation,
-  featuredHotels,
-  featuredVillas,
   featuredVehicles,
 }: Props) {
   const driver: BookingDriver | null = booking.driver ?? booking.car?.driver ?? null;
@@ -1206,8 +1200,6 @@ export default function BookingDetailView({
           bookingReference={booking.booking_reference}
           hasVehicle={hasVehicle}
           hasAccommodation={hasAccommodation}
-          featuredHotels={featuredHotels}
-          featuredVillas={featuredVillas}
           featuredVehicles={featuredVehicles}
         />
 
