@@ -20,6 +20,7 @@ type HeroBannerProps = {
   image?: string;
   images?: string[];
   imageAlt?: string;
+  imageAlts?: string[];
 };
 
 const Wrapper = styled.section`
@@ -137,6 +138,7 @@ export default function HeroBanner({
   image,
   images,
   imageAlt = "Luxury chauffeur fleet in Cape Town including premium private transport vehicles",
+  imageAlts,
 }: HeroBannerProps) {
   const handlePrimaryClick = makeClickHandler(primaryCtaHref, primaryCtaLabel, primaryCtaOnClick);
   const handleSecondaryClick = makeClickHandler(secondaryCtaHref, secondaryCtaLabel, secondaryCtaOnClick);
@@ -151,6 +153,7 @@ export default function HeroBanner({
           <RotatingImage
             images={rotation}
             alt={imageAlt}
+            alts={imageAlts}
             sizes="100vw"
             priority
           />
