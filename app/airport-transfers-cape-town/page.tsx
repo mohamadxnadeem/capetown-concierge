@@ -109,7 +109,7 @@ function truncateText(text: string, maxLength: number) {
 }
 
 const AIRPORT_VEHICLE_DESC: Record<string, string> = {
-  "Hyundai Staria": "A premium 8-seat people carrier with generous legroom — perfect for families or groups arriving with luggage who want a spacious, comfortable ride into the city.",
+  "Hyundai Staria": "A premium 9-seat people carrier with generous legroom — perfect for families or groups arriving with luggage who want a spacious, comfortable ride into the city.",
   "BMW X5": "A luxury SUV with a refined interior and serious boot space — ideal for couples or small groups who want a more elevated arrival experience.",
 };
 
@@ -330,7 +330,7 @@ export default async function AirportTransfersCapeTownPage() {
         items={vehicles}
       />
       <div style={{textAlign:"center",padding:"0 0 24px",fontSize:"0.9rem",color:"#6c7a74"}}>
-        Also available for <a href="/chauffeur-hire" style={{color:"inherit",textDecoration:"underline"}}>full-day chauffeur hire</a> across Cape Town.
+        Also available for <a href="/chauffeur-hire" style={{color:"inherit",textDecoration:"underline"}}>chauffeur hire in Cape Town</a> across the day, week or a full multi-city trip.
       </div>
 
       <WhyChooseUs

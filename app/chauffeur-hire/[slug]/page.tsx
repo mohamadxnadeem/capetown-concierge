@@ -156,8 +156,8 @@ const VEHICLE_META: Record<string, { title: string; description: string }> = {
     description: "Private BMW X5 hire with professional chauffeur in Cape Town. Perfect for families & small groups. From R8,325/day. WhatsApp to check availability.",
   },
   "8-seater-staria-van-with-driver": {
-    title: "Hyundai Staria 8-Seater Cape Town | Group Transfers",
-    description: "Book an 8-seat Hyundai Staria with driver in Cape Town. Ideal for group airport transfers & tours. From R6,475/day. WhatsApp to book today.",
+    title: "Hyundai Staria 9-Seater Cape Town | Group Transfers",
+    description: "Book a 9-seat Hyundai Staria with driver in Cape Town. Ideal for group airport transfers & tours. From R6,475/day. WhatsApp to book today.",
   },
   "mercedes-sprinter-with-driver-cape-town": {
     title: "Mercedes Sprinter Cape Town | 14-Seat Group Hire",

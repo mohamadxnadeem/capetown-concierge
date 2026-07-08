@@ -27,6 +27,7 @@ const Layer = styled.div<{ $active: boolean }>`
 interface Props {
   images: string[];
   alt: string;
+  alts?: string[];
   sizes?: string;
   intervalMs?: number;
   priority?: boolean;
@@ -36,6 +37,7 @@ interface Props {
 export default function RotatingImage({
   images,
   alt,
+  alts,
   sizes = "100vw",
   intervalMs = 9000,
   priority = false,
@@ -63,7 +65,7 @@ export default function RotatingImage({
         <Layer key={`${src}-${i}`} $active={i === active}>
           <SmartImage
             src={src}
-            alt={alt}
+            alt={alts?.[i] ?? alt}
             sizes={sizes}
             priority={priority && i === 0}
           />
