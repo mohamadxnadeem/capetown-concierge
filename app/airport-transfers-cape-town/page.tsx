@@ -178,7 +178,7 @@ const whyItems = [
   {
     title: "The Right Vehicle for Your Group",
     description:
-      "From executive sedans for solo travellers to the 14-seat Mercedes Sprinter for large groups — we match the vehicle to your party size and luggage. Just tell us what you need.",
+      "From executive sedans for solo travellers to a 9-seat Hyundai Staria for larger parties — we match the vehicle to your party size and luggage. Just tell us what you need.",
   },
 ];
 

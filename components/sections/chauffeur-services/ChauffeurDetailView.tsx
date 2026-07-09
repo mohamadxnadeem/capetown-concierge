@@ -4,19 +4,9 @@ import { useState } from "react";
 import styled from "styled-components";
 import Link from "next/link";
 import Container from "../../common/Container";
-import { Car, RelatedVehicle } from "./types";
-import {
-  buildFaqs,
-  buildWhatsAppLink,
-  getBaseDailyRate,
-  getPrimaryImage,
-  stripHtml,
-} from "./utils";
 import ChauffeurHero from "./ChauffeurHero";
-import ChauffeurWhatToExpect from "./ChauffeurWhatToExpect";
 import ChauffeurGallery from "./ChauffeurGallery";
 import ChauffeurQuickDetails from "./ChauffeurQuickDetails";
-import ChauffeurDiscountTable from "./ChauffeurDiscountTable";
 import ChauffeurFeatures from "./ChauffeurFeatures";
 import ChauffeurIdealFor from "./ChauffeurIdealFor";
 import ChauffeurFaq from "./ChauffeurFaq";
@@ -24,94 +14,28 @@ import ChauffeurRelatedVehicles from "./ChauffeurRelatedVehicles";
 import ChauffeurFinalCta from "./ChauffeurFinalCta";
 import TestimonialsSection from "../testimonials/TestimonialsSection";
 import TestimonialsCta from "../testimonials/TestimonialsCta";
+import { buildWhatsAppLink } from "../../../lib/whatsapp";
+import type { RelatedVehicle } from "./types";
+import type { VehicleData, VehicleFaq } from "../../../lib/vehicleTemplate";
 
-// ─────────────────────────────────────────────
-// TYPES
-// seoKeyword: "Range Rover Sport Chauffeur Service Cape Town"
-//             passed down from page.tsx — this becomes the H1
-// pageTitle:  full meta title string, passed for the sticky bar
-// ─────────────────────────────────────────────
+// ─────────────────────────────────────────────────────────────────────
+// Vehicle detail view.
+//
+// Every SEO-critical field on this page is rendered from the
+// VehicleData `vehicle` prop — the single source of truth built once
+// in the route from the DB record. This component does NOT compute
+// price, seats, title, H1, or meta anywhere; if it needs a value it
+// reads it from `vehicle`.
+// ─────────────────────────────────────────────────────────────────────
+
 type Props = {
-  car: Car;
+  vehicle: VehicleData;
+  faqs: VehicleFaq[];
   relatedVehicles: RelatedVehicle[];
-  seoKeyword: string;   // NEW — the exact keyword to render as H1
-  pageTitle?: string;   // NEW — optional, used for sticky bar label
 };
 
-// ─────────────────────────────────────────────
-// VEHICLE-SPECIFIC CONTENT GENERATORS
-// These replace the hardcoded generic strings that were
-// identical on every vehicle page — a major duplicate content issue
-// ─────────────────────────────────────────────
+// ─── Styles ─────────────────────────────────────────────────────────
 
-/**
- * Returns 3 authority card objects specific to the vehicle.
- * Cards are derived from vehicle data: type, seats, ideal_for.
- * Falls back to sensible defaults so nothing ever breaks.
- */
-function buildAuthorityCards(car: Car, seoKeyword: string) {
-  const name = car.title || "This vehicle";
-  const vehicleType = car.vehicle_type || "luxury vehicle";
-  const seats = car.number_of_seats;
-  const idealFor = car.ideal_for;
-
-  // Card 1: vehicle character — derived from type + seats
-  const card1 = {
-    title: `${name} — Built for Private Travel`,
-    text: seats
-      ? `Comfortably seating up to ${seats} passengers, this ${vehicleType} delivers the space, presence, and refinement expected by clients who travel privately in Cape Town.`
-      : `This ${vehicleType} is selected for its combination of presence, comfort, and performance — ideal for clients who want a polished private travel experience across Cape Town.`,
-  };
-
-  // Card 2: use case — derived from ideal_for if present
-  const primaryUse =
-    idealFor && idealFor.length > 0
-      ? idealFor.slice(0, 2).join(" and ")
-      : "airport transfers and private touring";
-
-  const card2 = {
-    title: "Flexible Hire, Your Itinerary",
-    text: `Whether you need ${primaryUse}, full-day private hire, or a curated Cape Town experience, your chauffeur works around your schedule — not a group timetable.`,
-  };
-
-  // Card 3: premium positioning — uses seoKeyword once naturally
-  const card3 = {
-    title: "Professional Chauffeur Service",
-    text: `Every ${seoKeyword} booking includes a professionally presented driver, complimentary bottled water, flight tracking for airport pickups, and a meet-and-greet service as standard.`,
-  };
-
-  return [card1, card2, card3];
-}
-
-/**
- * Builds the expand section body — 3 paragraphs, fully dynamic.
- * Each paragraph uses the vehicle name and seoKeyword naturally.
- * No two vehicles will have identical body text.
- */
-function buildAuthorityBody(car: Car, seoKeyword: string): string[] {
-  const name = car.title || "this vehicle";
-  const vehicleType = car.vehicle_type || "luxury vehicle";
-  const seats = car.number_of_seats;
-  const luggage = car.luggage_capacity;
-
-  // If the CMS provides a body, use it and don't generate
-  // (caller checks car.body first — see usage below)
-
-  const seatsStr = seats ? ` with seating for up to ${seats} passengers` : "";
-  const luggageStr = luggage ? ` and space for up to ${luggage} bags` : "";
-
-  const para1 = `Booking a ${seoKeyword} is about more than getting from one place to another. It is about arriving at each destination feeling composed, private, and well looked after. The ${name}${seatsStr}${luggageStr} is chosen by our clients specifically because it balances a commanding road presence with the kind of interior refinement that makes every journey worthwhile.`;
-
-  const para2 = `Our clients regularly choose this ${vehicleType} for Cape Town airport transfers, Cape Peninsula private tours, Cape Winelands day hire in Stellenbosch and Franschhoek, and full-day executive travel across the city. Because every booking is private — no shared vehicles, no group schedules — your chauffeur is entirely focused on your comfort and timing from start to finish.`;
-
-  const para3 = `If you are visiting Cape Town and want a dependable, premium chauffeur experience with a ${name}, we can confirm availability and pricing within 30 minutes via WhatsApp. Same-day bookings are accommodated where possible. We serve clients arriving from the United States, United Kingdom, and across South Africa.`;
-
-  return [para1, para2, para3];
-}
-
-// ─────────────────────────────────────────────
-// STYLED COMPONENTS (unchanged from original)
-// ─────────────────────────────────────────────
 const PageWrap = styled.main`
   background: ${({ theme }) => theme.colors.background};
 `;
@@ -149,18 +73,7 @@ const AuthorityEyebrow = styled.div`
   text-transform: uppercase;
 `;
 
-/**
- * THE KEY CHANGE: AuthorityTitle is now the page H1.
- *
- * Previously this was an <h2> and the hero title (<h1>) rendered
- * just car.title ("Range Rover Sport") — weak for SEO.
- *
- * Now: the hero renders the short car title visually (looks good),
- * but this AuthoritySection carries the full SEO keyword as the H1.
- *
- * Google crawls the H1 as the primary topic signal.
- * This renders: <h1>Range Rover Sport Chauffeur Service Cape Town</h1>
- */
+// H1 lives here (ChauffeurHero renders its own visual title as <p>).
 const AuthorityTitle = styled.h1`
   margin: 0 0 14px;
   color: ${({ theme }) => theme.colors.heading};
@@ -176,6 +89,18 @@ const AuthorityIntro = styled.p`
   margin: 0;
   color: ${({ theme }) => theme.colors.textMuted};
   line-height: 1.9;
+`;
+
+const ParentLinkRow = styled.p`
+  font-size: 0.88rem;
+  color: ${({ theme }) => theme.colors.textMuted};
+  margin: 8px 0 0;
+  line-height: 1.7;
+
+  a {
+    color: inherit;
+    text-decoration: underline;
+  }
 `;
 
 const AuthorityGrid = styled.div`
@@ -196,7 +121,6 @@ const AuthorityCard = styled.div`
   box-shadow: ${({ theme }) => theme.shadows.soft};
 `;
 
-// Changed to h2 since the section above is now h1
 const AuthorityCardTitle = styled.h2`
   margin: 0 0 10px;
   color: ${({ theme }) => theme.colors.heading};
@@ -281,43 +205,66 @@ const RichText = styled.div`
   }
 `;
 
-// ─────────────────────────────────────────────
-// COMPONENT
-// ─────────────────────────────────────────────
+// ─── Helpers ────────────────────────────────────────────────────────
+
+function buildAuthorityCards(vehicle: VehicleData) {
+  const { name, vehicleType, seats, idealFor } = vehicle;
+  const type = vehicleType || "luxury vehicle";
+
+  const card1 = {
+    title: `${name} — built for private hire`,
+    text: seats
+      ? `Comfortably seating up to ${seats} passengers, this ${type} delivers the space, presence, and refinement expected by clients who hire a chauffeur privately in Cape Town.`
+      : `This ${type} is selected for its combination of presence, comfort, and performance — ideal for clients who want a polished private chauffeur experience across Cape Town.`,
+  };
+
+  const primaryUse =
+    idealFor.length > 0
+      ? idealFor.slice(0, 2).join(" and ")
+      : "airport transfers and private touring";
+
+  const card2 = {
+    title: "Chauffeur hire on your itinerary",
+    text: `Whether you need ${primaryUse}, full-day hire with driver, or a curated Cape Town experience, your chauffeur works around your schedule — not a group timetable.`,
+  };
+
+  const card3 = {
+    title: "Included with every ${name} hire",
+    text: `Every ${name} chauffeur hire booking includes a professionally presented PDP-licensed driver, complimentary bottled water, flight tracking on airport pickups, and a meet-and-greet service as standard.`,
+  };
+
+  return [card1, card2, card3];
+}
+
+// ─── Component ──────────────────────────────────────────────────────
+
 export default function ChauffeurDetailView({
-  car,
+  vehicle,
+  faqs,
   relatedVehicles,
-  seoKeyword,
-  pageTitle,
 }: Props) {
   const [authorityOpen, setAuthorityOpen] = useState(false);
 
-  // ── Core data ─────────────────────────────
-  const safeTitle = car.title || "Chauffeur Vehicle";
+  const heroImageUrls = vehicle.images.map((im) => im.url).slice(0, 6);
+  const heroImageAlts = vehicle.images.map((im) => im.alt).slice(0, 6);
 
-  // seoKeyword is the full target phrase e.g.
-  // "Range Rover Sport Chauffeur Service Cape Town"
-  // safeTitle is just "Range Rover Sport" — used for UI labels, WhatsApp, etc.
-  // seoKeyword is used for H1, authority section title, schema
+  const galleryImages = vehicle.images.map((im, i) => ({
+    id: i,
+    cover_photos: im.url,
+    is_featured: im.isFeatured,
+    order: im.order,
+  }));
 
-  const description =
-    car.short_description ||
-    car.highlight ||
-    car.chauffeur_service_text ||
-    "Travel Cape Town in comfort with a premium chauffeur-driven vehicle designed for polished, private, and reliable service.";
+  const mainWhatsAppLink = buildWhatsAppLink(
+    `Hi, I'd like to enquire about ${vehicle.name} chauffeur hire in Cape Town. Please assist.`
+  );
 
-  const heroImage = getPrimaryImage(car);
-  const priceUsd = car.price ? Number(String(car.price).replace(/[^0-9.]/g, "")) || undefined : undefined;
-
-  const mainWhatsAppLink = `https://wa.me/27636746131?text=${encodeURIComponent(`Hi, I'd like to enquire about the ${safeTitle} chauffeur service. Please assist.`)}`;
-
-  // ── Features & ideal-for ──────────────────
   const features =
-    car.features && car.features.length
-      ? car.features
+    vehicle.features.length > 0
+      ? vehicle.features
       : [
-          "Private chauffeur service",
-          "Premium travel presentation",
+          "Private chauffeur hire",
+          "PDP-licensed driver",
           "Reliable airport transfers",
           "Flexible private touring",
           "Executive-level comfort",
@@ -325,77 +272,49 @@ export default function ChauffeurDetailView({
         ];
 
   const idealFor =
-    car.ideal_for && car.ideal_for.length
-      ? car.ideal_for
-      : ["Airport transfers", "Private tours", "Executive travel", "Day hire in Cape Town"];
+    vehicle.idealFor.length > 0
+      ? vehicle.idealFor
+      : [
+          "Airport transfers",
+          "Private tours",
+          "Executive travel",
+          "Full-day hire in Cape Town",
+        ];
 
-  // ── FAQs — pass seoKeyword so questions embed the keyword ──
-  // buildFaqs is your existing util — we extend it below.
-  // If your utils/buildFaqs accepts a keyword arg, pass it.
-  // If not, we override here with vehicle-specific questions.
-  const faqs = buildFaqs(safeTitle, seoKeyword);
-
-  const bodyHtml = car.body && stripHtml(car.body) ? car.body : undefined;
-  const baseRate = getBaseDailyRate(car.price, car.price_from);
-  const galleryImages = [...(car.cover_photos || car.images || [])];
-  const heroRotationImages = [...galleryImages]
-    .sort((a, b) => (a.order || 0) - (b.order || 0))
-    .map((p) => p?.cover_photos)
-    .filter((u): u is string => Boolean(u))
-    .slice(0, 6);
-
-  // ── Authority section content ─────────────
-  // Dynamic per vehicle — no more identical cards across all pages
-  const authorityCards = buildAuthorityCards(car, seoKeyword);
-
-  // Intro sentence under the H1
-  // Uses short_description from CMS if available, otherwise generates
+  const authorityCards = buildAuthorityCards(vehicle);
   const authorityIntro =
-    car.short_description ||
-    car.highlight ||
-    `${seoKeyword} — private airport transfers, full-day tours, and bespoke hire across Cape Town and the Western Cape. Professional chauffeur service designed for clients who value comfort, discretion, and reliability.`;
-
-  // Expand body — uses car.body from CMS if available, otherwise generates
-  // vehicle-specific paragraphs (no more generic identical text)
-  const authorityBodyParagraphs = bodyHtml
-    ? null // will render HTML via dangerouslySetInnerHTML below
-    : buildAuthorityBody(car, seoKeyword);
+    vehicle.shortDescription ||
+    vehicle.chauffeurServiceText ||
+    `${vehicle.name} chauffeur hire in Cape Town — private airport transfers, full-day hire with driver, and bespoke chauffeur service across Cape Town and the Western Cape. Designed for clients who value comfort, discretion, and reliability.`;
 
   return (
     <PageWrap>
-      {/*
-        HERO: renders safeTitle ("Range Rover Sport") as a visual heading.
-        This is a styled <p> or <div> in ChauffeurHero — NOT an <h1>.
-        The real H1 is the AuthorityTitle below.
-
-        ⚠️  Make sure ChauffeurHero renders its title prop as <p> or <div>,
-        not <h1>. A page should have exactly one <h1>.
-        If ChauffeurHero currently renders <h1>, change it to <h2> or <p>.
-      */}
       <ChauffeurHero
-        title={safeTitle}
-        description={description}
-        vehicleType={car.vehicle_type}
-        seats={car.number_of_seats}
-        luggage={car.luggage_capacity}
-        priceUsd={priceUsd}
-        image={heroImage}
-        images={heroRotationImages}
+        title={vehicle.name}
+        description={authorityIntro}
+        vehicleType={vehicle.vehicleType ?? undefined}
+        seats={vehicle.seats ?? undefined}
+        luggage={vehicle.luggage ?? undefined}
+        priceUsd={vehicle.dailyRateZar ?? undefined}
+        image={vehicle.primaryImage}
+        images={heroImageUrls}
+        imageAlt={heroImageAlts[0]}
+        imageAlts={heroImageAlts}
         whatsappLink={mainWhatsAppLink}
       />
 
-      {!!galleryImages.length && (
+      {galleryImages.length > 0 && (
         <Section>
           <Container>
             <TwoColGrid>
               <ChauffeurGallery images={galleryImages} />
               <div>
                 <ChauffeurQuickDetails
-                  title={safeTitle}
-                  vehicleType={car.vehicle_type}
-                  seats={car.number_of_seats}
-                  luggage={car.luggage_capacity}
-                  priceUsd={priceUsd}
+                  title={vehicle.name}
+                  vehicleType={vehicle.vehicleType ?? undefined}
+                  seats={vehicle.seats ?? undefined}
+                  luggage={vehicle.luggage ?? undefined}
+                  priceUsd={vehicle.dailyRateZar ?? undefined}
                 />
               </div>
             </TwoColGrid>
@@ -403,57 +322,37 @@ export default function ChauffeurDetailView({
         </Section>
       )}
 
-      {/*
-        AUTHORITY SECTION
-        ─────────────────
-        This section carries the page H1 — the full SEO keyword.
-        Google will read: <h1>Range Rover Sport Chauffeur Service Cape Town</h1>
-
-        Everything in this section is now dynamically generated per vehicle:
-        - The H1 (seoKeyword)
-        - The intro paragraph (from CMS or generated)
-        - The 3 authority cards (derived from vehicle data)
-        - The expand body (from car.body CMS field or generated)
-      */}
       <AuthoritySection>
         <Container>
           <AuthorityHeader>
-            {/* Eyebrow — static, fine for SEO */}
-            <AuthorityEyebrow>Luxury Chauffeur Service Cape Town</AuthorityEyebrow>
-
-            {/*
-              THE KEY CHANGE: H1 now = seoKeyword
-              "Range Rover Sport Chauffeur Service Cape Town"
-              instead of "Range Rover Sport Chauffeur Service in Cape Town"
-              (the old h2 was close but not the exact search phrase)
-
-              className="vehicle-summary" targets the speakable schema
-              defined in page.tsx
-            */}
+            <AuthorityEyebrow>Chauffeur Hire in Cape Town</AuthorityEyebrow>
             <AuthorityTitle className="vehicle-summary">
-              {seoKeyword}
+              {vehicle.h1}
             </AuthorityTitle>
-
-            {/* Intro — from CMS or generated, uses seoKeyword naturally */}
             <AuthorityIntro className="chauffeur-intro">
               {authorityIntro}
             </AuthorityIntro>
-            <p style={{fontSize:"0.88rem",color:"#6c7a74",margin:"8px 0 0",lineHeight:1.7}}>
-              Available for <Link href="/airport-transfers-cape-town" style={{color:"inherit",textDecoration:"underline"}}>airport transfers</Link> and <Link href="/tours" style={{color:"inherit",textDecoration:"underline"}}>private tours</Link> across Cape Town.
-            </p>
+            <ParentLinkRow>
+              Part of{" "}
+              <Link href="/chauffeur-hire">chauffeur hire in Cape Town</Link>{" "}
+              — private drivers and luxury vehicles for airport transfers,
+              executive travel, and full-day hire. Also available for{" "}
+              <Link href="/airport-transfers-cape-town">airport transfers</Link>{" "}
+              and <Link href="/tours">private day tours</Link>.
+            </ParentLinkRow>
           </AuthorityHeader>
 
-          {/* 3 authority cards — dynamic per vehicle */}
           <AuthorityGrid>
             {authorityCards.map((card, i) => (
               <AuthorityCard key={i}>
-                <AuthorityCardTitle>{card.title}</AuthorityCardTitle>
+                <AuthorityCardTitle>
+                  {card.title.replace("${name}", vehicle.name)}
+                </AuthorityCardTitle>
                 <AuthorityCardText>{card.text}</AuthorityCardText>
               </AuthorityCard>
             ))}
           </AuthorityGrid>
 
-          {/* Expand section — dynamic body text */}
           <ExpandWrap>
             <ExpandButton
               type="button"
@@ -462,7 +361,7 @@ export default function ChauffeurDetailView({
               aria-controls="authority-body"
             >
               <ExpandTitle>
-                Why {safeTitle} is a strong choice for chauffeur service in Cape Town
+                Why {vehicle.name} is a strong choice for chauffeur hire in Cape Town
               </ExpandTitle>
               <ExpandIcon $open={authorityOpen} aria-hidden="true">
                 +
@@ -472,16 +371,11 @@ export default function ChauffeurDetailView({
             <ExpandBody $open={authorityOpen} id="authority-body">
               <ExpandInner>
                 <RichText>
-                  {/*
-                    If car.body exists in CMS, render it as HTML
-                    (allows rich content per vehicle from the backend)
-                    Otherwise render the generated paragraphs
-                  */}
-                  {bodyHtml ? (
-                    <div dangerouslySetInnerHTML={{ __html: bodyHtml }} />
+                  {vehicle.bodyHtml ? (
+                    <div dangerouslySetInnerHTML={{ __html: vehicle.bodyHtml }} />
                   ) : (
-                    authorityBodyParagraphs?.map((para, i) => (
-                      <p key={i}>{para}</p>
+                    vehicle.longDescriptionParagraphs.map((p, i) => (
+                      <p key={i}>{p}</p>
                     ))
                   )}
                 </RichText>
@@ -508,14 +402,6 @@ export default function ChauffeurDetailView({
 
       <Section>
         <Container>
-          {/*
-            ChauffeurFaq receives vehicle-specific FAQs.
-            The buildFaqs util is called with both safeTitle and seoKeyword.
-            Update your buildFaqs util signature to:
-              buildFaqs(title: string, keyword?: string)
-            and embed keyword in Q1 ("How much does [keyword] cost?")
-            for the strongest FAQ schema signal.
-          */}
           <ChauffeurFaq items={faqs} />
         </Container>
       </Section>
@@ -526,7 +412,7 @@ export default function ChauffeurDetailView({
         </Container>
       </Section>
 
-      <ChauffeurFinalCta title={safeTitle} whatsappLink={mainWhatsAppLink} />
+      <ChauffeurFinalCta title={vehicle.name} whatsappLink={mainWhatsAppLink} />
     </PageWrap>
   );
 }

@@ -17,6 +17,8 @@ type Props = {
   priceUsd?: number;
   image?: string;
   images?: string[];
+  imageAlt?: string;
+  imageAlts?: string[];
   whatsappLink: string;
 };
 
@@ -141,18 +143,27 @@ export default function ChauffeurHero({
   priceUsd,
   image,
   images,
+  imageAlt,
+  imageAlts,
   whatsappLink,
 }: Props) {
   const rotation = (images ?? []).filter(Boolean);
+  const primaryAlt = imageAlt ?? title;
   return (
     <Hero>
       {rotation.length > 0 ? (
         <HeroImageLayer>
-          <RotatingImage images={rotation} alt={title} priority sizes="100vw" />
+          <RotatingImage
+            images={rotation}
+            alt={primaryAlt}
+            alts={imageAlts}
+            priority
+            sizes="100vw"
+          />
         </HeroImageLayer>
       ) : image ? (
         <HeroImageLayer>
-          <SmartImage src={image} alt={title} priority sizes="100vw" />
+          <SmartImage src={image} alt={primaryAlt} priority sizes="100vw" />
         </HeroImageLayer>
       ) : null}
       <HeroOverlay />

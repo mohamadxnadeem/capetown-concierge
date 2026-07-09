@@ -105,9 +105,12 @@ export function buildFaqs(vehicleTitle: string, seoKeyword?: string): FaqItem[] 
     },
 
     // Q6: capacity
+    // NOTE: For canonical, DB-driven passenger capacity use
+    // `buildVehicleFaqs` in lib/vehicleTemplate.ts. This fallback is
+    // kept for callers that still pass only a title string.
     {
       question: `How many passengers can the ${vehicleTitle} accommodate?`,
-      answer: `The ${vehicleTitle} comfortably accommodates up to 4 passengers with standard luggage. If you are travelling with a larger group or require more luggage space, we also offer the Mercedes V-Class (6 seats) and the Mercedes Sprinter (up to 14 seats).`,
+      answer: `Capacity for the ${vehicleTitle} varies by vehicle configuration — please check the seat count in the vehicle summary above. If your group is larger, message us and we'll suggest the right vehicle from the fleet.`,
     },
 
     // Q7: booking process
