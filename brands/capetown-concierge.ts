@@ -34,4 +34,10 @@ export const capeTownConciergeBrand: BrandConfig = {
     white: "#ffffff",
     error: "#a12626",
   },
+  social: {
+    instagram: "https://www.instagram.com/capetown_concierge_official",
+    tiktok: "https://www.tiktok.com/@capetown_concierge",
+    facebook: "https://www.facebook.com/share/1BU2RrFSp5/",
+    youtube: "https://www.youtube.com/@capetown_concierge",
+  },
 };

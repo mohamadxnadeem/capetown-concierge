@@ -98,7 +98,11 @@ const localBusinessSchema = {
   },
   sameAs: [
     `https://wa.me/${brand.whatsappNumber}`,
-  ],
+    brand.social?.instagram,
+    brand.social?.tiktok,
+    brand.social?.facebook,
+    brand.social?.youtube,
+  ].filter((u): u is string => Boolean(u)),
 };
 
 export default function RootLayout({
