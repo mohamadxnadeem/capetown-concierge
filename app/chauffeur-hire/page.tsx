@@ -210,7 +210,13 @@ export default async function ChauffeurServicesLandingPage() {
           opens: "00:00",
           closes: "23:59",
         })),
-        sameAs: [`https://wa.me/${brand.whatsappNumber}`],
+        sameAs: [
+          `https://wa.me/${brand.whatsappNumber}`,
+          brand.social?.instagram,
+          brand.social?.tiktok,
+          brand.social?.facebook,
+          brand.social?.youtube,
+        ].filter((u): u is string => Boolean(u)),
       },
       {
         "@type": "Service",

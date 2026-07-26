@@ -31,4 +31,10 @@ export interface BrandConfig {
     white: string;
     error: string;
   };
+  social?: {
+    instagram?: string;
+    tiktok?: string;
+    facebook?: string;
+    youtube?: string;
+  };
 }
