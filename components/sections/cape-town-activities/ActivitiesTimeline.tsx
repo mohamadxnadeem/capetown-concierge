@@ -11,7 +11,6 @@ import {
   SectionHeader,
   SectionText,
   SectionTitle,
-  StyledLink,
   whatsappLink,
 } from "./shared";
 
@@ -281,12 +280,6 @@ export default function ActivitiesTimeline({ activities }: Props) {
                       >
                         <Button as="span">Plan This Experience</Button>
                       </Anchor>
-
-                      <StyledLink href="/chauffeur-hire">
-                        <Button as="span" $variant="secondary">
-                          View Chauffeur Options
-                        </Button>
-                      </StyledLink>
                     </RowActions>
                   </ActivityContent>
                 </ActivityInner>
