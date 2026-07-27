@@ -32,3 +32,12 @@ export function buildGeneralWhatsAppMessage(context?: string) {
 
   return "Hey, I'm interested in making a booking. Please can you assist?";
 }
+
+export function buildActivityWhatsAppMessage(
+  activityTitle?: string,
+  idealBooking?: string
+) {
+  const safeTitle = activityTitle || "this Cape Town experience";
+  const context = idealBooking ? ` ${idealBooking.trim()}` : "";
+  return `Hi Cape Town Concierge, I'd like to plan ${safeTitle} in Cape Town.${context} Please share availability, pricing, and how we can arrange it. Thank you!`;
+}

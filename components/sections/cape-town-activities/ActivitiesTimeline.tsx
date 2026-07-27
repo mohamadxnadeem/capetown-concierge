@@ -5,13 +5,16 @@ import Button from "../../common/Button";
 import SmartImage from "../../common/SmartImage";
 import { trackWhatsAppClick } from "../../../lib/tracking";
 import {
+  buildActivityWhatsAppMessage,
+  buildWhatsAppLink,
+} from "../../../lib/whatsapp";
+import {
   Anchor,
   Container,
   Section,
   SectionHeader,
   SectionText,
   SectionTitle,
-  whatsappLink,
 } from "./shared";
 
 type ActivityItem = {
@@ -267,7 +270,12 @@ export default function ActivitiesTimeline({ activities }: Props) {
 
                     <RowActions>
                       <Anchor
-                        href={whatsappLink}
+                        href={buildWhatsAppLink(
+                          buildActivityWhatsAppMessage(
+                            activity.title,
+                            activity.idealBooking
+                          )
+                        )}
                         target="_blank"
                         rel="noopener noreferrer"
                         onClick={() =>
