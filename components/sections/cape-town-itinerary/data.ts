@@ -43,15 +43,22 @@ export const itineraryDays: ItineraryDay[] = [
   },
   {
     day: "Day 4",
-    title: "Table Mountain, City & Culture",
+    title: "Table Mountain, Kirstenbosch & Atlantic Seaboard",
     image: "/images/activities/tablemountain.jpg",
     distance:
-      "Everything within 10km of the city centre. The shortest driving day of the week.",
+      "A loop through the city and back along the coast. Table Mountain to Hout Bay via Camps Bay is 25km, Kirstenbosch is 15km from the CBD.",
     description:
-      "Table Mountain first thing, before the cable car queue builds and while the cloud is usually still off the summit. Bo-Kaap after, then lunch wherever you feel like it. If the cable car is closed for wind, we move the day around rather than lose it.",
-    highlights: ["Table Mountain", "Bo-Kaap", "City highlights", "Local culture"],
+      "Table Mountain first thing, before the cable car queue builds and while the cloud is usually still off the summit. Bo-Kaap after, then across to Kirstenbosch Botanical Gardens for a walk under the tree canopy. Down the coast for lunch in Hout Bay, then back along Camps Bay with time for a swim or a drink on the strip. If the cable car is closed for wind, we move the day around rather than lose it. Optional helicopter flight from the Waterfront on the way back to the hotel.",
+    highlights: [
+      "Table Mountain",
+      "Bo-Kaap",
+      "Kirstenbosch Gardens",
+      "Hout Bay",
+      "Camps Bay",
+      "Optional helicopter",
+    ],
     bestBookedAs:
-      "A half-day or full-day private city experience with chauffeur-driven transport.",
+      "A full-day private city and coast experience with chauffeur-driven transport.",
   },
   {
     day: "Day 5",
@@ -67,15 +74,15 @@ export const itineraryDays: ItineraryDay[] = [
   },
   {
     day: "Day 6",
-    title: "Add-On Day: Helicopter, Yacht or Safari",
+    title: "Aquila Safari or Yacht Charter",
     image: "/images/activities/safari.jpg",
     distance:
       "Aquila is 180km inland, roughly 2 hours each way. A full day, and self-drive is not permitted on the reserve.",
     description:
-      "A day for one big-ticket experience. Aquila for a Big Five safari day trip, a helicopter loop over the Peninsula, or a private yacht charter along the Atlantic Seaboard. Pick one and build the whole day around it.",
-    highlights: ["Helicopter ride", "Yacht charter", "Safari option", "Custom day"],
+      "A day for one big-ticket experience. Aquila for a Big Five safari day trip, or a private yacht charter along the Atlantic Seaboard. Pick one and build the whole day around it.",
+    highlights: ["Aquila safari", "Yacht charter", "Custom day"],
     bestBookedAs:
-      "A private day built around your preferred add-on experience.",
+      "A private day built around a Big Five safari or a yacht charter.",
     whatsappMessage:
       "Hi, I'm interested in adding the safari day to a 7 day itinerary",
   },
