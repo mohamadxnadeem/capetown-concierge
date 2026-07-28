@@ -74,15 +74,15 @@ export const itineraryDays: ItineraryDay[] = [
   },
   {
     day: "Day 6",
-    title: "Aquila Safari or Yacht Charter",
+    title: "Aquila Big Five Safari",
     image: "/images/activities/safari.jpg",
     distance:
       "Aquila is 180km inland, roughly 2 hours each way. A full day, and self-drive is not permitted on the reserve.",
     description:
-      "A day for one big-ticket experience. Aquila for a Big Five safari day trip, or a private yacht charter along the Atlantic Seaboard. Pick one and build the whole day around it.",
-    highlights: ["Aquila safari", "Yacht charter", "Custom day"],
+      "A full day at Aquila Private Game Reserve for a Big Five safari. Early departure from the hotel, game drive on arrival, lunch on the reserve, a second drive, and back to Cape Town in time for dinner. Your driver stays with the car at the reserve — no shuttle transfers, no waiting for the group.",
+    highlights: ["Aquila Reserve", "Big Five", "Guided game drives", "Full day"],
     bestBookedAs:
-      "A private day built around a Big Five safari or a yacht charter.",
+      "A private full-day safari transfer with your chauffeur handling the whole route.",
     whatsappMessage:
       "Hi, I'm interested in adding the safari day to a 7 day itinerary",
   },
