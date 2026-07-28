@@ -3,12 +3,11 @@
 import styled from "styled-components";
 import Button from "../../common/Button";
 import { trackWhatsAppClick } from "../../../lib/tracking";
-import {
-  Anchor,
-  Container,
-  StyledLink,
-  whatsappLink,
-} from "./shared";
+import { buildWhatsAppLink } from "../../../lib/whatsapp";
+import { Anchor, Container } from "./shared";
+
+const HERO_WA_MESSAGE =
+  "Hi, I'm looking at the 7 day Cape Town itinerary. My dates are";
 
 const Hero = styled.section`
   padding: 96px 0 72px;
@@ -45,18 +44,30 @@ const Title = styled.h1`
   }
 `;
 
-const Description = styled.p`
-  margin: 0 0 26px;
+const Description = styled.div`
   color: ${({ theme }) => theme.colors.textMuted};
   line-height: 1.9;
   font-size: 1.02rem;
   max-width: 820px;
+
+  p {
+    margin: 0 0 14px;
+  }
+
+  p:last-of-type {
+    margin-bottom: 26px;
+  }
 `;
 
 const ButtonRow = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 14px;
+`;
+
+const ScrollLink = styled.a`
+  display: inline-flex;
+  text-decoration: none;
 `;
 
 const ValueStrip = styled.div`
@@ -87,48 +98,52 @@ const ValueItem = styled.div`
 `;
 
 export default function ItineraryHero() {
+  const waLink = buildWhatsAppLink(HERO_WA_MESSAGE);
+
   return (
     <Hero>
       <Container>
         <Inner>
-          <Eyebrow>Cape Town Travel Guide</Eyebrow>
-          <Title>7 Day Cape Town Itinerary</Title>
+          <Eyebrow>7 Day Cape Town Itinerary</Eyebrow>
+          <Title>A Full Week of Cape Town, Driven for You.</Title>
           <Description>
-            Discover the perfect 7 day Cape Town itinerary with a balanced mix
-            of scenic touring, wine farms, beaches, city highlights, and
-            premium private chauffeur-driven travel. Ideal for travellers who
-            want to experience Cape Town properly without wasting time planning
-            every detail themselves.
+            <p>
+              Cape Town&apos;s best days are spread across a peninsula. Cape Point is 70km from the city. Stellenbosch is 50km the other way. Chapman&apos;s Peak, Boulders, the Winelands and Table Mountain don&apos;t sit near each other, and there&apos;s no Uber waiting at any of them.
+            </p>
+            <p>
+              This is the week we build for our clients. Seven days, one vehicle, one driver who knows the routes. You choose the pace, we handle everything else.
+            </p>
+            <p>Priced per vehicle, not per person.</p>
           </Description>
 
           <ButtonRow>
             <Anchor
-              href={whatsappLink}
+              href={waLink}
               target="_blank"
               rel="noopener noreferrer"
               onClick={() =>
                 trackWhatsAppClick({
                   source: "itinerary_hero",
-                  label: "Plan My 7 Day Itinerary",
+                  label: "Plan My Week",
+                  tour: "7 Day Cape Town Itinerary",
                 })
               }
             >
-              <Button as="span">Plan My 7 Day Itinerary</Button>
+              <Button as="span">Plan My Week</Button>
             </Anchor>
 
-            <StyledLink href="/chauffeur-hire">
+            <ScrollLink href="#pricing-block">
               <Button as="span" $variant="secondary">
-                View Chauffeur Services
+                See Vehicles and Rates
               </Button>
-            </StyledLink>
+            </ScrollLink>
           </ButtonRow>
 
           <ValueStrip>
-            <ValueItem>7 Day Planning Guide</ValueItem>
-            <ValueItem>Private Chauffeur Travel</ValueItem>
-            <ValueItem>Wine Farms & Tours</ValueItem>
-            <ValueItem>Flexible Itinerary</ValueItem>
-            <ValueItem>Luxury Experience</ValueItem>
+            <ValueItem>One Driver, All 7 Days</ValueItem>
+            <ValueItem>Fuel & Tolls Included</ValueItem>
+            <ValueItem>Airport Transfers Included</ValueItem>
+            <ValueItem>Flat Weekly Price</ValueItem>
           </ValueStrip>
         </Inner>
       </Container>

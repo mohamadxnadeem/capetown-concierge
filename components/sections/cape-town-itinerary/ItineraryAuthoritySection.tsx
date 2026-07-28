@@ -173,12 +173,10 @@ export default function ItineraryAuthoritySection() {
     <Section>
       <Container>
         <Header>
-          <Eyebrow>Luxury Cape Town Travel Guide</Eyebrow>
+          <Eyebrow>Cape Town Travel Guide</Eyebrow>
           <Title>How to Plan the Perfect 7 Day Cape Town Itinerary</Title>
           <Intro>
-            A well-planned Cape Town itinerary should balance iconic
-            sightseeing, scenic drives, luxury travel, relaxation, and enough
-            flexibility to enjoy the city without feeling rushed.
+            A strong Cape Town itinerary balances iconic sightseeing, scenic drives, wine days, and enough downtime that the trip doesn&apos;t feel like a work project.
           </Intro>
         </Header>
 
@@ -186,27 +184,21 @@ export default function ItineraryAuthoritySection() {
           <Card>
             <CardTitle>See the Essentials</CardTitle>
             <CardText>
-              A strong 7 day itinerary should include Table Mountain, Cape
-              Peninsula, Cape Point, Boulders Beach, and the Cape Winelands for
-              a complete first-time Cape Town experience.
+              A good 7 day plan covers Table Mountain, the Cape Peninsula, Cape Point, Boulders Beach, and the Winelands. That is the shortlist for a first Cape Town trip.
             </CardText>
           </Card>
 
           <Card>
             <CardTitle>Travel in Comfort</CardTitle>
             <CardText>
-              Using a private chauffeur makes it easier to enjoy long scenic
-              routes, flexible timing, wine tastings, and premium day planning
-              without the stress of driving.
+              A private chauffeur handles the scenic routes, wine tastings, and daily route planning so no one in the group has to be the designated driver or the map reader.
             </CardText>
           </Card>
 
           <Card>
-            <CardTitle>Leave Space for Luxury</CardTitle>
+            <CardTitle>Leave Space to Slow Down</CardTitle>
             <CardText>
-              The best itineraries also include time for beaches, fine dining,
-              sunset stops, and optional upgrades like helicopter rides, yacht
-              charters, or spa experiences.
+              Build in beach time, a long lunch, and one big-ticket add-on like a helicopter loop, a yacht charter, or a safari day. A 7 day trip needs a slow day in the middle of it.
             </CardText>
           </Card>
         </Grid>
@@ -221,43 +213,23 @@ export default function ItineraryAuthoritySection() {
             <ExpandInner>
               <RichText>
                 <p>
-                  Planning a 7 day Cape Town itinerary gives you enough time to
-                  see the city properly without rushing through the experience.
-                  The key is to group activities in the right order, allowing
-                  for scenic routes, iconic attractions, and enough downtime to
-                  enjoy the city at a comfortable pace. For most travellers, a
-                  strong itinerary should include arrival and city highlights, a{" "}
+                  Seven days is enough time to see Cape Town properly, as long as the days are grouped in the right order. Group the two long drives (Peninsula and Winelands) with a slower day between them, put Table Mountain on a stable-weather morning, and leave one day for a big-ticket experience. For most travellers that means arrival and Atlantic Seaboard, a{" "}
                   <InlineLink href="/tours/cape-peninsula-tour">
                     Cape Peninsula day
                   </InlineLink>
                   , a{" "}
                   <InlineLink href="/best-wine-farms-in-cape-town">
-                    Cape Winelands experience
+                    Winelands day
                   </InlineLink>
-                  , leisure time around the Atlantic Seaboard, and at least one
-                  premium add-on such as a helicopter ride, yacht charter, or
-                  custom scenic drive.
+                  , Table Mountain and Bo-Kaap, a beach day, one add-on, and a departure day.
                 </p>
 
                 <p>
-                  One of the best ways to experience Cape Town in 7 days is with
-                  a private chauffeur or curated day planning service. This
-                  gives you much more flexibility, especially when combining
-                  routes like Table Mountain, Bo-Kaap, Camps Bay, Chapman’s
-                  Peak, Cape Point, and Stellenbosch. It also means you can
-                  enjoy wine tastings, photo stops, and scenic lunches without
-                  worrying about navigation, parking, or time pressure. For
-                  couples, families, and luxury travellers, this creates a far
-                  more seamless and elevated overall experience.
+                  A private chauffeur across the full week is what makes this rhythm work. No one has to be sober for the tastings, no one has to find parking at Cape Point, and the same car and driver stay with the group all week. On days like Chapman&apos;s Peak or the Franschhoek Pass, that turns two of the most stressful drives in the region into the highlight of the day.
                 </p>
 
                 <p>
-                  The best Cape Town itinerary is not just about seeing as much
-                  as possible. It is about combining the right experiences in
-                  the right rhythm. A thoughtful 7 day plan helps you enjoy the
-                  city’s natural beauty, famous landmarks, beaches, wine farms,
-                  and private tours in a way that feels premium, memorable, and
-                  well paced from start to finish.
+                  A good Cape Town itinerary is not about doing as much as possible. It&apos;s about pacing the right things together so the group actually enjoys the week. Long drives on the same day as long tastings ruin both. Seven days handled right leaves plenty of room for the natural beauty, the food, and the beach without the whole trip feeling rushed.
                 </p>
               </RichText>
             </ExpandInner>

@@ -3,7 +3,11 @@
 import styled from "styled-components";
 import Button from "../../common/Button";
 import { trackWhatsAppClick } from "../../../lib/tracking";
-import { Anchor, Container, whatsappLink } from "./shared";
+import { buildWhatsAppLink } from "../../../lib/whatsapp";
+import { Anchor, Container } from "./shared";
+
+const FINAL_CTA_MESSAGE =
+  "Hi, I'd like the full 7 day itinerary planned for my dates:";
 
 const FinalCta = styled.section`
   padding: 84px 0;
@@ -45,36 +49,37 @@ const TrustItem = styled.div`
 `;
 
 export default function ItineraryFinalCta() {
+  const link = buildWhatsAppLink(FINAL_CTA_MESSAGE);
+
   return (
     <FinalCta>
       <Container>
         <Inner>
-          <Title>Want This Cape Town Trip Planned for You?</Title>
+          <Title>Ready to Book the Week?</Title>
           <Text>
-            Message us on WhatsApp and we can help you turn this 7 day itinerary
-            into a private, chauffeur-driven Cape Town experience tailored to
-            your dates, preferences, and travel style.
+            Message us with your dates, group size, and hotel (or the hotel you&apos;re considering). We come back with the right vehicle, a flat weekly quote, and a draft day-by-day plan, usually within 30 minutes.
           </Text>
 
           <TrustRow>
-            <TrustItem>Private Chauffeur Service</TrustItem>
-            <TrustItem>Flexible Itinerary</TrustItem>
-            <TrustItem>Luxury Experience</TrustItem>
-            <TrustItem>Custom Planning</TrustItem>
+            <TrustItem>Same Driver All 7 Days</TrustItem>
+            <TrustItem>Flat Weekly Price</TrustItem>
+            <TrustItem>One Point of Contact</TrustItem>
+            <TrustItem>Airport to Airport</TrustItem>
           </TrustRow>
 
           <Anchor
-            href={whatsappLink}
+            href={link}
             target="_blank"
             rel="noopener noreferrer"
             onClick={() =>
               trackWhatsAppClick({
                 source: "itinerary_final_cta",
-                label: "Plan My 7 Day Cape Town Trip",
+                label: "Book 7 Day Cape Town Package",
+                tour: "7 Day Cape Town Itinerary",
               })
             }
           >
-            <Button as="span">Plan My 7 Day Cape Town Trip</Button>
+            <Button as="span">Book the 7 Day Package</Button>
           </Anchor>
         </Inner>
       </Container>

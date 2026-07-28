@@ -5,38 +5,50 @@ export const itineraryDays: ItineraryDay[] = [
     day: "Day 1",
     title: "Arrival, Hotel Check-In & Atlantic Seaboard Sunset",
     image: "/images/activities/campsbay.jpg",
+    distance:
+      "Airport to city, 20km, 25 minutes. Camps Bay for sunset is 15 minutes from the Waterfront.",
     description:
-      "Start your Cape Town trip with a smooth airport pickup, private transfer to your hotel, and a relaxed afternoon around the V&A Waterfront, Clifton, or Camps Bay before sunset.",
+      "A smooth airport pickup, private transfer to your hotel, then a relaxed afternoon around the V&A Waterfront, Clifton, or Camps Bay before sunset. Your driver waits at Arrivals with a name board, so you skip the taxi queue and go straight to the car.",
     highlights: ["Airport pickup", "Hotel transfer", "V&A Waterfront", "Camps Bay sunset"],
     bestBookedAs:
-      "A private chauffeur-driven arrival day with flexible stops depending on your flight time.",
+      "A chauffeur-driven arrival day with flexible stops depending on your flight time.",
   },
   {
     day: "Day 2",
     title: "Cape Peninsula Private Tour",
     image: "/images/activities/capepoint.jpg",
+    distance:
+      "Cape Point is 70km south. With Chapman's Peak and Boulders, expect around 4 hours of driving across the day.",
     description:
-      "Spend the day exploring one of Cape Town’s most iconic scenic routes, including Chapman’s Peak Drive, Cape Point, the Cape of Good Hope, and Boulders Beach penguins.",
-    highlights: ["Chapman’s Peak", "Cape Point", "Cape of Good Hope", "Penguins"],
+      "The full coastal loop: Chapman's Peak Drive, Hout Bay, Cape Point, the Cape of Good Hope, and the Boulders Beach penguin colony on the way back. Your driver knows when the queues at Cape Point empty out, so you time the funicular right.",
+    highlights: ["Chapman's Peak", "Cape Point", "Cape of Good Hope", "Penguins"],
     bestBookedAs:
       "A full-day private peninsula tour with chauffeur service and flexible scenic stops.",
+    whatsappMessage:
+      "Hi, I'd like to include the Cape Peninsula day in my 7 day itinerary",
   },
   {
     day: "Day 3",
     title: "Wine Farms in Stellenbosch or Franschhoek",
     image: "/images/wine/graff.jpg",
+    distance:
+      "Stellenbosch is 50km east, Franschhoek 80km. About an hour each way, and nobody in the car has to stay sober.",
     description:
-      "Enjoy a premium Winelands experience with wine tastings, mountain views, and lunch at some of the Cape’s most beautiful estates.",
-    highlights: ["Wine tasting", "Luxury estates", "Lunch stop", "Scenic countryside"],
+      "A Winelands day covering two or three estates for tastings, mountain views, and a long lunch. Because your driver stays with you, nobody has to be the designated driver and you set the pace estate to estate.",
+    highlights: ["Wine tasting", "Estate lunch", "Franschhoek Pass", "Scenic countryside"],
     bestBookedAs:
       "A private wine tour with chauffeur service so you can fully enjoy the tastings.",
+    whatsappMessage:
+      "Hi, I'd like a Winelands day in my itinerary. How many estates do you recommend?",
   },
   {
     day: "Day 4",
     title: "Table Mountain, City & Culture",
     image: "/images/activities/tablemountain.jpg",
+    distance:
+      "Everything within 10km of the city centre. The shortest driving day of the week.",
     description:
-      "Take in Table Mountain, the Bo-Kaap, and selected city highlights while keeping the day relaxed and tailored around your pace.",
+      "Table Mountain first thing, before the cable car queue builds and while the cloud is usually still off the summit. Bo-Kaap after, then lunch wherever you feel like it. If the cable car is closed for wind, we move the day around rather than lose it.",
     highlights: ["Table Mountain", "Bo-Kaap", "City highlights", "Local culture"],
     bestBookedAs:
       "A half-day or full-day private city experience with chauffeur-driven transport.",
@@ -45,31 +57,39 @@ export const itineraryDays: ItineraryDay[] = [
     day: "Day 5",
     title: "Beach, Leisure & Scenic Lifestyle Day",
     image: "/images/activities/beach.jpg",
+    distance:
+      "Clifton, Camps Bay and Llandudno sit along 12km of coast road.",
     description:
-      "Slow the pace down with a lifestyle day around Camps Bay, Clifton, cafés, beach views, and scenic coastal stops.",
-    highlights: ["Clifton", "Camps Bay", "Coastal drive", "Relaxed luxury"],
+      "A slower day. Clifton 4th if you want the sheltered beach, Camps Bay if you want the strip. Your driver stays with the car, so you can leave everything in it and swim.",
+    highlights: ["Clifton", "Camps Bay", "Coastal drive", "Relaxed pace"],
     bestBookedAs:
       "A chauffeur-driven leisure day with beach stops, lunch, and flexible timing.",
   },
   {
     day: "Day 6",
-    title: "Luxury Add-On or Safari Experience",
+    title: "Add-On Day: Helicopter, Yacht or Safari",
     image: "/images/activities/safari.jpg",
+    distance:
+      "Aquila is 180km inland, roughly 2 hours each way. A full day, and self-drive is not permitted on the reserve.",
     description:
-      "Choose a premium experience such as a helicopter ride, yacht charter, or safari day trip depending on how adventurous or luxurious you want the trip to feel.",
-    highlights: ["Helicopter ride", "Yacht charter", "Safari option", "Luxury add-on"],
+      "A day for one big-ticket experience. Aquila for a Big Five safari day trip, a helicopter loop over the Peninsula, or a private yacht charter along the Atlantic Seaboard. Pick one and build the whole day around it.",
+    highlights: ["Helicopter ride", "Yacht charter", "Safari option", "Custom day"],
     bestBookedAs:
-      "A custom private day built around your preferred experience and travel style.",
+      "A private day built around your preferred add-on experience.",
+    whatsappMessage:
+      "Hi, I'm interested in adding the safari day to a 7 day itinerary",
   },
   {
     day: "Day 7",
     title: "Final Morning, Last Stops & Departure",
     image: "/images/activities/capetown.jpg",
+    distance:
+      "Hotel to airport, 25 minutes. We build in a buffer and track your flight.",
     description:
-      "Use your final day for a relaxed breakfast, some last-minute shopping, or one final scenic stop before your private airport transfer.",
+      "A relaxed breakfast, last-minute shopping at the Waterfront or Watershed, or one final scenic stop on the way out before your private airport transfer. Your driver watches the clock so you don't have to.",
     highlights: ["Final stop", "Shopping", "Relaxed morning", "Airport transfer"],
     bestBookedAs:
-      "A private chauffeur departure service with optional final city or coastal stop.",
+      "A private chauffeur departure service with an optional final city or coastal stop.",
   },
 ];
 
@@ -77,17 +97,17 @@ export const addOnItems: AddOnItem[] = [
   {
     title: "Helicopter Ride",
     description:
-      "Add a premium aerial experience over Cape Town and the Atlantic Seaboard.",
+      "A scenic aerial loop over Cape Town, Robben Island, and the Atlantic Seaboard. About 20 to 30 minutes in the air.",
   },
   {
     title: "Private Yacht Charter",
     description:
-      "Perfect for sunset cruising, celebrations, and a luxury day on the water.",
+      "Sunset cruising along the Atlantic Seaboard, or a full-day charter for a celebration on the water.",
   },
   {
     title: "Safari Day Trip",
     description:
-      "Add a Big Five wildlife experience as a premium full-day excursion.",
+      "A Big Five wildlife day at Aquila Private Game Reserve, roughly 2 hours from Cape Town.",
   },
 ];
 
@@ -95,31 +115,31 @@ export const itineraryFaqItems: FaqItem[] = [
   {
     question: "Is 7 days enough for Cape Town?",
     answer:
-      "Yes, 7 days is enough to experience Cape Town comfortably when the itinerary is planned well. It allows time for scenic touring, wine farms, beaches, and at least one premium add-on experience.",
+      "Yes. 7 days gives you time for the Peninsula, a Winelands day, Table Mountain, a beach day, and one add-on like safari or a helicopter loop, without any of it feeling rushed.",
   },
   {
     question: "What is the best way to get around Cape Town during a 7 day trip?",
     answer:
-      "A private chauffeur is one of the most comfortable and efficient ways to experience Cape Town, especially for wine tours, scenic drives, airport transfers, and full-day touring.",
+      "A private chauffeur is the most efficient option. There is no Uber waiting at Cape Point or on Chapman's Peak, and the Winelands are 50km outside the city, so having the same vehicle and driver for the week saves hours a day.",
   },
   {
     question: "Can this itinerary be customised?",
     answer:
-      "Yes, the itinerary can be tailored around your travel pace, hotel location, preferred stops, and whether you want a more relaxed or more activity-filled trip.",
+      "Yes. We adjust around your hotel location, travel pace, and which days you want to keep slow. Days can be swapped or reshaped based on weather or how the group is feeling.",
   },
   {
     question: "Can wine farms and Cape Peninsula be done in one day?",
     answer:
-      "They are best done on separate days. This allows you to enjoy each experience properly without rushing or spending too much time on the road.",
+      "They are best done on separate days. They point in opposite directions from the city and each one is a full-day route on its own, so combining them means cutting both short.",
   },
   {
     question: "Is this itinerary good for couples?",
     answer:
-      "Yes, this itinerary works especially well for couples because it combines scenic touring, wine experiences, lifestyle moments, and optional luxury add-ons.",
+      "Yes. The mix of scenic driving, wine estates, beach time, and one big-ticket add-on works well for couples, honeymoons, and small groups.",
   },
   {
     question: "Can you arrange the full itinerary with chauffeur service?",
     answer:
-      "Yes, the full 7 day itinerary can be arranged with private chauffeur-driven transport, airport transfers, day touring, and custom route planning.",
+      "Yes. The whole 7 day plan can be booked with private chauffeur-driven transport, airport transfers included, and one point of contact for all the route planning.",
   },
 ];

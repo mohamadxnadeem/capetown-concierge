@@ -44,10 +44,9 @@ export default function ItineraryAddOns() {
       <Container>
         <SectionHeader>
           <SectionEyebrow>Optional Upgrades</SectionEyebrow>
-          <SectionTitle>Enhance Your Cape Town Experience</SectionTitle>
+          <SectionTitle>One Big-Ticket Add-On for the Week</SectionTitle>
           <SectionText>
-            If you want to elevate the trip further, these premium additions can
-            be added to your itinerary based on your interests and travel style.
+            Pick one of these to build Day 6 around. All three are quoted separately from the vehicle package and confirmed once your travel dates are locked in.
           </SectionText>
         </SectionHeader>
 

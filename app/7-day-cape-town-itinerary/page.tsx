@@ -3,15 +3,28 @@
 import type { Metadata } from "next";
 import { brand } from "../../lib/brand";
 import ItineraryPage from "../../components/sections/cape-town-itinerary/ItineraryPage";
+import { fetchItineraryWeeklyVehicles } from "../../lib/vehicles";
+import {
+  fetchHotels,
+  getHotelNightlyRate,
+  getHotelPrimaryPhoto,
+  getHotelAreaDisplay,
+} from "../../lib/hotels";
+import type {
+  ItineraryHotelCard,
+  WeeklyPricingVehicle,
+} from "../../components/sections/cape-town-itinerary/types";
 
 const SITE_URL = brand.siteUrl;
 
 const OG_IMAGE = `${SITE_URL}/images/og-cape-town-concierge.jpg`;
 
+const META_DESCRIPTION =
+  "A 7 day Cape Town itinerary with a private chauffeur for the full week. From the Cape Peninsula to the Winelands, planned, priced, and driven for you.";
+
 export const metadata: Metadata = {
-  title: "7 Day Cape Town Itinerary | Private Guided Tour Plan",
-  description:
-    "Follow our expert 7-day Cape Town itinerary with private chauffeur included. From the Peninsula to the Winelands — fully planned, fully private.",
+  title: "7 Day Cape Town Itinerary | Private Chauffeur Package",
+  description: META_DESCRIPTION,
   alternates: {
     canonical: `${SITE_URL}/7-day-cape-town-itinerary`,
   },
@@ -27,9 +40,8 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "7 Day Cape Town Itinerary | Private Guided Tour Plan",
-    description:
-      "Follow our expert 7-day Cape Town itinerary with private chauffeur included. From the Peninsula to the Winelands — fully planned, fully private.",
+    title: "7 Day Cape Town Itinerary | Private Chauffeur Package",
+    description: META_DESCRIPTION,
     url: `${SITE_URL}/7-day-cape-town-itinerary`,
     siteName: brand.name,
     type: "website",
@@ -45,14 +57,75 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "7 Day Cape Town Itinerary | Private Guided Tour Plan",
-    description:
-      "Follow our expert 7-day Cape Town itinerary with private chauffeur included. From the Peninsula to the Winelands — fully planned, fully private.",
+    title: "7 Day Cape Town Itinerary | Private Chauffeur Package",
+    description: META_DESCRIPTION,
     images: [OG_IMAGE],
   },
 };
 
-export default function SevenDayCapeTownItineraryPage() {
+function roundToNearest50(n: number): number {
+  return Math.round(n / 50) * 50;
+}
+
+function packagePriceFor(v: WeeklyPricingVehicle): number {
+  const singleDayTotal = v.dailyRateZar * 7;
+  return roundToNearest50(singleDayTotal * (1 - v.discountPercent / 100));
+}
+
+export default async function SevenDayCapeTownItineraryPage() {
+  const [vehicles, hotelsRaw] = await Promise.all([
+    fetchItineraryWeeklyVehicles(),
+    fetchHotels().catch(() => []),
+  ]);
+
+  const hotels: ItineraryHotelCard[] = hotelsRaw
+    .filter((h) => h.is_active !== false)
+    .sort((a, b) => {
+      const aFeat = a.is_featured ? 1 : 0;
+      const bFeat = b.is_featured ? 1 : 0;
+      if (aFeat !== bFeat) return bFeat - aFeat;
+      const aTime = new Date(a.created_at || 0).getTime();
+      const bTime = new Date(b.created_at || 0).getTime();
+      return bTime - aTime;
+    })
+    .slice(0, 6)
+    .map((h) => ({
+      slug: h.slug,
+      name: h.name,
+      location: getHotelAreaDisplay(h),
+      starRating: h.star_rating ?? null,
+      priceFromZar: getHotelNightlyRate(h),
+      primaryImage: getHotelPrimaryPhoto(h) || "",
+      shortDescription: h.short_description || "",
+    }));
+
+  const packagePrices = vehicles.map(packagePriceFor).filter((n) => n > 0);
+  const lowPrice = packagePrices.length ? Math.min(...packagePrices) : null;
+  const highPrice = packagePrices.length ? Math.max(...packagePrices) : null;
+
+  const productOffer = lowPrice && highPrice
+    ? {
+        "@type": "Product",
+        name: "7 Day Cape Town Chauffeur Package",
+        description:
+          "A 7 day Cape Town chauffeur package with one driver and one vehicle for the full week. Fuel, tolls, and airport transfers included.",
+        brand: {
+          "@type": "Brand",
+          name: brand.name,
+        },
+        image: [`${SITE_URL}/images/itinerary/cape-point.jpg`],
+        offers: {
+          "@type": "AggregateOffer",
+          priceCurrency: "ZAR",
+          lowPrice,
+          highPrice,
+          offerCount: packagePrices.length,
+          availability: "https://schema.org/InStock",
+          url: `${SITE_URL}/7-day-cape-town-itinerary`,
+        },
+      }
+    : null;
+
   const structuredData = {
     "@context": "https://schema.org",
     "@graph": [
@@ -80,6 +153,8 @@ export default function SevenDayCapeTownItineraryPage() {
         },
       },
 
+      ...(productOffer ? [productOffer] : []),
+
       {
         "@type": "FAQPage",
         mainEntity: [
@@ -88,7 +163,7 @@ export default function SevenDayCapeTownItineraryPage() {
             name: "Is 7 days enough for Cape Town?",
             acceptedAnswer: {
               "@type": "Answer",
-              text: "Yes, 7 days is ideal to experience Cape Town, including Table Mountain, Cape Peninsula, wine farms, beaches, and luxury activities without feeling rushed.",
+              text: "Yes. 7 days gives you time for the Peninsula, a Winelands day, Table Mountain, a beach day, and one add-on like safari or a helicopter loop, without any of it feeling rushed.",
             },
           },
           {
@@ -96,7 +171,7 @@ export default function SevenDayCapeTownItineraryPage() {
             name: "What should I include in a Cape Town itinerary?",
             acceptedAnswer: {
               "@type": "Answer",
-              text: "A well-planned itinerary should include Table Mountain, Cape Peninsula, Cape Point, Boulders Beach, Cape Winelands, and scenic coastal drives like Chapman’s Peak.",
+              text: "Table Mountain, the Cape Peninsula, Cape Point, Boulders Beach, a Winelands day in Stellenbosch or Franschhoek, and at least one big-ticket add-on such as safari, helicopter, or a yacht charter.",
             },
           },
           {
@@ -104,7 +179,7 @@ export default function SevenDayCapeTownItineraryPage() {
             name: "Can I do Cape Town in a private chauffeur experience?",
             acceptedAnswer: {
               "@type": "Answer",
-              text: "Yes, a private chauffeur allows you to explore Cape Town comfortably with flexible timing, local insights, and a premium travel experience.",
+              text: "Yes. A private chauffeur handles the airport pickup, the daily route planning, and the drive time, so you spend the week experiencing Cape Town instead of navigating it.",
             },
           },
           {
@@ -112,7 +187,7 @@ export default function SevenDayCapeTownItineraryPage() {
             name: "What is the best order for a Cape Town itinerary?",
             acceptedAnswer: {
               "@type": "Answer",
-              text: "A typical flow includes arrival and city highlights, Cape Peninsula, Winelands, leisure/beach days, and luxury add-on experiences before departure.",
+              text: "Arrival and Atlantic Seaboard, Peninsula, Winelands, Table Mountain and Bo-Kaap, a beach day, one big-ticket add-on, then a relaxed departure day.",
             },
           },
           {
@@ -120,7 +195,7 @@ export default function SevenDayCapeTownItineraryPage() {
             name: "Should I book Cape Town tours in advance?",
             acceptedAnswer: {
               "@type": "Answer",
-              text: "Yes, booking in advance ensures availability for top experiences, especially private tours, wine estates, and premium activities.",
+              text: "Yes, especially for December and January. Vehicles and hotel rooms in Camps Bay, Clifton, and the Waterfront book out 8 to 12 weeks ahead of peak season.",
             },
           },
         ],
@@ -155,7 +230,7 @@ export default function SevenDayCapeTownItineraryPage() {
         }}
       />
 
-      <ItineraryPage />
+      <ItineraryPage vehicles={vehicles} hotels={hotels} />
     </>
   );
 }

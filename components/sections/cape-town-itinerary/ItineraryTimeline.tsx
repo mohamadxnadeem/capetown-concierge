@@ -4,6 +4,7 @@ import styled from "styled-components";
 import Button from "../../common/Button";
 import SmartImage from "../../common/SmartImage";
 import { trackWhatsAppClick } from "../../../lib/tracking";
+import { buildWhatsAppLink } from "../../../lib/whatsapp";
 import {
   Anchor,
   Container,
@@ -11,10 +12,11 @@ import {
   SectionHeader,
   SectionText,
   SectionTitle,
-  StyledLink,
-  whatsappLink,
 } from "./shared";
 import { ItineraryDay } from "./types";
+
+const DEFAULT_DAY_MESSAGE =
+  "Hi, I'd like to build the 7 day Cape Town itinerary around";
 
 const List = styled.div`
   display: flex;
@@ -109,9 +111,16 @@ const DayBadge = styled.div`
 `;
 
 const Title = styled.h3`
-  margin: 0 0 10px;
+  margin: 0 0 6px;
   font-size: 1.35rem;
   color: ${({ theme }) => theme.colors.heading};
+`;
+
+const Distance = styled.div`
+  margin: 0 0 12px;
+  color: ${({ theme }) => theme.colors.textMuted};
+  font-size: 0.86rem;
+  font-weight: 600;
 `;
 
 const Text = styled.p`
@@ -219,74 +228,73 @@ export default function ItineraryTimeline({ items }: Props) {
     <Section>
       <Container>
         <SectionHeader>
-          <SectionTitle>7 Day Cape Town Itinerary Breakdown</SectionTitle>
+          <SectionTitle>Day by Day</SectionTitle>
           <SectionText>
-            This itinerary balances iconic sightseeing, scenic drives, wine
-            experiences, beach time, and premium add-ons so you can experience
-            Cape Town in comfort without feeling rushed.
+            Seven days, in the order that gets the most out of the Peninsula, the Winelands, Table Mountain, and the beach without cramming any of them. Days can be swapped around your flight times.
           </SectionText>
         </SectionHeader>
 
         <List>
-          {items.map((item) => (
-            <Row key={item.day}>
-              <ProgressColumn>
-                <Rail />
-                <Dot />
-              </ProgressColumn>
+          {items.map((item) => {
+            const message =
+              item.whatsappMessage || `${DEFAULT_DAY_MESSAGE} ${item.title.toLowerCase()}`;
+            const dayLink = buildWhatsAppLink(message);
 
-              <Card>
-                <Inner>
-                  <ImageWrap>
-                    <SmartImage
-                      src={item.image}
-                      alt={getItineraryAltText(item.day, item.title)}
-                      sizes="(max-width: 768px) 100vw, 360px"
-                    />
-                  </ImageWrap>
+            return (
+              <Row key={item.day}>
+                <ProgressColumn>
+                  <Rail />
+                  <Dot />
+                </ProgressColumn>
 
-                  <Content>
-                    <DayBadge>{item.day}</DayBadge>
-                    <Title>{item.title}</Title>
-                    <Text>{item.description}</Text>
+                <Card>
+                  <Inner>
+                    <ImageWrap>
+                      <SmartImage
+                        src={item.image}
+                        alt={getItineraryAltText(item.day, item.title)}
+                        sizes="(max-width: 768px) 100vw, 360px"
+                      />
+                    </ImageWrap>
 
-                    <Highlights>
-                      {item.highlights.map((highlight: string) => (
-                        <Highlight key={highlight}>{highlight}</Highlight>
-                      ))}
-                    </Highlights>
+                    <Content>
+                      <DayBadge>{item.day}</DayBadge>
+                      <Title>{item.title}</Title>
+                      {item.distance ? <Distance>{item.distance}</Distance> : null}
+                      <Text>{item.description}</Text>
 
-                    <Recommendation>
-                      <strong>Best booked as:</strong> {item.bestBookedAs}
-                    </Recommendation>
+                      <Highlights>
+                        {item.highlights.map((highlight: string) => (
+                          <Highlight key={highlight}>{highlight}</Highlight>
+                        ))}
+                      </Highlights>
 
-                    <Actions>
-                      <Anchor
-                        href={whatsappLink}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        onClick={() =>
-                          trackWhatsAppClick({
-                            source: "itinerary_timeline",
-                            label: `Plan ${item.day}`,
-                            tour: item.title,
-                          })
-                        }
-                      >
-                        <Button as="span">Plan This Day</Button>
-                      </Anchor>
+                      <Recommendation>
+                        <strong>Best booked as:</strong> {item.bestBookedAs}
+                      </Recommendation>
 
-                      <StyledLink href="/tours">
-                        <Button as="span" $variant="secondary">
-                          View Private Tours
-                        </Button>
-                      </StyledLink>
-                    </Actions>
-                  </Content>
-                </Inner>
-              </Card>
-            </Row>
-          ))}
+                      <Actions>
+                        <Anchor
+                          href={dayLink}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onClick={() =>
+                            trackWhatsAppClick({
+                              source: "itinerary_timeline",
+                              label: `Plan ${item.day}`,
+                              tour: item.title,
+                            })
+                          }
+                        >
+                          <Button as="span">Plan This Day</Button>
+                        </Anchor>
+                      </Actions>
+                    </Content>
+                  </Inner>
+                </Card>
+              </Row>
+            );
+          })}
         </List>
       </Container>
     </Section>
