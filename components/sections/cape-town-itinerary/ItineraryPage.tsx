@@ -24,8 +24,8 @@ export default function ItineraryPage({ vehicles, hotels }: Props) {
   return (
     <PageWrap>
       <ItineraryHero />
-      <WeeklyPricing items={vehicles} />
       <ItineraryTimeline items={itineraryDays} />
+      <WeeklyPricing items={vehicles} />
       <HotelsInItinerary items={hotels} />
       <ItineraryAuthoritySection />
       <TestimonialsSection />
