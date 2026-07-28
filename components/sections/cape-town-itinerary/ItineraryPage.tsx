@@ -26,7 +26,8 @@ export default function ItineraryPage({ vehicles, hotels }: Props) {
       <ItineraryHero />
       <ItineraryTimeline items={itineraryDays} />
       <WeeklyPricing items={vehicles} />
-      <HotelsInItinerary items={hotels} />
+      {/* Hotels section temporarily hidden — re-enable once records are live. */}
+      {false && <HotelsInItinerary items={hotels} />}
       <ItineraryAuthoritySection />
       <TestimonialsSection />
       <TestimonialsCta />
