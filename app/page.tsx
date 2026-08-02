@@ -1,25 +1,30 @@
 import type { Metadata } from "next";
 import HeroBanner from "../components/sections/HeroBanner";
 import ServiceTiles from "../components/sections/ServiceTiles";
-import FeaturedVillas from "../components/sections/FeaturedVillas";
 import FeaturedVehicles from "../components/sections/FeaturedVehicles";
-import WhyChooseUs from "../components/sections/WhyChooseUs";
 import FeaturedExperiences from "../components/sections/FeaturedExperiences";
+import HomepageMultiDay from "../components/sections/HomepageMultiDay";
+import AirportTransfersTeaser from "../components/sections/AirportTransfersTeaser";
+import HowWeWork from "../components/sections/HowWeWork";
+import BeyondTheDrive from "../components/sections/BeyondTheDrive";
 import TestimonialsSection from "../components/sections/testimonials/TestimonialsSection";
 import TestimonialsCta from "../components/sections/testimonials/TestimonialsCta";
 import HomepageEnquiryCollapsible from "../components/sections/HomepageEnquiryCollapsible";
 import GoogleRatingBadge from "../components/common/GoogleRatingBadge";
-import { fetchVillas, getVillaPrimaryPhoto } from "../lib/villas";
+import { fetchItineraryWeeklyVehicles } from "../lib/vehicles";
+import { buildWhatsAppLink } from "../lib/whatsapp";
 import { brand } from "../lib/brand";
 
 const SITE_URL = brand.siteUrl;
 
 const OG_IMAGE = `${SITE_URL}/images/og-cape-town-concierge.jpg`;
 
+const HOMEPAGE_META_DESCRIPTION =
+  "Private chauffeur hire and guided touring in Cape Town. One vehicle, one driver, for a transfer or for a fortnight. Priced per vehicle, not per person. Book on WhatsApp.";
+
 export const metadata: Metadata = {
   title: "Luxury Chauffeur Service Cape Town | Cape Town Concierge",
-  description:
-    "Premium private chauffeur hire, airport transfers & bespoke tours in Cape Town. Trusted by international travellers. Book via WhatsApp in minutes.",
+  description: HOMEPAGE_META_DESCRIPTION,
   alternates: {
     canonical: SITE_URL,
   },
@@ -36,8 +41,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: "Luxury Chauffeur Service Cape Town | Cape Town Concierge",
-    description:
-      "Premium private chauffeur hire, airport transfers & bespoke tours in Cape Town. Trusted by international travellers. Book via WhatsApp in minutes.",
+    description: HOMEPAGE_META_DESCRIPTION,
     url: SITE_URL,
     siteName: brand.name,
     type: "website",
@@ -47,41 +51,20 @@ export const metadata: Metadata = {
         url: OG_IMAGE,
         width: 1200,
         height: 630,
-        alt: "Cape Town Concierge — Luxury Chauffeur Service",
+        alt: "Cape Town Concierge, private chauffeur hire and guided touring",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Luxury Chauffeur Service Cape Town | Cape Town Concierge",
-    description:
-      "Premium private chauffeur hire, airport transfers & bespoke tours in Cape Town. Trusted by international travellers. Book via WhatsApp in minutes.",
+    description: HOMEPAGE_META_DESCRIPTION,
     images: [OG_IMAGE],
   },
 };
 
-const trustItems = [
-  {
-    title: "Professional Chauffeur Service",
-    description:
-      "Enjoy a polished, private, and dependable experience with professional service from start to finish.",
-  },
-  {
-    title: "Luxury Travel Presentation",
-    description:
-      "Every journey is designed to feel refined, comfortable, and premium, with attention to the details that matter.",
-  },
-  {
-    title: "Tailored Cape Town Experiences",
-    description:
-      "From airport transfers to private tours, each booking is shaped around your schedule, style, and preferences.",
-  },
-  {
-    title: "Local Knowledge You Can Trust",
-    description:
-      "Travel with confidence through Cape Town with trusted local insight, smooth coordination, and thoughtful planning.",
-  },
-];
+const HERO_WA_MESSAGE =
+  "Hi, I'd like a private chauffeur in Cape Town. My dates and group size are";
 
 type ExperiencePhoto = {
   id: number;
@@ -341,19 +324,13 @@ async function getFeaturedVehicles(): Promise<FeaturedVehicleItem[]> {
 }
 
 export default async function HomePage() {
-  const [featuredVehicleItems, featuredExperienceItems, villas] =
+  const [featuredVehicleItems, featuredExperienceItems, weeklyVehicles] =
     await Promise.all([
       getFeaturedVehicles(),
       getFeaturedExperiences(),
-      fetchVillas().catch(() => []),
+      fetchItineraryWeeklyVehicles().catch(() => []),
     ]);
 
-  // Cover images for the service tiles — pull from real CMS data, fall
-  // back to bundled assets if a category has none yet.
-  const villaTileImages = villas
-    .slice(0, 4)
-    .map((v) => getVillaPrimaryPhoto(v))
-    .filter((u): u is string => Boolean(u));
   const vehicleTileImages = featuredVehicleItems
     .slice(0, 4)
     .map((v) => v.image)
@@ -363,49 +340,40 @@ export default async function HomePage() {
     .map((t) => t.image)
     .filter((u): u is string => Boolean(u));
 
-  // Interleave villas / vehicles / tours for the hero rotation so a
-  // visitor sees variety in the first few seconds. Round-robin keeps
-  // it deterministic between SSR and client (no Math.random hydration
-  // mismatch).
   const heroRotationImages: string[] = [];
-  const maxRotation = Math.max(
-    villaTileImages.length,
-    vehicleTileImages.length,
-    tourTileImages.length
-  );
+  const maxRotation = Math.max(vehicleTileImages.length, tourTileImages.length);
   for (let i = 0; i < maxRotation; i++) {
-    if (villaTileImages[i]) heroRotationImages.push(villaTileImages[i]);
     if (vehicleTileImages[i]) heroRotationImages.push(vehicleTileImages[i]);
     if (tourTileImages[i]) heroRotationImages.push(tourTileImages[i]);
   }
 
   const serviceTiles = [
     {
-      href: "/villas",
-      eyebrow: "Stay",
-      title: "Luxury Villas",
-      description:
-        "Hand-picked villas in Camps Bay, Clifton, Constantia and the Winelands — concierge from arrival to departure.",
-      images: villaTileImages.length ? villaTileImages : ["/images/hero-image.jpg"],
-      alt: "Luxury Cape Town villa rentals with concierge service",
-    },
-    {
       href: "/chauffeur-hire",
       eyebrow: "Drive",
       title: "Chauffeur Hire",
       description:
-        "Hourly, daily, and multi-day private chauffeur hire in a Mercedes, Range Rover, or BMW with a professional driver.",
+        "One vehicle, one driver, for a transfer or a full week. Priced per vehicle, not per person.",
       images: vehicleTileImages.length ? vehicleTileImages : ["/images/car.jpg"],
-      alt: "Private chauffeur hire in Cape Town with luxury vehicle and driver",
+      alt: "Private chauffeur hire in Cape Town with a professional driver",
+    },
+    {
+      href: "/airport-transfers-cape-town",
+      eyebrow: "Arrive",
+      title: "Airport Transfers",
+      description:
+        "Meet-and-greet at CPT, flight tracking, and one flat price. 24 hours a day.",
+      images: vehicleTileImages.length ? vehicleTileImages : ["/images/car.jpg"],
+      alt: "Cape Town International airport transfers with a private driver",
     },
     {
       href: "/tours",
       eyebrow: "Explore",
       title: "Day Tours",
       description:
-        "Curated private day tours — Cape Point, Winelands, Table Mountain — entirely at your own pace.",
+        "Cape Point, the Winelands, Table Mountain. Full day, private, at your own pace.",
       images: tourTileImages.length ? tourTileImages : ["/images/hero-car.jpg"],
-      alt: "Private day tours in Cape Town with chauffeur guide",
+      alt: "Private day tours in Cape Town with a chauffeur guide",
     },
   ];
 
@@ -420,7 +388,7 @@ export default async function HomePage() {
         telephone: brand.phone,
         email: brand.contactEmail,
         description:
-          "Luxury chauffeur services, private tours, airport transfers, and curated travel experiences in Cape Town.",
+          "Private chauffeur hire and guided touring in Cape Town. Airport transfers, day tours, and multi-day charters priced per vehicle.",
         sameAs: [
           "https://www.facebook.com/capetownconcierge",
         ],
@@ -436,7 +404,7 @@ export default async function HomePage() {
         image: `${SITE_URL}/images/hero-car.jpg`,
         logo: `${SITE_URL}/images/logo.png`,
         description:
-          "Luxury chauffeur services, private tours, airport transfers, and curated travel experiences in Cape Town.",
+          "Private chauffeur hire and guided touring in Cape Town. Airport transfers, day tours, and multi-day charters priced per vehicle.",
         address: {
           "@type": "PostalAddress",
           addressLocality: brand.address.locality,
@@ -461,10 +429,10 @@ export default async function HomePage() {
       },
       {
         "@type": "WebPage",
-        name: "Luxury Chauffeur Service & Private Tours Cape Town | Cape Town Concierge",
+        name: "Luxury Chauffeur Service Cape Town | Cape Town Concierge",
         url: SITE_URL,
         description:
-          "Book the #1 rated luxury chauffeur service and private tours in Cape Town. Premium airport transfers, bespoke itineraries, and a 5-star fleet including Mercedes V-Class and BMW X5. All-inclusive, professional, and reliable.",
+          "Private chauffeur hire and guided touring in Cape Town. Airport transfers, full-day tours, and multi-day packages with the same driver and vehicle throughout.",
         image: [`${SITE_URL}/images/hero-car.jpg`],
       },
       {
@@ -486,7 +454,7 @@ export default async function HomePage() {
             name: "What is included in your chauffeur pricing in Cape Town?",
             acceptedAnswer: {
               "@type": "Answer",
-              text: "Our chauffeur pricing is designed to be all-inclusive, covering the vehicle, professional driver, and route-based travel arrangements so clients enjoy a seamless premium experience without hidden surprises.",
+              text: "Every booking includes the vehicle, a PDP-licensed driver, fuel, tolls, and route planning. Airport transfers are quoted as a flat fare. Attraction entry and meals are billed separately and we can arrange those for you.",
             },
           },
           {
@@ -494,7 +462,7 @@ export default async function HomePage() {
             name: "Can I customise my Cape Town chauffeur itinerary?",
             acceptedAnswer: {
               "@type": "Answer",
-              text: "Yes. We offer fully bespoke itineraries for airport transfers, private city touring, Cape Peninsula routes, Winelands days, corporate travel, and multi-day private travel in and around Cape Town.",
+              text: "Yes. Every day is built around your dates and preferences: airport transfers, city days, Cape Peninsula, the Winelands, or a full week with the same vehicle and driver throughout.",
             },
           },
           {
@@ -502,7 +470,7 @@ export default async function HomePage() {
             name: "Do you offer airport transfers in Cape Town?",
             acceptedAnswer: {
               "@type": "Answer",
-              text: "Yes. We provide premium airport transfers in Cape Town with luxury vehicles, professional drivers, punctual pickups, and a polished arrival or departure experience.",
+              text: "Yes. Private transfers to and from Cape Town International, 24 hours a day. Your driver tracks the flight and meets you at Arrivals with a name board. One flat price per vehicle, no surge.",
             },
           },
           {
@@ -510,7 +478,7 @@ export default async function HomePage() {
             name: "Is your chauffeur service safe and reliable?",
             acceptedAnswer: {
               "@type": "Answer",
-              text: "Yes. Our service focuses on safety, professionalism, local route knowledge, and reliable communication so clients can travel with complete peace of mind.",
+              text: "Every driver is PDP licensed and personally vetted. We do not dispatch from a pool. One client per vehicle per day, so nobody is squeezed in around another booking.",
             },
           },
           {
@@ -518,7 +486,7 @@ export default async function HomePage() {
             name: "What vehicles are available for private chauffeur service in Cape Town?",
             acceptedAnswer: {
               "@type": "Answer",
-              text: "Our fleet includes premium chauffeur options such as Mercedes V-Class, BMW X5, and group-friendly vehicles, allowing us to tailor transport to couples, families, executives, and VIP travellers.",
+              text: "The fleet includes an executive Audi, BMW X5, Range Rover Sport, Mercedes V-Class, and Hyundai Staria for larger groups. Full daily rates and package pricing are on the chauffeur hire page.",
             },
           },
         ],
@@ -537,7 +505,7 @@ export default async function HomePage() {
           name: "Cape Town",
         },
         description:
-          "Luxury chauffeur service in Cape Town for airport transfers, executive transport, private travel, bespoke day planning, and all-inclusive premium journeys with professional drivers.",
+          "Private chauffeur hire in Cape Town for airport transfers, day touring, and multi-day charters. One vehicle and one driver, priced per vehicle rather than per person.",
       },
       {
         "@type": "Service",
@@ -553,7 +521,7 @@ export default async function HomePage() {
           name: "Cape Town",
         },
         description:
-          "Custom private tours in Cape Town including Cape Peninsula, Cape Winelands, Table Mountain, coastal routes, and tailored chauffeur-driven itineraries designed around each client’s pace and preferences.",
+          "Private full-day tours in Cape Town including the Cape Peninsula, the Winelands, Table Mountain, and coastal routes. Driven by your chauffeur, at your own pace.",
       },
     ],
   };
@@ -569,15 +537,15 @@ export default async function HomePage() {
 
       <HeroBanner
         eyebrow={brand.name}
-        title="Cape Town's luxury concierge — villas, chauffeurs, and curated day tours."
-        description="A single team that plans, books, and runs the whole trip. Villas in the city's best addresses, private chauffeur hire in luxury vehicles, and concierge-led day tours of Cape Town and the Winelands."
+        title="Private chauffeur hire and guided touring in Cape Town"
+        description="One vehicle, one driver, for a transfer or for a fortnight. Your chauffeur knows the roads, the routes and the city, and through him everything else gets arranged. Priced per vehicle, not per person."
         primaryCtaLabel="Chat on WhatsApp"
-        primaryCtaHref="https://wa.me/27636746131?text=Hi%2C+I%27d+like+to+plan+a+stay+with+Cape+Town+Concierge.+Please+assist."
-        secondaryCtaLabel="Explore villas"
-        secondaryCtaHref="/villas"
+        primaryCtaHref={buildWhatsAppLink(HERO_WA_MESSAGE)}
+        secondaryCtaLabel="See the Fleet"
+        secondaryCtaHref="#fleet"
         image="/images/car.jpg"
         images={heroRotationImages}
-        imageAlt="Cape Town Concierge — luxury villas, chauffeur hire and private day tours"
+        imageAlt="Cape Town Concierge, private chauffeur hire and guided touring"
       />
 
       <ServiceTiles tiles={serviceTiles} />
@@ -586,13 +554,29 @@ export default async function HomePage() {
         <GoogleRatingBadge />
       </div>
 
-      <FeaturedVillas villas={villas} />
+      <div id="fleet">
+        <FeaturedVehicles
+          items={featuredVehicleItems}
+          eyebrow="The Fleet"
+          title="Vehicles for private chauffeur hire in Cape Town"
+          description="A small fleet, kept immaculate, driven by the same team every day. Pick the size that fits the group and the rest follows."
+        />
+      </div>
 
-      <FeaturedVehicles items={featuredVehicleItems} />
+      <HomepageMultiDay vehicles={weeklyVehicles} />
 
-      <FeaturedExperiences items={featuredExperienceItems} />
+      <AirportTransfersTeaser />
 
-      <WhyChooseUs items={trustItems} />
+      <HowWeWork />
+
+      <FeaturedExperiences
+        items={featuredExperienceItems}
+        eyebrow="Most Popular"
+        title="Most Popular Day Tours in Cape Town"
+        description="Full-day private tours, driven by your chauffeur, at your own pace. Pick a route, we handle everything else."
+      />
+
+      <BeyondTheDrive />
 
       <TestimonialsSection />
       <TestimonialsCta />

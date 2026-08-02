@@ -64,7 +64,7 @@ const CloseButton = styled.button`
 const Nav = styled.nav`
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 4px;
 `;
 
 const NavLink = styled(Link)`
@@ -72,6 +72,29 @@ const NavLink = styled(Link)`
   border-radius: 14px;
   color: rgba(255, 255, 255, 0.92);
   font-weight: 600;
+  transition: 0.2s ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.12);
+    color: white;
+  }
+`;
+
+const NavGroupLabel = styled.div`
+  margin: 20px 16px 6px;
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+`;
+
+const SubNavLink = styled(Link)`
+  padding: 12px 16px;
+  border-radius: 12px;
+  color: rgba(255, 255, 255, 0.78);
+  font-weight: 500;
+  font-size: 0.95rem;
   transition: 0.2s ease;
 
   &:hover {
@@ -106,37 +129,36 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
         </TopRow>
 
         <Nav>
-          <NavLink href="/" onClick={onClose}>
-            Home
-          </NavLink>
-          <NavLink href="/villas" onClick={onClose}>
-            Luxury Villas
-          </NavLink>
-          <NavLink href="/hotels" onClick={onClose}>
-            Luxury Hotels
-          </NavLink>
           <NavLink href="/chauffeur-hire" onClick={onClose}>
             Chauffeur Hire
-          </NavLink>
-          <NavLink href="/tours" onClick={onClose}>
-            Day Tours
           </NavLink>
           <NavLink href="/airport-transfers-cape-town" onClick={onClose}>
             Airport Transfers
           </NavLink>
-          <NavLink href="/best-wine-farms-in-cape-town" onClick={onClose}>
-            Wine Farms
-          </NavLink>
-          <NavLink href="/best-activities-to-do-in-cape-town" onClick={onClose}>
-            Experiences
+          <NavLink href="/tours" onClick={onClose}>
+            Day Tours
           </NavLink>
           <NavLink href="/7-day-cape-town-itinerary" onClick={onClose}>
             7 Day Itinerary
           </NavLink>
+          <NavLink href="/villas" onClick={onClose}>
+            Villas
+          </NavLink>
+          <NavLink href="/contact" onClick={onClose}>
+            Contact
+          </NavLink>
+
+          <NavGroupLabel>Guides</NavGroupLabel>
+          <SubNavLink href="/best-wine-farms-in-cape-town" onClick={onClose}>
+            Wine Farms
+          </SubNavLink>
+          <SubNavLink href="/best-activities-to-do-in-cape-town" onClick={onClose}>
+            Experiences
+          </SubNavLink>
         </Nav>
 
         <FooterNote>
-          Premium chauffeur services, private tours, and curated Cape Town travel.
+          Private chauffeur hire and guided touring in Cape Town.
         </FooterNote>
       </Drawer>
     </>

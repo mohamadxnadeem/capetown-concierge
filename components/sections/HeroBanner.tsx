@@ -180,6 +180,22 @@ export default function HeroBanner({
                 <Button as="span">{primaryCtaLabel}</Button>
               </StyledLink>
             )}
+
+            {secondaryCtaLabel && secondaryCtaHref ? (
+              secondaryCtaHref.startsWith("#") ? (
+                <StyledAnchor href={secondaryCtaHref} onClick={handleSecondaryClick}>
+                  <Button as="span" $variant="secondary">{secondaryCtaLabel}</Button>
+                </StyledAnchor>
+              ) : isExternal(secondaryCtaHref) ? (
+                <StyledAnchor href={secondaryCtaHref} target="_blank" rel="noopener noreferrer" onClick={handleSecondaryClick}>
+                  <Button as="span" $variant="secondary">{secondaryCtaLabel}</Button>
+                </StyledAnchor>
+              ) : (
+                <StyledLink href={secondaryCtaHref} onClick={handleSecondaryClick}>
+                  <Button as="span" $variant="secondary">{secondaryCtaLabel}</Button>
+                </StyledLink>
+              )
+            ) : null}
           </ButtonRow>
         </Inner>
       </Content>
