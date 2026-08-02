@@ -48,10 +48,15 @@ function parsePrice(v: string | number | undefined): number | undefined {
 // ─── Weekly pricing fetch (for the 7-day itinerary page) ────────────
 // Pulls the same vehicle list, filters to those with a positive daily
 // rate, and derives the multi-day discount from the CMS field
-// `multi_day_discount_percent` (defaults to 25 when absent). Sorts
-// ascending by seat count so the fleet is presented smallest-first.
+// `multi_day_discount_percent`. Sorts ascending by seat count so the
+// fleet is presented smallest-first.
+//
+// Discount is hard-capped at MAX_MULTI_DAY_DISCOUNT_PERCENT regardless
+// of the CMS value. This keeps a well-intentioned CMS edit from
+// eating a whole week's margin.
 
-const DEFAULT_MULTI_DAY_DISCOUNT_PERCENT = 25;
+const DEFAULT_MULTI_DAY_DISCOUNT_PERCENT = 10;
+const MAX_MULTI_DAY_DISCOUNT_PERCENT = 10;
 
 function parseDiscountPercent(
   v: string | number | null | undefined
@@ -61,7 +66,7 @@ function parseDiscountPercent(
   }
   const n = Number(String(v).replace(/[^0-9.]/g, ""));
   if (!Number.isFinite(n) || n < 0) return DEFAULT_MULTI_DAY_DISCOUNT_PERCENT;
-  return Math.min(90, n);
+  return Math.min(MAX_MULTI_DAY_DISCOUNT_PERCENT, n);
 }
 
 export const fetchItineraryWeeklyVehicles = cache(_fetchItineraryWeeklyVehicles);
