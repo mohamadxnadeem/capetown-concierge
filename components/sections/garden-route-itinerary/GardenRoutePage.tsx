@@ -28,8 +28,6 @@ export default function GardenRoutePage({
   return (
     <PageWrap>
       <GardenRouteHero />
-      <GardenRoutePricing items={vehicles} />
-      <AccommodationNotice />
       <ItineraryTimeline
         items={gardenRouteDays}
         sectionTitle="Day by Day"
@@ -39,6 +37,8 @@ export default function GardenRoutePage({
         trackingSource="garden_route_timeline"
       />
       <ReserveOptions />
+      <GardenRoutePricing items={vehicles} />
+      <AccommodationNotice />
       <TestimonialsSection />
       <TestimonialsCta />
       <ItineraryFaq items={gardenRouteFaqItems} />
