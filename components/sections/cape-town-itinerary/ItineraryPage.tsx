@@ -2,6 +2,7 @@
 
 import TestimonialsSection from "../testimonials/TestimonialsSection";
 import TestimonialsCta from "../testimonials/TestimonialsCta";
+import CombinedTripBlock from "../shared/CombinedTripBlock";
 import { itineraryDays, itineraryFaqItems } from "./data";
 import HotelsInItinerary from "./HotelsInItinerary";
 import ItineraryAddOns from "./ItineraryAddOns";
@@ -33,6 +34,7 @@ export default function ItineraryPage({ vehicles, hotels }: Props) {
       <TestimonialsCta />
       <ItineraryAddOns />
       <ItineraryFaq items={itineraryFaqItems} />
+      <CombinedTripBlock orientation="cape-town" />
       <PeakSeasonNotice />
       <ItineraryFinalCta />
     </PageWrap>

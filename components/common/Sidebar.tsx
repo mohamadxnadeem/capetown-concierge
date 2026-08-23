@@ -139,7 +139,10 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
             Day Tours
           </NavLink>
           <NavLink href="/7-day-cape-town-itinerary" onClick={onClose}>
-            7 Day Itinerary
+            7 Day Cape Town
+          </NavLink>
+          <NavLink href="/7-day-garden-route-itinerary" onClick={onClose}>
+            7 Day Garden Route
           </NavLink>
           <NavLink href="/villas" onClick={onClose}>
             Villas

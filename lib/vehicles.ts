@@ -1,6 +1,7 @@
 import { cache } from "react";
 import { endpoints } from "./api";
 import { WeeklyPricingVehicle } from "../components/sections/cape-town-itinerary/types";
+import { pricingConfig } from "./pricingConfig";
 
 export interface UpsellVehicle {
   slug: string;
@@ -145,6 +146,97 @@ async function _fetchUpsellVehicles(limit = 8): Promise<UpsellVehicle[]> {
     return mapped
       .filter((v): v is UpsellVehicle => v !== null)
       .slice(0, limit);
+  } catch {
+    return [];
+  }
+}
+
+// ─── Garden Route package fetch (for /7-day-garden-route-itinerary) ─
+// Derives the 7-day Garden Route package from each vehicle's standard
+// daily rate, using the flat out-of-town uplift and the duration
+// discount held in config.json. See lib/pricingConfig.ts for the
+// full rationale on why the uplift is a flat rand amount.
+//
+//   out_of_town_daily = daily_rate + out_of_town_daily_uplift
+//   package_daily     = out_of_town_daily * (1 - discount%)   (rounded to 20)
+//   package_price     = package_daily * 7
+//   single_day_total  = out_of_town_daily * 7
+//   saving            = single_day_total - package_price
+//
+// Filters out vehicles with no populated daily rate. Sorts ascending
+// by seat count so the smallest vehicle appears first.
+
+export interface GardenRouteVehicle {
+  slug: string;
+  title: string;
+  seats: number;
+  dailyRateZar: number;
+  outOfTownDailyZar: number;
+  packageDailyZar: number;
+  packagePriceZar: number;
+  singleDayTotalZar: number;
+  savingZar: number;
+  primaryImage: string;
+  href: string;
+}
+
+function roundToNearest20(n: number): number {
+  return Math.round(n / 20) * 20;
+}
+
+export const fetchGardenRouteVehicles = cache(_fetchGardenRouteVehicles);
+
+async function _fetchGardenRouteVehicles(): Promise<GardenRouteVehicle[]> {
+  try {
+    const res = await fetch(
+      "https://web-production-1ab9.up.railway.app/api/cars-for-hire/all/",
+      { next: { revalidate: 300 } }
+    );
+    if (!res.ok) return [];
+    const data = await res.json();
+    const items: CarsApiItem[] = Array.isArray(data)
+      ? data
+      : Array.isArray(data?.results)
+      ? data.results
+      : [];
+
+    const uplift = pricingConfig.out_of_town_daily_uplift;
+    const discountPct = pricingConfig.garden_route_duration_discount_percent;
+    const factor = 1 - discountPct / 100;
+
+    const mapped: (GardenRouteVehicle | null)[] = items.map((item) => {
+      const car = item?.car;
+      if (!car?.title || !car?.slug) return null;
+      const dailyRateZar = parsePrice(car.price);
+      if (!dailyRateZar) return null;
+      const seats = car.number_of_seats ?? 0;
+      const outOfTownDaily = dailyRateZar + uplift;
+      const packageDaily = roundToNearest20(outOfTownDaily * factor);
+      const packagePrice = packageDaily * 7;
+      const singleDayTotal = outOfTownDaily * 7;
+      const primaryImage =
+        pickFirst(item?.cover_photos) ||
+        pickFirst(car.cover_photos) ||
+        pickFirst(car.images);
+
+      return {
+        slug: car.slug.toLowerCase(),
+        title: car.title,
+        seats,
+        dailyRateZar,
+        outOfTownDailyZar: outOfTownDaily,
+        packageDailyZar: packageDaily,
+        packagePriceZar: packagePrice,
+        singleDayTotalZar: singleDayTotal,
+        savingZar: singleDayTotal - packagePrice,
+        primaryImage,
+        href: `/chauffeur-hire/${car.slug.toLowerCase()}`,
+      };
+    });
+
+    return mapped
+      .filter((v): v is GardenRouteVehicle => v !== null)
+      .sort((a, b) => a.seats - b.seats);
   } catch {
     return [];
   }

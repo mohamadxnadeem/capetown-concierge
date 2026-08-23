@@ -164,6 +164,11 @@ const Actions = styled.div`
 
 type Props = {
   items: ItineraryDay[];
+  sectionTitle?: string;
+  sectionText?: string;
+  defaultWaMessagePrefix?: string;
+  altSuffix?: string;
+  trackingSource?: string;
 };
 
 function getItineraryAltText(day: string | number, title: string) {
@@ -223,22 +228,30 @@ function getItineraryAltText(day: string | number, title: string) {
   return `${title} on a 7 day Cape Town itinerary`;
 }
 
-export default function ItineraryTimeline({ items }: Props) {
+export default function ItineraryTimeline({
+  items,
+  sectionTitle = "Day by Day",
+  sectionText = "Seven days, in the order that gets the most out of the Peninsula, the Winelands, Table Mountain, and the beach without cramming any of them. Days can be swapped around your flight times.",
+  defaultWaMessagePrefix = DEFAULT_DAY_MESSAGE,
+  altSuffix,
+  trackingSource = "itinerary_timeline",
+}: Props) {
   return (
     <Section>
       <Container>
         <SectionHeader>
-          <SectionTitle>Day by Day</SectionTitle>
-          <SectionText>
-            Seven days, in the order that gets the most out of the Peninsula, the Winelands, Table Mountain, and the beach without cramming any of them. Days can be swapped around your flight times.
-          </SectionText>
+          <SectionTitle>{sectionTitle}</SectionTitle>
+          <SectionText>{sectionText}</SectionText>
         </SectionHeader>
 
         <List>
           {items.map((item) => {
             const message =
-              item.whatsappMessage || `${DEFAULT_DAY_MESSAGE} ${item.title.toLowerCase()}`;
+              item.whatsappMessage || `${defaultWaMessagePrefix} ${item.title.toLowerCase()}`;
             const dayLink = buildWhatsAppLink(message);
+            const alt = altSuffix
+              ? `${item.title} ${altSuffix}`
+              : getItineraryAltText(item.day, item.title);
 
             return (
               <Row key={item.day}>
@@ -252,7 +265,7 @@ export default function ItineraryTimeline({ items }: Props) {
                     <ImageWrap>
                       <SmartImage
                         src={item.image}
-                        alt={getItineraryAltText(item.day, item.title)}
+                        alt={alt}
                         sizes="(max-width: 768px) 100vw, 360px"
                       />
                     </ImageWrap>
@@ -280,7 +293,7 @@ export default function ItineraryTimeline({ items }: Props) {
                           rel="noopener noreferrer"
                           onClick={() =>
                             trackWhatsAppClick({
-                              source: "itinerary_timeline",
+                              source: trackingSource,
                               label: `Plan ${item.day}`,
                               tour: item.title,
                             })
