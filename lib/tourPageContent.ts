@@ -203,58 +203,78 @@ const WINELANDS: TourPageContent = {
 
 const SUNSET_SAFARI: TourPageContent = {
   trustBadges: [
-    "✔ 100% Private — your vehicle, your group, your pace",
-    "✔ Transport & meals included",
-    "✔ Professional chauffeur & local guide included",
+    "✔ 100% Private, your vehicle for the day",
+    "✔ Malaria-free reserve, no pills or jabs",
+    "✔ PDP-licensed chauffeur",
   ],
   itineraryTitle: "Your Safari Day, From Door to Game Drive",
   itinerarySubheading:
-    "No shared game vehicles with strangers. No rigid resort schedules. Your chauffeur collects you from your hotel, drives you through the dramatic Hex River Valley to Aquila, and you're back in Cape Town with the evening still ahead. Everything — transport, game drive, meals — is taken care of.",
+    "No shared game vehicles with strangers. No rigid resort schedules. Your chauffeur collects you from your hotel, drives you two hours through the Karoo to Aquila, and you're back at your hotel by around 21h00. Everything is coordinated end to end, so the day feels like one trip, not three.",
   highlightsTitle: "Why Guests Choose This Over a Standard Safari Transfer",
   highlights: [
     {
       heading: "Private Transport, Both Ways",
-      body: "No shared shuttle with strangers. Your group has a dedicated luxury vehicle and chauffeur for the full day — from hotel pickup through to the drive back as the Karoo sky turns dark.",
+      body: "No shared shuttle with strangers. Your group has a dedicated luxury vehicle and chauffeur for the full day, from hotel pickup through to the drive back as the Karoo sky turns dark.",
     },
     {
       heading: "A Chauffeur Who Plans Around You",
-      body: "Your driver coordinates timing, knows the route, and handles every logistical detail so you arrive relaxed and ready. The two-hour drive through the Hex River Valley is part of the experience, not just a transfer.",
+      body: "Your driver coordinates timing, knows the route, and handles every logistical detail so you arrive relaxed and ready. The two-hour drive through the Karoo is part of the experience, not just a transfer.",
     },
     {
-      heading: "Everything Included",
-      body: "Transport, game drive, meals, and local guidance — it's all in. You focus on the experience. We handle the rest.",
+      heading: "Malaria-Free Big 5",
+      body: "Aquila sits in the Western Cape, well outside any malaria zone. No prophylactics, no jabs, no shots before you fly. Lion, elephant, rhino, buffalo and leopard, without the medication.",
     },
     {
-      heading: "Back in Cape Town for the Evening",
-      body: "The sunset timing means you finish the game drive with golden light on the Karoo, then head back to Cape Town in comfort. It's a full day out — without losing your evening.",
+      heading: "A Full Safari in One Day",
+      body: "Golden-hour game drive, sundowners in the Karoo, and back at your hotel the same night. No extra flights, no extra hotel.",
     },
   ],
   midCtaTitle: "Ready for a Safari Day from Cape Town?",
   midCtaBody:
-    "Most visitors don't realise you can do a Big 5 safari and be back in Cape Town for dinner. Message us — we'll sort the transport, the timing, and everything in between.",
-  midCtaButtonLabel: "Check Availability — We Respond in 30 Minutes",
+    "Most visitors don't realise the Big 5 is a day trip from Cape Town. Message us and we'll sort the transport, the timing, and the reserve booking in one thread.",
+  midCtaButtonLabel: "Check Availability, We Respond in 30 Minutes",
   ctaTitle: "Ready to book? Here's how it works",
   ctaBody: SHARED_CTA_BODY,
   faqItems: [
     {
-      question: "How far is Aquila from Cape Town?",
+      question: "How much does this private tour cost?",
       answer:
-        "Aquila Private Game Reserve is approximately 2 hours from Cape Town, through the scenic Hex River Valley. Your chauffeur handles the full drive both ways.",
+        "R4,850 per vehicle covers the private chauffeur, luxury vehicle, hotel pickup and drop-off, fuel and tolls for the full day. The Aquila safari fee is R1,185 per guest and is paid to the reserve directly. That covers your sunset game drive, welcome snacks and dinner at the lodge.",
     },
     {
-      question: "What animals can we expect to see?",
+      question: "How far is Aquila from Cape Town?",
       answer:
-        "Aquila is home to the Big 5 — lion, elephant, rhino, buffalo, and leopard — as well as giraffe, zebra, wildebeest, and a wide variety of bird species. Sightings vary by day, but the reserve is well-stocked and the guides are experienced.",
+        "Aquila Private Game Reserve is about 2 hours from Cape Town through the Karoo. Your chauffeur handles the full drive both ways. Expect pickup around 12h30 and drop-off around 21h00.",
+    },
+    {
+      question: "Is it malaria free?",
+      answer:
+        "Yes. Aquila is in the Western Cape, a malaria-free region, so no malaria medication is needed.",
     },
     {
       question: "Are meals and the game drive included?",
       answer:
-        "Yes. The package includes welcome drinks and snacks on arrival, the sunset game drive, and meals at the reserve. Your private transport to and from Cape Town is also included.",
+        "The Aquila fee of R1,185 per guest, paid to the reserve, covers your sunset game drive, welcome snacks and dinner at the lodge. Our R4,850 per vehicle covers your chauffeur, luxury transport, fuel and tolls.",
+    },
+    {
+      question: "Are Big 5 sightings guaranteed?",
+      answer:
+        "No reserve can guarantee sightings, but Aquila's rangers know the reserve well and most guests see several of the Big 5.",
+    },
+    {
+      question: "What animals can we expect to see?",
+      answer:
+        "Aquila is home to the Big 5 (lion, elephant, rhino, buffalo, leopard) as well as giraffe, zebra, wildebeest, and a range of bird species. Sightings vary by day but the reserve is well stocked and the guides know it well.",
+    },
+    {
+      question: "Is this better than Kruger?",
+      answer:
+        "If you have time for a multi-day safari, Kruger is wilder. If Cape Town is your base and you want the Big 5 in one day, this is the easiest way to do it.",
     },
     {
       question: "Is this suitable for children?",
       answer:
-        "Yes — families with children find this one of the most memorable experiences of their Cape Town trip. The open game vehicle, the animal sightings, and the Karoo landscape make a big impression on younger travellers.",
+        "Yes. Families with children find this one of the most memorable experiences of their Cape Town trip. The open game vehicle, the animal sightings, and the Karoo landscape make a big impression on younger travellers.",
     },
     {
       question: "Can we customise the timing or add extra activities?",

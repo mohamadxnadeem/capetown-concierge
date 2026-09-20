@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { brand } from "../../../lib/brand";
+import { getTourContent } from "../../../lib/tourPageContent";
 import PrivateTourDetailView from "../../../components/sections/private-tour-detail/PrivateTourDetailView";
 
 type ExperiencePhoto = {
@@ -102,7 +103,7 @@ type PageProps = {
 const SITE_URL = brand.siteUrl;
 
 // Slug-based meta overrides (used when CMS meta_title is not set)
-const TOUR_META: Record<string, { title: string; description: string }> = {
+const TOUR_META: Record<string, { title: string; description: string; keywords?: string[] }> = {
   "cape-peninsula-tour": {
     title: "Cape Peninsula Private Tour Cape Town | Full Day",
     description: "Two oceans, Boulders Beach penguins & Chapman's Peak in one private day. No shared groups, flexible pace. Book your Peninsula tour on WhatsApp.",
@@ -113,7 +114,20 @@ const TOUR_META: Record<string, { title: string; description: string }> = {
   },
   "winelands-chauffeur-drive": {
     title: "Romantic Stellenbosch Winelands Experience | Private Tour Cape Town",
-    description: "Private chauffeur through Stellenbosch & Franschhoek — no shuttles, no timetables. Cape Dutch estates & world-class tastings. Book on WhatsApp.",
+    description: "Private chauffeur through Stellenbosch & Franschhoek, no shuttles, no timetables. Cape Dutch estates & world-class tastings. Book on WhatsApp.",
+  },
+  "sunset-safari-experience": {
+    title: "Big 5 Safari from Cape Town | Private Day Trip to Aquila",
+    description:
+      "Private Big 5 sunset safari 2 hours from Cape Town. Hotel pickup, luxury vehicle, game drive and dinner. Malaria free. Book on WhatsApp, reply in 30 min.",
+    keywords: [
+      "safari in cape town",
+      "safari from cape town",
+      "big 5 safari cape town",
+      "aquila safari day trip",
+      "private safari day trip from cape town",
+      "malaria free safari cape town",
+    ],
   },
   "safari-day-trip": {
     title: "Cape Town Safari Day Trip | Aquila Private Reserve",
@@ -250,7 +264,7 @@ function getPageDescription(experience: Experience) {
   const base =
     experience.short_description ||
     experience.highlight ||
-    `${keyword} — a fully private, chauffeur-driven experience.`;
+    `${keyword}, a fully private, chauffeur-driven experience.`;
   return truncateText(
     `${base} Private, bespoke, and tailored to your pace. Book via WhatsApp.`,
     155
@@ -259,7 +273,7 @@ function getPageDescription(experience: Experience) {
 
 function getSocialTitle(experience: Experience) {
   const name = experience.title || "Private Tour";
-  return `${name} — Private Chauffeur Tour in Cape Town`;
+  return `${name}, Private Chauffeur Tour in Cape Town`;
 }
 
 function getSocialDescription(experience: Experience) {
@@ -268,7 +282,7 @@ function getSocialDescription(experience: Experience) {
     experience.highlight ||
     `A fully private, chauffeur-driven ${experience.title || "tour"} in Cape Town tailored entirely to your pace.`;
   const clean = hook.length > 115 ? `${hook.slice(0, 115).trim()}...` : hook;
-  return `${clean} Book privately via WhatsApp — we respond in 30 min.`;
+  return `${clean} Book privately via WhatsApp, we respond in 30 min.`;
 }
 
 function mapRelatedTours(
@@ -385,7 +399,7 @@ export async function generateMetadata({
       title: `Private Tour | ${brand.name}`,
       description: "Luxury private tours in Cape Town",
       openGraph: {
-        images: [{ url: ogImage, alt: "Cape Town Concierge — Luxury Private Tours" }],
+        images: [{ url: ogImage, alt: "Cape Town Concierge, Luxury Private Tours" }],
       },
       twitter: {
         card: "summary_large_image",
@@ -406,18 +420,20 @@ export async function generateMetadata({
 
   const keyword = getSeoKeyword(experience);
 
+  const keywords = override?.keywords ?? [
+    keyword,
+    `${experience.title} Cape Town`,
+    `private ${experience.title?.toLowerCase()} Cape Town`,
+    `${experience.title} with chauffeur`,
+    "private tours Cape Town",
+    "luxury private tours Cape Town",
+    "chauffeur tours Cape Town",
+  ].filter(Boolean);
+
   return {
     title,
     description,
-    keywords: [
-      keyword,
-      `${experience.title} Cape Town`,
-      `private ${experience.title?.toLowerCase()} Cape Town`,
-      `${experience.title} with chauffeur`,
-      "private tours Cape Town",
-      "luxury private tours Cape Town",
-      "chauffeur tours Cape Town",
-    ].filter(Boolean),
+    keywords,
     alternates: {
       canonical: canonicalUrl,
     },
@@ -443,8 +459,8 @@ export async function generateMetadata({
         {
           url: image || ogImage,
           alt: image
-            ? `${experience.title || "Private Tour"} Cape Town — Private Chauffeur Experience`
-            : "Cape Town Concierge — Luxury Private Tours",
+            ? `${experience.title || "Private Tour"} Cape Town, Private Chauffeur Experience`
+            : "Cape Town Concierge, Luxury Private Tours",
         },
       ],
     },
@@ -504,78 +520,42 @@ export default async function PrivateTourDetailPage({ params }: PageProps) {
   const tourName = experience.title || "private tour";
   const tourKeyword = getSeoKeyword(experience);
   const priceFromZar = toZarNum(experience.price_from || "");
+
+  // Mirror the on-page FAQ block into schema so Google shows the actual
+  // questions guests read on the page, not a generic auto-generated
+  // list. Falls back to a small generic set if a tour has no page
+  // content mapping (defensive).
+  const tourContent = getTourContent(slug);
   const priceAnswer = priceFromZar
-    ? `${tourKeyword} starts from R${priceFromZar.toLocaleString()} per vehicle. This is an all-inclusive private experience — contact us via WhatsApp for a personalised quote based on your group size and requirements.`
-    : `Pricing for ${tourKeyword} depends on your group size and any custom requirements. Contact us via WhatsApp for a tailored quote — we typically respond within 30 minutes.`;
+    ? `${tourKeyword} starts from R${priceFromZar.toLocaleString()} per vehicle. This is a fully private experience. Contact us via WhatsApp for a personalised quote based on your group size and requirements.`
+    : `Pricing for ${tourKeyword} depends on your group size and any custom requirements. Contact us via WhatsApp for a tailored quote, we typically respond within 30 minutes.`;
+
+  const genericFaqItems = [
+    { question: `How much does the ${tourName} cost?`, answer: priceAnswer },
+    {
+      question: `How long does the ${tourName} take?`,
+      answer: experience.duration
+        ? `The ${tourName} typically runs for ${experience.duration}. The exact duration depends on your pace and any custom stops you would like to include.`
+        : `The ${tourName} usually runs for a full day, approximately 8 to 10 hours, depending on the route, your pace, and any custom stops.`,
+    },
+    {
+      question: `Is the ${tourName} a private experience?`,
+      answer: `Yes. The ${tourName} is completely private. You travel exclusively with your group, with no shared passengers or fixed group schedules. Your itinerary, pace, and stops are entirely your own.`,
+    },
+  ];
+
+  const faqSource = tourContent.faqItems?.length
+    ? tourContent.faqItems
+    : genericFaqItems;
 
   const faqJsonLd = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    mainEntity: [
-      {
-        "@type": "Question",
-        name: `How much does the ${tourName} cost?`,
-        acceptedAnswer: { "@type": "Answer", text: priceAnswer },
-      },
-      {
-        "@type": "Question",
-        name: `How long does the ${tourName} take?`,
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: experience.duration
-            ? `The ${tourName} typically runs for ${experience.duration}. The exact duration depends on your pace and any custom stops you would like to include.`
-            : `The ${tourName} usually runs for a full day — approximately 8 to 10 hours — depending on the route, your pace, and any custom stops.`,
-        },
-      },
-      {
-        "@type": "Question",
-        name: `Is the ${tourName} a private experience?`,
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: `Yes. The ${tourName} is completely private — you travel exclusively with your group, with no shared passengers or fixed group schedules. Your itinerary, pace, and stops are entirely your own.`,
-        },
-      },
-      {
-        "@type": "Question",
-        name: `Can the ${tourName} itinerary be customised?`,
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: `Yes. We can tailor the route, timing, and stops of the ${tourName} around your preferences. Let us know what you would like to see or experience and we will build a personalised plan.`,
-        },
-      },
-      {
-        "@type": "Question",
-        name: `Does the ${tourName} include a professional chauffeur?`,
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: `Yes. All our tours include a professionally presented chauffeur who manages the route and timing so you can fully focus on the experience. Your chauffeur has extensive local knowledge of Cape Town and the surrounding areas.`,
-        },
-      },
-      {
-        "@type": "Question",
-        name: `What is included in the ${tourName}?`,
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: `The ${tourName} includes a premium vehicle, professional chauffeur, fuel, and complimentary bottled water. Entrance fees to attractions, meals, and gratuities are not included unless specified.`,
-        },
-      },
-      {
-        "@type": "Question",
-        name: `How do I book the ${tourName}?`,
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: `The fastest way to book is via WhatsApp. Share your preferred date, group size, and any special requirements and we will confirm availability and pricing within 30 minutes. Same-day bookings are welcomed where possible.`,
-        },
-      },
-      {
-        "@type": "Question",
-        name: `Is the ${tourName} suitable for families and couples?`,
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: `Yes. The ${tourName} is well-suited for couples, families, and small groups. The experience is fully private so it adapts naturally to the pace and preferences of your party.`,
-        },
-      },
-    ],
+    mainEntity: faqSource.map((item) => ({
+      "@type": "Question",
+      name: item.question,
+      acceptedAnswer: { "@type": "Answer", text: item.answer },
+    })),
   };
 
   const breadcrumbJsonLd = {

@@ -108,10 +108,17 @@ export default function PrivateTourFaq({ items, lowestVehiclePrice }: Props) {
 
   const pricingFaq: FAQItem = {
     question: "How much does this private tour cost?",
-    answer: `This tour is priced per vehicle, not per person — so your whole group travels together at one flat rate. Pricing starts from ${format(vehiclePrice)} per vehicle for the full day depending on which vehicle you choose. For a group of 4, that works out to around ${format(perPersonPrice)} per person — fully private, with a professional chauffeur, hotel pickup, fuel, and toll fees all included. Send us a WhatsApp with your group size and preferred dates and we'll confirm exact pricing within 30 minutes.`,
+    answer: `This tour is priced per vehicle, not per person, so your whole group travels together at one flat rate. Pricing starts from ${format(vehiclePrice)} per vehicle for the full day depending on which vehicle you choose. For a group of 4, that works out to around ${format(perPersonPrice)} per person, fully private, with a professional chauffeur, hotel pickup, fuel, and toll fees all included. Send us a WhatsApp with your group size and preferred dates and we'll confirm exact pricing within 30 minutes.`,
   };
 
-  const allItems = [pricingFaq, ...items];
+  // If the tour's own FAQ content already includes a pricing question,
+  // don't prepend the generic per-vehicle answer on top of it. Some
+  // tours (e.g. the safari) have per-guest add-ons that make the
+  // divide-by-4 explanation misleading.
+  const hasCustomPricingFaq = items.some((item) =>
+    /^\s*how much/i.test(item.question)
+  );
+  const allItems = hasCustomPricingFaq ? items : [pricingFaq, ...items];
 
   return (
     <>
@@ -119,7 +126,7 @@ export default function PrivateTourFaq({ items, lowestVehiclePrice }: Props) {
         <SectionEyebrow>FAQ</SectionEyebrow>
         <SectionTitle>Your Questions, Answered</SectionTitle>
         <SectionText>
-          Everything you need to know before you book — from what's included and how long it takes, to flexibility and family suitability.
+          Everything you need to know before you book: what's included, how long it takes, flexibility, and family suitability.
         </SectionText>
       </SectionHeader>
 

@@ -262,12 +262,19 @@ function VehicleImage({
 }
 
 const VEHICLE_COPY: Record<string, string> = {
-  "BMW 5-Series": "An executive sedan that balances refined comfort with smooth, quiet performance. Perfect for couples or solo travellers who want a premium, discreet experience across the Peninsula.",
-  "BMW X5": "A luxury SUV with elevated road presence and a spacious interior — ideal for families or small groups who want comfort without sacrificing style.",
-  "Hyundai Staria": "A premium 9-seat people carrier with generous legroom and panoramic windows. Comfortable, stylish, and built for a full day on the road.",
+  "BMW 5-Series": "An executive sedan that balances refined comfort with smooth, quiet performance. Perfect for couples or solo travellers who want a premium, discreet chauffeur experience.",
+  "BMW X5": "A luxury SUV with elevated road presence and a spacious interior. Ideal for families or small groups who want comfort without sacrificing style.",
+  "Hyundai Staria": "A premium people carrier with generous legroom and panoramic windows. Comfortable, stylish, and built for a full day on the road with up to 8 guests.",
   "Mercedes V-Class": "The benchmark for group luxury travel. Rear-facing captain seats, ample boot space, and a first-class cabin feel. The favourite choice for families and executive groups.",
-  "Range Rover Sport": "Bold, refined, and unmistakable on Cape Town's coastal roads. For travellers who want the Peninsula experience with an extra layer of style. Up to 4 guests.",
+  "Range Rover Sport": "Bold, refined, and unmistakable. For travellers who want a chauffeur day with an extra layer of style. Up to 4 guests.",
 };
+
+// Cars that carry the Popular Choice badge. Every other card renders the
+// 5-star badge only.
+const POPULAR_CHOICE_TITLES = new Set([
+  "Hyundai Staria",
+  "Mercedes V-Class",
+]);
 
 export default function PrivateTourVehicles({ items, tourTitle }: Props) {
   const sliderRef = useRef<HTMLDivElement | null>(null);
@@ -314,7 +321,7 @@ export default function PrivateTourVehicles({ items, tourTitle }: Props) {
         <SectionEyebrow>Private Chauffeur Experience</SectionEyebrow>
         <SectionTitle>Travel in Comfort. Travel in Style.</SectionTitle>
         <SectionText>
-          Every vehicle is private, climate-controlled, and driven by a professional chauffeur. Choose the size that fits your group — from executive sedans to spacious people carriers.
+          Every vehicle is private, climate-controlled, and driven by a professional chauffeur. Choose the size that fits your group, from executive sedans to spacious people carriers.
         </SectionText>
       </SectionHeader>
 
@@ -376,7 +383,9 @@ export default function PrivateTourVehicles({ items, tourTitle }: Props) {
 
                   <TrustRow>
                     <TrustBadge>⭐ 5-Star Experience</TrustBadge>
-                    <TrustBadge>🔥 Popular Choice</TrustBadge>
+                    {POPULAR_CHOICE_TITLES.has(item.title) ? (
+                      <TrustBadge>🔥 Popular Choice</TrustBadge>
+                    ) : null}
                   </TrustRow>
 
                   <CardText>

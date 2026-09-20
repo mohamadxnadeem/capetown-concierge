@@ -108,10 +108,23 @@ const PriceNote = styled.p`
 `;
 
 const DEFAULT_TRUST_BADGES = [
-  "✔ 100% Private — your vehicle, your group, your pace",
-  "✔ Flexible itinerary — you set the stops",
+  "✔ 100% Private, your vehicle, your group, your pace",
+  "✔ Flexible itinerary, you set the stops",
   "✔ Professional chauffeur & local guide included",
 ];
+
+type PricingContext = {
+  mode: "inclusive" | "transport-only";
+  vehicleSuffix?: string;
+  extraFeePerGuestZar?: number;
+  extraFeeLabel?: string;
+  hidePerPersonNote?: boolean;
+};
+
+const DEFAULT_PRICING_CONTEXT: PricingContext = {
+  mode: "inclusive",
+  vehicleSuffix: "per vehicle, your whole group, not per person",
+};
 
 type Props = {
   title: string;
@@ -121,6 +134,7 @@ type Props = {
   location?: string;
   lowestVehiclePrice?: number;
   trustBadges?: string[];
+  pricingContext?: PricingContext;
 };
 
 export default function PrivateTourIntro({
@@ -131,7 +145,17 @@ export default function PrivateTourIntro({
   location,
   lowestVehiclePrice,
   trustBadges = DEFAULT_TRUST_BADGES,
+  pricingContext = DEFAULT_PRICING_CONTEXT,
 }: Props) {
+  const vehicleSuffix =
+    pricingContext.vehicleSuffix ??
+    (pricingContext.mode === "transport-only"
+      ? "per vehicle (transport)"
+      : DEFAULT_PRICING_CONTEXT.vehicleSuffix);
+
+  const showPerPersonNote =
+    pricingContext.mode === "inclusive" && !pricingContext.hidePerPersonNote;
+
   return (
     <SectionHeader>
       <SectionEyebrow>Private Tour in Cape Town</SectionEyebrow>
@@ -140,11 +164,11 @@ export default function PrivateTourIntro({
       <SubText>
         {shortDescription ||
           highlight ||
-          `Skip the group buses and crowded shuttles. The ${title} is a fully private, chauffeur-driven experience — your vehicle, your schedule, your pace. No shared passengers. No fixed stops you didn't ask for.`}
+          `Skip the group buses and crowded shuttles. The ${title} is a fully private, chauffeur-driven experience: your vehicle, your schedule, your pace. No shared passengers. No fixed stops you didn't ask for.`}
       </SubText>
 
       <TrustBar>
-        <TrustBadge>⭐ 4.9 rated — 200+ five-star reviews</TrustBadge>
+        <TrustBadge>⭐ 4.9 rated, 200+ five-star reviews</TrustBadge>
         {trustBadges.map((badge) => (
           <TrustBadge key={badge}>{badge}</TrustBadge>
         ))}
@@ -156,21 +180,30 @@ export default function PrivateTourIntro({
         <QuickInfoBadge>🚗 Hotel pickup included</QuickInfoBadge>
         {lowestVehiclePrice ? (
           <QuickInfoBadge>
-            <Money usd={lowestVehiclePrice} prefix="From " suffix="per vehicle — your whole group, not per person" />
+            <Money usd={lowestVehiclePrice} prefix="From " suffix={vehicleSuffix} />
+          </QuickInfoBadge>
+        ) : null}
+        {pricingContext.extraFeePerGuestZar ? (
+          <QuickInfoBadge>
+            <Money
+              usd={pricingContext.extraFeePerGuestZar}
+              prefix={`${pricingContext.extraFeeLabel ?? "Extra"}: `}
+              suffix="per guest"
+            />
           </QuickInfoBadge>
         ) : null}
       </QuickInfoRow>
 
-      {lowestVehiclePrice ? (
+      {showPerPersonNote && lowestVehiclePrice ? (
         <PriceNote>
           Travelling as a group? A party of 4 works out to around{" "}
-          <Money usd={Math.floor(lowestVehiclePrice / 4)} prefix="" suffix="" /> per person — fully private, all day, door to door.
+          <Money usd={Math.floor(lowestVehiclePrice / 4)} prefix="" suffix="" /> per person, fully private, all day, door to door.
         </PriceNote>
       ) : null}
 
       <AlertCard>
         <AlertText>
-          ⚡ Peak-season dates book out 2–3 weeks ahead. Message us now and we'll hold your date — we respond in under 30 minutes.
+          ⚡ Peak-season dates book out 2 to 3 weeks ahead. Message us now and we'll hold your date, we respond in under 30 minutes.
         </AlertText>
       </AlertCard>
     </SectionHeader>

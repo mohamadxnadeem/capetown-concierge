@@ -112,9 +112,9 @@ type Props = {
 
 const TOUR_COPY: Record<string, string> = {
   "Cape Peninsula Private Tour": "Two oceans, wild penguins, and the most dramatic coastal drive in Africa. All in one fully private day.",
-  "City and Table Mountain Tour": "Cape Town's most iconic landmarks explored privately — Table Mountain, Bo-Kaap, Camps Bay and the Waterfront.",
-  "Romantic Stellenbosch Winelands Experience": "A private drive through South Africa's most celebrated wine country — rolling vineyards, Cape Dutch estates, and world-class tastings.",
-  "Sunset Safari Day Trip": "The Big 5, golden-hour game drives, and a full day at Aquila Private Game Reserve — private transport and meals included.",
+  "City and Table Mountain Tour": "Cape Town's most iconic landmarks explored privately: Table Mountain, Bo-Kaap, Camps Bay and the Waterfront.",
+  "Romantic Stellenbosch Winelands Experience": "A private drive through South Africa's most celebrated wine country: rolling vineyards, Cape Dutch estates, and world-class tastings.",
+  "Sunset Safari Day Trip": "The Big 5, golden-hour game drives, and a full day at Aquila Private Game Reserve. Private transport, malaria-free, back the same night.",
 };
 
 export default function PrivateTourRelatedTours({
@@ -129,7 +129,7 @@ export default function PrivateTourRelatedTours({
         <SectionEyebrow>More Experiences</SectionEyebrow>
         <SectionTitle>More of Cape Town, Done Privately</SectionTitle>
         <SectionText>
-          Every tour is fully private, chauffeur-driven, and built around your schedule. Explore more — or bundle three tours and ask us about a group rate.
+          Every tour is fully private, chauffeur-driven, and built around your schedule. Explore more, or bundle three tours and ask us about a group rate.
         </SectionText>
       </SectionHeader>
 

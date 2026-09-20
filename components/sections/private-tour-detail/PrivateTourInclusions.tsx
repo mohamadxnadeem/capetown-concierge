@@ -102,25 +102,40 @@ const HelperText = styled.p`
   line-height: 1.7;
 `;
 
-const INCLUDED = [
+const DEFAULT_INCLUDED = [
   "Private vehicle for your group",
   "Professional PDP-licensed chauffeur",
   "Hotel or accommodation pickup and drop-off",
   "Fuel and all toll fees",
   "Chilled bottled water in the vehicle",
-  "Flexible itinerary — you set the pace",
+  "Flexible itinerary, you set the pace",
   "Flight tracking for airport-connected bookings",
   "Local route knowledge and stop recommendations",
 ];
 
-const NOT_INCLUDED = [
-  "Entrance fees to attractions (e.g. Cape Point Nature Reserve ~R380pp, Boulders Beach ~R260pp, Table Mountain Cable Car — payable on the day)",
+const DEFAULT_NOT_INCLUDED = [
+  "Entrance fees to attractions (e.g. Cape Point Nature Reserve ~R380pp, Boulders Beach ~R260pp, Table Mountain Cable Car, payable on the day)",
   "Meals and drinks unless specified in the tour",
   "Gratuity for your chauffeur (discretionary but appreciated)",
   "Travel insurance",
 ];
 
-export default function PrivateTourInclusions() {
+const DEFAULT_HELPER_TEXT =
+  "Not sure what's relevant for your tour? Message us and we'll walk you through exactly what to expect and budget for.";
+
+type Props = {
+  included?: string[];
+  notIncluded?: string[];
+  helperText?: string;
+  note?: string;
+};
+
+export default function PrivateTourInclusions({
+  included = DEFAULT_INCLUDED,
+  notIncluded = DEFAULT_NOT_INCLUDED,
+  helperText = DEFAULT_HELPER_TEXT,
+  note,
+}: Props) {
   return (
     <>
       <SectionHeader>
@@ -132,7 +147,7 @@ export default function PrivateTourInclusions() {
         <Column>
           <ColumnTitle>Included</ColumnTitle>
           <ItemList>
-            {INCLUDED.map((item) => (
+            {included.map((item) => (
               <Item key={item}>
                 <IncludedIcon>✓</IncludedIcon>
                 {item}
@@ -144,16 +159,15 @@ export default function PrivateTourInclusions() {
         <Column>
           <ColumnTitle>Not included</ColumnTitle>
           <ItemList>
-            {NOT_INCLUDED.map((item) => (
+            {notIncluded.map((item) => (
               <Item key={item}>
-                <ExcludedIcon>—</ExcludedIcon>
+                <ExcludedIcon>×</ExcludedIcon>
                 {item}
               </Item>
             ))}
           </ItemList>
-          <HelperText>
-            Not sure what's relevant for your tour? Message us and we'll walk you through exactly what to expect and budget for.
-          </HelperText>
+          <HelperText>{helperText}</HelperText>
+          {note ? <HelperText>{note}</HelperText> : null}
         </Column>
       </Grid>
     </>

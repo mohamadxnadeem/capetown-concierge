@@ -140,7 +140,7 @@ export default function PrivateTourReviews({ reviews }: Props) {
         <SectionEyebrow>What Our Guests Say</SectionEyebrow>
         <SectionTitle>Trusted by Travellers Around the World</SectionTitle>
         <SectionText>
-          Real clients. Real experiences. Our guests come from over 40 countries — here's what they say about travelling the Cape with us.
+          Real clients. Real experiences. Our guests come from over 40 countries. Here's what they say about travelling the Cape with us.
         </SectionText>
       </SectionHeader>
 

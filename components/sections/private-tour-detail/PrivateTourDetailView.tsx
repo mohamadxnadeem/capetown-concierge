@@ -20,6 +20,36 @@ import PrivateTourReviews from "./PrivateTourReviews";
 import PrivateTourFaq from "./PrivateTourFaq";
 import PrivateTourRelatedTours from "./PrivateTourRelatedTours";
 import PrivateTourCta from "./PrivateTourCta";
+import SafariCanYouDoIt from "./SafariCanYouDoIt";
+
+const SAFARI_SLUG = "sunset-safari-experience";
+
+const SAFARI_INCLUDED = [
+  "Private luxury vehicle for your group",
+  "Professional PDP-licensed chauffeur",
+  "Hotel pickup and drop-off",
+  "Fuel and all toll fees",
+  "Chilled bottled water in the vehicle",
+];
+
+const SAFARI_NOT_INCLUDED = [
+  "Aquila safari fee (R1,185 per guest), paid to the reserve. Covers your sunset game drive, welcome snacks and dinner at the lodge",
+  "Drinks beyond those specified",
+  "Gratuities for your chauffeur and ranger",
+  "Travel insurance",
+];
+
+const SAFARI_INCLUSIONS_HELPER =
+  "The Aquila reserve handles the game drive, snacks and lodge meals under a separate per-guest fee. We book both sides for you.";
+
+const SAFARI_INCLUSIONS_NOTE =
+  "Tip: bring a warm layer. Karoo evenings get cold, even in summer.";
+
+const SAFARI_REVIEW_PLACEHOLDER: ReviewItem = {
+  quote: "[SAFARI REVIEW PLACEHOLDER: replace with real guest review]",
+  name: "Name",
+  subtitle: "Sunset Safari Day Trip",
+};
 
 
 import {
@@ -74,14 +104,20 @@ export default function PrivateTourDetailView({
   slug,
 }: Props) {
   const safeTourTitle = experience?.title || "private tour";
+  const resolvedSlug = (slug || experience?.slug || "").toLowerCase();
+  const isSafari = resolvedSlug === SAFARI_SLUG;
 
-  const content = getTourContent(slug || experience?.slug);
+  const content = getTourContent(resolvedSlug);
 
   const whatsappLink = `https://wa.me/27636746131?text=${encodeURIComponent(`Hi, I'd like to book the ${safeTourTitle}. Please assist.`)}`;
   const midCtaWhatsappLink = `https://wa.me/27636746131?text=${encodeURIComponent(`Hi, I'd like to book the ${safeTourTitle}. Please assist.`)}`;
   const bundleWhatsAppLink = `https://wa.me/27636746131?text=${encodeURIComponent(`Hi, I'd like to enquire about private tours in Cape Town including the ${safeTourTitle}. Please assist.`)}`;
 
   const stops = [...(experience.stops || [])].sort((a, b) => a.order - b.order);
+
+  const pageReviews: ReviewItem[] = isSafari
+    ? [SAFARI_REVIEW_PLACEHOLDER, ...reviewItems]
+    : reviewItems;
 
   return (
     <PageWrap>
@@ -104,9 +140,22 @@ export default function PrivateTourDetailView({
             location={experience.location}
             lowestVehiclePrice={lowestVehiclePrice}
             trustBadges={content.trustBadges}
+            pricingContext={
+              isSafari
+                ? {
+                    mode: "transport-only",
+                    vehicleSuffix: "per vehicle (transport)",
+                    extraFeePerGuestZar: 1185,
+                    extraFeeLabel: "Aquila safari fee",
+                    hidePerPersonNote: true,
+                  }
+                : undefined
+            }
           />
         </Container>
       </Section>
+
+      {isSafari ? <SafariCanYouDoIt /> : null}
 
 
 
@@ -138,7 +187,7 @@ export default function PrivateTourDetailView({
 
       <Section>
         <Container>
-          <PrivateTourReviews reviews={reviewItems} />
+          <PrivateTourReviews reviews={pageReviews} />
         </Container>
       </Section>
 
@@ -150,7 +199,16 @@ export default function PrivateTourDetailView({
 
       <Section>
         <Container>
-          <PrivateTourInclusions />
+          {isSafari ? (
+            <PrivateTourInclusions
+              included={SAFARI_INCLUDED}
+              notIncluded={SAFARI_NOT_INCLUDED}
+              helperText={SAFARI_INCLUSIONS_HELPER}
+              note={SAFARI_INCLUSIONS_NOTE}
+            />
+          ) : (
+            <PrivateTourInclusions />
+          )}
         </Container>
       </Section>
 
