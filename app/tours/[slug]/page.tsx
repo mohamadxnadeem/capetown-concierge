@@ -129,6 +129,19 @@ const TOUR_META: Record<string, { title: string; description: string; keywords?:
       "malaria free safari cape town",
     ],
   },
+  "big-5-safari-from-cape-town": {
+    title: "Big 5 Safari from Cape Town | Private Day Trip to Aquila",
+    description:
+      "Private Big 5 sunset safari 2 hours from Cape Town. Hotel pickup, luxury vehicle, game drive and dinner. Malaria free. Book on WhatsApp, reply in 30 min.",
+    keywords: [
+      "safari in cape town",
+      "safari from cape town",
+      "big 5 safari cape town",
+      "aquila safari day trip",
+      "private safari day trip from cape town",
+      "malaria free safari cape town",
+    ],
+  },
   "safari-day-trip": {
     title: "Cape Town Safari Day Trip | Aquila Private Reserve",
     description: "Big 5 game drive from Cape Town with private transport & meals included. Back by dinner. Book your Aquila safari experience on WhatsApp.",
@@ -350,6 +363,7 @@ const FALLBACK_TOUR_SLUGS = [
   "winelands-chauffeur-drive",
   "cape-town-city-tour",
   "sunset-safari-experience",
+  "big-5-safari-from-cape-town",
 ];
 
 export async function generateStaticParams() {

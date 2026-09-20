@@ -50,7 +50,15 @@ const SHARED_FAQ_TRANSPORT: TourFAQItem = {
 };
 
 const SHARED_CTA_BODY =
-  "Send us a WhatsApp with your travel dates and group size. We'll confirm availability and send you a price within 30 minutes. No deposit is required to hold a date while you decide — just message us and we'll take it from there.";
+  "Send us a WhatsApp with your travel dates and group size. We'll confirm availability and send you a price within 30 minutes. No deposit is required to hold a date while you decide, just message us and we'll take it from there.";
+
+// The itinerary section frames the chauffeur service; the stops
+// themselves are the per-tour content. Keeping this text shared and
+// brief across every tour page so it reads consistently and does not
+// wander into evocative tour-specific copy.
+const SHARED_ITINERARY_TITLE = "Your Day, Stop by Stop";
+const SHARED_ITINERARY_SUBHEADING =
+  "Your chauffeur handles the driving, timing and routing. Every stop below can be swapped, extended or skipped on the day.";
 
 const CAPE_PENINSULA: TourPageContent = {
   trustBadges: [
@@ -58,9 +66,8 @@ const CAPE_PENINSULA: TourPageContent = {
     "✔ Flexible itinerary — you set the stops",
     "✔ Professional chauffeur & local guide included",
   ],
-  itineraryTitle: "Every Stop, Yours to Explore",
-  itinerarySubheading:
-    "No group timetables. No strangers. No one rushing you back to the bus. This is the Cape Peninsula on your terms — linger at the penguin colony, take your time at the cliff edge, or ask your chauffeur to pull over for a photo. Every moment is yours.",
+  itineraryTitle: SHARED_ITINERARY_TITLE,
+  itinerarySubheading: SHARED_ITINERARY_SUBHEADING,
   highlightsTitle: "Why Guests Choose a Private Tour Over a Group Bus",
   highlights: [
     SHARED_HIGHLIGHTS_1,
@@ -104,9 +111,8 @@ const CAPE_TOWN_CITY: TourPageContent = {
     "✔ Flexible itinerary — you set the stops",
     "✔ Professional chauffeur & local guide included",
   ],
-  itineraryTitle: "Every Stop, Yours to Explore",
-  itinerarySubheading:
-    "No group timetables. No strangers. No one rushing you back to the bus. Cape Town's most iconic landmarks — explored entirely on your terms, at your pace, with your dedicated chauffeur for the day.",
+  itineraryTitle: SHARED_ITINERARY_TITLE,
+  itinerarySubheading: SHARED_ITINERARY_SUBHEADING,
   highlightsTitle: "Why Guests Choose a Private Tour Over a Group Bus",
   highlights: [
     SHARED_HIGHLIGHTS_1,
@@ -150,9 +156,8 @@ const WINELANDS: TourPageContent = {
     "✔ Flexible itinerary — you choose the estates",
     "✔ Professional chauffeur & local guide included",
   ],
-  itineraryTitle: "Every Stop, Yours to Savour",
-  itinerarySubheading:
-    "No group timetables. No strangers. No one rushing you between estates. This is the Cape Winelands on your terms — linger over a tasting, take your time exploring the gardens at Babylonstoren, or ask your chauffeur to stop at a viewpoint along the way. Every moment is yours.",
+  itineraryTitle: SHARED_ITINERARY_TITLE,
+  itinerarySubheading: SHARED_ITINERARY_SUBHEADING,
   highlightsTitle: "Why Guests Choose a Private Tour Over a Shared Shuttle",
   highlights: [
     SHARED_HIGHLIGHTS_1,
@@ -207,9 +212,8 @@ const SUNSET_SAFARI: TourPageContent = {
     "✔ Malaria-free reserve, no pills or jabs",
     "✔ PDP-licensed chauffeur",
   ],
-  itineraryTitle: "Your Safari Day, From Door to Game Drive",
-  itinerarySubheading:
-    "No shared game vehicles with strangers. No rigid resort schedules. Your chauffeur collects you from your hotel, drives you two hours through the Karoo to Aquila, and you're back at your hotel by around 21h00. Everything is coordinated end to end, so the day feels like one trip, not three.",
+  itineraryTitle: SHARED_ITINERARY_TITLE,
+  itinerarySubheading: SHARED_ITINERARY_SUBHEADING,
   highlightsTitle: "Why Guests Choose This Over a Standard Safari Transfer",
   highlights: [
     {
@@ -290,7 +294,10 @@ const TOUR_CONTENT: Record<string, TourPageContent> = {
   "cape-peninsula-tour": CAPE_PENINSULA,
   "cape-town-city-tour": CAPE_TOWN_CITY,
   "winelands-chauffeur-drive": WINELANDS,
+  // Safari tour resolves under two slugs: the legacy CMS slug and the
+  // current SEO-optimised one. Both map to the same content.
   "sunset-safari-experience": SUNSET_SAFARI,
+  "big-5-safari-from-cape-town": SUNSET_SAFARI,
 };
 
 export function getTourContent(slug?: string): TourPageContent {

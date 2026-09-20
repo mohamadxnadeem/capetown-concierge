@@ -22,7 +22,14 @@ import PrivateTourRelatedTours from "./PrivateTourRelatedTours";
 import PrivateTourCta from "./PrivateTourCta";
 import SafariCanYouDoIt from "./SafariCanYouDoIt";
 
-const SAFARI_SLUG = "sunset-safari-experience";
+// Any of these slugs render the safari-specific hero pricing, the
+// "Can You Do a Safari" section, the safari inclusions list, and the
+// safari review placeholder. Both live and legacy slugs listed so the
+// safari-specific renders survive a CMS slug rename.
+const SAFARI_SLUGS = new Set([
+  "sunset-safari-experience",
+  "big-5-safari-from-cape-town",
+]);
 
 const SAFARI_INCLUDED = [
   "Private luxury vehicle for your group",
@@ -105,7 +112,7 @@ export default function PrivateTourDetailView({
 }: Props) {
   const safeTourTitle = experience?.title || "private tour";
   const resolvedSlug = (slug || experience?.slug || "").toLowerCase();
-  const isSafari = resolvedSlug === SAFARI_SLUG;
+  const isSafari = SAFARI_SLUGS.has(resolvedSlug);
 
   const content = getTourContent(resolvedSlug);
 
