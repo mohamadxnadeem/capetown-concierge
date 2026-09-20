@@ -1,6 +1,12 @@
 "use client";
 
 import styled from "styled-components";
+import Button from "../../common/Button";
+import { buildWhatsAppLink } from "../../../lib/whatsapp";
+import { trackWhatsAppClick } from "../../../lib/tracking";
+
+const SAFARI_CTA_MESSAGE =
+  "Hi, I'd like to book the Big 5 safari day trip from Cape Town. My dates and group size are";
 
 const Wrapper = styled.section`
   padding: 64px 0;
@@ -38,10 +44,15 @@ const Title = styled.h2`
 `;
 
 const Body = styled.p`
-  margin: 0;
+  margin: 0 0 22px;
   color: ${({ theme }) => theme.colors.text};
   line-height: 1.85;
   font-size: 1.05rem;
+`;
+
+const CtaAnchor = styled.a`
+  display: inline-flex;
+  text-decoration: none;
 `;
 
 export default function SafariCanYouDoIt() {
@@ -53,6 +64,20 @@ export default function SafariCanYouDoIt() {
         <Body>
           Yes, as a day trip. Cape Town has no wildlife reserves with the Big 5, so most visitors think they need to fly to Kruger. They don&apos;t. Aquila Private Game Reserve is a malaria-free Big 5 reserve in the Karoo, about two hours from the city. Our private chauffeur takes you there and back, so you get a real safari without an extra flight, extra hotel or a shared tour bus.
         </Body>
+        <CtaAnchor
+          href={buildWhatsAppLink(SAFARI_CTA_MESSAGE)}
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={() =>
+            trackWhatsAppClick({
+              source: "safari_can_you_do_it",
+              label: "Book Safari Day Trip",
+              tour: "Big 5 Safari from Cape Town",
+            })
+          }
+        >
+          <Button as="span">Book the Safari Day</Button>
+        </CtaAnchor>
       </Inner>
     </Wrapper>
   );

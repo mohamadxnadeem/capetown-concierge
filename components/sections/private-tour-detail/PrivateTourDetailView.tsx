@@ -43,7 +43,6 @@ const SAFARI_NOT_INCLUDED = [
   "Aquila safari fee (R1,185 per guest), paid to the reserve. Covers your sunset game drive, welcome snacks and dinner at the lodge",
   "Drinks beyond those specified",
   "Gratuities for your chauffeur and ranger",
-  "Travel insurance",
 ];
 
 const SAFARI_INCLUSIONS_HELPER =
