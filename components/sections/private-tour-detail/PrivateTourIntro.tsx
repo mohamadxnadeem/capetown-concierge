@@ -119,6 +119,7 @@ type PricingContext = {
   extraFeePerGuestZar?: number;
   extraFeeLabel?: string;
   hidePerPersonNote?: boolean;
+  hideVehiclePriceBadge?: boolean;
 };
 
 const DEFAULT_PRICING_CONTEXT: PricingContext = {
@@ -178,7 +179,7 @@ export default function PrivateTourIntro({
         {duration ? <QuickInfoBadge>⏱ {duration}</QuickInfoBadge> : null}
         {location ? <QuickInfoBadge>📍 {location}</QuickInfoBadge> : null}
         <QuickInfoBadge>🚗 Hotel pickup included</QuickInfoBadge>
-        {lowestVehiclePrice ? (
+        {lowestVehiclePrice && !pricingContext.hideVehiclePriceBadge ? (
           <QuickInfoBadge>
             <Money usd={lowestVehiclePrice} prefix="From " suffix={vehicleSuffix} />
           </QuickInfoBadge>

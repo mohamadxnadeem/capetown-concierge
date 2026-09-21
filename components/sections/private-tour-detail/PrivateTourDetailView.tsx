@@ -149,6 +149,7 @@ export default function PrivateTourDetailView({
                     extraFeePerGuestZar: 1185,
                     extraFeeLabel: "Aquila safari fee",
                     hidePerPersonNote: true,
+                    hideVehiclePriceBadge: true,
                   }
                 : undefined
             }
