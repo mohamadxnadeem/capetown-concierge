@@ -298,6 +298,30 @@ function getSocialDescription(experience: Experience) {
   return `${clean} Book privately via WhatsApp, we respond in 30 min.`;
 }
 
+// Bundled thumbnails used when the /all/ experiences endpoint returns
+// a tour without cover_photos (or with a stale URL). Guarantees the
+// related-tour grid at the bottom of every tour page always has an
+// image, rather than falling back to an empty green gradient.
+const RELATED_TOUR_FALLBACK_IMAGES: Record<string, string> = {
+  "cape-peninsula-tour": "/images/activities/capepoint.jpg",
+  "cape-town-city-tour": "/images/activities/tablemountain.jpg",
+  "winelands-chauffeur-drive": "/images/wine/graff.jpg",
+  "sunset-safari-experience": "/images/activities/safari.jpg",
+  "big-5-safari-from-cape-town": "/images/activities/safari.jpg",
+};
+
+function pickTourCoverImage(tour: Experience): string {
+  const photos = [...(tour.cover_photos || [])].sort(
+    (a, b) => (a.order ?? 0) - (b.order ?? 0)
+  );
+  const featured = photos.find((p) => p?.is_featured)?.cover_photos;
+  const firstByOrder = photos[0]?.cover_photos;
+  const remote = featured || firstByOrder || "";
+  if (remote) return remote;
+  const slugKey = (tour.slug || "").toLowerCase();
+  return RELATED_TOUR_FALLBACK_IMAGES[slugKey] || "";
+}
+
 function mapRelatedTours(
   allExperiences: ExperienceListItem[],
   currentSlug: string
@@ -311,9 +335,7 @@ function mapRelatedTours(
         tour.short_description ||
         tour.highlight ||
         "Discover another premium private tour experience in Cape Town.",
-      image:
-        [...(tour.cover_photos || [])].sort((a, b) => a.order - b.order)[0]
-          ?.cover_photos || "",
+      image: pickTourCoverImage(tour),
       href: `/tours/${tour.slug}`,
       price: formatPriceRange(tour.price_from, tour.price_to),
     }));
