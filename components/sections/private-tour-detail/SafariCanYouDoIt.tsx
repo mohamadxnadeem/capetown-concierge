@@ -62,7 +62,7 @@ export default function SafariCanYouDoIt() {
         <Eyebrow>Safari From Cape Town</Eyebrow>
         <Title>Can You Do a Safari in Cape Town?</Title>
         <Body>
-          Yes, as a day trip. Cape Town has no wildlife reserves with the Big 5, so most visitors think they need to fly to Kruger. They don&apos;t. Aquila Private Game Reserve is a malaria-free Big 5 reserve in the Karoo, about two hours from the city. Our private chauffeur takes you there and back, so you get a real safari without an extra flight, extra hotel or a shared tour bus.
+          Yes, as a day trip. Cape Town has no wildlife reserves with the Big 5, so most visitors think they need to fly to Kruger. They don&apos;t. Aquila Private Game Reserve is a malaria-free Big 5 reserve in the Karoo, about two hours from the city. Our private chauffeur takes you there and back, so you get a real safari without an extra flight, extra hotel or a shared tour bus. We arrange the reserve booking for you alongside the chauffeur, so it&apos;s one WhatsApp thread from your first message to drop-off at your hotel.
         </Body>
         <CtaAnchor
           href={buildWhatsAppLink(SAFARI_CTA_MESSAGE)}

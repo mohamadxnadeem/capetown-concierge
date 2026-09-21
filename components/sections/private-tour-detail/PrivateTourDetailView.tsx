@@ -46,7 +46,7 @@ const SAFARI_NOT_INCLUDED = [
 ];
 
 const SAFARI_INCLUSIONS_HELPER =
-  "The Aquila reserve handles the game drive, snacks and lodge meals under a separate per-guest fee. We book both sides for you.";
+  "The Aquila fee is paid to the reserve; the chauffeur fee is paid to us. We handle both bookings for you so it's one arrangement, not two.";
 
 const SAFARI_INCLUSIONS_NOTE =
   "Tip: bring a warm layer. Karoo evenings get cold, even in summer.";
