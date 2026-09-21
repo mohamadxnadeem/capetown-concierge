@@ -51,12 +51,6 @@ const SAFARI_INCLUSIONS_HELPER =
 const SAFARI_INCLUSIONS_NOTE =
   "Tip: bring a warm layer. Karoo evenings get cold, even in summer.";
 
-const SAFARI_REVIEW_PLACEHOLDER: ReviewItem = {
-  quote: "[SAFARI REVIEW PLACEHOLDER: replace with real guest review]",
-  name: "Name",
-  subtitle: "Sunset Safari Day Trip",
-};
-
 
 import {
   Experience,
@@ -121,9 +115,10 @@ export default function PrivateTourDetailView({
 
   const stops = [...(experience.stops || [])].sort((a, b) => a.order - b.order);
 
-  const pageReviews: ReviewItem[] = isSafari
-    ? [SAFARI_REVIEW_PLACEHOLDER, ...reviewItems]
-    : reviewItems;
+  // Safari-specific first-slot review is intentionally omitted until we
+  // have a real guest quote. Do not re-add a placeholder here; render
+  // the shared review list instead.
+  const pageReviews: ReviewItem[] = reviewItems;
 
   return (
     <PageWrap>
