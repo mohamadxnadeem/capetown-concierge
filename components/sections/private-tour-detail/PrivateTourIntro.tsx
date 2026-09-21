@@ -88,6 +88,14 @@ const AlertCard = styled.div`
   border: 1px solid rgba(212, 175, 55, 0.22);
 `;
 
+const HeroPriceLine = styled.p`
+  margin: 18px 0 0;
+  color: ${({ theme }) => theme.colors.heading};
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.5;
+`;
+
 const AlertTitle = styled.div`
   color: ${({ theme }) => theme.colors.heading};
   font-weight: 700;
@@ -120,6 +128,8 @@ type PricingContext = {
   extraFeeLabel?: string;
   hidePerPersonNote?: boolean;
   hideVehiclePriceBadge?: boolean;
+  hideExtraFeeBadge?: boolean;
+  heroPriceLine?: string;
 };
 
 const DEFAULT_PRICING_CONTEXT: PricingContext = {
@@ -184,7 +194,7 @@ export default function PrivateTourIntro({
             <Money usd={lowestVehiclePrice} prefix="From " suffix={vehicleSuffix} />
           </QuickInfoBadge>
         ) : null}
-        {pricingContext.extraFeePerGuestZar ? (
+        {pricingContext.extraFeePerGuestZar && !pricingContext.hideExtraFeeBadge ? (
           <QuickInfoBadge>
             <Money
               usd={pricingContext.extraFeePerGuestZar}
@@ -194,6 +204,10 @@ export default function PrivateTourIntro({
           </QuickInfoBadge>
         ) : null}
       </QuickInfoRow>
+
+      {pricingContext.heroPriceLine ? (
+        <HeroPriceLine>{pricingContext.heroPriceLine}</HeroPriceLine>
+      ) : null}
 
       {showPerPersonNote && lowestVehiclePrice ? (
         <PriceNote>

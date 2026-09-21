@@ -212,8 +212,12 @@ const SUNSET_SAFARI: TourPageContent = {
     "✔ Malaria-free reserve, no pills or jabs",
     "✔ PDP-licensed chauffeur",
   ],
-  itineraryTitle: SHARED_ITINERARY_TITLE,
-  itinerarySubheading: SHARED_ITINERARY_SUBHEADING,
+  // Safari runs on a fixed schedule set by the reserve's game drive
+  // time, so the shared "swap, extend or skip stops" language is wrong
+  // here. Local override kept in this block only.
+  itineraryTitle: "Your Safari Day, Stop by Stop",
+  itinerarySubheading:
+    "This is a set schedule built around Aquila's afternoon game drive, so the timings below are fixed. Your chauffeur handles everything either side of it: the pickup, the drive through the Hex River Valley, and getting you home the same night.",
   highlightsTitle: "Why Guests Choose This Over a Standard Safari Transfer",
   highlights: [
     {
@@ -283,7 +287,7 @@ const SUNSET_SAFARI: TourPageContent = {
     {
       question: "Can we customise the timing or add extra activities?",
       answer:
-        "The afternoon and sunset timing is set by the reserve's game drive schedule, but we can adjust your pickup time and return journey to suit your hotel plans. Message us and we'll work it out.",
+        "The game drive runs at a fixed time set by the reserve, so the core schedule stays the same for every booking. What we can adjust is your pickup time and any stops on the drive there and back, for example a coffee stop or a photo stop in the Hex River Valley. If you want a longer safari, message us and we'll suggest a full-day or overnight option at Aquila.",
     },
   ],
 };

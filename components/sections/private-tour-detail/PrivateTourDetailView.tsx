@@ -51,6 +51,16 @@ const SAFARI_INCLUSIONS_HELPER =
 const SAFARI_INCLUSIONS_NOTE =
   "Tip: bring a warm layer. Karoo evenings get cold, even in summer.";
 
+// Safari runs on a fixed reserve-set schedule, so "Flexible Itinerary"
+// is replaced with the malaria-free trust cue in the vehicle row.
+const SAFARI_VALUE_STRIP_ITEMS = [
+  "✔ Private Chauffeur Service",
+  "✔ Fuel Included",
+  "✔ Toll Fees Included",
+  "✔ Hotel Pickup",
+  "✔ Malaria-Free Reserve",
+];
+
 
 import {
   Experience,
@@ -150,6 +160,9 @@ export default function PrivateTourDetailView({
                     extraFeeLabel: "Aquila safari fee",
                     hidePerPersonNote: true,
                     hideVehiclePriceBadge: true,
+                    hideExtraFeeBadge: true,
+                    heroPriceLine:
+                      "From R4,850 per vehicle + Aquila safari fee R1,185 per guest",
                   }
                 : undefined
             }
@@ -195,7 +208,11 @@ export default function PrivateTourDetailView({
 
       <Section>
         <Container>
-          <PrivateTourVehicles items={vehicles} tourTitle={safeTourTitle} />
+          <PrivateTourVehicles
+            items={vehicles}
+            tourTitle={safeTourTitle}
+            valueStripItems={isSafari ? SAFARI_VALUE_STRIP_ITEMS : undefined}
+          />
         </Container>
       </Section>
 

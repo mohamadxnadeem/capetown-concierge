@@ -15,7 +15,16 @@ import { useCurrency } from "../../../context/CurrencyContext";
 type Props = {
   items: TourVehicle[];
   tourTitle: string;
+  valueStripItems?: string[];
 };
+
+const DEFAULT_VALUE_STRIP_ITEMS = [
+  "✔ Private Chauffeur Service",
+  "✔ Fuel Included",
+  "✔ Toll Fees Included",
+  "✔ Hotel Pickup",
+  "✔ Flexible Itinerary",
+];
 
 
 const cinematicPan = keyframes`
@@ -276,7 +285,11 @@ const POPULAR_CHOICE_TITLES = new Set([
   "Mercedes V-Class",
 ]);
 
-export default function PrivateTourVehicles({ items, tourTitle }: Props) {
+export default function PrivateTourVehicles({
+  items,
+  tourTitle,
+  valueStripItems = DEFAULT_VALUE_STRIP_ITEMS,
+}: Props) {
   const sliderRef = useRef<HTMLDivElement | null>(null);
   const autoScrollRef = useRef<NodeJS.Timeout | null>(null);
   const { rates, format } = useCurrency();
@@ -326,11 +339,9 @@ export default function PrivateTourVehicles({ items, tourTitle }: Props) {
       </SectionHeader>
 
       <ValueStrip>
-        <ValueItem>✔ Private Chauffeur Service</ValueItem>
-        <ValueItem>✔ Fuel Included</ValueItem>
-        <ValueItem>✔ Toll Fees Included</ValueItem>
-        <ValueItem>✔ Hotel Pickup</ValueItem>
-        <ValueItem>✔ Flexible Itinerary</ValueItem>
+        {valueStripItems.map((label) => (
+          <ValueItem key={label}>{label}</ValueItem>
+        ))}
       </ValueStrip>
 
       <CarouselWrap>
