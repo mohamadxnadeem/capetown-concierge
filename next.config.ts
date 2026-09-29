@@ -79,6 +79,14 @@ const nextConfig: NextConfig = {
         destination: "/tours/cape-peninsula-tour",
         permanent: true,
       },
+      // Route rename: /proposal → /booking-confirmation. The mobile app,
+      // WhatsApp templates and any existing shared links still resolve
+      // via this 301 while new shares can adopt the new URL.
+      {
+        source: "/proposal/:group_reference",
+        destination: "/booking-confirmation/:group_reference",
+        permanent: true,
+      },
       // NOTE: do NOT add case-only redirects (e.g. BMW-X5 → bmw-x5).
       // Next.js matches sources case-insensitively so they loop on the
       // lowercase URL. Slug lowercasing is handled in code instead.
