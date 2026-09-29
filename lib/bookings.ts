@@ -149,6 +149,72 @@ export type BookingLookupResult =
   | { kind: "not_found" }
   | { kind: "error"; message: string };
 
+// ─── Booking groups (multi-vehicle proposals) ─────────────────────────
+// The operator creates a group of bookings and sends one client-facing
+// link. Backend returns a sanitised payload: no driver rates, no
+// profit, only the fields the client needs to see. Each child in
+// `bookings` uses a lighter shape than the full Booking model.
+
+export interface ProposalDay {
+  date: string;
+  start_time: string | null;
+  end_time: string | null;
+  notes: string | null;
+}
+
+export interface ProposalDriver {
+  full_name: string;
+}
+
+export interface ProposalCar {
+  title: string;
+  cover_photos?: BookingPhoto[] | null;
+}
+
+export interface ProposalPropertyRef {
+  name: string;
+  location?: string | null;
+  cover_photos?: BookingPhoto[] | null;
+}
+
+export interface ProposalAccommodationSegment {
+  start_date: string;
+  end_date: string;
+  kind: AccommodationKind;
+  villa: ProposalPropertyRef | null;
+  hotel: ProposalPropertyRef | null;
+  notes: string | null;
+}
+
+export interface ProposalBooking {
+  booking_reference: string;
+  car: ProposalCar | null;
+  driver: ProposalDriver | null;
+  days: ProposalDay[];
+  pickup_location: string | null;
+  dropoff_location: string | null;
+  trip_description: string | null;
+  accommodation_segments: ProposalAccommodationSegment[];
+}
+
+export interface BookingGroup {
+  group_reference: string;
+  title: string;
+  customer_name: string;
+  status: BookingStatus;
+  total_client_amount: string;
+  currency: string;
+  payment_link: string | null;
+  is_paid: boolean;
+  bookings: ProposalBooking[];
+  created_at: string;
+}
+
+export type BookingGroupLookupResult =
+  | { kind: "ok"; group: BookingGroup }
+  | { kind: "not_found" }
+  | { kind: "error"; message: string };
+
 export interface UpsellTour {
   title: string;
   description: string;
@@ -253,6 +319,37 @@ async function _fetchBookingByReference(
 
     const booking = (await res.json()) as Booking;
     return { kind: "ok", booking };
+  } catch (err) {
+    const message = err instanceof Error ? err.message : "Network error";
+    return { kind: "error", message };
+  }
+}
+
+// ─── Booking group fetch ─────────────────────────────────────────────
+// Uses ISR (30s) via next: { revalidate }. Yoco webhook / operator
+// changes propagate within that window so the paid pill / pay button
+// stay honest without stale caching.
+
+export const fetchBookingGroupByReference = cache(_fetchBookingGroupByReference);
+
+async function _fetchBookingGroupByReference(
+  reference: string
+): Promise<BookingGroupLookupResult> {
+  try {
+    const res = await fetch(
+      `${BACKEND_URL}/api/booking-groups/${encodeURIComponent(reference)}/`,
+      { next: { revalidate: 30 } }
+    );
+
+    if (res.status === 404) {
+      return { kind: "not_found" };
+    }
+    if (!res.ok) {
+      return { kind: "error", message: `Server responded with ${res.status}` };
+    }
+
+    const group = (await res.json()) as BookingGroup;
+    return { kind: "ok", group };
   } catch (err) {
     const message = err instanceof Error ? err.message : "Network error";
     return { kind: "error", message };
