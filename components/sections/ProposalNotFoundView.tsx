@@ -88,16 +88,16 @@ interface Props {
 
 export default function ProposalNotFoundView({ reference }: Props) {
   const whatsappHref = `https://wa.me/${brand.whatsappNumber}?text=${encodeURIComponent(
-    `Hi, I can't load proposal ${reference} on the website. Could you help?`
+    `Hi, I can't load booking ${reference} on the website. Could you help?`
   )}`;
 
   return (
     <Wrapper>
       <Card>
         <Eyebrow>{brand.name}</Eyebrow>
-        <Heading>We couldn&apos;t find that proposal</Heading>
+        <Heading>We couldn&apos;t find that booking</Heading>
         <Body>
-          No proposal matches reference <Reference>{reference}</Reference>.
+          No booking matches reference <Reference>{reference}</Reference>.
           Double-check the link we sent you or message us and we&apos;ll
           sort it out right away.
         </Body>
@@ -107,7 +107,7 @@ export default function ProposalNotFoundView({ reference }: Props) {
           rel="noopener noreferrer"
           onClick={() =>
             trackWhatsAppClick({
-              source: "proposal_not_found",
+              source: "booking_confirmation_not_found",
               label: "Message support",
               tour: reference,
             })
