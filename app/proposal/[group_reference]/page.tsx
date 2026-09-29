@@ -58,8 +58,8 @@ export async function generateMetadata({
   const decoded = decodeURIComponent(group_reference).trim();
 
   const baseMeta: Metadata = {
-    title: "Proposal | Cape Town Concierge",
-    description: `${brand.name} client proposal`,
+    title: "Booking | Cape Town Concierge",
+    description: `${brand.name} booking confirmation`,
     alternates: { canonical: `${SITE_URL}/proposal` },
     robots: { index: false, follow: false },
   };
@@ -72,7 +72,7 @@ export async function generateMetadata({
   const { group } = result;
   const vehicleCount = group.bookings.filter((b) => b.car).length;
   const dateRange = summariseDateRange(group);
-  const description = `${brand.name} proposal, ${vehicleCount || group.bookings.length} vehicle${
+  const description = `${brand.name} booking, ${vehicleCount || group.bookings.length} vehicle${
     vehicleCount === 1 ? "" : "s"
   }${dateRange ? `, ${dateRange}` : ""}`;
 

@@ -17,12 +17,8 @@ import type {
 
 const Wrapper = styled.main`
   background: ${({ theme }) => theme.colors.background};
-  padding-bottom: 120px;
+  padding-bottom: 80px;
   min-height: calc(100vh - 82px);
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
-    padding-bottom: 140px;
-  }
 `;
 
 const Article = styled.article`
@@ -182,134 +178,6 @@ const HeroChip = styled.div`
   color: rgba(255, 255, 255, 0.94);
   font-size: 0.86rem;
   font-weight: 700;
-`;
-
-// ─── Sticky summary bar ───────────────────────────────────────────────
-
-const SummaryBar = styled.section`
-  background: ${({ theme }) => theme.colors.white};
-  border: 1px solid ${({ theme }) => theme.colors.border};
-  border-radius: 22px;
-  padding: 20px 24px;
-  box-shadow: ${({ theme }) => theme.shadows.soft};
-
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 18px;
-
-  @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
-    position: sticky;
-    top: 12px;
-    z-index: 8;
-  }
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
-    position: fixed;
-    left: 12px;
-    right: 12px;
-    bottom: 12px;
-    z-index: 20;
-    padding: 14px 18px;
-    border-radius: 16px;
-    box-shadow: 0 20px 40px rgba(6, 62, 35, 0.28);
-  }
-`;
-
-const SummaryLeft = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-`;
-
-const SummaryLabel = styled.div`
-  color: ${({ theme }) => theme.colors.textMuted};
-  font-size: 0.76rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-`;
-
-const SummaryTotal = styled.div`
-  color: ${({ theme }) => theme.colors.primary};
-  font-size: 1.7rem;
-  font-weight: 800;
-  letter-spacing: 0.01em;
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
-    font-size: 1.35rem;
-  }
-`;
-
-const SummaryRight = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex: 1 1 auto;
-  justify-content: flex-end;
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
-    flex: 0 0 auto;
-  }
-`;
-
-const PayButton = styled.a`
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  min-height: 52px;
-  padding: 0 22px;
-  border-radius: 14px;
-  background: ${({ theme }) => theme.colors.primary};
-  color: white;
-  font-weight: 800;
-  font-size: 0.98rem;
-  text-decoration: none;
-  box-shadow: 0 10px 28px rgba(11, 91, 51, 0.28);
-
-  &:hover {
-    background: ${({ theme }) => theme.colors.primaryDark};
-    transform: translateY(-1px);
-  }
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
-    min-height: 46px;
-    font-size: 0.92rem;
-    padding: 0 16px;
-  }
-`;
-
-const PaidPill = styled.div`
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 18px;
-  border-radius: 999px;
-  background: #e6f4ec;
-  border: 1px solid #bcdfc8;
-  color: #0b5b33;
-  font-weight: 800;
-  font-size: 0.98rem;
-`;
-
-const PendingNote = styled.div`
-  color: ${({ theme }) => theme.colors.textMuted};
-  font-size: 0.92rem;
-  line-height: 1.4;
-  max-width: 320px;
-  text-align: right;
-`;
-
-const CancelledBanner = styled.div`
-  background: #fbe9e9;
-  border: 1px solid #eec3c3;
-  color: #b03b3b;
-  border-radius: 18px;
-  padding: 20px 22px;
-  font-weight: 700;
-  line-height: 1.5;
 `;
 
 // ─── Card + content primitives ────────────────────────────────────────
@@ -643,19 +511,6 @@ const EmptyState = styled.div`
 
 // ─── Helpers ──────────────────────────────────────────────────────────
 
-function parseMoney(value: string | number | null | undefined): number | null {
-  if (value === null || value === undefined || value === "") return null;
-  const n = Number(String(value).replace(/[^0-9.]/g, ""));
-  return Number.isFinite(n) && n >= 0 ? n : null;
-}
-
-function formatCurrency(amount: number, currency: string): string {
-  if (currency === "ZAR") {
-    return `R${Math.round(amount).toLocaleString()}`;
-  }
-  return `${currency} ${Math.round(amount).toLocaleString()}`;
-}
-
 function pickPhoto(photos: BookingPhoto[] | null | undefined): string | null {
   if (!photos?.length) return null;
   const valid = photos.filter((p) => Boolean(p?.cover_photos));
@@ -917,13 +772,7 @@ type Props = {
 };
 
 export default function ProposalDetailView({ group }: Props) {
-  const totalAmount = parseMoney(group.total_client_amount);
-  const totalFormatted = totalAmount !== null
-    ? formatCurrency(totalAmount, group.currency)
-    : "";
   const status: DisplayStatus = group.status;
-  const isCancelled = status === "cancelled";
-  const isPaid = group.is_paid === true;
   const bookingsCount = group.bookings.length;
   const vehicleCount = group.bookings.filter((b) => b.car).length;
 
@@ -938,7 +787,7 @@ export default function ProposalDetailView({ group }: Props) {
   const range = useMemo(() => computeGroupRange(group), [group]);
 
   const whatsappHref = `https://wa.me/${brand.whatsappNumber}?text=${encodeURIComponent(
-    `Hi, I'm reading proposal ${group.group_reference}. `
+    `Hi, about my booking ${group.group_reference}. `
   )}`;
 
   return (
@@ -967,7 +816,7 @@ export default function ProposalDetailView({ group }: Props) {
           </HeroTopRow>
 
           <HeroTitle>{group.title}</HeroTitle>
-          <HeroSubtitle>Prepared for {group.customer_name}</HeroSubtitle>
+          <HeroSubtitle>Booking confirmation for {group.customer_name}</HeroSubtitle>
 
           <HeroChipRow>
             {range ? (
@@ -985,48 +834,17 @@ export default function ProposalDetailView({ group }: Props) {
       </Hero>
 
       <Article>
-        {isCancelled ? (
-          <CancelledBanner>
-            This proposal has been cancelled. Please contact us if you&apos;d
-            like a new one.
-          </CancelledBanner>
-        ) : (
-          <SummaryBar>
-            <SummaryLeft>
-              <SummaryLabel>Total</SummaryLabel>
-              <SummaryTotal>{totalFormatted || "—"}</SummaryTotal>
-            </SummaryLeft>
-            <SummaryRight>
-              {isPaid ? (
-                <PaidPill>✓ Paid</PaidPill>
-              ) : status === "confirmed" && group.payment_link ? (
-                <PayButton
-                  href={group.payment_link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Pay securely {totalFormatted ? `— ${totalFormatted}` : ""}
-                </PayButton>
-              ) : (
-                <PendingNote>
-                  Awaiting confirmation from {brand.name}
-                </PendingNote>
-              )}
-            </SummaryRight>
-          </SummaryBar>
-        )}
-
         {bookingsCount === 0 ? (
           <EmptyState>
-            This proposal is being assembled, refresh in a moment.
+            Your booking is being assembled, refresh in a moment.
           </EmptyState>
         ) : (
           <>
             <div>
-              <SectionTitle>What&apos;s included in this proposal</SectionTitle>
+              <SectionTitle>Your booking details</SectionTitle>
               <SectionIntro>
-                Every booking below is arranged and billed together. One
-                confirmation, one point of contact, one payment.
+                Everything included in this booking is listed below. Save the
+                reference above, and message us any time if plans change.
               </SectionIntro>
             </div>
 
@@ -1040,12 +858,11 @@ export default function ProposalDetailView({ group }: Props) {
         )}
 
         <AboutCard>
-          <AboutHeading>About {brand.name}</AboutHeading>
+          <AboutHeading>Need to change something?</AboutHeading>
           <AboutBody>
-            Private chauffeur hire and guided touring in Cape Town. One
-            vehicle, one driver, for a transfer or for a fortnight. Priced
-            per vehicle, not per person. When you message, please include
-            the reference so we can find the proposal quickly.
+            Message us on WhatsApp with your reference and we&apos;ll pick up
+            from there. Same driver, same vehicle, same team looking after
+            you from arrival to departure.
           </AboutBody>
           <AboutRow>
             <WhatsAppButton
@@ -1054,8 +871,8 @@ export default function ProposalDetailView({ group }: Props) {
               rel="noopener noreferrer"
               onClick={() =>
                 trackWhatsAppClick({
-                  source: "proposal_about",
-                  label: "Message us about proposal",
+                  source: "booking_confirmation_about",
+                  label: "Message us about booking",
                   tour: group.group_reference,
                 })
               }
