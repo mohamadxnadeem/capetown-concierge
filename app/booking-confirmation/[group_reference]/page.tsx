@@ -60,7 +60,7 @@ export async function generateMetadata({
   const baseMeta: Metadata = {
     title: "Booking | Cape Town Concierge",
     description: `${brand.name} booking confirmation`,
-    alternates: { canonical: `${SITE_URL}/proposal` },
+    alternates: { canonical: `${SITE_URL}/booking-confirmation` },
     robots: { index: false, follow: false },
   };
 
@@ -81,12 +81,12 @@ export async function generateMetadata({
   return {
     title: group.title,
     description,
-    alternates: { canonical: `${SITE_URL}/proposal/${group.group_reference}` },
+    alternates: { canonical: `${SITE_URL}/booking-confirmation/${group.group_reference}` },
     robots: { index: false, follow: false },
     openGraph: {
       title: group.title,
       description,
-      url: `${SITE_URL}/proposal/${group.group_reference}`,
+      url: `${SITE_URL}/booking-confirmation/${group.group_reference}`,
       siteName: brand.name,
       type: "website",
       locale: "en_ZA",
