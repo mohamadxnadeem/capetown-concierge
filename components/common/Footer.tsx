@@ -184,6 +184,17 @@ const Bottom = styled.div`
   justify-content: space-between;
 `;
 
+// Trading-name legal line. Bumped slightly brighter than the copyright
+// line because WCAG contrast of white@35% on the near-black footer is
+// below 4.5:1, and this line is proof that WhatsApp reviewers (and
+// anyone else) need to be able to read.
+const TradingName = styled.p`
+  margin: 0 0 14px;
+  font-size: 0.82rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.55);
+`;
+
 const Copyright = styled.p`
   margin: 0;
   font-size: 0.82rem;
@@ -340,6 +351,11 @@ export default function Footer() {
           <TrustBadge>✔ Private — No Shared Rides</TrustBadge>
           <TrustBadge>✔ Cape Town Based</TrustBadge>
         </TrustRow>
+
+        <TradingName>
+          Cape Town Concierge is a trading name of Why Cape Town (Pty) Ltd,
+          Reg. No. 2025/064751/07.
+        </TradingName>
 
         <Bottom>
           <Copyright>
