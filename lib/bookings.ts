@@ -160,6 +160,10 @@ export interface ProposalDay {
   start_time: string | null;
   end_time: string | null;
   notes: string | null;
+  // When true the booked shift continues past midnight into the next
+  // calendar day; the itinerary view adds a synthetic morning-tail
+  // entry on date + 1.
+  end_next_day?: boolean;
 }
 
 export interface ProposalDriver {
