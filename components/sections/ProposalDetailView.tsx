@@ -833,6 +833,93 @@ function describeTimeWindow(day: ProposalDay): string | null {
   return day.end_next_day ? `${base} (next morning)` : base;
 }
 
+
+// ─── Vehicle shifts ───────────────────────────────────────────────────
+// Same rule as the app: group child bookings that have a car by car.id.
+// A vehicle with 2+ bookings gets "Shift 1", "Shift 2" ... ordered by
+// earliest day (date, then start_time, nulls last), then booking_reference.
+
+type VehicleShift = { label: string; booking: ProposalBooking };
+type VehicleShiftGroup = { carId: number; car: NonNullable<ProposalBooking["car"]>; shifts: VehicleShift[] };
+
+function firstDayKey(b: ProposalBooking): [string, string] {
+  const sorted = [...b.days]
+    .filter((d) => d.date)
+    .sort((a, c) => (a.date + (a.start_time ?? "99")).localeCompare(c.date + (c.start_time ?? "99")));
+  const d = sorted[0];
+  return d ? [d.date, d.start_time ?? "99:99:99"] : ["9999-99-99", "99:99:99"];
+}
+
+function buildShiftGroups(group: BookingGroup): VehicleShiftGroup[] {
+  const byCar = new Map<number, ProposalBooking[]>();
+  group.bookings.forEach((b) => {
+    if (!b.car || b.car.id == null) return;
+    const list = byCar.get(b.car.id) ?? [];
+    list.push(b);
+    byCar.set(b.car.id, list);
+  });
+  const out: VehicleShiftGroup[] = [];
+  byCar.forEach((list, carId) => {
+    if (list.length < 2) return;
+    const ordered = [...list].sort((a, b) => {
+      const [ad, at] = firstDayKey(a);
+      const [bd, bt] = firstDayKey(b);
+      return ad.localeCompare(bd) || at.localeCompare(bt) || a.booking_reference.localeCompare(b.booking_reference);
+    });
+    out.push({
+      carId,
+      car: ordered[0].car!,
+      shifts: ordered.map((booking, i) => ({ label: `Shift ${i + 1}`, booking })),
+    });
+  });
+  return out;
+}
+
+function shiftTimes(day: ProposalDay): string {
+  const start = formatTime(day.start_time);
+  const end = formatTime(day.end_time);
+  const base = start && end ? `${start} – ${end}` : start ? `from ${start}` : end ? `until ${end}` : "Times to be confirmed";
+  return day.end_next_day ? `${base} (next day)` : base;
+}
+
+function VehicleShiftsCard({ vg, currency }: { vg: VehicleShiftGroup; currency: string }) {
+  const photo = pickCarPhoto(vg.car);
+  return (
+    <VehicleCard style={{ flexDirection: "column" }}>
+      <div style={{ display: "flex", gap: 16, flexWrap: "wrap" }}>
+        {photo ? (
+          <VehiclePhoto>
+            <SmartImage src={photo} alt={vg.car.title} sizes="(max-width: 640px) 100vw, 220px" />
+          </VehiclePhoto>
+        ) : null}
+        <VehicleBody>
+          <VehicleName>{vg.car.title}</VehicleName>
+          <DriverLine>{vg.shifts.length} shifts on this vehicle</DriverLine>
+        </VehicleBody>
+      </div>
+      {vg.shifts.map(({ label, booking }) => {
+        const amt = parseMoney(booking.total_client_amount);
+        return (
+          <div key={booking.booking_reference} style={{ borderTop: "1px solid #e6ebe8", padding: "12px 0 0", marginTop: 12 }}>
+            <div style={{ display: "flex", justifyContent: "space-between", gap: 10, flexWrap: "wrap" }}>
+              <strong>{label}</strong>
+              {amt !== null ? <span>{formatCurrency(amt, currency)}</span> : null}
+            </div>
+            <DriverLine>
+              {booking.driver ? `Driver: ${booking.driver.full_name}` : "Driver to be confirmed"}
+            </DriverLine>
+            {booking.days.map((d, i) => (
+              <TimeLine key={`${d.date}-${i}`}>
+                {formatFullDate(d.date)}, {shiftTimes(d)}
+              </TimeLine>
+            ))}
+          </div>
+        );
+      })}
+    </VehicleCard>
+  );
+}
+
 function ItineraryVehicleCard({ entry }: { entry: ItineraryEntry }) {
   const car = entry.booking.car;
   const photo = pickCarPhoto(car);
@@ -931,6 +1018,7 @@ export default function ProposalDetailView({ group }: Props) {
   const range = useMemo(() => computeGroupRange(group), [group]);
   const itineraryDates = useMemo(() => buildItineraryDates(group), [group]);
   const accommSegments = useMemo(() => collectAccommodation(group), [group]);
+  const shiftGroups = useMemo(() => buildShiftGroups(group), [group]);
 
   const title = group.title || `Trip for ${group.customer_name}`;
 
@@ -1005,6 +1093,20 @@ export default function ProposalDetailView({ group }: Props) {
             </SummaryRight>
           </SummaryBar>
         )}
+
+        {shiftGroups.length > 0 ? (
+          <>
+            <div>
+              <SectionTitle>Your vehicles and shifts</SectionTitle>
+              <SectionIntro>
+                These vehicles run in more than one shift, each with its own driver and times.
+              </SectionIntro>
+            </div>
+            {shiftGroups.map((vg) => (
+              <VehicleShiftsCard key={vg.carId} vg={vg} currency={group.currency} />
+            ))}
+          </>
+        ) : null}
 
         {itineraryDates.length === 0 ? (
           <EmptyState>Itinerary being finalized. Refresh in a moment.</EmptyState>

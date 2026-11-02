@@ -171,6 +171,7 @@ export interface ProposalDriver {
 }
 
 export interface ProposalCar {
+  id?: number;
   title: string;
   cover_photos?: BookingPhoto[] | null;
 }
@@ -192,6 +193,7 @@ export interface ProposalAccommodationSegment {
 
 export interface ProposalBooking {
   booking_reference: string;
+  total_client_amount?: string | null;
   car: ProposalCar | null;
   driver: ProposalDriver | null;
   days: ProposalDay[];
