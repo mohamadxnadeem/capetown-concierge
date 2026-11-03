@@ -94,7 +94,7 @@ const statusPalette: Record<
     bg: "#fff3d6",
     fg: "#8a6411",
     border: "#eecd7a",
-    label: "PENDING",
+    label: "BOOKING DETAILS",
   },
   confirmed: {
     bg: "#ffffff",
@@ -106,7 +106,7 @@ const statusPalette: Record<
     bg: "#eef0f3",
     fg: "#34414c",
     border: "#d4dae0",
-    label: "COMPLETED",
+    label: "CONFIRMED",
   },
   cancelled: {
     bg: "#fbe9e9",
@@ -172,117 +172,6 @@ const HeroChip = styled.div`
   color: rgba(255, 255, 255, 0.94);
   font-size: 0.86rem;
   font-weight: 700;
-`;
-
-// ─── Sticky summary bar ───────────────────────────────────────────────
-
-const SummaryBar = styled.section`
-  background: ${({ theme }) => theme.colors.white};
-  border: 1px solid ${({ theme }) => theme.colors.border};
-  border-radius: 20px;
-  padding: 18px 20px;
-  margin-top: -44px;
-  position: relative;
-  z-index: 2;
-  box-shadow: ${({ theme }) => theme.shadows.soft};
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 14px;
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
-    flex-direction: column;
-    align-items: stretch;
-  }
-`;
-
-const SummaryLeft = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-`;
-
-const SummaryLabel = styled.div`
-  color: ${({ theme }) => theme.colors.textMuted};
-  font-size: 0.76rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-`;
-
-const SummaryTotal = styled.div`
-  color: ${({ theme }) => theme.colors.primary};
-  font-size: 1.7rem;
-  font-weight: 800;
-  letter-spacing: 0.01em;
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
-    font-size: 1.35rem;
-  }
-`;
-
-const SummaryRight = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex: 1 1 auto;
-  justify-content: flex-end;
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
-    justify-content: stretch;
-    & > * {
-      flex: 1;
-    }
-  }
-`;
-
-const PayButton = styled.a`
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  min-height: 52px;
-  padding: 0 22px;
-  border-radius: 14px;
-  background: ${({ theme }) => theme.colors.primary};
-  color: white;
-  font-weight: 800;
-  font-size: 0.98rem;
-  text-decoration: none;
-  box-shadow: 0 10px 28px rgba(11, 91, 51, 0.28);
-
-  &:hover {
-    background: ${({ theme }) => theme.colors.primaryDark};
-    transform: translateY(-1px);
-  }
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
-    min-height: 46px;
-    font-size: 0.92rem;
-    padding: 0 16px;
-  }
-`;
-
-const PaidPill = styled.div`
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 18px;
-  border-radius: 999px;
-  background: #e6f4ec;
-  border: 1px solid #bcdfc8;
-  color: #0b5b33;
-  font-weight: 800;
-  font-size: 0.98rem;
-`;
-
-const PendingNote = styled.div`
-  color: ${({ theme }) => theme.colors.textMuted};
-  font-size: 0.92rem;
-  line-height: 1.4;
-  max-width: 320px;
-  text-align: center;
 `;
 
 const CancelledBanner = styled.div`
@@ -538,13 +427,6 @@ const PlateLine = styled.div`
   letter-spacing: 0.04em;
 `;
 
-const Subtotal = styled.div`
-  color: ${({ theme }) => theme.colors.primary};
-  font-weight: 800;
-  font-size: 1rem;
-  white-space: nowrap;
-`;
-
 const RouteBlock = styled.div`
   display: flex;
   flex-direction: column;
@@ -599,17 +481,6 @@ const BarWrap = styled.div`
 
 
 // ─── Helpers ──────────────────────────────────────────────────────────
-
-function parseMoney(value: string | number | null | undefined): number | null {
-  if (value === null || value === undefined || value === "") return null;
-  const n = Number(String(value).replace(/[^0-9.]/g, ""));
-  return Number.isFinite(n) && n >= 0 ? n : null;
-}
-
-function formatCurrency(amount: number, currency: string): string {
-  if (currency === "ZAR") return `R${Math.round(amount).toLocaleString()}`;
-  return `${currency} ${Math.round(amount).toLocaleString()}`;
-}
 
 function orderedPhotos(photos: BookingPhoto[] | null | undefined): string[] {
   if (!photos?.length) return [];
@@ -902,12 +773,6 @@ function DayBar({ shifts }: { shifts: BarShift[] }) {
   );
 }
 
-function vehicleSubtotal(vg: VehicleGroup): number | null {
-  const amounts = vg.bookings.map((b) => parseMoney(b.total_client_amount));
-  if (!amounts.some((a) => a !== null)) return null;
-  return amounts.reduce<number>((sum, a) => sum + (a ?? 0), 0);
-}
-
 function uniqueText(values: Array<string | null | undefined>): string[] {
   const seen = new Set<string>();
   const out: string[] = [];
@@ -923,18 +788,13 @@ function uniqueText(values: Array<string | null | undefined>): string[] {
 
 function VehicleScheduleCard({
   vg,
-  currency,
-  showSubtotal,
   priority,
   photo,
 }: {
   vg: VehicleGroup;
   photo: string | null;
-  currency: string;
-  showSubtotal: boolean;
   priority: boolean;
 }) {
-  const subtotal = showSubtotal ? vehicleSubtotal(vg) : null;
   const pickups = uniqueText(vg.bookings.map((b) => b.pickup_location));
   const dropoffs = uniqueText(vg.bookings.map((b) => b.dropoff_location));
   const descriptions = uniqueText(vg.bookings.map((b) => b.trip_description));
@@ -963,9 +823,6 @@ function VehicleScheduleCard({
             <VehicleName>{vg.car.title}</VehicleName>
             {vg.plate ? <PlateLine>Number plate {vg.plate}</PlateLine> : null}
           </div>
-          {subtotal !== null && subtotal > 0 ? (
-            <Subtotal>{formatCurrency(subtotal, currency)}</Subtotal>
-          ) : null}
         </VHead>
 
         {hasRoute ? (
@@ -1027,13 +884,8 @@ type Props = {
 };
 
 export default function ProposalDetailView({ group }: Props) {
-  const totalAmount = parseMoney(group.total_client_amount);
-  const totalFormatted = totalAmount !== null
-    ? formatCurrency(totalAmount, group.currency)
-    : "";
   const status: DisplayStatus = group.status;
   const isCancelled = status === "cancelled";
-  const isPaid = group.is_paid === true;
 
   const range = useMemo(() => computeGroupRange(group), [group]);
   const accommSegments = useMemo(() => collectAccommodation(group), [group]);
@@ -1086,29 +938,7 @@ export default function ProposalDetailView({ group }: Props) {
             This booking has been cancelled. Please contact us if you&apos;d
             like help re-planning.
           </CancelledBanner>
-        ) : (
-          <SummaryBar>
-            <SummaryLeft>
-              <SummaryLabel>Total</SummaryLabel>
-              {totalFormatted ? <SummaryTotal>{totalFormatted}</SummaryTotal> : null}
-            </SummaryLeft>
-            <SummaryRight>
-              {isPaid ? (
-                <PaidPill>Paid</PaidPill>
-              ) : status === "confirmed" && group.payment_link ? (
-                <PayButton
-                  href={group.payment_link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Pay securely{totalFormatted ? `, ${totalFormatted}` : ""}
-                </PayButton>
-              ) : (
-                <PendingNote>Awaiting confirmation from {brand.name}</PendingNote>
-              )}
-            </SummaryRight>
-          </SummaryBar>
-        )}
+        ) : null}
 
         {vehicleGroups.length > 0 ? (
           <>
@@ -1126,8 +956,6 @@ export default function ProposalDetailView({ group }: Props) {
                 key={vg.key}
                 vg={vg}
                 photo={vehiclePhotos[i]}
-                currency={group.currency}
-                showSubtotal={vehicleGroups.length > 1}
                 priority={i === 0}
               />
             ))}
