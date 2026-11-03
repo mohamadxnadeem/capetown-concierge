@@ -834,56 +834,173 @@ function describeTimeWindow(day: ProposalDay): string | null {
 }
 
 
-// ─── Vehicle shifts ───────────────────────────────────────────────────
-// Same rule as the app: group child bookings that have a car by car.id.
-// A vehicle with 2+ bookings gets "Shift 1", "Shift 2" ... ordered by
-// earliest day (date, then start_time, nulls last), then booking_reference.
+// ─── Vehicles and time bars ───────────────────────────────────────────
+// One card per vehicle (grouped by car.id). Each date the vehicle works gets
+// a 00:00 to 24:00 time bar, like the app's DayScheduleBar. Two or more rows
+// on the same date are split shifts, drawn in different colours.
 
-type VehicleShift = { label: string; booking: ProposalBooking };
-type VehicleShiftGroup = { carId: number; car: NonNullable<ProposalBooking["car"]>; shifts: VehicleShift[] };
+const SHIFT_COLORS = ["#0b5b33", "#b8923a", "#2f6f9f", "#8a4f7d"];
 
-function firstDayKey(b: ProposalBooking): [string, string] {
-  const sorted = [...b.days]
-    .filter((d) => d.date)
-    .sort((a, c) => (a.date + (a.start_time ?? "99")).localeCompare(c.date + (c.start_time ?? "99")));
-  const d = sorted[0];
-  return d ? [d.date, d.start_time ?? "99:99:99"] : ["9999-99-99", "99:99:99"];
+type BarShift = {
+  start: string | null;
+  end: string | null;
+  endNextDay: boolean;
+  driverName: string | null;
+  color: string;
+};
+
+type VehicleDate = { date: string; shifts: BarShift[] };
+
+type VehicleGroup = {
+  key: string;
+  car: NonNullable<ProposalBooking["car"]>;
+  plate: string | null;
+  bookings: ProposalBooking[];
+  dates: VehicleDate[];
+};
+
+function toHours(t: string | null | undefined): number | null {
+  if (!t) return null;
+  const m = /^(\d{1,2}):(\d{2})/.exec(t.trim());
+  return m ? parseInt(m[1], 10) + parseInt(m[2], 10) / 60 : null;
 }
 
-function buildShiftGroups(group: BookingGroup): VehicleShiftGroup[] {
-  const byCar = new Map<number, ProposalBooking[]>();
+function buildVehicleGroups(group: BookingGroup): VehicleGroup[] {
+  const map = new Map<string, VehicleGroup>();
   group.bookings.forEach((b) => {
-    if (!b.car || b.car.id == null) return;
-    const list = byCar.get(b.car.id) ?? [];
-    list.push(b);
-    byCar.set(b.car.id, list);
+    if (!b.car) return;
+    const key = b.car.id != null ? `car-${b.car.id}` : `ref-${b.booking_reference}`;
+    let vg = map.get(key);
+    if (!vg) {
+      vg = { key, car: b.car, plate: null, bookings: [], dates: [] };
+      map.set(key, vg);
+    }
+    vg.bookings.push(b);
+    if (!vg.plate && b.vehicle_plate) vg.plate = b.vehicle_plate;
   });
-  const out: VehicleShiftGroup[] = [];
-  byCar.forEach((list, carId) => {
-    if (list.length < 2) return;
-    const ordered = [...list].sort((a, b) => {
-      const [ad, at] = firstDayKey(a);
-      const [bd, bt] = firstDayKey(b);
-      return ad.localeCompare(bd) || at.localeCompare(bt) || a.booking_reference.localeCompare(b.booking_reference);
+  map.forEach((vg) => {
+    const byDate = new Map<string, Omit<BarShift, "color">[]>();
+    vg.bookings.forEach((b) => {
+      b.days.forEach((d) => {
+        if (!d.date) return;
+        const list = byDate.get(d.date) ?? [];
+        list.push({
+          start: d.start_time,
+          end: d.end_time,
+          endNextDay: Boolean(d.end_next_day),
+          driverName: d.driver_name ?? b.driver?.full_name ?? null,
+        });
+        byDate.set(d.date, list);
+      });
     });
-    out.push({
-      carId,
-      car: ordered[0].car!,
-      shifts: ordered.map((booking, i) => ({ label: `Shift ${i + 1}`, booking })),
-    });
+    vg.dates = [...byDate.keys()].sort().map((date) => ({
+      date,
+      shifts: (byDate.get(date) ?? [])
+        .sort((a, c) => (a.start ?? "99").localeCompare(c.start ?? "99"))
+        .map((s, i) => ({ ...s, color: SHIFT_COLORS[i % SHIFT_COLORS.length] })),
+    }));
   });
-  return out;
+  return [...map.values()];
 }
 
-function shiftTimes(day: ProposalDay): string {
-  const start = formatTime(day.start_time);
-  const end = formatTime(day.end_time);
-  const base = start && end ? `${start} – ${end}` : start ? `from ${start}` : end ? `until ${end}` : "Times to be confirmed";
-  return day.end_next_day ? `${base} (next day)` : base;
+function shiftTimes(s: BarShift): string {
+  const start = formatTime(s.start);
+  const end = formatTime(s.end);
+  if (start && end) return `${start} to ${end}`;
+  if (start) return `from ${start}`;
+  if (end) return `until ${end}`;
+  return "Times to be confirmed";
 }
 
-function VehicleShiftsCard({ vg, currency }: { vg: VehicleShiftGroup; currency: string }) {
+const BarTrack = styled.div`
+  position: relative;
+  height: 14px;
+  border-radius: 7px;
+  background: ${({ theme }) => theme.colors.background};
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  overflow: hidden;
+`;
+
+const BarBlock = styled.div`
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  min-width: 4px;
+`;
+
+const BarAxis = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-top: 3px;
+  color: ${({ theme }) => theme.colors.textMuted};
+  font-size: 0.68rem;
+`;
+
+const ShiftRow = styled.div`
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin-top: 6px;
+  font-size: 0.88rem;
+`;
+
+const ShiftDot = styled.span`
+  flex: none;
+  width: 10px;
+  height: 10px;
+  margin-top: 5px;
+  border-radius: 50%;
+`;
+
+const ShiftSub = styled.div`
+  color: ${({ theme }) => theme.colors.textMuted};
+  font-size: 0.82rem;
+`;
+
+function DayBar({ shifts }: { shifts: BarShift[] }) {
+  return (
+    <div role="img" aria-label="Time bar from 00:00 to 24:00">
+      <BarTrack>
+        {shifts.map((s, i) => {
+          const a = toHours(s.start);
+          const e = toHours(s.end);
+          if (a == null) return null;
+          const overnight = s.endNextDay && e != null && e < a;
+          const to = overnight ? 24 : e != null && e > a ? e : a;
+          const left = (a / 24) * 100;
+          const width = Math.max(((to - a) / 24) * 100, 0.8);
+          return (
+            <BarBlock
+              key={i}
+              style={{
+                left: `${left}%`,
+                width: `${Math.min(width, 100 - left)}%`,
+                background: s.color,
+                opacity: s.end == null ? 0.6 : 1,
+                borderRadius: overnight ? "3px 0 0 3px" : 3,
+              }}
+            />
+          );
+        })}
+      </BarTrack>
+      <BarAxis>
+        <span>00:00</span>
+        <span>06:00</span>
+        <span>12:00</span>
+        <span>18:00</span>
+        <span>24:00</span>
+      </BarAxis>
+    </div>
+  );
+}
+
+function VehicleScheduleCard({ vg, currency }: { vg: VehicleGroup; currency: string }) {
   const photo = pickCarPhoto(vg.car);
+  const amounts = vg.bookings.map((b) => parseMoney(b.total_client_amount));
+  const total = amounts.some((a) => a !== null)
+    ? amounts.reduce<number>((sum, a) => sum + (a ?? 0), 0)
+    : null;
+  const heading = vg.plate ? `${vg.car.title}  ·  ${vg.plate}` : vg.car.title;
   return (
     <VehicleCard style={{ flexDirection: "column" }}>
       <div style={{ display: "flex", gap: 16, flexWrap: "wrap" }}>
@@ -893,29 +1010,35 @@ function VehicleShiftsCard({ vg, currency }: { vg: VehicleShiftGroup; currency: 
           </VehiclePhoto>
         ) : null}
         <VehicleBody>
-          <VehicleName>{vg.car.title}</VehicleName>
-          <DriverLine>{vg.shifts.length} shifts on this vehicle</DriverLine>
+          <VehicleName>{heading}</VehicleName>
+          {total !== null && total > 0 ? (
+            <DriverLine>{formatCurrency(total, currency)}</DriverLine>
+          ) : null}
         </VehicleBody>
       </div>
-      {vg.shifts.map(({ label, booking }) => {
-        const amt = parseMoney(booking.total_client_amount);
-        return (
-          <div key={booking.booking_reference} style={{ borderTop: "1px solid #e6ebe8", padding: "12px 0 0", marginTop: 12 }}>
-            <div style={{ display: "flex", justifyContent: "space-between", gap: 10, flexWrap: "wrap" }}>
-              <strong>{label}</strong>
-              {amt !== null ? <span>{formatCurrency(amt, currency)}</span> : null}
-            </div>
-            <DriverLine>
-              {booking.driver ? `Driver: ${booking.driver.full_name}` : "Driver to be confirmed"}
-            </DriverLine>
-            {booking.days.map((d, i) => (
-              <TimeLine key={`${d.date}-${i}`}>
-                {formatFullDate(d.date)}, {shiftTimes(d)}
-              </TimeLine>
-            ))}
+      {vg.dates.map(({ date, shifts }) => (
+        <div key={date} style={{ borderTop: "1px solid #e6ebe8", padding: "12px 0 0", marginTop: 12 }}>
+          <strong>{formatFullDate(date)}</strong>
+          {shifts.length > 1 ? <DriverLine>Split into {shifts.length} shifts</DriverLine> : null}
+          <div style={{ marginTop: 8 }}>
+            <DayBar shifts={shifts} />
           </div>
-        );
-      })}
+          {shifts.map((s, i) => (
+            <ShiftRow key={i}>
+              <ShiftDot style={{ background: s.color }} />
+              <div>
+                <div>
+                  {shiftTimes(s)}
+                  {s.driverName ? `, ${s.driverName}` : ""}
+                </div>
+                {s.endNextDay && s.end ? (
+                  <ShiftSub>Ends {formatTime(s.end)} next day</ShiftSub>
+                ) : null}
+              </div>
+            </ShiftRow>
+          ))}
+        </div>
+      ))}
     </VehicleCard>
   );
 }
@@ -953,7 +1076,11 @@ function ItineraryVehicleCard({ entry }: { entry: ItineraryEntry }) {
 
         <div style={{ display: "flex", alignItems: "baseline", gap: 10, flexWrap: "wrap" }}>
           <VehicleName>
-            {hasVehicle ? car?.title : "Accommodation only"}
+            {hasVehicle
+              ? entry.booking.vehicle_plate
+                ? `${car?.title}  ·  ${entry.booking.vehicle_plate}`
+                : car?.title
+              : "Accommodation only"}
           </VehicleName>
           <RefChip>Booking {entry.booking.booking_reference}</RefChip>
         </div>
@@ -1018,7 +1145,7 @@ export default function ProposalDetailView({ group }: Props) {
   const range = useMemo(() => computeGroupRange(group), [group]);
   const itineraryDates = useMemo(() => buildItineraryDates(group), [group]);
   const accommSegments = useMemo(() => collectAccommodation(group), [group]);
-  const shiftGroups = useMemo(() => buildShiftGroups(group), [group]);
+  const vehicleGroups = useMemo(() => buildVehicleGroups(group), [group]);
 
   const title = group.title || `Trip for ${group.customer_name}`;
 
@@ -1094,16 +1221,16 @@ export default function ProposalDetailView({ group }: Props) {
           </SummaryBar>
         )}
 
-        {shiftGroups.length > 0 ? (
+        {vehicleGroups.length > 0 ? (
           <>
             <div>
-              <SectionTitle>Your vehicles and shifts</SectionTitle>
+              <SectionTitle>Your vehicles</SectionTitle>
               <SectionIntro>
-                These vehicles run in more than one shift, each with its own driver and times.
+                Each vehicle with its days and times. Where a day is split between drivers, each shift has its own colour.
               </SectionIntro>
             </div>
-            {shiftGroups.map((vg) => (
-              <VehicleShiftsCard key={vg.carId} vg={vg} currency={group.currency} />
+            {vehicleGroups.map((vg) => (
+              <VehicleScheduleCard key={vg.key} vg={vg} currency={group.currency} />
             ))}
           </>
         ) : null}
