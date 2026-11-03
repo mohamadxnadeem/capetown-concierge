@@ -164,6 +164,7 @@ export interface ProposalDay {
   // calendar day; the itinerary view adds a synthetic morning-tail
   // entry on date + 1.
   end_next_day?: boolean;
+  driver_name?: string | null;
 }
 
 export interface ProposalDriver {
@@ -195,6 +196,7 @@ export interface ProposalBooking {
   booking_reference: string;
   total_client_amount?: string | null;
   car: ProposalCar | null;
+  vehicle_plate?: string | null;
   driver: ProposalDriver | null;
   days: ProposalDay[];
   pickup_location: string | null;

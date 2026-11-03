@@ -50,6 +50,12 @@ const nextConfig: NextConfig = {
         destination: "https://www.capetown-concierge.co.za/:path*",
         permanent: true,
       },
+      // Shared group links from the app used /proposal/<ref>/
+      {
+        source: "/proposal/:ref",
+        destination: "/booking-confirmation/:ref",
+        permanent: true,
+      },
       // IA rename: chauffeur-services → chauffeur-hire
       {
         source: "/chauffeur-services",
