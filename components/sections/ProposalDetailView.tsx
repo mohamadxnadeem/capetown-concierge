@@ -216,10 +216,10 @@ const VehiclePhotoPlaceholder = styled.div`
   );
 `;
 
-const VehicleName = styled.h3`
+const VehicleName = styled.h4`
   margin: 0;
   color: ${({ theme }) => theme.colors.heading};
-  font-size: 1.15rem;
+  font-size: 1rem;
   line-height: 1.2;
 `;
 
@@ -380,104 +380,172 @@ const EmptyState = styled.div`
   line-height: 1.6;
 `;
 
-const VCard = styled.article`
+const Strip = styled.div`
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  scroll-snap-type: x proximity;
+`;
+
+const StripItem = styled.div`
+  flex: 0 0 auto;
+  min-width: 230px;
+  max-width: 280px;
+  scroll-snap-align: start;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 10px;
   background: ${({ theme }) => theme.colors.white};
   border: 1px solid ${({ theme }) => theme.colors.border};
-  border-radius: 20px;
-  overflow: hidden;
+  border-radius: 16px;
   box-shadow: ${({ theme }) => theme.shadows.soft};
 `;
 
-const VPhoto = styled.div`
-  position: relative;
-  aspect-ratio: 16 / 9;
-  background: linear-gradient(
-    135deg,
-    rgba(11, 91, 51, 0.18) 0%,
-    rgba(6, 62, 35, 0.1) 100%
-  );
+const StripText = styled.div`
+  min-width: 0;
+  font-size: 0.8rem;
+  line-height: 1.35;
+  color: ${({ theme }) => theme.colors.textMuted};
 
-  @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
-    aspect-ratio: 21 / 9;
+  strong {
+    display: block;
+    color: ${({ theme }) => theme.colors.heading};
+    font-size: 0.92rem;
   }
 `;
 
-const VBody = styled.div`
-  padding: 18px 18px 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
+const Thumb = styled.div`
+  position: relative;
+  flex: none;
+  width: 72px;
+  height: 72px;
+  border-radius: 14px;
+  overflow: hidden;
+  background: linear-gradient(135deg, rgba(11, 91, 51, 0.18), rgba(6, 62, 35, 0.1));
+`;
+
+const ThumbSmall = styled(Thumb)`
+  width: 64px;
+  height: 64px;
 
   @media (min-width: ${({ theme }) => theme.breakpoints.sm}) {
-    padding: 22px 26px 26px;
+    width: 80px;
+    height: 80px;
   }
 `;
 
-const VHead = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
+const TimelineWrap = styled.div`
+  display: grid;
+  gap: 18px;
+`;
+
+const TimelineItem = styled.div`
+  display: grid;
+  grid-template-columns: 40px minmax(0, 1fr);
   gap: 12px;
+  align-items: start;
+
+  @media (min-width: ${({ theme }) => theme.breakpoints.sm}) {
+    grid-template-columns: 52px minmax(0, 1fr);
+    gap: 18px;
+  }
 `;
 
-const PlateLine = styled.div`
-  margin-top: 4px;
-  color: ${({ theme }) => theme.colors.textMuted};
-  font-size: 0.82rem;
-  letter-spacing: 0.04em;
-`;
-
-const RouteBlock = styled.div`
+const TimelineRail = styled.div`
+  position: relative;
   display: flex;
-  flex-direction: column;
-  gap: 6px;
-  font-size: 0.94rem;
-  line-height: 1.45;
-  color: ${({ theme }) => theme.colors.text};
+  justify-content: center;
+  align-self: stretch;
 `;
 
-const RouteRow = styled.div`
-  display: flex;
-  gap: 12px;
+const TimelineLine = styled.div`
+  position: absolute;
+  top: 40px;
+  bottom: -18px;
+  width: 2px;
+  background: linear-gradient(
+    180deg,
+    rgba(11, 91, 51, 0.32) 0%,
+    rgba(11, 91, 51, 0.12) 100%
+  );
 `;
 
-const RouteLabel = styled.span`
-  flex: none;
-  width: 68px;
-  color: ${({ theme }) => theme.colors.textMuted};
+const TimelineDot = styled.div`
+  position: relative;
+  z-index: 2;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: ${({ theme }) => theme.colors.primary};
+  color: ${({ theme }) => theme.colors.white};
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  font-weight: 700;
+  box-shadow: 0 10px 25px rgba(11, 91, 51, 0.18);
+
+  @media (min-width: ${({ theme }) => theme.breakpoints.sm}) {
+    width: 42px;
+    height: 42px;
+    font-size: 1rem;
+  }
+`;
+
+const DayCard = styled.div`
+  background: ${({ theme }) => theme.colors.white};
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  border-radius: 20px;
+  padding: 16px;
+  box-shadow: ${({ theme }) => theme.shadows.soft};
+
+  @media (min-width: ${({ theme }) => theme.breakpoints.sm}) {
+    padding: 20px 22px;
+  }
+`;
+
+const DayEyebrow = styled.div`
+  color: ${({ theme }) => theme.colors.primary};
   font-size: 0.74rem;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  padding-top: 2px;
 `;
 
-const DayList = styled.div`
+const VehicleRow = styled.div`
   display: flex;
-  flex-direction: column;
-`;
-
-const DayBlock = styled.div`
-  padding: 16px 0;
+  gap: 12px;
+  align-items: flex-start;
+  padding-top: 14px;
+  margin-top: 14px;
   border-top: 1px solid ${({ theme }) => theme.colors.border};
 `;
 
-const DayDate = styled.h4`
-  margin: 0 0 6px;
-  color: ${({ theme }) => theme.colors.heading};
-  font-size: 1.05rem;
-  line-height: 1.3;
+const VehicleRowBody = styled.div`
+  flex: 1;
+  min-width: 0;
+`;
+
+const PlateLine = styled.div`
+  margin-top: 2px;
+  color: ${({ theme }) => theme.colors.textMuted};
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
 `;
 
 const DayTimes = styled.div`
+  margin-top: 8px;
   color: ${({ theme }) => theme.colors.heading};
   font-weight: 700;
-  font-size: 0.98rem;
+  font-size: 0.95rem;
 `;
 
 const BarWrap = styled.div`
-  margin-top: 12px;
+  margin-top: 10px;
 `;
+
 
 
 // ─── Helpers ──────────────────────────────────────────────────────────
@@ -786,96 +854,141 @@ function uniqueText(values: Array<string | null | undefined>): string[] {
   return out;
 }
 
-function VehicleScheduleCard({
-  vg,
-  priority,
+const DayTitle = styled.h3`
+  margin: 4px 0 0;
+  color: ${({ theme }) => theme.colors.heading};
+  font-size: 1.15rem;
+  line-height: 1.25;
+`;
+
+type TimelineEntry = { vg: VehicleGroup; shifts: BarShift[]; notes: string[] };
+type TimelineDay = {
+  date: string;
+  entries: TimelineEntry[];
+  sharedNotes: string | null;
+};
+
+function buildTimeline(vehicleGroups: VehicleGroup[]): TimelineDay[] {
+  const map = new Map<string, TimelineEntry[]>();
+  vehicleGroups.forEach((vg) => {
+    vg.dates.forEach((d) => {
+      const list = map.get(d.date) ?? [];
+      list.push({ vg, shifts: d.shifts, notes: d.notes });
+      map.set(d.date, list);
+    });
+  });
+  return [...map.keys()].sort().map((date) => {
+    const entries = map.get(date) ?? [];
+    const keys = entries.map((e) => e.notes.join("\n\n"));
+    const shared = keys.length > 0 && keys[0] !== "" && keys.every((k) => k === keys[0]);
+    return { date, entries, sharedNotes: shared ? keys[0] : null };
+  });
+}
+
+function overnightLabel(shifts: BarShift[]): string | null {
+  const s = shifts.find((x) => x.endNextDay && x.end);
+  return s ? `ends ${formatTime(s.end)} next day` : null;
+}
+
+function VehicleThumb({
+  car,
   photo,
+  small,
+  priority,
 }: {
-  vg: VehicleGroup;
+  car: VehicleGroup["car"];
   photo: string | null;
-  priority: boolean;
+  small?: boolean;
+  priority?: boolean;
 }) {
-  const pickups = uniqueText(vg.bookings.map((b) => b.pickup_location));
-  const dropoffs = uniqueText(vg.bookings.map((b) => b.dropoff_location));
-  const descriptions = uniqueText(vg.bookings.map((b) => b.trip_description));
-  const hasRoute = pickups.length > 0 || dropoffs.length > 0;
-
+  const Box = small ? ThumbSmall : Thumb;
   return (
-    <VCard>
-      <VPhoto>
-        {photo ? (
-          <SmartImage
-            src={photo}
-            alt={vg.car.title}
-            sizes="(max-width: 940px) 100vw, 900px"
-            priority={priority}
-          />
-        ) : (
-          <VehiclePhotoPlaceholder aria-hidden="true">
-            {(vg.car.title || "?").trim().charAt(0).toUpperCase()}
-          </VehiclePhotoPlaceholder>
-        )}
-      </VPhoto>
-
-      <VBody>
-        <VHead>
-          <div>
-            <VehicleName>{vg.car.title}</VehicleName>
-            {vg.plate ? <PlateLine>Number plate {vg.plate}</PlateLine> : null}
-          </div>
-        </VHead>
-
-        {hasRoute ? (
-          <RouteBlock>
-            {pickups.length > 0 ? (
-              <RouteRow>
-                <RouteLabel>Pickup</RouteLabel>
-                <span>{pickups.join(", ")}</span>
-              </RouteRow>
-            ) : null}
-            {dropoffs.length > 0 ? (
-              <RouteRow>
-                <RouteLabel>Drop-off</RouteLabel>
-                <span>{dropoffs.join(", ")}</span>
-              </RouteRow>
-            ) : null}
-          </RouteBlock>
-        ) : null}
-
-        {descriptions.map((t) => (
-          <TripDescription key={t}>{t}</TripDescription>
-        ))}
-
-        {vg.dates.length > 0 ? (
-          <DayList>
-            {vg.dates.map(({ date, shifts, notes }) => (
-              <DayBlock key={date}>
-                <DayDate>{formatShortDate(date)}</DayDate>
-                {shifts.map((s, i) => (
-                  <ShiftRow key={i}>
-                    {shifts.length > 1 ? <ShiftDot style={{ background: s.color }} /> : null}
-                    <div>
-                      <DayTimes>{shiftTimes(s)}</DayTimes>
-                      {s.driverName ? <ShiftSub>Driver {s.driverName}</ShiftSub> : null}
-                    </div>
-                  </ShiftRow>
-                ))}
-                <BarWrap>
-                  <DayBar shifts={shifts} />
-                </BarWrap>
-                {notes.map((n) => (
-                  <DayNotes key={n}>{n}</DayNotes>
-                ))}
-              </DayBlock>
-            ))}
-          </DayList>
-        ) : (
-          <ShiftSub>Dates to be confirmed</ShiftSub>
-        )}
-      </VBody>
-    </VCard>
+    <Box>
+      {photo ? (
+        <SmartImage src={photo} alt={car.title} sizes="80px" priority={priority} />
+      ) : (
+        <VehiclePhotoPlaceholder aria-hidden="true" style={{ fontSize: "1.6rem" }}>
+          {(car.title || "?").trim().charAt(0).toUpperCase()}
+        </VehiclePhotoPlaceholder>
+      )}
+    </Box>
   );
 }
+
+function FleetStrip({
+  vehicleGroups,
+  photos,
+}: {
+  vehicleGroups: VehicleGroup[];
+  photos: Array<string | null>;
+}) {
+  return (
+    <Strip>
+      {vehicleGroups.map((vg, i) => {
+        const pickups = uniqueText(vg.bookings.map((b) => b.pickup_location));
+        const dropoffs = uniqueText(vg.bookings.map((b) => b.dropoff_location));
+        return (
+          <StripItem key={vg.key}>
+            <VehicleThumb car={vg.car} photo={photos[i]} priority={i === 0} />
+            <StripText>
+              <strong>{vg.car.title}</strong>
+              {vg.plate ? <div>Plate {vg.plate}</div> : null}
+              {pickups.length > 0 ? <div>Pickup: {pickups.join(", ")}</div> : null}
+              {dropoffs.length > 0 ? <div>Drop-off: {dropoffs.join(", ")}</div> : null}
+            </StripText>
+          </StripItem>
+        );
+      })}
+    </Strip>
+  );
+}
+
+function TimelineDayCard({
+  day,
+  index,
+  photoByKey,
+}: {
+  day: TimelineDay;
+  index: number;
+  photoByKey: Map<string, string | null>;
+}) {
+  return (
+    <DayCard>
+      <DayEyebrow>Day {index + 1}</DayEyebrow>
+      <DayTitle>{formatShortDate(day.date)}</DayTitle>
+      {day.sharedNotes ? <DayNotes>{day.sharedNotes}</DayNotes> : null}
+      {day.entries.map(({ vg, shifts, notes }) => {
+        const overnight = overnightLabel(shifts);
+        return (
+          <VehicleRow key={vg.key}>
+            <VehicleThumb small car={vg.car} photo={photoByKey.get(vg.key) ?? null} />
+            <VehicleRowBody>
+              <VehicleName>{vg.car.title}</VehicleName>
+              {vg.plate ? <PlateLine>Number plate {vg.plate}</PlateLine> : null}
+              {shifts.map((s, i) => (
+                <ShiftRow key={i}>
+                  {shifts.length > 1 ? <ShiftDot style={{ background: s.color }} /> : null}
+                  <div>
+                    <DayTimes>{shiftTimes(s)}</DayTimes>
+                    {s.driverName ? <ShiftSub>Driver {s.driverName}</ShiftSub> : null}
+                  </div>
+                </ShiftRow>
+              ))}
+              {overnight ? <ShiftSub>{overnight}</ShiftSub> : null}
+              <BarWrap>
+                <DayBar shifts={shifts} />
+              </BarWrap>
+              {!day.sharedNotes && notes.length > 0
+                ? notes.map((n) => <DayNotes key={n}>{n}</DayNotes>)
+                : null}
+            </VehicleRowBody>
+          </VehicleRow>
+        );
+      })}
+    </DayCard>
+  );
+}
+
 
 // ─── Root view ────────────────────────────────────────────────────────
 
@@ -901,6 +1014,17 @@ export default function ProposalDetailView({ group }: Props) {
     );
     return { vehiclePhotos, accommPhotos };
   }, [vehicleGroups, accommSegments]);
+
+  const photoByKey = useMemo(() => {
+    const m = new Map<string, string | null>();
+    vehicleGroups.forEach((vg, i) => m.set(vg.key, vehiclePhotos[i]));
+    return m;
+  }, [vehicleGroups, vehiclePhotos]);
+  const timeline = useMemo(() => buildTimeline(vehicleGroups), [vehicleGroups]);
+  const tripDescriptions = useMemo(
+    () => uniqueText(group.bookings.map((b) => b.trip_description)),
+    [group]
+  );
 
   const title = group.title || `Trip for ${group.customer_name}`;
 
@@ -942,28 +1066,48 @@ export default function ProposalDetailView({ group }: Props) {
 
         {vehicleGroups.length > 0 ? (
           <>
+            {tripDescriptions.length > 0 ? (
+              <div>
+                {tripDescriptions.map((t) => (
+                  <TripDescription key={t}>{t}</TripDescription>
+                ))}
+              </div>
+            ) : null}
+
             <div>
               <SectionTitle>
                 {vehicleGroups.length > 1 ? "Your vehicles" : "Your vehicle"}
               </SectionTitle>
-              <SectionIntro>
-                Dates and times for each vehicle. Where a day is split between
-                drivers, each part has its own colour.
-              </SectionIntro>
+              <SectionIntro>At a glance, who is looking after you.</SectionIntro>
+              <FleetStrip vehicleGroups={vehicleGroups} photos={vehiclePhotos} />
             </div>
-            {vehicleGroups.map((vg, i) => (
-              <VehicleScheduleCard
-                key={vg.key}
-                vg={vg}
-                photo={vehiclePhotos[i]}
-                priority={i === 0}
-              />
-            ))}
+
+            {timeline.length > 0 ? (
+              <div>
+                <SectionTitle>Your itinerary</SectionTitle>
+                <SectionIntro>
+                  Day by day. Where a day is split between drivers, each part
+                  has its own colour.
+                </SectionIntro>
+                <TimelineWrap>
+                  {timeline.map((day, index) => (
+                    <TimelineItem key={day.date}>
+                      <TimelineRail>
+                        {index < timeline.length - 1 ? <TimelineLine /> : null}
+                        <TimelineDot>{index + 1}</TimelineDot>
+                      </TimelineRail>
+                      <TimelineDayCard day={day} index={index} photoByKey={photoByKey} />
+                    </TimelineItem>
+                  ))}
+                </TimelineWrap>
+              </div>
+            ) : (
+              <ShiftSub>Dates to be confirmed</ShiftSub>
+            )}
           </>
         ) : (
           <EmptyState>Itinerary being finalized. Refresh in a moment.</EmptyState>
         )}
-
 
         {accommSegments.length > 0 ? (
           <>
