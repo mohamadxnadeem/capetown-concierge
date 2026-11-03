@@ -611,16 +611,26 @@ function formatCurrency(amount: number, currency: string): string {
   return `${currency} ${Math.round(amount).toLocaleString()}`;
 }
 
-function pickPhoto(photos: BookingPhoto[] | null | undefined): string | null {
-  if (!photos?.length) return null;
+function orderedPhotos(photos: BookingPhoto[] | null | undefined): string[] {
+  if (!photos?.length) return [];
   const valid = photos.filter((p) => Boolean(p?.cover_photos));
-  if (!valid.length) return null;
   const sorted = [...valid].sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
-  return (sorted.find((p) => p.is_featured) ?? sorted[0]).cover_photos ?? null;
+  const featured = sorted.filter((p) => p.is_featured);
+  const rest = sorted.filter((p) => !p.is_featured);
+  return [...featured, ...rest].map((p) => p.cover_photos as string);
 }
 
-function pickCarPhoto(car: ProposalBooking["car"]): string | null {
-  return car ? pickPhoto(car.cover_photos ?? null) : null;
+// Gives each card a photo that has not been shown yet on the page. Falls back
+// to the first photo when every photo of that item is already used.
+function takeUnusedPhoto(
+  photos: BookingPhoto[] | null | undefined,
+  used: Set<string>
+): string | null {
+  const list = orderedPhotos(photos);
+  if (!list.length) return null;
+  const pick = list.find((u) => !used.has(u)) ?? list[0];
+  used.add(pick);
+  return pick;
 }
 
 function parseIsoDate(iso: string): Date | null {
@@ -916,13 +926,14 @@ function VehicleScheduleCard({
   currency,
   showSubtotal,
   priority,
+  photo,
 }: {
   vg: VehicleGroup;
+  photo: string | null;
   currency: string;
   showSubtotal: boolean;
   priority: boolean;
 }) {
-  const photo = pickCarPhoto(vg.car);
   const subtotal = showSubtotal ? vehicleSubtotal(vg) : null;
   const pickups = uniqueText(vg.bookings.map((b) => b.pickup_location));
   const dropoffs = uniqueText(vg.bookings.map((b) => b.dropoff_location));
@@ -1027,6 +1038,17 @@ export default function ProposalDetailView({ group }: Props) {
   const range = useMemo(() => computeGroupRange(group), [group]);
   const accommSegments = useMemo(() => collectAccommodation(group), [group]);
   const vehicleGroups = useMemo(() => buildVehicleGroups(group), [group]);
+  // One distinct photo per vehicle card, then per accommodation card.
+  const { vehiclePhotos, accommPhotos } = useMemo(() => {
+    const used = new Set<string>();
+    const vehiclePhotos = vehicleGroups.map((vg) =>
+      takeUnusedPhoto(vg.car.cover_photos, used)
+    );
+    const accommPhotos = accommSegments.map((seg) =>
+      takeUnusedPhoto(propertyFromSegment(seg)?.cover_photos, used)
+    );
+    return { vehiclePhotos, accommPhotos };
+  }, [vehicleGroups, accommSegments]);
 
   const title = group.title || `Trip for ${group.customer_name}`;
 
@@ -1103,6 +1125,7 @@ export default function ProposalDetailView({ group }: Props) {
               <VehicleScheduleCard
                 key={vg.key}
                 vg={vg}
+                photo={vehiclePhotos[i]}
                 currency={group.currency}
                 showSubtotal={vehicleGroups.length > 1}
                 priority={i === 0}
@@ -1125,7 +1148,7 @@ export default function ProposalDetailView({ group }: Props) {
             <AccommSection>
               {accommSegments.map((segment, index) => {
                 const property = propertyFromSegment(segment);
-                const thumb = property ? pickPhoto(property.cover_photos ?? null) : null;
+                const thumb = accommPhotos[index];
                 const kindLabel = segment.kind === "hotel" ? "Hotel" : "Villa";
                 return (
                   <AccommCard key={`${segment.booking_reference}-accom-${index}`}>
