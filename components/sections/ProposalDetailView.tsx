@@ -1026,7 +1026,7 @@ export default function ProposalDetailView({ group }: Props) {
     [group]
   );
 
-  const title = group.title || `Trip for ${group.customer_name}`;
+  const title = "Your booking with Cape Town Concierge is confirmed";
 
   const whatsappHref = `https://wa.me/${brand.whatsappNumber}?text=${encodeURIComponent(
     `Hi, about my booking ${group.group_reference}. `

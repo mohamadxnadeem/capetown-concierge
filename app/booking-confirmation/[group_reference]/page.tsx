@@ -11,6 +11,8 @@ import { brand } from "../../../lib/brand";
 const SITE_URL = brand.siteUrl;
 const FALLBACK_OG_IMAGE = `${SITE_URL}/images/og-cape-town-concierge.jpg`;
 
+const CONFIRMED_TITLE = "Your booking with Cape Town Concierge is confirmed";
+
 const REFERENCE_PATTERN = /^[A-Za-z0-9-]{4,64}$/;
 
 interface PageProps {
@@ -79,12 +81,12 @@ export async function generateMetadata({
   const heroImage = pickHeroImage(group) ?? FALLBACK_OG_IMAGE;
 
   return {
-    title: group.title,
+    title: CONFIRMED_TITLE,
     description,
     alternates: { canonical: `${SITE_URL}/booking-confirmation/${group.group_reference}` },
     robots: { index: false, follow: false },
     openGraph: {
-      title: group.title,
+      title: CONFIRMED_TITLE,
       description,
       url: `${SITE_URL}/booking-confirmation/${group.group_reference}`,
       siteName: brand.name,
@@ -93,13 +95,13 @@ export async function generateMetadata({
       images: [
         {
           url: heroImage,
-          alt: group.title,
+          alt: CONFIRMED_TITLE,
         },
       ],
     },
     twitter: {
       card: "summary_large_image",
-      title: group.title,
+      title: CONFIRMED_TITLE,
       description,
       images: [heroImage],
     },
