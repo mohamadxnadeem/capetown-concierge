@@ -10,18 +10,17 @@ import type {
   BookingPhoto,
   ProposalAccommodationSegment,
   ProposalBooking,
-  ProposalDay,
 } from "../../lib/bookings";
 
 // ─── Layout shells ────────────────────────────────────────────────────
 
 const Wrapper = styled.main`
   background: ${({ theme }) => theme.colors.background};
-  padding-bottom: 120px;
+  padding-bottom: 56px;
   min-height: calc(100vh - 82px);
 
   @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
-    padding-bottom: 140px;
+    padding-bottom: 48px;
   }
 `;
 
@@ -40,8 +39,8 @@ const Hero = styled.header`
   position: relative;
   isolation: isolate;
   color: white;
-  padding: 56px 20px 48px;
-  margin-bottom: 20px;
+  padding: 48px 20px 72px;
+  margin-bottom: 0;
   overflow: hidden;
   background: linear-gradient(
     135deg,
@@ -50,26 +49,8 @@ const Hero = styled.header`
   );
 
   @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
-    padding: 84px 20px 68px;
+    padding: 72px 20px 88px;
   }
-`;
-
-const HeroBackdrop = styled.div`
-  position: absolute;
-  inset: 0;
-  z-index: -2;
-  opacity: 0.35;
-`;
-
-const HeroOverlay = styled.div`
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  background: linear-gradient(
-    135deg,
-    rgba(11, 91, 51, 0.86) 0%,
-    rgba(6, 62, 35, 0.94) 100%
-  );
 `;
 
 const HeroInner = styled.div`
@@ -198,31 +179,21 @@ const HeroChip = styled.div`
 const SummaryBar = styled.section`
   background: ${({ theme }) => theme.colors.white};
   border: 1px solid ${({ theme }) => theme.colors.border};
-  border-radius: 22px;
-  padding: 20px 24px;
+  border-radius: 20px;
+  padding: 18px 20px;
+  margin-top: -44px;
+  position: relative;
+  z-index: 2;
   box-shadow: ${({ theme }) => theme.shadows.soft};
-
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: 18px;
+  gap: 14px;
 
-  @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
-    position: sticky;
-    top: 12px;
-    z-index: 8;
-  }
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
-    position: fixed;
-    left: 12px;
-    right: 12px;
-    bottom: 12px;
-    z-index: 20;
-    padding: 14px 18px;
-    border-radius: 16px;
-    box-shadow: 0 20px 40px rgba(6, 62, 35, 0.28);
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+    flex-direction: column;
+    align-items: stretch;
   }
 `;
 
@@ -259,7 +230,10 @@ const SummaryRight = styled.div`
   justify-content: flex-end;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
-    flex: 0 0 auto;
+    justify-content: stretch;
+    & > * {
+      flex: 1;
+    }
   }
 `;
 
@@ -308,7 +282,7 @@ const PendingNote = styled.div`
   font-size: 0.92rem;
   line-height: 1.4;
   max-width: 320px;
-  text-align: right;
+  text-align: center;
 `;
 
 const CancelledBanner = styled.div`
@@ -337,71 +311,6 @@ const SectionIntro = styled.p`
   line-height: 1.6;
 `;
 
-const ItineraryList = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-`;
-
-const DateBlock = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-`;
-
-const DateHeader = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 10px 14px;
-  padding: 6px 2px 10px;
-  border-bottom: 1px solid ${({ theme }) => theme.colors.border};
-`;
-
-const DateHeading = styled.h3`
-  margin: 0;
-  color: ${({ theme }) => theme.colors.heading};
-  font-size: 1.15rem;
-  line-height: 1.3;
-`;
-
-const DayCounter = styled.span`
-  color: ${({ theme }) => theme.colors.textMuted};
-  font-size: 0.82rem;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  font-weight: 700;
-`;
-
-const VehicleCard = styled.article`
-  background: ${({ theme }) => theme.colors.white};
-  border: 1px solid ${({ theme }) => theme.colors.border};
-  border-radius: 20px;
-  overflow: hidden;
-  box-shadow: ${({ theme }) => theme.shadows.soft};
-  display: grid;
-  grid-template-columns: 1fr;
-
-  @media (min-width: ${({ theme }) => theme.breakpoints.sm}) {
-    grid-template-columns: 220px 1fr;
-  }
-`;
-
-const VehiclePhoto = styled.div`
-  position: relative;
-  height: 200px;
-  background: linear-gradient(
-    135deg,
-    rgba(11, 91, 51, 0.18) 0%,
-    rgba(6, 62, 35, 0.1) 100%
-  );
-
-  @media (min-width: ${({ theme }) => theme.breakpoints.sm}) {
-    height: 100%;
-    min-height: 180px;
-  }
-`;
-
 const VehiclePhotoPlaceholder = styled.div`
   position: absolute;
   inset: 0;
@@ -418,54 +327,11 @@ const VehiclePhotoPlaceholder = styled.div`
   );
 `;
 
-const VehicleBody = styled.div`
-  padding: 20px 22px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-`;
-
-const TailBadge = styled.div`
-  display: inline-flex;
-  align-items: center;
-  padding: 4px 10px;
-  border-radius: 999px;
-  background: #fff3d6;
-  border: 1px solid #eecd7a;
-  color: #8a6411;
-  font-size: 0.74rem;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  align-self: flex-start;
-`;
-
-const VehicleName = styled.h4`
+const VehicleName = styled.h3`
   margin: 0;
   color: ${({ theme }) => theme.colors.heading};
   font-size: 1.15rem;
   line-height: 1.2;
-`;
-
-const DriverLine = styled.div`
-  color: ${({ theme }) => theme.colors.textMuted};
-  font-size: 0.9rem;
-`;
-
-const TimeLine = styled.div`
-  color: ${({ theme }) => theme.colors.heading};
-  font-weight: 700;
-  font-size: 1rem;
-`;
-
-const PickupLine = styled.div`
-  color: ${({ theme }) => theme.colors.text};
-  font-size: 0.94rem;
-  line-height: 1.5;
-`;
-
-const Pin = styled.span`
-  color: ${({ theme }) => theme.colors.primary};
-  margin-right: 6px;
 `;
 
 const TripDescription = styled.p`
@@ -478,23 +344,11 @@ const TripDescription = styled.p`
 `;
 
 const DayNotes = styled.p`
-  margin: 2px 0 0;
+  margin: 12px 0 0;
   color: ${({ theme }) => theme.colors.text};
   font-size: 0.9rem;
   line-height: 1.55;
   white-space: pre-line;
-`;
-
-const RefChip = styled.span`
-  margin-left: auto;
-  padding: 2px 10px;
-  border-radius: 999px;
-  background: ${({ theme }) => theme.colors.background};
-  border: 1px solid ${({ theme }) => theme.colors.border};
-  color: ${({ theme }) => theme.colors.textMuted};
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  font-size: 0.7rem;
-  letter-spacing: 0.04em;
 `;
 
 const AccommSection = styled.section`
@@ -637,6 +491,113 @@ const EmptyState = styled.div`
   line-height: 1.6;
 `;
 
+const VCard = styled.article`
+  background: ${({ theme }) => theme.colors.white};
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: ${({ theme }) => theme.shadows.soft};
+`;
+
+const VPhoto = styled.div`
+  position: relative;
+  aspect-ratio: 16 / 9;
+  background: linear-gradient(
+    135deg,
+    rgba(11, 91, 51, 0.18) 0%,
+    rgba(6, 62, 35, 0.1) 100%
+  );
+
+  @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
+    aspect-ratio: 21 / 9;
+  }
+`;
+
+const VBody = styled.div`
+  padding: 18px 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+
+  @media (min-width: ${({ theme }) => theme.breakpoints.sm}) {
+    padding: 22px 26px 26px;
+  }
+`;
+
+const VHead = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+`;
+
+const PlateLine = styled.div`
+  margin-top: 4px;
+  color: ${({ theme }) => theme.colors.textMuted};
+  font-size: 0.82rem;
+  letter-spacing: 0.04em;
+`;
+
+const Subtotal = styled.div`
+  color: ${({ theme }) => theme.colors.primary};
+  font-weight: 800;
+  font-size: 1rem;
+  white-space: nowrap;
+`;
+
+const RouteBlock = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 0.94rem;
+  line-height: 1.45;
+  color: ${({ theme }) => theme.colors.text};
+`;
+
+const RouteRow = styled.div`
+  display: flex;
+  gap: 12px;
+`;
+
+const RouteLabel = styled.span`
+  flex: none;
+  width: 68px;
+  color: ${({ theme }) => theme.colors.textMuted};
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding-top: 2px;
+`;
+
+const DayList = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const DayBlock = styled.div`
+  padding: 16px 0;
+  border-top: 1px solid ${({ theme }) => theme.colors.border};
+`;
+
+const DayDate = styled.h4`
+  margin: 0 0 6px;
+  color: ${({ theme }) => theme.colors.heading};
+  font-size: 1.05rem;
+  line-height: 1.3;
+`;
+
+const DayTimes = styled.div`
+  color: ${({ theme }) => theme.colors.heading};
+  font-weight: 700;
+  font-size: 0.98rem;
+`;
+
+const BarWrap = styled.div`
+  margin-top: 12px;
+`;
+
+
 // ─── Helpers ──────────────────────────────────────────────────────────
 
 function parseMoney(value: string | number | null | undefined): number | null {
@@ -677,15 +638,10 @@ function addOneDay(iso: string): string {
   return `${yyyy}-${mm}-${dd}`;
 }
 
-function formatFullDate(iso: string): string {
+function formatShortDate(iso: string): string {
   const d = parseIsoDate(iso);
   if (!d) return iso;
-  return d.toLocaleDateString(undefined, {
-    weekday: "long",
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  });
+  return d.toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short" }).replace(",", "");
 }
 
 function formatTime(t: string | null | undefined): string | null {
@@ -737,62 +693,6 @@ function computeGroupRange(group: BookingGroup): { start: string; end: string } 
   return { start: sorted[0], end: sorted[sorted.length - 1] };
 }
 
-// ─── Itinerary assembly ───────────────────────────────────────────────
-
-type ItineraryEntry = {
-  booking: ProposalBooking;
-  day: ProposalDay | null;
-  isMorningTail: boolean;
-  tailEndTime: string | null; // end_time from previous day's shift
-};
-
-type ItineraryDate = {
-  date: string;
-  dayNumber: number;
-  totalDays: number;
-  entries: ItineraryEntry[];
-};
-
-function buildItineraryDates(group: BookingGroup): ItineraryDate[] {
-  const byDate = new Map<string, ItineraryEntry[]>();
-
-  group.bookings.forEach((booking) => {
-    booking.days.forEach((day) => {
-      if (!day.date) return;
-      const entries = byDate.get(day.date) ?? [];
-      entries.push({ booking, day, isMorningTail: false, tailEndTime: null });
-      byDate.set(day.date, entries);
-
-      if (day.end_next_day) {
-        const next = addOneDay(day.date);
-        const tail = byDate.get(next) ?? [];
-        tail.push({
-          booking,
-          day,
-          isMorningTail: true,
-          tailEndTime: day.end_time ?? null,
-        });
-        byDate.set(next, tail);
-      }
-    });
-  });
-
-  const sortedDates = [...byDate.keys()].sort();
-  return sortedDates.map((date, index) => {
-    const raw = byDate.get(date) ?? [];
-    // Morning tails first on each date so they're visible at the top.
-    const entries = [
-      ...raw.filter((e) => e.isMorningTail),
-      ...raw.filter((e) => !e.isMorningTail),
-    ];
-    return {
-      date,
-      dayNumber: index + 1,
-      totalDays: sortedDates.length,
-      entries,
-    };
-  });
-}
 
 function propertyFromSegment(
   segment: ProposalAccommodationSegment
@@ -822,17 +722,6 @@ function collectAccommodation(group: BookingGroup): GroupedAccommSegment[] {
   });
 }
 
-// ─── Entry card ───────────────────────────────────────────────────────
-
-function describeTimeWindow(day: ProposalDay): string | null {
-  const start = formatTime(day.start_time);
-  const end = formatTime(day.end_time);
-  if (!start && !end) return null;
-  const base =
-    start && end ? `${start} – ${end}` : start ? `from ${start}` : `until ${end}`;
-  return day.end_next_day ? `${base} (next morning)` : base;
-}
-
 
 // ─── Vehicles and time bars ───────────────────────────────────────────
 // One card per vehicle (grouped by car.id). Each date the vehicle works gets
@@ -849,7 +738,7 @@ type BarShift = {
   color: string;
 };
 
-type VehicleDate = { date: string; shifts: BarShift[] };
+type VehicleDate = { date: string; shifts: BarShift[]; notes: string[] };
 
 type VehicleGroup = {
   key: string;
@@ -880,6 +769,7 @@ function buildVehicleGroups(group: BookingGroup): VehicleGroup[] {
   });
   map.forEach((vg) => {
     const byDate = new Map<string, Omit<BarShift, "color">[]>();
+    const notesByDate = new Map<string, string[]>();
     vg.bookings.forEach((b) => {
       b.days.forEach((d) => {
         if (!d.date) return;
@@ -891,10 +781,16 @@ function buildVehicleGroups(group: BookingGroup): VehicleGroup[] {
           driverName: d.driver_name ?? b.driver?.full_name ?? null,
         });
         byDate.set(d.date, list);
+        if (d.notes?.trim()) {
+          const n = notesByDate.get(d.date) ?? [];
+          if (!n.includes(d.notes.trim())) n.push(d.notes.trim());
+          notesByDate.set(d.date, n);
+        }
       });
     });
     vg.dates = [...byDate.keys()].sort().map((date) => ({
       date,
+      notes: notesByDate.get(date) ?? [],
       shifts: (byDate.get(date) ?? [])
         .sort((a, c) => (a.start ?? "99").localeCompare(c.start ?? "99"))
         .map((s, i) => ({ ...s, color: SHIFT_COLORS[i % SHIFT_COLORS.length] })),
@@ -906,9 +802,10 @@ function buildVehicleGroups(group: BookingGroup): VehicleGroup[] {
 function shiftTimes(s: BarShift): string {
   const start = formatTime(s.start);
   const end = formatTime(s.end);
-  if (start && end) return `${start} to ${end}`;
+  const next = s.endNextDay ? " next day" : "";
+  if (start && end) return `${start} to ${end}${next}`;
   if (start) return `from ${start}`;
-  if (end) return `until ${end}`;
+  if (end) return `until ${end}${next}`;
   return "Times to be confirmed";
 }
 
@@ -940,8 +837,8 @@ const ShiftRow = styled.div`
   display: flex;
   align-items: flex-start;
   gap: 8px;
-  margin-top: 6px;
-  font-size: 0.88rem;
+  margin-top: 4px;
+  font-size: 0.9rem;
 `;
 
 const ShiftDot = styled.span`
@@ -953,6 +850,7 @@ const ShiftDot = styled.span`
 `;
 
 const ShiftSub = styled.div`
+  margin-top: 1px;
   color: ${({ theme }) => theme.colors.textMuted};
   font-size: 0.82rem;
 `;
@@ -994,128 +892,120 @@ function DayBar({ shifts }: { shifts: BarShift[] }) {
   );
 }
 
-function VehicleScheduleCard({ vg, currency }: { vg: VehicleGroup; currency: string }) {
-  const photo = pickCarPhoto(vg.car);
+function vehicleSubtotal(vg: VehicleGroup): number | null {
   const amounts = vg.bookings.map((b) => parseMoney(b.total_client_amount));
-  const total = amounts.some((a) => a !== null)
-    ? amounts.reduce<number>((sum, a) => sum + (a ?? 0), 0)
-    : null;
-  const heading = vg.plate ? `${vg.car.title}  ·  ${vg.plate}` : vg.car.title;
-  return (
-    <VehicleCard style={{ flexDirection: "column" }}>
-      <div style={{ display: "flex", gap: 16, flexWrap: "wrap" }}>
-        {photo ? (
-          <VehiclePhoto>
-            <SmartImage src={photo} alt={vg.car.title} sizes="(max-width: 640px) 100vw, 220px" />
-          </VehiclePhoto>
-        ) : null}
-        <VehicleBody>
-          <VehicleName>{heading}</VehicleName>
-          {total !== null && total > 0 ? (
-            <DriverLine>{formatCurrency(total, currency)}</DriverLine>
-          ) : null}
-        </VehicleBody>
-      </div>
-      {vg.dates.map(({ date, shifts }) => (
-        <div key={date} style={{ borderTop: "1px solid #e6ebe8", padding: "12px 0 0", marginTop: 12 }}>
-          <strong>{formatFullDate(date)}</strong>
-          {shifts.length > 1 ? <DriverLine>Split into {shifts.length} shifts</DriverLine> : null}
-          <div style={{ marginTop: 8 }}>
-            <DayBar shifts={shifts} />
-          </div>
-          {shifts.map((s, i) => (
-            <ShiftRow key={i}>
-              <ShiftDot style={{ background: s.color }} />
-              <div>
-                <div>
-                  {shiftTimes(s)}
-                  {s.driverName ? `, ${s.driverName}` : ""}
-                </div>
-                {s.endNextDay && s.end ? (
-                  <ShiftSub>Ends {formatTime(s.end)} next day</ShiftSub>
-                ) : null}
-              </div>
-            </ShiftRow>
-          ))}
-        </div>
-      ))}
-    </VehicleCard>
-  );
+  if (!amounts.some((a) => a !== null)) return null;
+  return amounts.reduce<number>((sum, a) => sum + (a ?? 0), 0);
 }
 
-function ItineraryVehicleCard({ entry }: { entry: ItineraryEntry }) {
-  const car = entry.booking.car;
-  const photo = pickCarPhoto(car);
-  const hasVehicle = Boolean(car);
-  const tailLabel = entry.isMorningTail && entry.tailEndTime
-    ? `Continues from previous evening until ${formatTime(entry.tailEndTime)}`
-    : entry.isMorningTail
-    ? "Continues from previous evening"
-    : null;
+function uniqueText(values: Array<string | null | undefined>): string[] {
+  const seen = new Set<string>();
+  const out: string[] = [];
+  values.forEach((v) => {
+    const t = v?.trim();
+    if (t && !seen.has(t)) {
+      seen.add(t);
+      out.push(t);
+    }
+  });
+  return out;
+}
+
+function VehicleScheduleCard({
+  vg,
+  currency,
+  showSubtotal,
+  priority,
+}: {
+  vg: VehicleGroup;
+  currency: string;
+  showSubtotal: boolean;
+  priority: boolean;
+}) {
+  const photo = pickCarPhoto(vg.car);
+  const subtotal = showSubtotal ? vehicleSubtotal(vg) : null;
+  const pickups = uniqueText(vg.bookings.map((b) => b.pickup_location));
+  const dropoffs = uniqueText(vg.bookings.map((b) => b.dropoff_location));
+  const descriptions = uniqueText(vg.bookings.map((b) => b.trip_description));
+  const hasRoute = pickups.length > 0 || dropoffs.length > 0;
 
   return (
-    <VehicleCard>
-      <VehiclePhoto>
-        {hasVehicle && photo ? (
+    <VCard>
+      <VPhoto>
+        {photo ? (
           <SmartImage
             src={photo}
-            alt={car?.title ?? "Vehicle"}
-            sizes="(max-width: 640px) 100vw, 220px"
+            alt={vg.car.title}
+            sizes="(max-width: 940px) 100vw, 900px"
+            priority={priority}
           />
-        ) : hasVehicle ? (
-          <VehiclePhotoPlaceholder>
-            {(car?.title || "?").trim().charAt(0).toUpperCase()}
-          </VehiclePhotoPlaceholder>
         ) : (
-          <VehiclePhotoPlaceholder>🏨</VehiclePhotoPlaceholder>
+          <VehiclePhotoPlaceholder aria-hidden="true">
+            {(vg.car.title || "?").trim().charAt(0).toUpperCase()}
+          </VehiclePhotoPlaceholder>
         )}
-      </VehiclePhoto>
+      </VPhoto>
 
-      <VehicleBody>
-        {tailLabel ? <TailBadge>{tailLabel}</TailBadge> : null}
+      <VBody>
+        <VHead>
+          <div>
+            <VehicleName>{vg.car.title}</VehicleName>
+            {vg.plate ? <PlateLine>Number plate {vg.plate}</PlateLine> : null}
+          </div>
+          {subtotal !== null && subtotal > 0 ? (
+            <Subtotal>{formatCurrency(subtotal, currency)}</Subtotal>
+          ) : null}
+        </VHead>
 
-        <div style={{ display: "flex", alignItems: "baseline", gap: 10, flexWrap: "wrap" }}>
-          <VehicleName>
-            {hasVehicle
-              ? entry.booking.vehicle_plate
-                ? `${car?.title}  ·  ${entry.booking.vehicle_plate}`
-                : car?.title
-              : "Accommodation only"}
-          </VehicleName>
-          <RefChip>Booking {entry.booking.booking_reference}</RefChip>
-        </div>
-
-        {hasVehicle ? (
-          <DriverLine>
-            {entry.booking.driver
-              ? `Driver: ${entry.booking.driver.full_name}`
-              : "Driver assigned separately"}
-          </DriverLine>
+        {hasRoute ? (
+          <RouteBlock>
+            {pickups.length > 0 ? (
+              <RouteRow>
+                <RouteLabel>Pickup</RouteLabel>
+                <span>{pickups.join(", ")}</span>
+              </RouteRow>
+            ) : null}
+            {dropoffs.length > 0 ? (
+              <RouteRow>
+                <RouteLabel>Drop-off</RouteLabel>
+                <span>{dropoffs.join(", ")}</span>
+              </RouteRow>
+            ) : null}
+          </RouteBlock>
         ) : null}
 
-        {entry.day && !entry.isMorningTail ? (
-          <TimeLine>{describeTimeWindow(entry.day) ?? "Timing to be confirmed"}</TimeLine>
-        ) : null}
+        {descriptions.map((t) => (
+          <TripDescription key={t}>{t}</TripDescription>
+        ))}
 
-        {hasVehicle && (entry.booking.pickup_location || entry.booking.dropoff_location) ? (
-          <PickupLine>
-            <Pin>📍</Pin>
-            {entry.booking.pickup_location || "Pickup to be confirmed"}
-            <span style={{ margin: "0 8px", color: "#9aa5a0" }}>→</span>
-            <Pin>📍</Pin>
-            {entry.booking.dropoff_location || "Drop-off to be confirmed"}
-          </PickupLine>
-        ) : null}
-
-        {entry.booking.trip_description ? (
-          <TripDescription>{entry.booking.trip_description}</TripDescription>
-        ) : null}
-
-        {entry.day?.notes && !entry.isMorningTail ? (
-          <DayNotes>{entry.day.notes}</DayNotes>
-        ) : null}
-      </VehicleBody>
-    </VehicleCard>
+        {vg.dates.length > 0 ? (
+          <DayList>
+            {vg.dates.map(({ date, shifts, notes }) => (
+              <DayBlock key={date}>
+                <DayDate>{formatShortDate(date)}</DayDate>
+                {shifts.map((s, i) => (
+                  <ShiftRow key={i}>
+                    {shifts.length > 1 ? <ShiftDot style={{ background: s.color }} /> : null}
+                    <div>
+                      <DayTimes>{shiftTimes(s)}</DayTimes>
+                      {s.driverName ? <ShiftSub>Driver {s.driverName}</ShiftSub> : null}
+                    </div>
+                  </ShiftRow>
+                ))}
+                <BarWrap>
+                  <DayBar shifts={shifts} />
+                </BarWrap>
+                {notes.map((n) => (
+                  <DayNotes key={n}>{n}</DayNotes>
+                ))}
+              </DayBlock>
+            ))}
+          </DayList>
+        ) : (
+          <ShiftSub>Dates to be confirmed</ShiftSub>
+        )}
+      </VBody>
+    </VCard>
   );
 }
 
@@ -1134,16 +1024,7 @@ export default function ProposalDetailView({ group }: Props) {
   const isCancelled = status === "cancelled";
   const isPaid = group.is_paid === true;
 
-  const heroPhoto = useMemo(() => {
-    for (const b of group.bookings) {
-      const p = pickCarPhoto(b.car);
-      if (p) return p;
-    }
-    return null;
-  }, [group]);
-
   const range = useMemo(() => computeGroupRange(group), [group]);
-  const itineraryDates = useMemo(() => buildItineraryDates(group), [group]);
   const accommSegments = useMemo(() => collectAccommodation(group), [group]);
   const vehicleGroups = useMemo(() => buildVehicleGroups(group), [group]);
 
@@ -1156,20 +1037,6 @@ export default function ProposalDetailView({ group }: Props) {
   return (
     <Wrapper>
       <Hero>
-        {heroPhoto ? (
-          <>
-            <HeroBackdrop>
-              <SmartImage
-                src={heroPhoto}
-                alt={title}
-                sizes="100vw"
-                priority
-              />
-            </HeroBackdrop>
-            <HeroOverlay />
-          </>
-        ) : null}
-
         <HeroInner>
           <HeroTopRow>
             <GroupRef>{group.group_reference}</GroupRef>
@@ -1183,11 +1050,11 @@ export default function ProposalDetailView({ group }: Props) {
           <HeroTitle>{title}</HeroTitle>
           <HeroSubtitle>Prepared for {group.customer_name}</HeroSubtitle>
 
-          <HeroChipRow>
-            {range ? (
-              <HeroChip>🗓 {formatDateRange(range.start, range.end)}</HeroChip>
-            ) : null}
-          </HeroChipRow>
+          {range ? (
+            <HeroChipRow>
+              <HeroChip>{formatDateRange(range.start, range.end)}</HeroChip>
+            </HeroChipRow>
+          ) : null}
         </HeroInner>
       </Hero>
 
@@ -1201,18 +1068,18 @@ export default function ProposalDetailView({ group }: Props) {
           <SummaryBar>
             <SummaryLeft>
               <SummaryLabel>Total</SummaryLabel>
-              <SummaryTotal>{totalFormatted || "—"}</SummaryTotal>
+              {totalFormatted ? <SummaryTotal>{totalFormatted}</SummaryTotal> : null}
             </SummaryLeft>
             <SummaryRight>
               {isPaid ? (
-                <PaidPill>✓ Paid</PaidPill>
+                <PaidPill>Paid</PaidPill>
               ) : status === "confirmed" && group.payment_link ? (
                 <PayButton
                   href={group.payment_link}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  Pay securely {totalFormatted ? `— ${totalFormatted}` : ""}
+                  Pay securely{totalFormatted ? `, ${totalFormatted}` : ""}
                 </PayButton>
               ) : (
                 <PendingNote>Awaiting confirmation from {brand.name}</PendingNote>
@@ -1224,50 +1091,28 @@ export default function ProposalDetailView({ group }: Props) {
         {vehicleGroups.length > 0 ? (
           <>
             <div>
-              <SectionTitle>Your vehicles</SectionTitle>
+              <SectionTitle>
+                {vehicleGroups.length > 1 ? "Your vehicles" : "Your vehicle"}
+              </SectionTitle>
               <SectionIntro>
-                Each vehicle with its days and times. Where a day is split between drivers, each shift has its own colour.
+                Dates and times for each vehicle. Where a day is split between
+                drivers, each part has its own colour.
               </SectionIntro>
             </div>
-            {vehicleGroups.map((vg) => (
-              <VehicleScheduleCard key={vg.key} vg={vg} currency={group.currency} />
+            {vehicleGroups.map((vg, i) => (
+              <VehicleScheduleCard
+                key={vg.key}
+                vg={vg}
+                currency={group.currency}
+                showSubtotal={vehicleGroups.length > 1}
+                priority={i === 0}
+              />
             ))}
           </>
-        ) : null}
-
-        {itineraryDates.length === 0 ? (
-          <EmptyState>Itinerary being finalized. Refresh in a moment.</EmptyState>
         ) : (
-          <>
-            <div>
-              <SectionTitle>Your day-by-day itinerary</SectionTitle>
-              <SectionIntro>
-                Every day of the trip, in order. Where more than one vehicle
-                operates on a date, each is listed below that day&apos;s
-                heading.
-              </SectionIntro>
-            </div>
-
-            <ItineraryList>
-              {itineraryDates.map((d) => (
-                <DateBlock key={d.date}>
-                  <DateHeader>
-                    <DateHeading>{formatFullDate(d.date)}</DateHeading>
-                    <DayCounter>
-                      Day {d.dayNumber} of {d.totalDays}
-                    </DayCounter>
-                  </DateHeader>
-                  {d.entries.map((entry, i) => (
-                    <ItineraryVehicleCard
-                      key={`${d.date}-${entry.booking.booking_reference}-${entry.isMorningTail ? "tail" : "main"}-${i}`}
-                      entry={entry}
-                    />
-                  ))}
-                </DateBlock>
-              ))}
-            </ItineraryList>
-          </>
+          <EmptyState>Itinerary being finalized. Refresh in a moment.</EmptyState>
         )}
+
 
         {accommSegments.length > 0 ? (
           <>
