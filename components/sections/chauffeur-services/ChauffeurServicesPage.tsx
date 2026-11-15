@@ -283,7 +283,7 @@ const trustCore = [
   },
   {
     title: "Punctuality, Flight Tracked",
-    text: "Airport pickups track your inbound flight in real time. Your driver is on the kerb before the wheels touch the tarmac — early flight, late flight, or a diverted one.",
+    text: "Airport pickups track your inbound flight in real time. Your driver is on the kerb before the wheels touch the tarmac, whether it is an early flight, a late flight or a diverted one.",
   },
   {
     title: "Reliability, Not Rideshare",
@@ -291,7 +291,7 @@ const trustCore = [
   },
   {
     title: "One Point of Contact",
-    text: "Message us on WhatsApp for the entire trip — quote, confirmation, driver details, live updates. Median response inside 30 minutes, seven days a week.",
+    text: "Message us on WhatsApp for the entire trip: quote, confirmation, driver details and live updates. Median response inside 30 minutes, seven days a week.",
   },
 ];
 
@@ -311,7 +311,7 @@ const executiveBullets = [
   },
   {
     title: "Full-day executive hire",
-    text: "Board meetings, back-to-back site visits, restaurant runs, off-site retreats — the same vehicle and the same driver stay with your principal for the day.",
+    text: "Board meetings, back-to-back site visits, restaurant runs, off-site retreats: the same vehicle and the same driver stay with your principal for the day.",
   },
   {
     title: "Multi-day and multi-city",
@@ -331,15 +331,15 @@ const leisureBullets = [
   },
   {
     title: "Wine-country day hire",
-    text: "A chauffeur means nobody in your party is the designated driver. Stellenbosch, Franschhoek, Constantia — tasted properly, driven home safely.",
+    text: "A chauffeur means nobody in your party is the designated driver. Stellenbosch, Franschhoek, Constantia: tasted properly, driven home safely.",
   },
   {
     title: "Scenic routes, unhurried",
-    text: "Chapman's Peak, Cape Point, the Twelve Apostles — your driver knows where to stop for the view, and where the light is best late afternoon.",
+    text: "Chapman's Peak, Cape Point, the Twelve Apostles. Your driver knows where to stop for the view, and where the light is best late afternoon.",
   },
   {
     title: "Effortless multi-day trip",
-    text: "One driver and one vehicle for the whole stay. Villas, restaurants, tours, transfers — coordinated together instead of booked separately every day.",
+    text: "One driver and one vehicle for the whole stay. Villas, restaurants, tours and transfers, coordinated together instead of booked separately every day.",
   },
 ];
 
@@ -354,7 +354,7 @@ const includedItems = [
   },
   {
     title: "Fully Flexible Itinerary",
-    text: "Your route can be shaped around airport transfers, executive meetings, restaurants, private tours, wine farms, and scenic Cape Town travel — planned around your schedule.",
+    text: "Your route can be shaped around airport transfers, executive meetings, restaurants, private tours, wine farms, and scenic Cape Town travel, all planned around your schedule.",
   },
 ];
 
@@ -367,7 +367,7 @@ const serviceFaqs = [
   {
     question: "Do you offer chauffeur-driven airport transfers in Cape Town?",
     answer:
-      "Yes. We provide 24/7 chauffeured airport transfers to and from Cape Town International — meet-and-greet at arrivals, real-time flight tracking, and luggage assistance are included in every transfer.",
+      "Yes. We provide 24/7 chauffeured airport transfers to and from Cape Town International. Meet-and-greet at arrivals, real-time flight tracking, and luggage assistance are included in every transfer.",
   },
   {
     question: "Can I hire a chauffeur for a full day?",
@@ -377,17 +377,17 @@ const serviceFaqs = [
   {
     question: "Which vehicles are available for chauffeur hire?",
     answer:
-      "Our fleet includes the BMW 5-Series, BMW X5, Hyundai Staria (9 seats), Mercedes V-Class (6 seats), and Range Rover Sport. All vehicles are premium, climate-controlled, and privately driven — no ride-sharing.",
+      "Our fleet includes the BMW 5-Series, BMW X5, Hyundai Staria (9 seats), Mercedes V-Class (6 seats), and Range Rover Sport. All vehicles are premium, climate-controlled, and privately driven, with no ride-sharing.",
   },
   {
     question: "Is a private chauffeur better than self-driving in Cape Town?",
     answer:
-      "For most visitors, yes — especially for airport transfers, wine routes, and long scenic drives. You arrive relaxed, your group travels together, and there's no parking, no navigation, and no designated driver required.",
+      "For most visitors, yes, especially for airport transfers, wine routes, and long scenic drives. You arrive relaxed, your group travels together, and there's no parking, no navigation, and no designated driver required.",
   },
   {
     question: "How do we book a chauffeur for a visiting executive?",
     answer:
-      "Message us on WhatsApp with the flight details, arrival time, hotel, and any onward schedule. We confirm the driver, the vehicle, and the flat fare in writing — usually within 30 minutes.",
+      "Message us on WhatsApp with the flight details, arrival time, hotel, and any onward schedule. We confirm the driver, the vehicle, and the flat fare in writing, usually within 30 minutes.",
   },
 ];
 
@@ -400,9 +400,9 @@ export default function ChauffeurServicesPage({ vehicles = [] }: { vehicles?: Fe
     .filter((u): u is string => Boolean(u));
   const heroAlts = heroPool.map((v, i) =>
     i === 0
-      ? `${v.title} — chauffeur hire in Cape Town with a professional private driver`
+      ? `${v.title} | chauffeur hire in Cape Town with a professional private driver`
       : i === 1
-      ? `Chauffeur hire in Cape Town — ${v.title} with luxury interior and vetted driver`
+      ? `Chauffeur hire in Cape Town: ${v.title} with luxury interior and vetted driver`
       : `${v.title} chauffeur-driven private hire, Cape Town`
   );
 
@@ -418,7 +418,7 @@ export default function ChauffeurServicesPage({ vehicles = [] }: { vehicles?: Fe
         secondaryCtaHref="#chauffeur-fleet"
         image="/images/hero-car.jpg"
         images={heroImages}
-        imageAlt="Chauffeur hire in Cape Town — luxury private driver and premium vehicle"
+        imageAlt="Chauffeur hire in Cape Town, luxury private driver and premium vehicle"
         imageAlts={heroAlts}
       />
 
@@ -451,7 +451,7 @@ export default function ChauffeurServicesPage({ vehicles = [] }: { vehicles?: Fe
         <FeaturedVehicles
           eyebrow="Luxury Fleet"
           title="Choose Your Chauffeur-Driven Vehicle"
-          description="The vehicles available for chauffeur hire in Cape Town, with real per-day pricing. Every car is climate-controlled, privately driven, and assigned to your booking — no ride-sharing."
+          description="The vehicles available for chauffeur hire in Cape Town, with real per-day pricing. Every car is climate-controlled, privately driven, and assigned to your booking, with no ride-sharing."
           items={vehicles}
         />
       </div>
@@ -488,7 +488,7 @@ export default function ChauffeurServicesPage({ vehicles = [] }: { vehicles?: Fe
                 car is where it is meant to be, the driver is smartly
                 presented and waiting, luggage is loaded, and the ride to the
                 hotel is quiet. That is the standard we work to on every
-                executive chauffeur hire in Cape Town — whether it&apos;s a
+                executive chauffeur hire in Cape Town, whether it&apos;s a
                 one-hour transfer from{" "}
                 <Link href="/airport-transfers-cape-town" style={{color:"inherit"}}>
                   Cape Town International
@@ -500,7 +500,7 @@ export default function ChauffeurServicesPage({ vehicles = [] }: { vehicles?: Fe
                 We work in pairs: your driver on the road, and a single point
                 of contact in the office you can message on WhatsApp for the
                 entire booking. Flight delays, schedule changes, an extra
-                stop on the way to the hotel — one message, sorted. No
+                stop on the way to the hotel. One message, sorted. No
                 dispatch queue, no ticket numbers, no repeating yourself.
               </p>
 
@@ -509,7 +509,7 @@ export default function ChauffeurServicesPage({ vehicles = [] }: { vehicles?: Fe
                 flat rate. There is no surge pricing, no per-minute meter,
                 and no supplement for late-night arrivals. If the schedule
                 changes on the day, we tell you the new price before we make
-                the change — never after.
+                the change, never after.
               </p>
 
               <p>
@@ -532,7 +532,7 @@ export default function ChauffeurServicesPage({ vehicles = [] }: { vehicles?: Fe
             <Title>Chauffeur hire for private and family travel</Title>
             <Intro>
               The same standard of service for guests who are here for the
-              trip itself — honeymoons, milestone birthdays, family holidays,
+              trip itself: honeymoons, milestone birthdays, family holidays,
               and Winelands weekends. Discreet, unhurried, and shaped around
               how you want the day to feel.
             </Intro>
@@ -579,7 +579,7 @@ export default function ChauffeurServicesPage({ vehicles = [] }: { vehicles?: Fe
               <p>
                 For couples and honeymoons we tend to pair a Range Rover Sport
                 or a Mercedes V-Class with a route planned for scenery and
-                timing — the light along Chapman&apos;s Peak late afternoon,
+                timing: the light along Chapman&apos;s Peak late afternoon,
                 a stop at Boulders Beach before the crowds, dinner in Camps
                 Bay to catch sunset over the Atlantic.
               </p>
@@ -587,8 +587,8 @@ export default function ChauffeurServicesPage({ vehicles = [] }: { vehicles?: Fe
               <p>
                 We keep it low-key. Your driver is a courteous, seasoned
                 professional who will offer local knowledge when asked and
-                stay quietly out of the way when not. That balance —
-                helpful, never intrusive — is what makes the trip feel
+                stay quietly out of the way when not. That balance,
+                helpful but never intrusive, is what makes the trip feel
                 private.
               </p>
             </RichText>
@@ -603,7 +603,7 @@ export default function ChauffeurServicesPage({ vehicles = [] }: { vehicles?: Fe
             <Title>Included with every chauffeur hire</Title>
             <Intro>
               Every booking is built to make Cape Town travel feel more
-              comfortable, more efficient, and more polished — same
+              comfortable, more efficient, and more polished, with the same
               standards whether you&apos;re here for a meeting or a holiday.
             </Intro>
           </Header>
@@ -619,7 +619,7 @@ export default function ChauffeurServicesPage({ vehicles = [] }: { vehicles?: Fe
         </Container>
       </Section>
 
-      <TestimonialsSection />
+      <TestimonialsSection tags={["chauffeur"]} />
       <TestimonialsCta />
 
       <Section>

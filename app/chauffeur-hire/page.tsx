@@ -45,7 +45,7 @@ function truncateText(text: string, maxLength: number) {
 }
 
 const CHAUFFEUR_VEHICLE_DESC: Record<string, string> = {
-  "Hyundai Staria": "A premium 9-seat people carrier with generous legroom and panoramic windows. Comfortable, stylish, and built for a full day on the road — whether that's a city tour, a wine route, or an airport run.",
+  "Hyundai Staria": "A premium 9-seat people carrier with generous legroom and panoramic windows. Comfortable, stylish, and built for a full day on the road, whether that's a city tour, a wine route, or an airport run.",
   "BMW X5": "A luxury SUV with elevated road presence and a spacious, refined interior. Ideal for families or small groups who want serious comfort without compromising on style.",
 };
 
@@ -100,7 +100,7 @@ const OG_IMAGE = `${SITE_URL}/images/og-cape-town-concierge.jpg`;
 
 const META_TITLE = "Chauffeur Hire Cape Town | Private Driver & Luxury Car Hire";
 const META_DESCRIPTION =
-  "Chauffeur hire in Cape Town — private drivers and luxury vehicles for executive travel, airport transfers and full-day chauffeur hire. PDP-licensed drivers, flat pricing, meet-and-greet at CPT. Message on WhatsApp.";
+  "Chauffeur hire in Cape Town: private drivers and luxury vehicles for executive travel, airport transfers and full-day chauffeur hire. PDP-licensed drivers, flat pricing, meet-and-greet at CPT. Message on WhatsApp.";
 
 export const metadata: Metadata = {
   title: META_TITLE,
@@ -139,7 +139,7 @@ export const metadata: Metadata = {
         url: OG_IMAGE,
         width: 1200,
         height: 630,
-        alt: "Chauffeur hire in Cape Town — private driver and luxury vehicle",
+        alt: "Chauffeur hire in Cape Town, private driver and luxury vehicle",
       },
     ],
   },
@@ -169,7 +169,7 @@ export default async function ChauffeurServicesLandingPage() {
         name: "Chauffeur Hire in Cape Town",
         url: `${SITE_URL}/chauffeur-hire`,
         description:
-          "Chauffeur hire in Cape Town — private drivers and luxury vehicles for executive travel, airport transfers, and full-day chauffeur hire across the Western Cape.",
+          "Chauffeur hire in Cape Town: private drivers and luxury vehicles for executive travel, airport transfers, and full-day chauffeur hire across the Western Cape.",
         image: [`${SITE_URL}/images/hero-car.jpg`],
       },
       {
@@ -226,7 +226,7 @@ export default async function ChauffeurServicesLandingPage() {
         areaServed,
         image: [`${SITE_URL}/images/hero-car.jpg`],
         description:
-          "Private chauffeur hire in Cape Town — luxury vehicles with PDP-licensed drivers for executive travel, airport transfers, multi-day corporate schedules, and full-day private hire across the Western Cape.",
+          "Private chauffeur hire in Cape Town: luxury vehicles with PDP-licensed drivers for executive travel, airport transfers, multi-day corporate schedules, and full-day private hire across the Western Cape.",
         url: `${SITE_URL}/chauffeur-hire`,
       },
       {
@@ -245,7 +245,7 @@ export default async function ChauffeurServicesLandingPage() {
             name: "Do you offer chauffeur-driven airport transfers in Cape Town?",
             acceptedAnswer: {
               "@type": "Answer",
-              text: "Yes. We provide 24/7 chauffeured airport transfers to and from Cape Town International — meet-and-greet at arrivals, real-time flight tracking, and luggage assistance are included in every transfer.",
+              text: "Yes. We provide 24/7 chauffeured airport transfers to and from Cape Town International. Meet-and-greet at arrivals, real-time flight tracking, and luggage assistance are included in every transfer.",
             },
           },
           {
@@ -261,7 +261,7 @@ export default async function ChauffeurServicesLandingPage() {
             name: "Which vehicles are available for chauffeur hire?",
             acceptedAnswer: {
               "@type": "Answer",
-              text: "Our fleet includes the BMW 5-Series, BMW X5, Hyundai Staria (9 seats), Mercedes V-Class (6 seats), and Range Rover Sport. All vehicles are premium, climate-controlled, and privately driven — no ride-sharing.",
+              text: "Our fleet includes the BMW 5-Series, BMW X5, Hyundai Staria (9 seats), Mercedes V-Class (6 seats), and Range Rover Sport. All vehicles are premium, climate-controlled, and privately driven, no ride-sharing.",
             },
           },
           {
@@ -269,7 +269,7 @@ export default async function ChauffeurServicesLandingPage() {
             name: "Is a private chauffeur better than self-driving in Cape Town?",
             acceptedAnswer: {
               "@type": "Answer",
-              text: "For most visitors, yes — especially for airport transfers, wine routes, and long scenic drives. You arrive relaxed, your group travels together, and there's no parking, no navigation, and no designated driver required.",
+              text: "For most visitors, yes, especially for airport transfers, wine routes, and long scenic drives. You arrive relaxed, your group travels together, and there's no parking, no navigation, and no designated driver required.",
             },
           },
           {
@@ -277,7 +277,7 @@ export default async function ChauffeurServicesLandingPage() {
             name: "How do we book a chauffeur for a visiting executive?",
             acceptedAnswer: {
               "@type": "Answer",
-              text: "Message us on WhatsApp with the flight details, arrival time, hotel, and any onward schedule. We confirm the driver, the vehicle, and the flat fare in writing — usually within 30 minutes.",
+              text: "Message us on WhatsApp with the flight details, arrival time, hotel, and any onward schedule. We confirm the driver, the vehicle, and the flat fare in writing, usually within 30 minutes.",
             },
           },
         ],

@@ -325,7 +325,7 @@ export default function VillaAvailability({ villa, availability }: Props) {
         <SelectedRow>
           <strong>Selected:</strong>
           <span>
-            {range?.from ? formatLongDate(range.from) : "—"}
+            {range?.from ? formatLongDate(range.from) : "-"}
             {" → "}
             {range?.to ? formatLongDate(range.to) : "Pick check-out"}
           </span>

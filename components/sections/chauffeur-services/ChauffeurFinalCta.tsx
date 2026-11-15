@@ -53,8 +53,9 @@ export default function ChauffeurFinalCta({ title, whatsappLink }: Props) {
       <FinalCtaInner>
         <FinalCtaTitle>Ready to Book {title}?</FinalCtaTitle>
         <FinalCtaText>
-          Message us on WhatsApp to confirm availability, pricing, and the best
-          chauffeur option for your Cape Town travel plans.
+          Every booking is private, and each full day is up to 8 hours, with
+          time extended at an additional rate. Message us on WhatsApp to
+          confirm availability and your price. We reply within 30 minutes.
         </FinalCtaText>
 
         <PrimaryButton
