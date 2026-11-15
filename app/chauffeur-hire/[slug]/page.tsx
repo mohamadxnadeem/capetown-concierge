@@ -231,7 +231,7 @@ function getPageDescription(car: Car) {
   const seats = car.number_of_seats ? ` ${car.number_of_seats} seats.` : "";
   const rateStr = rate ? ` From ${rate}/day.` : "";
   return truncateText(
-    `${keyword} — private airport transfers, full-day tours & bespoke Cape Town hire.${rateStr}${seats} Professional chauffeur. Book via WhatsApp.`,
+    `${keyword}: private airport transfers, full-day tours & bespoke Cape Town hire.${rateStr}${seats} Professional chauffeur. Book via WhatsApp.`,
     155
   );
 }
@@ -244,7 +244,7 @@ function getShortVehicleDescription(car: Car) {
     car.highlight ||
     truncateText(car.body, 180) ||
     (rate
-      ? `${keyword} — ${rate.toLowerCase()} for private airport transfers, tours, and full-day hire in Cape Town.`
+      ? `${keyword}: ${rate.toLowerCase()} for private airport transfers, tours, and full-day hire in Cape Town.`
       : `Premium ${keyword} for private travel, airport transfers, and chauffeur-driven experiences.`)
   );
 }
@@ -294,7 +294,7 @@ function buildVehicleFaqs(car: Car, formattedPrice: string) {
     {
       // Q3: Cape Peninsula — the #1 tour search
       question: `Can I use ${name} for a private Cape Peninsula tour?`,
-      answer: `Yes. ${name} is ideal for a private Cape Peninsula tour. Your chauffeur will take you through Chapman's Peak Drive, Hout Bay, Boulders Beach penguin colony, and Cape Point — at your own pace, with no group schedules.`,
+      answer: `Yes. ${name} is ideal for a private Cape Peninsula tour. Your chauffeur will take you through Chapman's Peak Drive, Hout Bay, Boulders Beach penguin colony, and Cape Point, at your own pace, with no group schedules.`,
     },
     {
       // Q4: Capacity
@@ -372,7 +372,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       title: `Chauffeur Service | ${brand.name}`,
       description: "Premium chauffeur-driven vehicles in Cape Town",
       openGraph: {
-        images: [{ url: ogImage, alt: "Cape Town Concierge — Luxury Chauffeur Service" }],
+        images: [{ url: ogImage, alt: "Cape Town Concierge, Luxury Chauffeur Service" }],
       },
       twitter: {
         card: "summary_large_image",
@@ -425,7 +425,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
           url: image || ogImage,
           alt: image
             ? getVehicleImageAlt(car)
-            : "Cape Town Concierge — Luxury Chauffeur Service",
+            : "Cape Town Concierge | Luxury Chauffeur Service",
         },
       ],
     },

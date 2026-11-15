@@ -24,7 +24,7 @@ export default async function DriverBookingPage({ params }: PageProps) {
   const decoded = decodeURIComponent(ref).trim();
 
   if (!REFERENCE_PATTERN.test(decoded)) {
-    return <DriverBookingNotFoundView reference={decoded || "—"} />;
+    return <DriverBookingNotFoundView reference={decoded || "-"} />;
   }
 
   const result = await fetchDriverBooking(decoded);
