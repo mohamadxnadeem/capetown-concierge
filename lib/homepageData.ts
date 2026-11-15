@@ -167,13 +167,13 @@ export async function fetchHomepageData(): Promise<HomepageData> {
   const prices = cars.map((c) => toNumber(c.price)).filter((p): p is number => Boolean(p));
   const lowestVehiclePrice = prices.length ? Math.round(Math.min(...prices)) : undefined;
 
-  // Vehicles: homepage flags, or the contract fallback if the fields are missing.
-  const hasCarFlags = cars.some((c) => c.homepage_featured !== undefined);
-  const chosenCars = hasCarFlags
-    ? cars.filter((c) => c.homepage_featured === true).sort(byHomepageOrder)
-    : [...cars]
-        .sort((a, b) => (toNumber(b.price) ?? 0) - (toNumber(a.price) ?? 0))
-        .slice(0, 5);
+  // Vehicles: show EVERY active vehicle (King Mo, 2026-11-15).
+  // Order: featured vehicles first by homepage_order, then the rest by day rate, highest first.
+  const byPriceDesc = (a: RawCar, b: RawCar) => (toNumber(b.price) ?? 0) - (toNumber(a.price) ?? 0);
+  const chosenCars = [
+    ...cars.filter((c) => c.homepage_featured === true).sort((a, b) => byHomepageOrder(a, b) || byPriceDesc(a, b)),
+    ...cars.filter((c) => c.homepage_featured !== true).sort(byPriceDesc),
+  ];
 
   const cleanedTitles: { from: string; to: string }[] = [];
   const vehicles: HomeVehicle[] = chosenCars.map((c) => {
