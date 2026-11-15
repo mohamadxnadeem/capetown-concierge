@@ -93,7 +93,8 @@ const SpecialismCards = [
     title: "Multi-Day Trips",
     text: "The same chauffeur and vehicle for your whole stay, with each day planned around you. From Cape Town and the Winelands to Hermanus and the Garden Route.",
     label: "Multi-day trips",
-    href: "/multi-day-chauffeur-cape-town",
+    // The /multi-day-chauffeur-cape-town page exists but is unlinked for now (King Mo, 2026-11-15).
+    href: "#multi-day",
   },
 ];
 
@@ -237,7 +238,7 @@ type MultiDayProps = {
 
 export function MultiDaySection({ reviews, packages }: MultiDayProps) {
   return (
-    <Band $soft>
+    <Band $soft id="multi-day">
       <Container>
         <H2>Your chauffeur for the whole stay</H2>
         <Lead>{MULTI_DAY_INTRO}</Lead>
@@ -248,9 +249,6 @@ export function MultiDaySection({ reviews, packages }: MultiDayProps) {
           <ScrollLink href="#enquiry">
             <Button as="span">Plan My Trip</Button>
           </ScrollLink>
-          <QuoteNote>
-            Or read more on our <TextLink href="/multi-day-chauffeur-cape-town">multi-day trips page</TextLink>.
-          </QuoteNote>
         </CtaRow>
       </Container>
     </Band>
