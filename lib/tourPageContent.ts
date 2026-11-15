@@ -61,7 +61,7 @@ const CAPE_PENINSULA: TourPageContent = {
   itineraryTitle: "Every Stop, Yours to Explore",
   itinerarySubheading:
     "No group timetables. No strangers. No one rushing you back to the bus. This is the Cape Peninsula on your terms: linger at the penguin colony, take your time at the cliff edge, or ask your chauffeur to pull over for a photo. Every moment is yours.",
-  highlightsTitle: "Why Guests Choose a Private Tour Over a Group Bus",
+  highlightsTitle: "Why Guests Choose a Private Cape Peninsula Tour Over a Group Bus",
   highlights: [
     SHARED_HIGHLIGHTS_1,
     {
@@ -107,7 +107,7 @@ const CAPE_TOWN_CITY: TourPageContent = {
   itineraryTitle: "Every Stop, Yours to Explore",
   itinerarySubheading:
     "No group timetables. No strangers. No one rushing you back to the bus. Cape Town's most iconic landmarks, explored entirely on your terms, at your pace, with your dedicated chauffeur for the day.",
-  highlightsTitle: "Why Guests Choose a Private Tour Over a Group Bus",
+  highlightsTitle: "Why Guests Choose a Private Table Mountain and City Tour Over a Group Bus",
   highlights: [
     SHARED_HIGHLIGHTS_1,
     {
@@ -153,7 +153,7 @@ const WINELANDS: TourPageContent = {
   itineraryTitle: "Every Stop, Yours to Savour",
   itinerarySubheading:
     "No group timetables. No strangers. No one rushing you between estates. This is the Cape Winelands on your terms: linger over a tasting, take your time exploring the gardens at Babylonstoren, or ask your chauffeur to stop at a viewpoint along the way. Every moment is yours.",
-  highlightsTitle: "Why Guests Choose a Private Tour Over a Shared Shuttle",
+  highlightsTitle: "Why Guests Choose a Private Winelands Tour Over a Shared Shuttle",
   highlights: [
     SHARED_HIGHLIGHTS_1,
     {
@@ -210,7 +210,7 @@ const SUNSET_SAFARI: TourPageContent = {
   itineraryTitle: "Your Safari Day, From Door to Game Drive",
   itinerarySubheading:
     "No shared game vehicles with strangers. No rigid resort schedules. Your chauffeur collects you from your hotel, drives you through the dramatic Hex River Valley to Aquila, and you're back in Cape Town with the evening still ahead. Everything (transport, game drive, meals) is taken care of.",
-  highlightsTitle: "Why Guests Choose This Over a Standard Safari Transfer",
+  highlightsTitle: "Why Guests Choose a Private Big 5 Safari from Cape Town",
   highlights: [
     {
       heading: "Private Transport, Both Ways",
@@ -270,7 +270,7 @@ const TOUR_CONTENT: Record<string, TourPageContent> = {
   "cape-peninsula-tour": CAPE_PENINSULA,
   "cape-town-city-tour": CAPE_TOWN_CITY,
   "winelands-chauffeur-drive": WINELANDS,
-  "sunset-safari-experience": SUNSET_SAFARI,
+  "big-5-safari-from-cape-town": SUNSET_SAFARI,
 };
 
 export function getTourContent(slug?: string): TourPageContent {

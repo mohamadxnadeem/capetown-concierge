@@ -80,7 +80,7 @@ const SpecialismCards = [
   {
     title: "Private Chauffeured Drives",
     text: "Airport transfers, business travel, dinners and as-directed hire by the hour or day. Always private, never shared.",
-    label: "Chauffeur Hire",
+    label: "Chauffeur hire in Cape Town",
     href: "/chauffeur-hire",
   },
   {
@@ -102,7 +102,7 @@ export function SpecialismsSection() {
   return (
     <Band>
       <Container>
-        <H2>What we specialise in</H2>
+        <H2>Our chauffeur service in Cape Town: what we specialise in</H2>
         <Cards style={{ marginTop: 28 }}>
           {SpecialismCards.map((c) => (
             <SpecCard key={c.title}>

@@ -65,7 +65,7 @@ export function getVehicleName(car: Car): string {
 
 export function getSeoKeyword(car: Car): string {
   if (car.seo_keyword) return car.seo_keyword;
-  return `${getVehicleName(car)} Chauffeur Service Cape Town`;
+  return `${getVehicleName(car)} Chauffeur Cape Town`;
 }
 
 // "R7,850" from the live record, or "" when there is no price
@@ -149,7 +149,7 @@ export function getVehicleMetaDescription(car: Car): string {
   const name = getVehicleName(car);
   const rate = getDayRate(car);
   const raw = rate
-    ? `Chauffeur-driven ${name} in Cape Town from ${rate} per day. Airport transfers, Peninsula and Winelands tours. Private, fuel included. Book on WhatsApp.`
-    : `Chauffeur-driven ${name} in Cape Town. Airport transfers, Peninsula and Winelands tours. Private, fuel included. Book on WhatsApp.`;
+    ? `${name} chauffeur in Cape Town from ${rate} per day. Airport transfers, Peninsula and Winelands tours, fuel included. Enquire on WhatsApp.`
+    : `${name} chauffeur in Cape Town. Airport transfers, Peninsula and Winelands tours, fuel included. Enquire on WhatsApp.`;
   return raw.length <= 160 ? raw : raw.slice(0, 157).trimEnd() + "...";
 }

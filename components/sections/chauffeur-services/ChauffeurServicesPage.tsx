@@ -377,7 +377,7 @@ const serviceFaqs = [
   {
     question: "Which vehicles are available for chauffeur hire?",
     answer:
-      "Our fleet includes the BMW 5-Series, BMW X5, Hyundai Staria (9 seats), Mercedes V-Class (6 seats), and Range Rover Sport. All vehicles are premium, climate-controlled, and privately driven, with no ride-sharing.",
+      "Our fleet includes the BMW 5-Series, BMW X5, Hyundai Staria (8 seats), Mercedes V-Class (6 seats), and Range Rover Sport. All vehicles are premium, climate-controlled, and privately driven, with no ride-sharing.",
   },
   {
     question: "Is a private chauffeur better than self-driving in Cape Town?",
@@ -411,7 +411,7 @@ export default function ChauffeurServicesPage({ vehicles = [] }: { vehicles?: Fe
       <HeroBanner
         eyebrow={brand.name}
         title="Chauffeur Hire in Cape Town"
-        description="Private drivers and luxury vehicles for airport transfers, executive travel, and full-day chauffeur hire across Cape Town and the Western Cape. Flat pricing, PDP-licensed chauffeurs, meet-and-greet at Cape Town International."
+        description="Chauffeur hire in Cape Town with private drivers and luxury vehicles for airport transfers, executive travel and full days across the Western Cape. Flat pricing, PDP-licensed chauffeurs, meet-and-greet at Cape Town International."
         primaryCtaLabel="Enquire on WhatsApp"
         primaryCtaHref={whatsappLink}
         secondaryCtaLabel="View Fleet"
@@ -428,7 +428,12 @@ export default function ChauffeurServicesPage({ vehicles = [] }: { vehicles?: Fe
             <Eyebrow>Chauffeur Hire in Cape Town</Eyebrow>
             <Title>Private drivers and luxury vehicles, arranged properly</Title>
             <Intro>
-              Chauffeur hire in Cape Town from a small, hand-run operation. A
+              Chauffeur hire in Cape Town from a small, hand-run operation, part
+              of the wider{" "}
+              <Link href="/" style={{ color: "inherit", textDecoration: "underline" }}>
+                chauffeur service
+              </Link>{" "}
+              we offer across the Cape. A
               named driver, a hand-picked vehicle, one point of contact from
               the enquiry through to the last drop-off. Used equally by
               executive assistants booking transfers for principals, and by
@@ -516,7 +521,7 @@ export default function ChauffeurServicesPage({ vehicles = [] }: { vehicles?: Fe
                 The fleet is chosen with executive guests in mind: a BMW
                 5-Series or Range Rover Sport for a solo principal, a
                 Mercedes V-Class or BMW X5 for a family or a small
-                delegation, a Hyundai Staria (9 seats) for a larger party.
+                delegation, a Hyundai Staria (8 seats) for a larger party.
                 All climate-controlled, all recently kept, all driven by the
                 same PDP-licensed chauffeurs.
               </p>

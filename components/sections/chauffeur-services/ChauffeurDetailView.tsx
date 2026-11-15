@@ -31,7 +31,7 @@ import TestimonialsCta from "../testimonials/TestimonialsCta";
 
 // ─────────────────────────────────────────────
 // TYPES
-// seoKeyword: "Range Rover Sport Chauffeur Service Cape Town"
+// seoKeyword: "Range Rover Sport Chauffeur Cape Town"
 //             passed down from page.tsx — this becomes the H1
 // pageTitle:  full meta title string, passed for the sticky bar
 // ─────────────────────────────────────────────
@@ -51,7 +51,7 @@ type Props = {
 /**
  * Three cards under the H1. All text comes from the vehicle record.
  */
-function buildAuthorityCards(car: Car, seoKeyword: string) {
+function buildAuthorityCards(car: Car) {
   const name = getVehicleName(car);
   const seats = car.number_of_seats;
   const rate = getDayRate(car);
@@ -59,7 +59,7 @@ function buildAuthorityCards(car: Car, seoKeyword: string) {
   const idealFor = car.ideal_for;
 
   const card1 = {
-    title: `${name}: Private, Polished, Yours`,
+    title: `${name} Chauffeur Cape Town: Private, Polished, Yours`,
     text: seats
       ? `A ${type} with room for up to ${seats} passengers${car.luggage_capacity ? ` and ${car.luggage_capacity} ${car.luggage_capacity === 1 ? "bag" : "bags"}` : ""}. You travel in complete privacy with a professional, well-presented chauffeur who knows Cape Town, so you arrive composed and on time.`
       : `A ${type} chosen for comfort, presence and privacy. Your professional, well-presented chauffeur knows Cape Town, so you arrive composed and on time.`,
@@ -76,8 +76,8 @@ function buildAuthorityCards(car: Car, seoKeyword: string) {
   };
 
   const card3 = {
-    title: "Chauffeur Service Done Properly",
-    text: `Every ${seoKeyword} booking includes a meet and greet with a name board, flight tracking on airport pickups and complimentary bottled water. Airport transfers run 24/7, and we reply on WhatsApp within 30 minutes.`,
+    title: "Chauffeur Details Done Properly",
+    text: `Every ${name} chauffeur booking includes a meet and greet with a name board, flight tracking on airport pickups and complimentary bottled water. Airport transfers run 24/7, and we reply on WhatsApp within 30 minutes.`,
   };
 
   return [card1, card2, card3];
@@ -86,12 +86,12 @@ function buildAuthorityCards(car: Car, seoKeyword: string) {
 /**
  * Expandable body, three paragraphs, used only when the record has no body.
  */
-function buildAuthorityBody(car: Car, seoKeyword: string): string[] {
+function buildAuthorityBody(car: Car): string[] {
   const name = getVehicleName(car);
   const type = car.vehicle_type ? car.vehicle_type.toLowerCase() : "vehicle";
   const seats = car.number_of_seats;
 
-  const para1 = `Choosing a ${seoKeyword} is about arriving relaxed, on time and out of sight of the crowds. The ${name} is a ${type}${seats ? ` for up to ${seats} passengers` : ""}, driven by a professional, well-presented chauffeur who looks after the route, the timing and your luggage, so you can focus on your trip or your meetings.`;
+  const para1 = `Choosing a ${name} chauffeur in Cape Town is about arriving relaxed, on time and out of sight of the crowds. The ${name} is a ${type}${seats ? ` for up to ${seats} passengers` : ""}, driven by a professional, well-presented chauffeur who looks after the route, the timing and your luggage, so you can focus on your trip or your meetings.`;
 
   const para2 = `Our travellers use the ${name} for Cape Town International Airport transfers, a private Cape Peninsula and Cape Point day, the Winelands around Stellenbosch and Franschhoek, and business travel. Every booking is private, with no shared vehicles and no group timetable. Browse our private tours or airport transfers to plan your stay.`;
 
@@ -337,18 +337,18 @@ export default function ChauffeurDetailView({
 
   // ── Authority section content ─────────────
   // Dynamic per vehicle — no more identical cards across all pages
-  const authorityCards = buildAuthorityCards(car, seoKeyword);
+  const authorityCards = buildAuthorityCards(car);
 
   // Intro sentence under the H1
   // Uses short_description from CMS if available, otherwise generates
   const dayRate = getDayRate(car);
-  const authorityIntro = `Looking for a ${getVehicleName(car)} with a driver in Cape Town? Your ${getVehicleName(car)} comes with a private chauffeur who knows the city, and a day planned entirely around you. Ideal for airport transfers, the Cape Peninsula, the Winelands and business travel${dayRate ? `, from ${dayRate} per day with fuel included` : ""}. ${FULL_DAY_HOURS_LINE}`;
+  const authorityIntro = `Looking for a ${getVehicleName(car)} chauffeur in Cape Town? Your ${getVehicleName(car)} comes with a private chauffeur who knows the city, and a day planned entirely around you. Ideal for airport transfers, the Cape Peninsula, the Winelands and business travel${dayRate ? `, from ${dayRate} per day with fuel included` : ""}. ${FULL_DAY_HOURS_LINE}`;
 
   // Expand body — uses car.body from CMS if available, otherwise generates
   // vehicle-specific paragraphs (no more generic identical text)
   const authorityBodyParagraphs = bodyHtml
     ? null // will render HTML via dangerouslySetInnerHTML below
-    : buildAuthorityBody(car, seoKeyword);
+    : buildAuthorityBody(car);
 
   return (
     <PageWrap>
@@ -377,7 +377,7 @@ export default function ChauffeurDetailView({
         <Section>
           <Container>
             <TwoColGrid>
-              <ChauffeurGallery images={galleryImages} />
+              <ChauffeurGallery images={galleryImages} altName={getVehicleName(car)} />
               <div>
                 <ChauffeurQuickDetails
                   title={safeTitle}
@@ -408,7 +408,7 @@ export default function ChauffeurDetailView({
         <Container>
           <AuthorityHeader>
             {/* Eyebrow — static, fine for SEO */}
-            <AuthorityEyebrow>Luxury Chauffeur Service Cape Town</AuthorityEyebrow>
+            <AuthorityEyebrow>Private chauffeur-driven hire</AuthorityEyebrow>
 
             {/*
               THE KEY CHANGE: H1 now = seoKeyword

@@ -1,6 +1,8 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { brand } from "../../../lib/brand";
+import { TOUR_META } from "../../../lib/tourSeo";
+import { businessRef } from "../../../lib/seo";
 import PrivateTourDetailView from "../../../components/sections/private-tour-detail/PrivateTourDetailView";
 
 type ExperiencePhoto = {
@@ -100,26 +102,6 @@ type PageProps = {
 };
 
 const SITE_URL = brand.siteUrl;
-
-// Slug-based meta overrides (used when CMS meta_title is not set)
-const TOUR_META: Record<string, { title: string; description: string }> = {
-  "cape-peninsula-tour": {
-    title: "Cape Peninsula Private Tour Cape Town | Full Day",
-    description: "Two oceans, Boulders Beach penguins & Chapman's Peak in one private day. No shared groups, flexible pace. Book your Peninsula tour on WhatsApp.",
-  },
-  "cape-town-city-tour": {
-    title: "Cape Town City Tour | Table Mountain Private Driver",
-    description: "Explore Table Mountain, Bo-Kaap, Camps Bay & the Waterfront privately. Dedicated chauffeur, your schedule. Book your Cape Town city tour today.",
-  },
-  "winelands-chauffeur-drive": {
-    title: "Romantic Stellenbosch Winelands Experience | Private Tour Cape Town",
-    description: "Private chauffeur through Stellenbosch & Franschhoek with no shuttles and no timetables. Cape Dutch estates & world-class tastings. Book on WhatsApp.",
-  },
-  "safari-day-trip": {
-    title: "Cape Town Safari Day Trip | Aquila Private Reserve",
-    description: "Big 5 game drive from Cape Town with private transport & meals included. Back by dinner. Book your Aquila safari experience on WhatsApp.",
-  },
-};
 
 function toZarNum(val: string | number): number {
   return Math.round(Number(String(val).replace(/[^0-9.]/g, "")));
@@ -315,7 +297,7 @@ const FALLBACK_TOUR_SLUGS = [
   "cape-peninsula-tour",
   "winelands-chauffeur-drive",
   "cape-town-city-tour",
-  "sunset-safari-experience",
+  "big-5-safari-from-cape-town",
 ];
 
 export async function generateStaticParams() {
@@ -589,25 +571,7 @@ export default async function PrivateTourDetailPage({ params }: PageProps) {
     description: getPageDescription(experience),
     image: [schemaImage],
     url: canonicalUrl,
-    provider: {
-      "@type": "LocalBusiness",
-      name: brand.name,
-      url: SITE_URL,
-      telephone: brand.phone,
-      sameAs: ["https://share.google/xrWoPQWHwQYfzukgz"],
-      address: {
-        "@type": "PostalAddress",
-        addressLocality: brand.address.locality,
-        addressRegion: brand.address.region,
-        addressCountry: brand.address.country,
-      },
-      geo: {
-        "@type": "GeoCoordinates",
-        latitude: brand.geo.lat,
-        longitude: brand.geo.lng,
-      },
-      priceRange: "$$$$",
-    },
+    provider: businessRef,
     touristType: ["Luxury Travelers", "Couples", "Families"],
     offers: priceZarForSchema
       ? {
@@ -641,6 +605,7 @@ export default async function PrivateTourDetailPage({ params }: PageProps) {
         vehicles={vehicles}
         lowestVehiclePrice={lowestVehiclePrice}
         slug={slug}
+        seo={TOUR_META[slug.toLowerCase()]}
       />
     </>
   );

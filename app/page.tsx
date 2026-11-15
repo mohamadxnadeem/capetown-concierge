@@ -10,13 +10,14 @@ import { fetchHomepageData } from "../lib/homepageData";
 import { reviewsWithTag } from "../lib/googleReviews";
 import { buildWhatsAppLink, buildGeneralWhatsAppMessage } from "../lib/whatsapp";
 import { brand } from "../lib/brand";
+import { businessRef } from "../lib/seo";
 
 const SITE_URL = brand.siteUrl;
 const OG_IMAGE = `${SITE_URL}/images/og-cape-town-concierge.jpg`;
 
-const TITLE = "Private Chauffeur, Day Tours & Multi-Day Trips | Cape Town Concierge";
+const TITLE = "Chauffeur Service Cape Town | Private Driver & Day Tours";
 const DESCRIPTION =
-  "Private chauffeured drives, full-day tours and multi-day trips in Cape Town, with your own chauffeur and guide. Enquire on WhatsApp for a tailored quote.";
+  "Chauffeur service in Cape Town: private drivers, full-day tours and multi-day trips with your own chauffeur and guide. Enquire on WhatsApp for a quote.";
 
 export const metadata: Metadata = {
   title: TITLE,
@@ -47,7 +48,7 @@ export const metadata: Metadata = {
         url: OG_IMAGE,
         width: 1200,
         height: 630,
-        alt: "Cape Town Concierge private chauffeur, day tours and multi-day trips in Cape Town",
+        alt: "Cape Town Concierge chauffeur service in Cape Town, with day tours and multi-day trips",
       },
     ],
   },
@@ -59,7 +60,7 @@ export const metadata: Metadata = {
   },
 };
 
-const provider = { "@type": "Organization", name: brand.name, url: SITE_URL };
+const provider = businessRef;
 const areaServed = { "@type": "City", name: "Cape Town" };
 
 export default async function HomePage() {
@@ -79,51 +80,12 @@ export default async function HomePage() {
   const structuredData = {
     "@context": "https://schema.org",
     "@graph": [
-      {
-        "@type": "Organization",
-        name: brand.name,
-        url: SITE_URL,
-        logo: `${SITE_URL}/images/logo.png`,
-        telephone: brand.phone,
-        email: brand.contactEmail,
-        description:
-          "Private chauffeured drives, full-day tours and multi-day trips in Cape Town, with your own chauffeur and guide.",
-        sameAs: ["https://www.facebook.com/capetownconcierge"],
-      },
-      {
-        "@type": "LocalBusiness",
-        "@id": `${SITE_URL}/#localbusiness`,
-        name: brand.name,
-        url: SITE_URL,
-        telephone: brand.phone,
-        email: brand.contactEmail,
-        priceRange: "$$$$",
-        image: `${SITE_URL}/images/hero-car.jpg`,
-        logo: `${SITE_URL}/images/logo.png`,
-        description:
-          "Private chauffeured drives, full-day tours and multi-day trips in Cape Town, with your own chauffeur and guide.",
-        address: {
-          "@type": "PostalAddress",
-          addressLocality: brand.address.locality,
-          addressRegion: brand.address.region,
-          addressCountry: brand.address.country,
-        },
-        geo: {
-          "@type": "GeoCoordinates",
-          latitude: brand.geo.lat,
-          longitude: brand.geo.lng,
-        },
-        areaServed: [
-          { "@type": "City", name: "Cape Town" },
-          { "@type": "State", name: "Western Cape" },
-        ],
-        serviceType: ["Private Chauffeured Drives", "Day Tours", "Multi-Day Trips"],
-      },
       { "@type": "WebSite", name: brand.name, url: SITE_URL },
       {
         "@type": "WebPage",
         name: TITLE,
         url: SITE_URL,
+        about: businessRef,
         description: DESCRIPTION,
         image: [`${SITE_URL}/images/hero-car.jpg`],
       },
@@ -170,8 +132,8 @@ export default async function HomePage() {
 
       <HeroBanner
         eyebrow={brand.name}
-        title="Private chauffeur, day tours and multi-day trips in Cape Town"
-        description="Your own chauffeur and guide, for a single journey, a full day, or your entire stay."
+        title="Private chauffeur service, day tours and multi-day trips in Cape Town"
+        description="A private chauffeur service in Cape Town, with your own chauffeur and guide for a single journey, a full day, or your entire stay."
         primaryCtaLabel="Enquire on WhatsApp"
         primaryCtaHref={buildWhatsAppLink(
           buildGeneralWhatsAppMessage("a private chauffeur, day tour or multi-day trip in Cape Town")
@@ -182,7 +144,7 @@ export default async function HomePage() {
         image="/images/car.jpg"
         images={heroImages.map((h) => h.src)}
         imageAlts={heroImages.map((h) => h.alt)}
-        imageAlt="Private chauffeur vehicle ready for guests in Cape Town"
+        imageAlt="Chauffeur service in Cape Town: private chauffeur vehicle ready for guests"
       >
         <GoogleRatingBadge />
       </HeroBanner>
@@ -193,7 +155,7 @@ export default async function HomePage() {
       <FeaturedVehicles
         id="vehicles"
         eyebrow=""
-        title="Choose your vehicle"
+        title="Choose your chauffeur vehicle"
         description="Every vehicle comes with a professional chauffeur, fuel and bottled water."
         items={vehicles.map((v) => ({
           title: v.title,
@@ -213,7 +175,7 @@ export default async function HomePage() {
       <FeaturedExperiences
         id="tours"
         eyebrow=""
-        title="Recommended full-day tours"
+        title="Recommended full-day private tours from Cape Town"
         description="Private tours with your own chauffeur-guide. Leave when you like, stop where you like."
         items={tourItems}
         footerLabel="View all tours"

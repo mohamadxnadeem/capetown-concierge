@@ -1,4 +1,5 @@
 import { endpoints } from "./api";
+import { vehicleHref } from "./seo";
 
 /**
  * Homepage data helpers. Vehicles and tours come from the existing public API
@@ -180,9 +181,9 @@ export async function fetchHomepageData(): Promise<HomepageData> {
     if (title !== c.title) cleanedTitles.push({ from: c.title as string, to: title });
     return {
       title,
-      href: `/chauffeur-hire/${(c.slug as string).trim()}`,
+      href: vehicleHref(c.slug),
       image: pickPhoto(c.cover_photos),
-      alt: `${title} private chauffeur vehicle in Cape Town`,
+      alt: `${title} chauffeur Cape Town, private chauffeur vehicle`,
       seats: c.number_of_seats || undefined,
       luggage: c.luggage_capacity ?? undefined,
       price: toNumber(c.price),

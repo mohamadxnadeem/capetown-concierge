@@ -282,7 +282,7 @@ const EmptyState = styled.div`
 `;
 
 function getVehicleAltText(title: string) {
-  return `Luxury ${title} Chauffeur Service Cape Town - VIP Transport`;
+  return `${title} chauffeur Cape Town, private vehicle with a professional driver`;
 }
 
 function VehicleImageCard({

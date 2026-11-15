@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { brand } from "../../../lib/brand";
+import { FALLBACK_VEHICLE_SLUGS, businessRef, vehicleHref } from "../../../lib/seo";
 import ChauffeurDetailView from "../../../components/sections/chauffeur-services/ChauffeurDetailView";
 import {
   buildFaqs,
@@ -185,7 +186,7 @@ function getShortVehicleDescription(car: Car) {
 
 function mapRelatedVehicles(cars: Car[], currentSlug: string): RelatedVehicle[] {
   return cars
-    .filter((car) => car.slug && car.slug !== currentSlug)
+    .filter((car) => car.slug && car.slug.toLowerCase() !== currentSlug.toLowerCase())
     .map((car) => ({
       title: car.title || "Vehicle",
       image: getPrimaryImage(car),
@@ -196,7 +197,7 @@ function mapRelatedVehicles(cars: Car[], currentSlug: string): RelatedVehicle[] 
         "Premium chauffeur-driven vehicle for Cape Town travel.",
       seats: car.number_of_seats,
       price: formatPrice(car.price),
-      href: `/chauffeur-hire/${car.slug}`,
+      href: vehicleHref(car.slug),
     }));
 }
 
@@ -209,19 +210,7 @@ function mapRelatedVehicles(cars: Car[], currentSlug: string): RelatedVehicle[] 
 // Ensure any slug not pre-built at build time is rendered on-demand.
 export const dynamicParams = true;
 
-// Fallback slugs used if the API is unreachable at build time.
-// These match the exact slugs in the database — keep in sync if vehicles are renamed.
-const FALLBACK_VEHICLE_SLUGS: string[] = [
-  "bmw-x5-for-hire-with-driver",
-  "bmw-5-series-for-hire-with-driver",
-  "mercedes-v-class-private-chauffeur-service",
-  "mercedes-sprinter-with-driver-cape-town",
-  "range-rover-sport-chauffeur-service",
-  "audi-a4",
-  "mercedes-benz-e-class",
-  "mercedes-s-class-for-hire-with-driver",
-  "8-seater-staria-van-with-driver",
-];
+// Fallback slugs (lib/seo.ts) are used if the API is unreachable at build time.
 
 export async function generateStaticParams() {
   try {
@@ -359,18 +348,6 @@ export default async function ChauffeurServiceDetailPage({ params }: PageProps) 
         },
         category: car.category || car.vehicle_type || "Luxury Chauffeur Vehicle",
         url: canonicalUrl,
-        // Only rendered when the API returns its own review data. No fabricated fallback.
-        ...(car.review_count && car.review_rating
-          ? {
-              aggregateRating: {
-                "@type": "AggregateRating",
-                ratingValue: car.review_rating,
-                reviewCount: car.review_count,
-                bestRating: 5,
-                worstRating: 1,
-              },
-            }
-          : {}),
         ...(numericPrice
           ? {
               offers: {
@@ -390,29 +367,7 @@ export default async function ChauffeurServiceDetailPage({ params }: PageProps) 
         // FIX: name now uses SEO keyword — this is what appears in rich results
         name: keyword,
         serviceType: "Private Chauffeur Service",
-        provider: {
-          "@type": "LocalBusiness",
-          name: brand.name,
-          url: SITE_URL,
-          telephone: brand.phone,
-          // FIX 13: Add address — critical for local SEO ranking
-          address: {
-            "@type": "PostalAddress",
-            addressLocality: brand.address.locality,
-            addressRegion: brand.address.region,
-            addressCountry: brand.address.country,
-          },
-          // FIX 14: Add geo — helps Google Maps and local pack ranking
-          geo: {
-            "@type": "GeoCoordinates",
-            latitude: brand.geo.lat,
-            longitude: brand.geo.lng,
-          },
-          priceRange: "$$$$",
-          sameAs: [
-            "https://share.google/xrWoPQWHwQYfzukgz",
-          ],
-        },
+        provider: businessRef,
         areaServed: [
           { "@type": "City", name: "Cape Town" },
           { "@type": "State", name: "Western Cape" },

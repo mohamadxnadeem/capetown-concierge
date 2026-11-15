@@ -8,6 +8,7 @@ import {
   buildGeneralWhatsAppMessage,
 } from "../../../lib/whatsapp";
 import { getTourContent } from "../../../lib/tourPageContent";
+import type { TourSeo } from "../../../lib/tourSeo";
 import PrivateTourGallery from "./PrivateTourGallery";
 import PrivateTourIntro from "./PrivateTourIntro";
 import PrivateTourWhatToExpect from "./PrivateTourWhatToExpect";
@@ -43,6 +44,7 @@ type Props = {
   vehicles: TourVehicle[];
   lowestVehiclePrice?: number;
   slug?: string;
+  seo?: TourSeo;
 };
 
 export default function PrivateTourDetailView({
@@ -51,6 +53,7 @@ export default function PrivateTourDetailView({
   vehicles,
   lowestVehiclePrice,
   slug,
+  seo,
 }: Props) {
   const safeTourTitle = experience?.title || "private tour";
 
@@ -67,7 +70,7 @@ export default function PrivateTourDetailView({
       <Section>
         <Container>
           <PrivateTourGallery
-            title={safeTourTitle}
+            title={seo?.h1 || safeTourTitle}
             photos={experience.cover_photos || []}
           />
         </Container>
@@ -76,8 +79,8 @@ export default function PrivateTourDetailView({
       <Section>
         <Container>
           <PrivateTourIntro
-            title={safeTourTitle}
-            shortDescription={experience.short_description}
+            title={seo?.h1 || safeTourTitle}
+            shortDescription={seo?.intro || experience.short_description}
             highlight={experience.highlight}
             duration={experience.duration}
             location={experience.location}
