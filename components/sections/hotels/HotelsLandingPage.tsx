@@ -316,13 +316,13 @@ const AREA_BLURBS: Partial<Record<HotelArea, string>> = {
   camps_bay:
     "Beachfront hotels facing the Atlantic with Twelve Apostles as your backdrop. Sunset drinks on the terrace, morning swims, promenade at the door.",
   clifton:
-    "Cliff-hugging hotels above the four Clifton beaches — the most sheltered coves in the city. Quiet, exclusive, sunset-facing.",
+    "Cliff-hugging hotels above the four Clifton beaches, home to the most sheltered coves in the city. Quiet, exclusive, sunset-facing.",
   constantia:
     "Colonial-era hotels in Cape Town's wine valley. Vineyard views, oak-lined lanes, and Groot Constantia and Klein Constantia on your doorstep.",
   franschhoek:
     "Country hotels in the Cape Winelands' most walkable village. Michelin-tier restaurants, cellar-door tastings, and mountain views.",
   stellenbosch:
-    "Vineyard estates and boutique hotels in South Africa's oldest wine town — 30 minutes from Cape Town, an evening's stroll from a dozen cellars.",
+    "Vineyard estates and boutique hotels in South Africa's oldest wine town, 30 minutes from Cape Town and an evening's stroll from a dozen cellars.",
 };
 
 interface Props {
@@ -364,7 +364,7 @@ export default function HotelsLandingPage({ hotels }: Props) {
             <Title>Luxury Hotels in Cape Town</Title>
             <HeroLead>
               A curated selection of five-star hotels, boutique stays, and
-              country-house retreats across Cape Town and the Winelands —
+              country-house retreats across Cape Town and the Winelands,
               from the V&amp;A Waterfront to Camps Bay, Franschhoek and
               Stellenbosch. Concierge service, chauffeur add-ons, hand-picked
               properties.
@@ -397,7 +397,7 @@ export default function HotelsLandingPage({ hotels }: Props) {
           <SectionLead>
             Every property in the collection has been personally vetted.
             Concierge planning, restaurant reservations, chauffeur transport
-            between properties, and add-on private tours — arranged for you
+            between properties, and add-on private tours arranged for you
             before you arrive.
           </SectionLead>
           {featuredFirst.length === 0 ? (
@@ -418,7 +418,7 @@ export default function HotelsLandingPage({ hotels }: Props) {
                       {photo ? (
                         <SmartImage
                           src={photo}
-                          alt={`${hotel.name} — luxury hotel in ${area}`}
+                          alt={`${hotel.name}, luxury hotel in ${area}`}
                           sizes="(max-width: 768px) 100vw, 33vw"
                         />
                       ) : null}
@@ -456,7 +456,7 @@ export default function HotelsLandingPage({ hotels }: Props) {
         <Container>
           <SectionHeading>Where we have hotels</SectionHeading>
           <SectionLead>
-            A quick orientation to Cape Town&apos;s luxury hotel districts — what
+            A quick orientation to Cape Town&apos;s luxury hotel districts: what
             each area is best for and the kind of stay you should expect.
           </SectionLead>
           <AreaGrid>

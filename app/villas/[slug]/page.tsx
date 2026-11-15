@@ -33,7 +33,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const ogImage = getVillaPrimaryPhoto(villa) ?? FALLBACK_OG;
   const canonical = `${SITE_URL}/villas/${villa.slug.toLowerCase()}`;
 
-  const title = `${villa.name} — Luxury Villa in ${area}, Cape Town`;
+  const title = `${villa.name} | Luxury Villa in ${area}, Cape Town`;
 
   const description =
     villa.short_description ||

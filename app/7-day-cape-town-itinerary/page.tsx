@@ -11,7 +11,7 @@ const OG_IMAGE = `${SITE_URL}/images/og-cape-town-concierge.jpg`;
 export const metadata: Metadata = {
   title: "7 Day Cape Town Itinerary | Private Guided Tour Plan",
   description:
-    "Follow our expert 7-day Cape Town itinerary with private chauffeur included. From the Peninsula to the Winelands — fully planned, fully private.",
+    "Follow our expert 7-day Cape Town itinerary with private chauffeur included. From the Peninsula to the Winelands, fully planned, fully private.",
   alternates: {
     canonical: `${SITE_URL}/7-day-cape-town-itinerary`,
   },
@@ -29,7 +29,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "7 Day Cape Town Itinerary | Private Guided Tour Plan",
     description:
-      "Follow our expert 7-day Cape Town itinerary with private chauffeur included. From the Peninsula to the Winelands — fully planned, fully private.",
+      "Follow our expert 7-day Cape Town itinerary with private chauffeur included. From the Peninsula to the Winelands, fully planned, fully private.",
     url: `${SITE_URL}/7-day-cape-town-itinerary`,
     siteName: brand.name,
     type: "website",
@@ -39,7 +39,7 @@ export const metadata: Metadata = {
         url: OG_IMAGE,
         width: 1200,
         height: 630,
-        alt: "Cape Town Concierge — Luxury Chauffeur Service",
+        alt: "Cape Town Concierge, Luxury Chauffeur Service",
       },
     ],
   },
@@ -47,7 +47,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "7 Day Cape Town Itinerary | Private Guided Tour Plan",
     description:
-      "Follow our expert 7-day Cape Town itinerary with private chauffeur included. From the Peninsula to the Winelands — fully planned, fully private.",
+      "Follow our expert 7-day Cape Town itinerary with private chauffeur included. From the Peninsula to the Winelands, fully planned, fully private.",
     images: [OG_IMAGE],
   },
 };
