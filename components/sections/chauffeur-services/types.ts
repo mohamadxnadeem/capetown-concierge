@@ -3,6 +3,9 @@ export type CarPhoto = {
   cover_photos: string;
   is_featured?: boolean;
   order?: number;
+  // Optional: not in the database today, used for alt text if it ever appears
+  caption?: string;
+  alt?: string;
 };
 
 export type Car = {

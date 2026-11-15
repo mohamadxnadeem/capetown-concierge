@@ -1,14 +1,17 @@
 "use client";
 
 import styled from "styled-components";
-import Money from "../../common/Money";
+import ApproxPrice from "../../common/ApproxPrice";
+import { V_CLASS_PATH } from "./utils";
+import Link from "next/link";
 
 type Props = {
   title: string;
   vehicleType?: string;
   seats?: number;
   luggage?: number;
-  priceUsd?: number;
+  priceZar?: number;
+  showVClassUpsell?: boolean;
 };
 
 const Card = styled.div`
@@ -57,12 +60,26 @@ const QuickStatValue = styled.div`
   line-height: 1.35;
 `;
 
+const CapacityNote = styled.p`
+  margin: 18px 0 0;
+  color: ${({ theme }) => theme.colors.textMuted};
+  font-size: 0.92rem;
+  line-height: 1.7;
+
+  a {
+    color: ${({ theme }) => theme.colors.primary};
+    font-weight: 700;
+    text-decoration: underline;
+  }
+`;
+
 export default function ChauffeurQuickDetails({
   title,
   vehicleType,
   seats,
   luggage,
-  priceUsd,
+  priceZar,
+  showVClassUpsell,
 }: Props) {
   return (
     <Card>
@@ -96,13 +113,25 @@ export default function ChauffeurQuickDetails({
             </QuickStat>
           ) : null}
 
-          {priceUsd ? (
+          {priceZar ? (
             <QuickStat>
               <QuickStatLabel>Pricing</QuickStatLabel>
-              <QuickStatValue><Money usd={priceUsd} /></QuickStatValue>
+              <QuickStatValue><ApproxPrice zar={priceZar} /></QuickStatValue>
             </QuickStat>
           ) : null}
         </QuickStats>
+        {seats ? (
+          <CapacityNote>
+            Seats {seats} guests{luggage ? ` with ${luggage} bags` : ""}.
+            {showVClassUpsell ? (
+              <>
+                {" "}
+                Travelling with family or extra luggage? Ask about our{" "}
+                <Link href={V_CLASS_PATH}>Mercedes V-Class</Link>.
+              </>
+            ) : null}
+          </CapacityNote>
+        ) : null}
       </CardInner>
     </Card>
   );

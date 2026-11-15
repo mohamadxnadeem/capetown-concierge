@@ -17,6 +17,7 @@ export const sigmaVipBrand: BrandConfig = {
     country: "ZA",
     postalCode: "7700",
   },
+  googleReviewCount: null,
   geo: {
     lat: -33.9593,
     lng: 18.4742,

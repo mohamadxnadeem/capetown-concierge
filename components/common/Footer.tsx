@@ -214,8 +214,7 @@ export default function Footer() {
             <BrandName>{brand.name}</BrandName>
             <BrandText>
               Premium private chauffeur services, bespoke tours, and luxury
-              airport transfers across Cape Town and the Western Cape. Available
-              7 days a week.
+              airport transfers across Cape Town and the Western Cape.
             </BrandText>
             <WhatsAppButton
               href={footerWhatsappLink}
@@ -225,6 +224,7 @@ export default function Footer() {
                 trackWhatsAppClick({
                   source: "footer_whatsapp",
                   label: "WhatsApp Us",
+                  location: "footer",
                 })
               }
             >
@@ -262,7 +262,7 @@ export default function Footer() {
             </ContactItem>
             <ContactItem>
               <ContactLabel>Availability</ContactLabel>
-              7 days a week
+              Airport transfers available 24/7, including early-morning and late-night flights
             </ContactItem>
             <ContactItem>
               <ContactLabel>Response Time</ContactLabel>
@@ -337,7 +337,7 @@ export default function Footer() {
           <TrustBadge>⭐ 4.9 Rated Service</TrustBadge>
           <TrustBadge>✔ Fully Licensed & Insured</TrustBadge>
           <TrustBadge>✔ Professional PDP Drivers</TrustBadge>
-          <TrustBadge>✔ Private — No Shared Rides</TrustBadge>
+          <TrustBadge>✔ Private, No Shared Rides</TrustBadge>
           <TrustBadge>✔ Cape Town Based</TrustBadge>
         </TrustRow>
 

@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import styled from "styled-components";
 import { testimonials } from "./data";
+import { brand } from "../../../lib/brand";
 
 const GOOGLE_REVIEWS_URL = "https://share.google/P13pnsYwTEQGoPaSh";
 
@@ -270,7 +271,20 @@ function StarRating({ count = 5 }: { count?: number }) {
   return <>{Array.from({ length: count }).map((_, i) => <span key={i}>★</span>)}</>;
 }
 
-export default function TestimonialsSection() {
+type TestimonialsSectionProps = {
+  /** Reviews whose `service` mentions this text (for example a vehicle title) are shown first. */
+  prioritizeService?: string;
+};
+
+export default function TestimonialsSection({ prioritizeService }: TestimonialsSectionProps = {}) {
+  const orderedTestimonials = useMemo(() => {
+    const needle = prioritizeService?.trim().toLowerCase();
+    if (!needle) return testimonials;
+    const matches = testimonials.filter((t) => t.service.toLowerCase().includes(needle));
+    if (!matches.length) return testimonials;
+    return [...matches, ...testimonials.filter((t) => !matches.includes(t))];
+  }, [prioritizeService]);
+
   const sliderRef = useRef<HTMLDivElement | null>(null);
   const autoScrollRef = useRef<number | null>(null);
 
@@ -353,7 +367,7 @@ export default function TestimonialsSection() {
           onTouchStart={stopAutoScroll}
           onTouchEnd={startAutoScroll}
         >
-          {testimonials.map((item, index) => (
+          {orderedTestimonials.map((item, index) => (
             <Card key={`${item.name}-${index}`}>
               <CardHeader>
                 <Initial>{item.name.charAt(0)}</Initial>
@@ -384,7 +398,10 @@ export default function TestimonialsSection() {
           >
             <GoogleG>G</GoogleG>
             <GoogleStars>★★★★★</GoogleStars>
-            4.9 · Read all reviews on Google
+            {brand.googleReviewCount
+              ? `4.9 (${brand.googleReviewCount} Google reviews)`
+              : "4.9"}{" "}
+            · Read all reviews on Google
           </GoogleButton>
         </SliderFooter>
       </Container>

@@ -71,6 +71,7 @@ export default function FloatingWhatsApp() {
         trackWhatsAppClick({
           source: "floating_button",
           label: "Get in Touch on WhatsApp",
+          location: "floating",
         })
       }
     >

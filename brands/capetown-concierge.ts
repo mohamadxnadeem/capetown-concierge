@@ -17,6 +17,8 @@ export const capeTownConciergeBrand: BrandConfig = {
     country: "ZA",
     postalCode: "8001",
   },
+  // TODO(King Mo): fill in the real Google review count
+  googleReviewCount: null,
   geo: {
     lat: -33.9249,
     lng: 18.4241,
