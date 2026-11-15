@@ -55,7 +55,7 @@ export default function TestimonialsCta() {
         <Title>Ready to Experience Cape Town Like This?</Title>
 
         <Text>
-          Message us on WhatsApp and we’ll plan your entire trip — from chauffeur
+          Message us on WhatsApp and we’ll plan your entire trip, from chauffeur
           drives and tours to wine farms and luxury experiences.
         </Text>
 
@@ -74,6 +74,7 @@ export default function TestimonialsCta() {
             trackWhatsAppClick({
               source: "testimonial_cta",
               label: "Plan My Trip",
+              location: "mid",
             })
           }
         >

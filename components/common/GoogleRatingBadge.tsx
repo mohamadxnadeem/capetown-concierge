@@ -67,7 +67,7 @@ export default function GoogleRatingBadge() {
       href="https://share.google/PthhtCdRu9zx9H6Cb"
       target="_blank"
       rel="noopener noreferrer"
-      aria-label="Cape Town Concierge — 4.9 Google Reviews"
+      aria-label="Cape Town Concierge, 4.9 Google Reviews"
     >
       <GoogleG>G</GoogleG>
       <Info>

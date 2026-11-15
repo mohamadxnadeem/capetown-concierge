@@ -85,6 +85,7 @@ export default function ChauffeurStickyBar({
           trackWhatsAppClick({
             source: "chauffeur_sticky_bar",
             label: "Book Now",
+            location: "sticky",
             vehicle: title,
           })
         }

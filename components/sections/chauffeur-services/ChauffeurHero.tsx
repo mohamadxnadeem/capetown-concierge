@@ -4,9 +4,9 @@ import Link from "next/link";
 import styled from "styled-components";
 import Container from "../../common/Container";
 import SmartImage from "../../common/SmartImage";
-import RotatingImage from "../../common/RotatingImage";
-import { trackWhatsAppClick } from "../../../lib/tracking";
-import Money from "../../common/Money";
+import { trackWhatsAppClick, trackCallClick } from "../../../lib/tracking";
+import ApproxPrice from "../../common/ApproxPrice";
+import { brand } from "../../../lib/brand";
 
 type Props = {
   title: string;
@@ -14,9 +14,9 @@ type Props = {
   vehicleType?: string;
   seats?: number;
   luggage?: number;
-  priceUsd?: number;
+  priceZar?: number;
   image?: string;
-  images?: string[];
+  imageAlt?: string;
   whatsappLink: string;
 };
 
@@ -132,27 +132,39 @@ const PrimaryButton = styled.a`
   box-shadow: ${({ theme }) => theme.shadows.soft};
 `;
 
+const SecondaryButton = styled.a`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 50px;
+  padding: 0 22px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  color: white;
+  font-weight: 700;
+  text-decoration: none;
+  backdrop-filter: blur(6px);
+`;
+
+const phoneHref = `tel:${brand.phone.replace(/[^+\d]/g, "")}`;
+
 export default function ChauffeurHero({
   title,
   description,
   vehicleType,
   seats,
   luggage,
-  priceUsd,
+  priceZar,
   image,
-  images,
+  imageAlt,
   whatsappLink,
 }: Props) {
-  const rotation = (images ?? []).filter(Boolean);
   return (
     <Hero>
-      {rotation.length > 0 ? (
+      {image ? (
         <HeroImageLayer>
-          <RotatingImage images={rotation} alt={title} priority sizes="100vw" />
-        </HeroImageLayer>
-      ) : image ? (
-        <HeroImageLayer>
-          <SmartImage src={image} alt={title} priority sizes="100vw" />
+          <SmartImage src={image} alt={imageAlt || `${title} chauffeur Cape Town - photo 1`} priority sizes="100vw" />
         </HeroImageLayer>
       ) : null}
       <HeroOverlay />
@@ -166,7 +178,7 @@ export default function ChauffeurHero({
               {vehicleType && <HeroMetaItem>{vehicleType}</HeroMetaItem>}
               {seats && <HeroMetaItem>{seats} Seats</HeroMetaItem>}
               {luggage && <HeroMetaItem>{luggage} Luggage</HeroMetaItem>}
-              {priceUsd ? <HeroMetaItem><Money usd={priceUsd} /></HeroMetaItem> : null}
+              {priceZar ? <HeroMetaItem><ApproxPrice zar={priceZar} /></HeroMetaItem> : null}
             </HeroMeta>
             <HeroButtons>
               <PrimaryButton
@@ -178,11 +190,18 @@ export default function ChauffeurHero({
                     source: "chauffeur_hero",
                     label: "Book on WhatsApp",
                     vehicle: title,
+                    location: "hero",
                   })
                 }
               >
                 Check Availability on WhatsApp
               </PrimaryButton>
+              <SecondaryButton
+                href={phoneHref}
+                onClick={() => trackCallClick({ location: "hero", vehicle: title })}
+              >
+                Call {brand.phone}
+              </SecondaryButton>
             </HeroButtons>
           </HeroInner>
         </Container>

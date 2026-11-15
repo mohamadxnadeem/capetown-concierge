@@ -14,6 +14,7 @@ export interface BrandConfig {
     country: string;      // "ZA"
     postalCode: string;   // "8001"
   };
+  googleReviewCount: number | null; // null until the real count is known
   geo: {
     lat: number;
     lng: number;

@@ -196,6 +196,7 @@ export default function Header() {
                   trackWhatsAppClick({
                     source: "header_mobile_whatsapp",
                     label: "WhatsApp Icon",
+                    location: "header",
                   })
                 }
               >
@@ -213,6 +214,7 @@ export default function Header() {
                   trackWhatsAppClick({
                     source: "header_cta",
                     label: "Book Now",
+                    location: "header",
                   })
                 }
               >

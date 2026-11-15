@@ -1,12 +1,14 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import styled, { keyframes } from "styled-components";
 import { CarPhoto } from "./types";
 import SmartImage from "../../common/SmartImage";
 
 type Props = {
-  images: CarPhoto[];
+  // Pass photos from getVehiclePhotos() (already ordered, HEIC-free, with alt text).
+  // Raw CarPhoto[] also works: it is sorted and given fallback alt text here.
+  images: (CarPhoto & { url?: string })[];
   title?: string;
 };
 
@@ -155,16 +157,24 @@ const ThumbButton = styled.button<{ $active: boolean }>`
 `;
 
 export default function ChauffeurGallery({ images, title = "Vehicle Gallery" }: Props) {
-  const galleryImages = useMemo(
-    () => [...images].sort((a, b) => (a.order || 0) - (b.order || 0)),
-    [images]
-  );
+  const prepared = images.every((i) => i.url);
+  const galleryImages = (prepared
+    ? images
+    : [...images]
+        .filter((i) => i.cover_photos && !/\.(heic|heif)(\?|#|$)/i.test(i.cover_photos))
+        .sort((a, b) => (a.order || 0) - (b.order || 0))
+  ).map((image, index) => ({
+    ...image,
+    url: image.url || image.cover_photos,
+    alt: (image.caption || image.alt || "").trim() || `Vehicle photo ${index + 1}`,
+  }));
 
   const [activeImageIndex, setActiveImageIndex] = useState(0);
 
   if (!galleryImages.length) return null;
 
-  const activeImage = galleryImages[activeImageIndex]?.cover_photos;
+  const activeImage = galleryImages[activeImageIndex]?.url;
+  const activeAlt = galleryImages[activeImageIndex]?.alt || "";
 
   const goPrev = () => {
     setActiveImageIndex((prev) =>
@@ -204,8 +214,7 @@ export default function ChauffeurGallery({ images, title = "Vehicle Gallery" }: 
               {activeImage && (
                 <SmartImage
                   src={activeImage}
-                  alt=""
-                  priority
+                  alt={activeAlt}
                   sizes="(max-width: 1200px) 100vw, 60vw"
                 />
               )}
@@ -225,10 +234,10 @@ export default function ChauffeurGallery({ images, title = "Vehicle Gallery" }: 
               onClick={() => setActiveImageIndex(index)}
               aria-label={`Show image ${index + 1}`}
             >
-              {image.cover_photos && (
+              {image.url && (
                 <SmartImage
-                  src={image.cover_photos}
-                  alt=""
+                  src={image.url}
+                  alt={image.alt}
                   sizes="108px"
                 />
               )}

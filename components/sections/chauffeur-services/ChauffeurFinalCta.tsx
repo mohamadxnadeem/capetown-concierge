@@ -65,6 +65,7 @@ export default function ChauffeurFinalCta({ title, whatsappLink }: Props) {
             trackWhatsAppClick({
               source: "chauffeur_final_cta",
               label: "Book on WhatsApp",
+              location: "closing",
               vehicle: title,
             })
           }
