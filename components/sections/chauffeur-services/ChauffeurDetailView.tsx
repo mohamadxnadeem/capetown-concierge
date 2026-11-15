@@ -308,7 +308,10 @@ export default function ChauffeurDetailView({
     car.chauffeur_service_text ||
     "Travel Cape Town in comfort with a premium chauffeur-driven vehicle designed for polished, private, and reliable service.";
 
-  const { primary: heroPhoto, gallery: galleryPhotos } = getVehiclePhotos(car);
+  const { primary: heroPhoto, gallery: extraPhotos, all: allPhotos } = getVehiclePhotos(car);
+  // Keep the gallery section on the page: show the photos after the hero,
+  // or all photos when the vehicle only has the hero photo.
+  const galleryPhotos = extraPhotos.length ? extraPhotos : allPhotos;
   const priceZar = parsePrice(car.price);
   const showVClassUpsell = shouldShowVClassUpsell(car);
 
