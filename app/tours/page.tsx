@@ -15,7 +15,7 @@ const OG_IMAGE = `${SITE_URL}/images/og-cape-town-concierge.jpg`;
 export const metadata: Metadata = {
   title: "Private Tours Cape Town | Bespoke Day Experiences",
   description:
-    "Explore Cape Town privately — Peninsula, Winelands, Table Mountain & more. Fully tailored, no shared groups. Book your private tour on WhatsApp.",
+    "Explore Cape Town privately: Peninsula, Winelands, Table Mountain & more. Fully tailored, no shared groups. Book your private tour on WhatsApp.",
   alternates: {
     canonical: `${SITE_URL}/tours`,
   },
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Private Tours Cape Town | Bespoke Day Experiences",
     description:
-      "Explore Cape Town privately — Peninsula, Winelands, Table Mountain & more. Fully tailored, no shared groups. Book your private tour on WhatsApp.",
+      "Explore Cape Town privately: Peninsula, Winelands, Table Mountain & more. Fully tailored, no shared groups. Book your private tour on WhatsApp.",
     url: `${SITE_URL}/tours`,
     siteName: brand.name,
     type: "website",
@@ -43,7 +43,7 @@ export const metadata: Metadata = {
         url: OG_IMAGE,
         width: 1200,
         height: 630,
-        alt: "Cape Town Concierge — Luxury Chauffeur Service",
+        alt: "Cape Town Concierge, Luxury Chauffeur Service",
       },
     ],
   },
@@ -51,7 +51,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Private Tours Cape Town | Bespoke Day Experiences",
     description:
-      "Explore Cape Town privately — Peninsula, Winelands, Table Mountain & more. Fully tailored, no shared groups. Book your private tour on WhatsApp.",
+      "Explore Cape Town privately: Peninsula, Winelands, Table Mountain & more. Fully tailored, no shared groups. Book your private tour on WhatsApp.",
     images: [OG_IMAGE],
   },
 };
@@ -148,7 +148,7 @@ const whyItems = [
   {
     title: "Fully Private Experiences",
     description:
-      "Every tour is exclusively yours — no shared groups, no fixed schedules, and no rushing. Travel at your own pace with a dedicated chauffeur.",
+      "Every tour is exclusively yours: no shared groups, no fixed schedules and no rushing. Travel at your own pace with a dedicated chauffeur.",
   },
   {
     title: "Bespoke Itineraries",
@@ -158,7 +158,7 @@ const whyItems = [
   {
     title: "Professional Local Knowledge",
     description:
-      "Our chauffeurs know Cape Town intimately — from the best viewpoints on Chapman's Peak to the most celebrated estates in Franschhoek.",
+      "Our chauffeurs know Cape Town intimately, from the best viewpoints on Chapman's Peak to the most celebrated estates in Franschhoek.",
   },
   {
     title: "Luxury Transport Included",
@@ -282,7 +282,7 @@ export default async function PrivateToursLandingPage() {
       <HeroBanner
         eyebrow="Private Tours Cape Town"
         title="Private Tours in Cape Town"
-        description="Chauffeur-driven private tours across Cape Town's most celebrated destinations — Cape Peninsula, Cape Winelands, Table Mountain, and beyond. Fully bespoke, fully private."
+        description="Chauffeur-driven private tours across Cape Town's most celebrated destinations: Cape Peninsula, Cape Winelands, Table Mountain, and beyond. Fully bespoke, fully private."
         primaryCtaLabel="Explore Tours"
         primaryCtaHref="#tours"
         secondaryCtaLabel="Book via WhatsApp"
@@ -304,7 +304,7 @@ export default async function PrivateToursLandingPage() {
       <FeaturedExperiences
         eyebrow="Our Experiences"
         title="Private Tours in Cape Town"
-        description="Every experience is designed around your group — no shared schedules, no rushing."
+        description="Every experience is designed around your group, with no shared schedules and no rushing."
         items={experiences}
       />
 

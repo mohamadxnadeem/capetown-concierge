@@ -47,7 +47,7 @@ export const metadata: Metadata = {
         url: OG_IMAGE,
         width: 1200,
         height: 630,
-        alt: "Cape Town Concierge — Luxury Chauffeur Service",
+        alt: "Cape Town Concierge, Luxury Chauffeur Service",
       },
     ],
   },
@@ -385,7 +385,7 @@ export default async function HomePage() {
       eyebrow: "Stay",
       title: "Luxury Villas",
       description:
-        "Hand-picked villas in Camps Bay, Clifton, Constantia and the Winelands — concierge from arrival to departure.",
+        "Hand-picked villas in Camps Bay, Clifton, Constantia and the Winelands, with concierge service from arrival to departure.",
       images: villaTileImages.length ? villaTileImages : ["/images/hero-image.jpg"],
       alt: "Luxury Cape Town villa rentals with concierge service",
     },
@@ -403,7 +403,7 @@ export default async function HomePage() {
       eyebrow: "Explore",
       title: "Day Tours",
       description:
-        "Curated private day tours — Cape Point, Winelands, Table Mountain — entirely at your own pace.",
+        "Curated private day tours (Cape Point, Winelands, Table Mountain), entirely at your own pace.",
       images: tourTileImages.length ? tourTileImages : ["/images/hero-car.jpg"],
       alt: "Private day tours in Cape Town with chauffeur guide",
     },
@@ -569,7 +569,7 @@ export default async function HomePage() {
 
       <HeroBanner
         eyebrow={brand.name}
-        title="Cape Town's luxury concierge — villas, chauffeurs, and curated day tours."
+        title="Cape Town's luxury concierge: villas, chauffeurs, and curated day tours."
         description="A single team that plans, books, and runs the whole trip. Villas in the city's best addresses, private chauffeur hire in luxury vehicles, and concierge-led day tours of Cape Town and the Winelands."
         primaryCtaLabel="Chat on WhatsApp"
         primaryCtaHref="https://wa.me/27636746131?text=Hi%2C+I%27d+like+to+plan+a+stay+with+Cape+Town+Concierge.+Please+assist."
@@ -577,7 +577,7 @@ export default async function HomePage() {
         secondaryCtaHref="/villas"
         image="/images/car.jpg"
         images={heroRotationImages}
-        imageAlt="Cape Town Concierge — luxury villas, chauffeur hire and private day tours"
+        imageAlt="Cape Town Concierge, luxury villas, chauffeur hire and private day tours"
       />
 
       <ServiceTiles tiles={serviceTiles} />

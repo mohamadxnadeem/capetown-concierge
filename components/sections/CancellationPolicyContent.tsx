@@ -113,7 +113,7 @@ export default function CancellationPolicyContent() {
 
         <Lead>
           This policy explains how cancellations and changes work across the
-          services Cape Town Concierge arranges — private chauffeur hire,
+          services Cape Town Concierge arranges: private chauffeur hire,
           day tours, villa and hotel stays, and combined trip packages. It
           applies to bookings made directly with us via WhatsApp, email, or
           our website.
@@ -126,20 +126,20 @@ export default function CancellationPolicyContent() {
         </Paragraph>
         <List>
           <li>
-            <strong>More than 72 hours before pickup</strong> — free
+            <strong>More than 72 hours before pickup</strong>: free
             cancellation, full refund of any deposit paid.
           </li>
           <li>
-            <strong>Between 48 and 72 hours before pickup</strong> — 50% of
+            <strong>Between 48 and 72 hours before pickup</strong>: 50% of
             the trip fee is due; the balance is refundable.
           </li>
           <li>
-            <strong>Less than 48 hours before pickup</strong> — the full
+            <strong>Less than 48 hours before pickup</strong>: the full
             trip fee is due. Where possible we&apos;ll try to re-book the
             driver and refund the portion recovered.
           </li>
           <li>
-            <strong>No-show on the day</strong> — the full trip fee is due
+            <strong>No-show on the day</strong>: the full trip fee is due
             and no refund is offered.
           </li>
         </List>
@@ -152,15 +152,15 @@ export default function CancellationPolicyContent() {
         <SectionHeading>2. Airport transfers</SectionHeading>
         <List>
           <li>
-            <strong>More than 24 hours before pickup</strong> — free
+            <strong>More than 24 hours before pickup</strong>: free
             cancellation.
           </li>
           <li>
-            <strong>Less than 24 hours before pickup</strong> — 50% of the
+            <strong>Less than 24 hours before pickup</strong>: 50% of the
             transfer fee is due.
           </li>
           <li>
-            <strong>No-show</strong> — full transfer fee is due.
+            <strong>No-show</strong>: full transfer fee is due.
           </li>
           <li>
             Flight-tracked airport transfers automatically adjust for delays
@@ -176,20 +176,20 @@ export default function CancellationPolicyContent() {
         </Paragraph>
         <List>
           <li>
-            <strong>More than 60 days before arrival</strong> — deposit
+            <strong>More than 60 days before arrival</strong>: deposit
             refundable less a small admin fee.
           </li>
           <li>
-            <strong>30 to 60 days before arrival</strong> — deposit is
+            <strong>30 to 60 days before arrival</strong>: deposit is
             non-refundable; balance is refundable.
           </li>
           <li>
-            <strong>Less than 30 days before arrival</strong> — full
+            <strong>Less than 30 days before arrival</strong>: full
             booking value is due.
           </li>
           <li>
             <strong>Peak season</strong> (mid-December to mid-January and
-            Easter week) — stricter terms usually apply. Full details are
+            Easter week), stricter terms usually apply. Full details are
             shared before you confirm.
           </li>
         </List>
@@ -221,7 +221,7 @@ export default function CancellationPolicyContent() {
           </li>
           <li>
             Accommodation date changes are subject to the property&apos;s
-            availability and terms — we&apos;ll confirm any difference in
+            availability and terms. We&apos;ll confirm any difference in
             price and any admin fee before making the change.
           </li>
         </List>
@@ -237,7 +237,7 @@ export default function CancellationPolicyContent() {
         <SectionHeading>7. Our right to cancel</SectionHeading>
         <Paragraph>
           On very rare occasions we may need to cancel a booking due to
-          circumstances beyond our control — mechanical failure of the
+          circumstances beyond our control, mechanical failure of the
           assigned vehicle, driver illness, extreme weather closing a route,
           or a property withdrawing its availability. In those cases:
         </Paragraph>

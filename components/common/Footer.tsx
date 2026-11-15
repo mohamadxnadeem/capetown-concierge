@@ -337,7 +337,7 @@ export default function Footer() {
           <TrustBadge>⭐ 4.9 Rated Service</TrustBadge>
           <TrustBadge>✔ Fully Licensed & Insured</TrustBadge>
           <TrustBadge>✔ Professional PDP Drivers</TrustBadge>
-          <TrustBadge>✔ Private — No Shared Rides</TrustBadge>
+          <TrustBadge>✔ Private: No Shared Rides</TrustBadge>
           <TrustBadge>✔ Cape Town Based</TrustBadge>
         </TrustRow>
 
