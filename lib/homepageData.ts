@@ -61,7 +61,7 @@ export type HomepageData = {
   vehicles: HomeVehicle[];
   tours: HomeTour[];
   lowestVehiclePrice?: number;
-  /** Vehicle and tour photos for the hero, with unique alt text. */
+  /** Vehicle photos for the hero, with unique alt text. */
   heroImages: { src: string; alt: string }[];
   /** Titles that were changed for display. */
   cleanedTitles: { from: string; to: string }[];
@@ -209,14 +209,10 @@ export async function fetchHomepageData(): Promise<HomepageData> {
     };
   });
 
-  // Hero rotation: vehicle and tour photos only, alternating.
-  const vImgs = vehicles.filter((v) => v.image).map((v) => ({ src: v.image, alt: `${v.title} waiting for guests with a private chauffeur in Cape Town` }));
-  const tImgs = homeTours.filter((t) => t.image).map((t) => ({ src: t.image, alt: `${t.title}: scenery from a private full-day tour in Cape Town` }));
-  const heroImages: { src: string; alt: string }[] = [];
-  for (let i = 0; i < Math.max(vImgs.length, tImgs.length); i++) {
-    if (tImgs[i]) heroImages.push(tImgs[i]);
-    if (vImgs[i]) heroImages.push(vImgs[i]);
-  }
+  // Hero rotation: vehicle photos only (King Mo, 2026-11-15), in homepage order.
+  const heroImages = vehicles
+    .filter((v) => v.image)
+    .map((v) => ({ src: v.image, alt: `${v.title} waiting for guests with a private chauffeur in Cape Town` }));
 
   return { vehicles, tours: homeTours, lowestVehiclePrice, heroImages, cleanedTitles };
 }

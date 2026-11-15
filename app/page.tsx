@@ -182,7 +182,7 @@ export default async function HomePage() {
         image="/images/car.jpg"
         images={heroImages.map((h) => h.src)}
         imageAlts={heroImages.map((h) => h.alt)}
-        imageAlt="Private chauffeur vehicle and day tour scenery in Cape Town"
+        imageAlt="Private chauffeur vehicle ready for guests in Cape Town"
       >
         <GoogleRatingBadge />
       </HeroBanner>
