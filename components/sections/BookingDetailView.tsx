@@ -436,11 +436,11 @@ function describeDay(day: BookingDay): string | null {
   const end = day.end_time ? formatTime(day.end_time) : null;
 
   if (day.day_type === "half_day") {
-    if (start && end) return `Half day · ${start}–${end}`;
+    if (start && end) return `Half day · ${start} to ${end}`;
     if (start) return `Half day · from ${start}`;
     return "Half day";
   }
-  if (start && end) return `Full day · ${start}–${end}`;
+  if (start && end) return `Full day · ${start} to ${end}`;
   if (start) return `Full day · from ${start}`;
   return "Full day";
 }
@@ -564,7 +564,7 @@ function ExperienceBundleCard({ experience }: { experience: BookingExperience })
         {photo ? (
           <SmartImage
             src={photo}
-            alt={`${experience.title} — private tour`}
+            alt={`${experience.title}, private tour`}
             sizes="(max-width: 768px) 100vw, 50vw"
           />
         ) : null}
@@ -596,7 +596,7 @@ function PackageBundleCard({ pkg }: { pkg: BookingPackage }) {
         {photo ? (
           <SmartImage
             src={photo}
-            alt={`${pkg.name} — travel package`}
+            alt={`${pkg.name}, travel package`}
             sizes="(max-width: 768px) 100vw, 50vw"
           />
         ) : null}
@@ -911,7 +911,7 @@ function ItinerarySegmentCard({ entry }: { entry: SegmentEntry }) {
         {photo ? (
           <SmartImage
             src={photo}
-            alt={`${property.name} — ${kindLabel.toLowerCase()}`}
+            alt={`${property.name}, ${kindLabel.toLowerCase()}`}
             sizes="(max-width: 768px) 100vw, 720px"
           />
         ) : null}
@@ -1144,7 +1144,7 @@ export default function BookingDetailView({
             </DefinitionList>
           ) : (
             <Muted>
-              Driver to be assigned — we&apos;ll share their details closer to
+              Driver to be assigned. We&apos;ll share their details closer to
               your trip date.
             </Muted>
           )}
@@ -1206,7 +1206,7 @@ export default function BookingDetailView({
         <Card>
           <SectionTitle>Need to change something?</SectionTitle>
           <Prose>
-            Reply to your confirmation email, or reach out below — we&apos;ll
+            Reply to your confirmation email, or reach out below. We&apos;ll
             update your booking and confirm the change in writing.
           </Prose>
           <Actions>
@@ -1233,7 +1233,7 @@ export default function BookingDetailView({
               <UpsellEyebrow>Private Tours</UpsellEyebrow>
               <UpsellTitle>Other experiences you might enjoy</UpsellTitle>
               <UpsellSubtitle>
-                Hand-picked private tours across Cape Town — add one to your
+                Hand-picked private tours across Cape Town. Add one to your
                 trip with a quick WhatsApp.
               </UpsellSubtitle>
             </UpsellHeader>

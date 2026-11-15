@@ -288,7 +288,7 @@ export default function VillaDetailView({ villa, availability }: Props) {
         <HeroImage>
           <RotatingImage
             images={heroImages}
-            alt={`${villa.name} — luxury villa in ${area}`}
+            alt={`${villa.name}, luxury villa in ${area}`}
             priority
             sizes="100vw"
           />
@@ -297,7 +297,7 @@ export default function VillaDetailView({ villa, availability }: Props) {
         <HeroImage>
           <SmartImage
             src={photo}
-            alt={`${villa.name} — luxury villa in ${area}`}
+            alt={`${villa.name}, luxury villa in ${area}`}
             priority
             sizes="100vw"
           />

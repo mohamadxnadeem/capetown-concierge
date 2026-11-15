@@ -72,7 +72,7 @@ export default function GlobalError({ reset }: { error: Error; reset: () => void
       <Eyebrow>Something went wrong</Eyebrow>
       <Title>We hit a snag</Title>
       <Body>
-        This page failed to load. Please try again — if the problem persists,
+        This page failed to load. Please try again. If the problem persists,
         message us on WhatsApp and we'll sort it out immediately.
       </Body>
       <Actions>

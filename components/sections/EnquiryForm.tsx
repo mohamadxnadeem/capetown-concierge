@@ -203,7 +203,7 @@ export default function EnquiryForm() {
         body: JSON.stringify({
           name: form.name,
           email: form.email,
-          subject: `New Enquiry — ${form.service}`,
+          subject: `New Enquiry: ${form.service}`,
           message: body,
           _captcha: "false",
         }),
@@ -220,7 +220,7 @@ export default function EnquiryForm() {
   if (submitted) {
     return (
       <Wrap>
-        <SuccessMsg>Thanks — we&apos;ll be in touch within 30 minutes.</SuccessMsg>
+        <SuccessMsg>Thanks, we&apos;ll be in touch within 30 minutes.</SuccessMsg>
       </Wrap>
     );
   }

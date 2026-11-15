@@ -108,13 +108,13 @@ const INCLUDED = [
   "Hotel or accommodation pickup and drop-off",
   "Fuel and all toll fees",
   "Chilled bottled water in the vehicle",
-  "Flexible itinerary — you set the pace",
+  "Flexible itinerary: you set the pace",
   "Flight tracking for airport-connected bookings",
   "Local route knowledge and stop recommendations",
 ];
 
 const NOT_INCLUDED = [
-  "Entrance fees to attractions (e.g. Cape Point Nature Reserve ~R380pp, Boulders Beach ~R260pp, Table Mountain Cable Car — payable on the day)",
+  "Entrance fees to attractions (e.g. Cape Point Nature Reserve ~R380pp, Boulders Beach ~R260pp, Table Mountain Cable Car, payable on the day)",
   "Meals and drinks unless specified in the tour",
   "Gratuity for your chauffeur (discretionary but appreciated)",
   "Travel insurance",
@@ -146,7 +146,7 @@ export default function PrivateTourInclusions() {
           <ItemList>
             {NOT_INCLUDED.map((item) => (
               <Item key={item}>
-                <ExcludedIcon>—</ExcludedIcon>
+                <ExcludedIcon>-</ExcludedIcon>
                 {item}
               </Item>
             ))}

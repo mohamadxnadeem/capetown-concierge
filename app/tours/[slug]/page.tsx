@@ -113,7 +113,7 @@ const TOUR_META: Record<string, { title: string; description: string }> = {
   },
   "winelands-chauffeur-drive": {
     title: "Romantic Stellenbosch Winelands Experience | Private Tour Cape Town",
-    description: "Private chauffeur through Stellenbosch & Franschhoek — no shuttles, no timetables. Cape Dutch estates & world-class tastings. Book on WhatsApp.",
+    description: "Private chauffeur through Stellenbosch & Franschhoek with no shuttles and no timetables. Cape Dutch estates & world-class tastings. Book on WhatsApp.",
   },
   "safari-day-trip": {
     title: "Cape Town Safari Day Trip | Aquila Private Reserve",
@@ -250,7 +250,7 @@ function getPageDescription(experience: Experience) {
   const base =
     experience.short_description ||
     experience.highlight ||
-    `${keyword} — a fully private, chauffeur-driven experience.`;
+    `${keyword}: a fully private, chauffeur-driven experience.`;
   return truncateText(
     `${base} Private, bespoke, and tailored to your pace. Book via WhatsApp.`,
     155
@@ -259,7 +259,7 @@ function getPageDescription(experience: Experience) {
 
 function getSocialTitle(experience: Experience) {
   const name = experience.title || "Private Tour";
-  return `${name} — Private Chauffeur Tour in Cape Town`;
+  return `${name} | Private Chauffeur Tour in Cape Town`;
 }
 
 function getSocialDescription(experience: Experience) {
@@ -268,7 +268,7 @@ function getSocialDescription(experience: Experience) {
     experience.highlight ||
     `A fully private, chauffeur-driven ${experience.title || "tour"} in Cape Town tailored entirely to your pace.`;
   const clean = hook.length > 115 ? `${hook.slice(0, 115).trim()}...` : hook;
-  return `${clean} Book privately via WhatsApp — we respond in 30 min.`;
+  return `${clean} Book privately via WhatsApp. We respond in 30 min.`;
 }
 
 function mapRelatedTours(
@@ -385,7 +385,7 @@ export async function generateMetadata({
       title: `Private Tour | ${brand.name}`,
       description: "Luxury private tours in Cape Town",
       openGraph: {
-        images: [{ url: ogImage, alt: "Cape Town Concierge — Luxury Private Tours" }],
+        images: [{ url: ogImage, alt: "Cape Town Concierge, Luxury Private Tours" }],
       },
       twitter: {
         card: "summary_large_image",
@@ -443,8 +443,8 @@ export async function generateMetadata({
         {
           url: image || ogImage,
           alt: image
-            ? `${experience.title || "Private Tour"} Cape Town — Private Chauffeur Experience`
-            : "Cape Town Concierge — Luxury Private Tours",
+            ? `${experience.title || "Private Tour"} Cape Town | Private Chauffeur Experience`
+            : "Cape Town Concierge | Luxury Private Tours",
         },
       ],
     },
@@ -505,8 +505,8 @@ export default async function PrivateTourDetailPage({ params }: PageProps) {
   const tourKeyword = getSeoKeyword(experience);
   const priceFromZar = toZarNum(experience.price_from || "");
   const priceAnswer = priceFromZar
-    ? `${tourKeyword} starts from R${priceFromZar.toLocaleString()} per vehicle. This is an all-inclusive private experience — contact us via WhatsApp for a personalised quote based on your group size and requirements.`
-    : `Pricing for ${tourKeyword} depends on your group size and any custom requirements. Contact us via WhatsApp for a tailored quote — we typically respond within 30 minutes.`;
+    ? `${tourKeyword} starts from R${priceFromZar.toLocaleString()} per vehicle. This is an all-inclusive private experience. Contact us via WhatsApp for a personalised quote based on your group size and requirements.`
+    : `Pricing for ${tourKeyword} depends on your group size and any custom requirements. Contact us via WhatsApp for a tailored quote. We typically respond within 30 minutes.`;
 
   const faqJsonLd = {
     "@context": "https://schema.org",
@@ -524,7 +524,7 @@ export default async function PrivateTourDetailPage({ params }: PageProps) {
           "@type": "Answer",
           text: experience.duration
             ? `The ${tourName} typically runs for ${experience.duration}. The exact duration depends on your pace and any custom stops you would like to include.`
-            : `The ${tourName} usually runs for a full day — approximately 8 to 10 hours — depending on the route, your pace, and any custom stops.`,
+            : `The ${tourName} usually runs for a full day, approximately 8 to 10 hours, depending on the route, your pace, and any custom stops.`,
         },
       },
       {
@@ -532,7 +532,7 @@ export default async function PrivateTourDetailPage({ params }: PageProps) {
         name: `Is the ${tourName} a private experience?`,
         acceptedAnswer: {
           "@type": "Answer",
-          text: `Yes. The ${tourName} is completely private — you travel exclusively with your group, with no shared passengers or fixed group schedules. Your itinerary, pace, and stops are entirely your own.`,
+          text: `Yes. The ${tourName} is completely private. You travel exclusively with your group, with no shared passengers or fixed group schedules. Your itinerary, pace, and stops are entirely your own.`,
         },
       },
       {

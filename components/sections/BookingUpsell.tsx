@@ -189,7 +189,7 @@ function VehicleCard({ vehicle }: { vehicle: UpsellVehicle }) {
         {vehicle.image ? (
           <SmartImage
             src={vehicle.image}
-            alt={`${vehicle.title} — chauffeur hire in Cape Town`}
+            alt={`${vehicle.title}, chauffeur hire in Cape Town`}
             sizes="(max-width: 768px) 82vw, 25vw"
           />
         ) : null}
