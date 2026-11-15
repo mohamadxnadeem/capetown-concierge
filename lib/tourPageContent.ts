@@ -24,17 +24,17 @@ export type TourPageContent = {
 
 const SHARED_HIGHLIGHTS_1: HighlightItem = {
   heading: "No Shared Vehicle. Ever.",
-  body: "Your group books the entire vehicle. No strangers, no compromises, no waiting for 20 people to get back on board. It's your day — completely.",
+  body: "Your group books the entire vehicle. No strangers, no compromises, no waiting for 20 people to get back on board. It's your day, completely.",
 };
 
 const SHARED_HIGHLIGHTS_3: HighlightItem = {
   heading: "Your Schedule, Not Ours",
-  body: "Spend 20 minutes at one stop or two hours — it's your call. We build the day around what matters to you, not a preset timetable designed for the lowest common denominator.",
+  body: "Spend 20 minutes at one stop or two hours, it's your call. We build the day around what matters to you, not a preset timetable designed for the lowest common denominator.",
 };
 
 const SHARED_HIGHLIGHTS_4: HighlightItem = {
   heading: "Everything Taken Care Of",
-  body: "Hotel pickup, cold water in the car, toll fees, fuel, local guidance — it's all included. You focus on the experience. We handle everything else.",
+  body: "Hotel pickup, cold water in the car, toll fees, fuel, local guidance, it's all included. You focus on the experience. We handle everything else.",
 };
 
 const SHARED_FAQ_PRIVATE: TourFAQItem = {
@@ -46,22 +46,22 @@ const SHARED_FAQ_PRIVATE: TourFAQItem = {
 const SHARED_FAQ_TRANSPORT: TourFAQItem = {
   question: "Is transport included?",
   answer:
-    "Yes — a professional chauffeur-driven vehicle is the foundation of the experience. Hotel pickup, drop-off, all driving, toll fees, and fuel are included in your booking.",
+    "Yes, a professional chauffeur-driven vehicle is the foundation of the experience. Hotel pickup, drop-off, all driving, toll fees, and fuel are included in your booking.",
 };
 
 const SHARED_CTA_BODY =
-  "Send us a WhatsApp with your travel dates and group size. We'll confirm availability and send you a price within 30 minutes. No deposit is required to hold a date while you decide — just message us and we'll take it from there.";
+  "Send us a WhatsApp with your travel dates and group size. We'll confirm availability and send you a price within 30 minutes. No deposit is required to hold a date while you decide. Just message us and we'll take it from there.";
 
 const CAPE_PENINSULA: TourPageContent = {
   trustBadges: [
-    "✔ 100% Private — your vehicle, your group, your pace",
-    "✔ Flexible itinerary — you set the stops",
+    "✔ 100% Private: your vehicle, your group, your pace",
+    "✔ Flexible itinerary: you set the stops",
     "✔ Professional chauffeur & local guide included",
   ],
   itineraryTitle: "Every Stop, Yours to Explore",
   itinerarySubheading:
-    "No group timetables. No strangers. No one rushing you back to the bus. This is the Cape Peninsula on your terms — linger at the penguin colony, take your time at the cliff edge, or ask your chauffeur to pull over for a photo. Every moment is yours.",
-  highlightsTitle: "Why Guests Choose a Private Tour Over a Group Bus",
+    "No group timetables. No strangers. No one rushing you back to the bus. This is the Cape Peninsula on your terms: linger at the penguin colony, take your time at the cliff edge, or ask your chauffeur to pull over for a photo. Every moment is yours.",
+  highlightsTitle: "Why Guests Choose a Private Cape Peninsula Tour Over a Group Bus",
   highlights: [
     SHARED_HIGHLIGHTS_1,
     {
@@ -73,15 +73,15 @@ const CAPE_PENINSULA: TourPageContent = {
   ],
   midCtaTitle: "Ready to See the Cape Peninsula?",
   midCtaBody:
-    "Most guests tell us the Peninsula is the highlight of their entire Cape Town trip. Don't leave it to chance with a shared tour bus — message us and we'll plan the day around you.",
-  midCtaButtonLabel: "Check Availability — We Respond in 30 Minutes",
+    "Most guests tell us the Peninsula is the highlight of their entire Cape Town trip. Don't leave it to chance with a shared tour bus. Message us and we'll plan the day around you.",
+  midCtaButtonLabel: "Check Availability: We Respond in 30 Minutes",
   ctaTitle: "Ready to book? Here's how it works",
   ctaBody: SHARED_CTA_BODY,
   faqItems: [
     {
       question: "How long does the Cape Peninsula private tour take?",
       answer:
-        "The full route typically runs 7–9 hours, depending on your pace and preferred stops. We build in flexibility by design — if you want to spend longer at Boulders Beach or take a detour, just say the word.",
+        "The full route typically runs 7 to 9 hours, depending on your pace and preferred stops. We build in flexibility by design. If you want to spend longer at Boulders Beach or take a detour, just say the word.",
     },
     SHARED_FAQ_PRIVATE,
     {
@@ -93,21 +93,21 @@ const CAPE_PENINSULA: TourPageContent = {
     {
       question: "Is this tour suitable for families and children?",
       answer:
-        "Very much so. The private format makes this especially good for families — no rushing, no crowds, and your chauffeur will adapt the pace to suit your group. Boulders Beach and Cape Point are particular hits with younger travellers.",
+        "Very much so. The private format makes this especially good for families, with no rushing and no crowds, and your chauffeur will adapt the pace to suit your group. Boulders Beach and Cape Point are particular hits with younger travellers.",
     },
   ],
 };
 
 const CAPE_TOWN_CITY: TourPageContent = {
   trustBadges: [
-    "✔ 100% Private — your vehicle, your group, your pace",
-    "✔ Flexible itinerary — you set the stops",
+    "✔ 100% Private: your vehicle, your group, your pace",
+    "✔ Flexible itinerary: you set the stops",
     "✔ Professional chauffeur & local guide included",
   ],
   itineraryTitle: "Every Stop, Yours to Explore",
   itinerarySubheading:
-    "No group timetables. No strangers. No one rushing you back to the bus. Cape Town's most iconic landmarks — explored entirely on your terms, at your pace, with your dedicated chauffeur for the day.",
-  highlightsTitle: "Why Guests Choose a Private Tour Over a Group Bus",
+    "No group timetables. No strangers. No one rushing you back to the bus. Cape Town's most iconic landmarks, explored entirely on your terms, at your pace, with your dedicated chauffeur for the day.",
+  highlightsTitle: "Why Guests Choose a Private Table Mountain and City Tour Over a Group Bus",
   highlights: [
     SHARED_HIGHLIGHTS_1,
     {
@@ -119,15 +119,15 @@ const CAPE_TOWN_CITY: TourPageContent = {
   ],
   midCtaTitle: "Ready to See Cape Town Properly?",
   midCtaBody:
-    "Most visitors only scratch the surface of what Cape Town offers. A private chauffeur day gives you the full picture — without the crowds, the queues, or the shared bus. Message us and let's plan your day.",
-  midCtaButtonLabel: "Check Availability — We Respond in 30 Minutes",
+    "Most visitors only scratch the surface of what Cape Town offers. A private chauffeur day gives you the full picture, without the crowds, the queues, or the shared bus. Message us and let's plan your day.",
+  midCtaButtonLabel: "Check Availability: We Respond in 30 Minutes",
   ctaTitle: "Ready to book? Here's how it works",
   ctaBody: SHARED_CTA_BODY,
   faqItems: [
     {
       question: "How long does the City & Table Mountain tour take?",
       answer:
-        "The full route typically runs 7–9 hours, depending on your pace and which stops you want to prioritise. Table Mountain at sunset is always worth saving time for.",
+        "The full route typically runs 7 to 9 hours, depending on your pace and which stops you want to prioritise. Table Mountain at sunset is always worth saving time for.",
     },
     SHARED_FAQ_PRIVATE,
     {
@@ -146,14 +146,14 @@ const CAPE_TOWN_CITY: TourPageContent = {
 
 const WINELANDS: TourPageContent = {
   trustBadges: [
-    "✔ 100% Private — your vehicle, your group, your pace",
-    "✔ Flexible itinerary — you choose the estates",
+    "✔ 100% Private: your vehicle, your group, your pace",
+    "✔ Flexible itinerary: you choose the estates",
     "✔ Professional chauffeur & local guide included",
   ],
   itineraryTitle: "Every Stop, Yours to Savour",
   itinerarySubheading:
-    "No group timetables. No strangers. No one rushing you between estates. This is the Cape Winelands on your terms — linger over a tasting, take your time exploring the gardens at Babylonstoren, or ask your chauffeur to stop at a viewpoint along the way. Every moment is yours.",
-  highlightsTitle: "Why Guests Choose a Private Tour Over a Shared Shuttle",
+    "No group timetables. No strangers. No one rushing you between estates. This is the Cape Winelands on your terms: linger over a tasting, take your time exploring the gardens at Babylonstoren, or ask your chauffeur to stop at a viewpoint along the way. Every moment is yours.",
+  highlightsTitle: "Why Guests Choose a Private Winelands Tour Over a Shared Shuttle",
   highlights: [
     SHARED_HIGHLIGHTS_1,
     {
@@ -162,21 +162,21 @@ const WINELANDS: TourPageContent = {
     },
     {
       heading: "Your Pace, Not a Shuttle Timetable",
-      body: "Spend 45 minutes at one estate or three hours — it's entirely your call. Nobody is herding you back onto a bus. The day flows around your appetite, your conversation, and how good the wine turns out to be.",
+      body: "Spend 45 minutes at one estate or three hours, it's entirely your call. Nobody is herding you back onto a bus. The day flows around your appetite, your conversation, and how good the wine turns out to be.",
     },
     SHARED_HIGHLIGHTS_4,
   ],
   midCtaTitle: "Ready to Experience the Cape Winelands?",
   midCtaBody:
-    "Most guests tell us the Winelands is the highlight of their entire Cape Town trip. Don't leave it to chance with a shared shuttle — message us and we'll plan your perfect wine day.",
-  midCtaButtonLabel: "Check Availability — We Respond in 30 Minutes",
+    "Most guests tell us the Winelands is the highlight of their entire Cape Town trip. Don't leave it to chance with a shared shuttle. Message us and we'll plan your perfect wine day.",
+  midCtaButtonLabel: "Check Availability: We Respond in 30 Minutes",
   ctaTitle: "Ready to book? Here's how it works",
   ctaBody: SHARED_CTA_BODY,
   faqItems: [
     {
       question: "How long does the Romantic Stellenbosch Winelands Experience take?",
       answer:
-        "The day typically runs 7–9 hours from hotel pickup to drop-off, covering Stellenbosch, Franschhoek, and Constantia at a pace that lets you actually enjoy each estate. If you want to linger over lunch or add a fourth stop, just say the word.",
+        "The day typically runs 7 to 9 hours from hotel pickup to drop-off, covering Stellenbosch, Franschhoek, and Constantia at a pace that lets you actually enjoy each estate. If you want to linger over lunch or add a fourth stop, just say the word.",
     },
     {
       question: "Is this a private tour or a shared shuttle?",
@@ -186,7 +186,7 @@ const WINELANDS: TourPageContent = {
     {
       question: "Can we choose which wine estates to visit?",
       answer:
-        "Absolutely — the suggested route is a starting point, not a rule. Want to focus on Franschhoek, revisit a favourite estate, or add a cheese tasting at Fairview? Tell us when you book and we'll build the day around your preferences.",
+        "Absolutely, the suggested route is a starting point, not a rule. Want to focus on Franschhoek, revisit a favourite estate, or add a cheese tasting at Fairview? Tell us when you book and we'll build the day around your preferences.",
     },
     {
       question: "Is transport included?",
@@ -196,25 +196,25 @@ const WINELANDS: TourPageContent = {
     {
       question: "Is this suitable for a romantic trip or anniversary?",
       answer:
-        "It's one of our most popular experiences for couples and special occasions. A private vehicle, rolling vineyard views, Cape Dutch architecture, great wine, and no strangers — it's a genuinely special day. Let us know it's a special occasion and we'll make sure everything feels that way.",
+        "It's one of our most popular experiences for couples and special occasions. A private vehicle, rolling vineyard views, Cape Dutch architecture, great wine, and no strangers, and a genuinely special day. Let us know it's a special occasion and we'll make sure everything feels that way.",
     },
   ],
 };
 
 const SUNSET_SAFARI: TourPageContent = {
   trustBadges: [
-    "✔ 100% Private — your vehicle, your group, your pace",
+    "✔ 100% Private: your vehicle, your group, your pace",
     "✔ Transport & meals included",
     "✔ Professional chauffeur & local guide included",
   ],
   itineraryTitle: "Your Safari Day, From Door to Game Drive",
   itinerarySubheading:
-    "No shared game vehicles with strangers. No rigid resort schedules. Your chauffeur collects you from your hotel, drives you through the dramatic Hex River Valley to Aquila, and you're back in Cape Town with the evening still ahead. Everything — transport, game drive, meals — is taken care of.",
-  highlightsTitle: "Why Guests Choose This Over a Standard Safari Transfer",
+    "No shared game vehicles with strangers. No rigid resort schedules. Your chauffeur collects you from your hotel, drives you through the dramatic Hex River Valley to Aquila, and you're back in Cape Town with the evening still ahead. Everything (transport, game drive, meals) is taken care of.",
+  highlightsTitle: "Why Guests Choose a Private Big 5 Safari from Cape Town",
   highlights: [
     {
       heading: "Private Transport, Both Ways",
-      body: "No shared shuttle with strangers. Your group has a dedicated luxury vehicle and chauffeur for the full day — from hotel pickup through to the drive back as the Karoo sky turns dark.",
+      body: "No shared shuttle with strangers. Your group has a dedicated luxury vehicle and chauffeur for the full day, from hotel pickup through to the drive back as the Karoo sky turns dark.",
     },
     {
       heading: "A Chauffeur Who Plans Around You",
@@ -222,17 +222,17 @@ const SUNSET_SAFARI: TourPageContent = {
     },
     {
       heading: "Everything Included",
-      body: "Transport, game drive, meals, and local guidance — it's all in. You focus on the experience. We handle the rest.",
+      body: "Transport, game drive, meals, and local guidance, it's all in. You focus on the experience. We handle the rest.",
     },
     {
       heading: "Back in Cape Town for the Evening",
-      body: "The sunset timing means you finish the game drive with golden light on the Karoo, then head back to Cape Town in comfort. It's a full day out — without losing your evening.",
+      body: "The sunset timing means you finish the game drive with golden light on the Karoo, then head back to Cape Town in comfort. It's a full day out, without losing your evening.",
     },
   ],
   midCtaTitle: "Ready for a Safari Day from Cape Town?",
   midCtaBody:
-    "Most visitors don't realise you can do a Big 5 safari and be back in Cape Town for dinner. Message us — we'll sort the transport, the timing, and everything in between.",
-  midCtaButtonLabel: "Check Availability — We Respond in 30 Minutes",
+    "Most visitors don't realise you can do a Big 5 safari and be back in Cape Town for dinner. Message us and we'll sort the transport, the timing, and everything in between.",
+  midCtaButtonLabel: "Check Availability: We Respond in 30 Minutes",
   ctaTitle: "Ready to book? Here's how it works",
   ctaBody: SHARED_CTA_BODY,
   faqItems: [
@@ -244,7 +244,7 @@ const SUNSET_SAFARI: TourPageContent = {
     {
       question: "What animals can we expect to see?",
       answer:
-        "Aquila is home to the Big 5 — lion, elephant, rhino, buffalo, and leopard — as well as giraffe, zebra, wildebeest, and a wide variety of bird species. Sightings vary by day, but the reserve is well-stocked and the guides are experienced.",
+        "Aquila is home to the Big 5 (lion, elephant, rhino, buffalo, and leopard) as well as giraffe, zebra, wildebeest, and a wide variety of bird species. Sightings vary by day, but the reserve is well-stocked and the guides are experienced.",
     },
     {
       question: "Are meals and the game drive included?",
@@ -254,7 +254,7 @@ const SUNSET_SAFARI: TourPageContent = {
     {
       question: "Is this suitable for children?",
       answer:
-        "Yes — families with children find this one of the most memorable experiences of their Cape Town trip. The open game vehicle, the animal sightings, and the Karoo landscape make a big impression on younger travellers.",
+        "Yes, families with children find this one of the most memorable experiences of their Cape Town trip. The open game vehicle, the animal sightings, and the Karoo landscape make a big impression on younger travellers.",
     },
     {
       question: "Can we customise the timing or add extra activities?",
@@ -270,7 +270,7 @@ const TOUR_CONTENT: Record<string, TourPageContent> = {
   "cape-peninsula-tour": CAPE_PENINSULA,
   "cape-town-city-tour": CAPE_TOWN_CITY,
   "winelands-chauffeur-drive": WINELANDS,
-  "sunset-safari-experience": SUNSET_SAFARI,
+  "big-5-safari-from-cape-town": SUNSET_SAFARI,
 };
 
 export function getTourContent(slug?: string): TourPageContent {

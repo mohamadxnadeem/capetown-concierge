@@ -228,20 +228,28 @@ export default function ItineraryAuthoritySection() {
                   enjoy the city at a comfortable pace. For most travellers, a
                   strong itinerary should include arrival and city highlights, a{" "}
                   <InlineLink href="/tours/cape-peninsula-tour">
-                    Cape Peninsula day
+                    private Cape Peninsula tour
                   </InlineLink>
                   , a{" "}
                   <InlineLink href="/best-wine-farms-in-cape-town">
                     Cape Winelands experience
                   </InlineLink>
-                  , leisure time around the Atlantic Seaboard, and at least one
+                  {" "}(or a{" "}
+                  <InlineLink href="/tours/winelands-chauffeur-drive">
+                    private Winelands tour
+                  </InlineLink>
+                  ), leisure time around the Atlantic Seaboard, and at least one
                   premium add-on such as a helicopter ride, yacht charter, or
                   custom scenic drive.
                 </p>
 
                 <p>
                   One of the best ways to experience Cape Town in 7 days is with
-                  a private chauffeur or curated day planning service. This
+                  a{" "}
+                  <InlineLink href="/chauffeur-hire">
+                    private chauffeur in Cape Town
+                  </InlineLink>{" "}
+                  or curated day planning service. This
                   gives you much more flexibility, especially when combining
                   routes like Table Mountain, Bo-Kaap, Camps Bay, Chapman’s
                   Peak, Cape Point, and Stellenbosch. It also means you can

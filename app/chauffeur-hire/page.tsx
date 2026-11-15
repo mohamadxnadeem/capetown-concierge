@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import ChauffeurServicesPage from "../../components/sections/chauffeur-services/ChauffeurServicesPage";
 import { brand } from "../../lib/brand";
+import { businessRef, vehicleHref } from "../../lib/seo";
 
 type CarPhoto = {
   cover_photos?: string;
@@ -45,9 +46,16 @@ function truncateText(text: string, maxLength: number) {
 }
 
 const CHAUFFEUR_VEHICLE_DESC: Record<string, string> = {
-  "Hyundai Staria": "A premium 9-seat people carrier with generous legroom and panoramic windows. Comfortable, stylish, and built for a full day on the road — whether that's a city tour, a wine route, or an airport run.",
-  "BMW X5": "A luxury SUV with elevated road presence and a spacious, refined interior. Ideal for families or small groups who want serious comfort without compromising on style.",
+    "BMW X5": "A luxury SUV with elevated road presence and a spacious, refined interior. Ideal for families or small groups who want serious comfort without compromising on style.",
 };
+
+// Varied alt text so the cards do not repeat one sentence. Each names the vehicle.
+const CARD_ALT_PATTERNS: Array<(title: string) => string> = [
+  (t) => `${t} chauffeur Cape Town, private vehicle with a professional driver`,
+  (t) => `${t} for chauffeur hire in Cape Town, ready for guests`,
+  (t) => `Chauffeur-driven ${t} in Cape Town for airport transfers and tours`,
+  (t) => `${t} with a private chauffeur, Cape Town`,
+];
 
 async function getVehicles(): Promise<FeaturedVehicleItem[]> {
   try {
@@ -63,7 +71,7 @@ async function getVehicles(): Promise<FeaturedVehicleItem[]> {
       ? data.results
       : [];
     return (
-      sourceArray.map((item: CarsApiItem) => {
+      sourceArray.map((item: CarsApiItem, index: number) => {
         const car = item?.car || item;
         if (!car?.title) return null;
         const imageArray = car.cover_photos || car.images || [];
@@ -74,6 +82,9 @@ async function getVehicles(): Promise<FeaturedVehicleItem[]> {
         return {
           title: car.title,
           description:
+            (car.title === "Hyundai Staria" && car.number_of_seats
+              ? `A premium ${car.number_of_seats}-seat people carrier with generous legroom and panoramic windows. Comfortable, stylish, and built for a full day on the road, whether that's a city tour, a wine route, or an airport run.`
+              : undefined) ||
             CHAUFFEUR_VEHICLE_DESC[car.title] ||
             car.short_description ||
             car.highlight ||
@@ -81,10 +92,10 @@ async function getVehicles(): Promise<FeaturedVehicleItem[]> {
             "Luxury chauffeur vehicle available for private travel in Cape Town.",
           href:
             typeof car.slug === "string" && car.slug.trim()
-              ? `/chauffeur-hire/${car.slug.trim()}`
+              ? vehicleHref(car.slug)
               : "/chauffeur-hire",
           image: featuredPhoto,
-          alt: `Luxury ${car.title} Chauffeur Service Cape Town - VIP Transport`,
+          alt: CARD_ALT_PATTERNS[index % CARD_ALT_PATTERNS.length](car.title),
           seats: car.number_of_seats,
           priceUsd: car.price ? Number(String(car.price).replace(/[^0-9.]/g, "")) || undefined : undefined,
         };
@@ -100,7 +111,7 @@ const OG_IMAGE = `${SITE_URL}/images/og-cape-town-concierge.jpg`;
 
 const META_TITLE = "Chauffeur Hire Cape Town | Private Driver & Luxury Car Hire";
 const META_DESCRIPTION =
-  "Chauffeur hire in Cape Town — private drivers and luxury vehicles for executive travel, airport transfers and full-day chauffeur hire. PDP-licensed drivers, flat pricing, meet-and-greet at CPT. Message on WhatsApp.";
+  "Chauffeur hire in Cape Town: PDP-licensed private drivers and luxury cars for airport transfers, executive travel and full days. Enquire on WhatsApp.";
 
 export const metadata: Metadata = {
   title: META_TITLE,
@@ -139,7 +150,7 @@ export const metadata: Metadata = {
         url: OG_IMAGE,
         width: 1200,
         height: 630,
-        alt: "Chauffeur hire in Cape Town — private driver and luxury vehicle",
+        alt: "Chauffeur hire in Cape Town, private driver and luxury vehicle",
       },
     ],
   },
@@ -169,64 +180,18 @@ export default async function ChauffeurServicesLandingPage() {
         name: "Chauffeur Hire in Cape Town",
         url: `${SITE_URL}/chauffeur-hire`,
         description:
-          "Chauffeur hire in Cape Town — private drivers and luxury vehicles for executive travel, airport transfers, and full-day chauffeur hire across the Western Cape.",
+          "Chauffeur hire in Cape Town: private drivers and luxury vehicles for executive travel, airport transfers, and full-day chauffeur hire across the Western Cape.",
         image: [`${SITE_URL}/images/hero-car.jpg`],
-      },
-      {
-        "@type": ["LocalBusiness", "LimousineService"],
-        "@id": `${SITE_URL}/chauffeur-hire#business`,
-        name: brand.name,
-        url: SITE_URL,
-        telephone: brand.phone,
-        email: brand.contactEmail,
-        image: [`${SITE_URL}${brand.heroImagePath}`],
-        priceRange: "$$$",
-        currenciesAccepted: "ZAR, USD, EUR, GBP",
-        paymentAccepted: "Cash, EFT, Credit Card",
-        address: {
-          "@type": "PostalAddress",
-          addressLocality: brand.address.locality,
-          addressRegion: brand.address.region,
-          postalCode: brand.address.postalCode,
-          addressCountry: brand.address.country,
-        },
-        geo: {
-          "@type": "GeoCoordinates",
-          latitude: brand.geo.lat,
-          longitude: brand.geo.lng,
-        },
-        areaServed,
-        openingHoursSpecification: [
-          "Monday",
-          "Tuesday",
-          "Wednesday",
-          "Thursday",
-          "Friday",
-          "Saturday",
-          "Sunday",
-        ].map((day) => ({
-          "@type": "OpeningHoursSpecification",
-          dayOfWeek: day,
-          opens: "00:00",
-          closes: "23:59",
-        })),
-        sameAs: [
-          `https://wa.me/${brand.whatsappNumber}`,
-          brand.social?.instagram,
-          brand.social?.tiktok,
-          brand.social?.facebook,
-          brand.social?.youtube,
-        ].filter((u): u is string => Boolean(u)),
       },
       {
         "@type": "Service",
         name: "Chauffeur Hire in Cape Town",
         serviceType: "Chauffeur Hire",
-        provider: { "@id": `${SITE_URL}/chauffeur-hire#business` },
+        provider: businessRef,
         areaServed,
         image: [`${SITE_URL}/images/hero-car.jpg`],
         description:
-          "Private chauffeur hire in Cape Town — luxury vehicles with PDP-licensed drivers for executive travel, airport transfers, multi-day corporate schedules, and full-day private hire across the Western Cape.",
+          "Private chauffeur hire in Cape Town: luxury vehicles with PDP-licensed drivers for executive travel, airport transfers, multi-day corporate schedules, and full-day private hire across the Western Cape.",
         url: `${SITE_URL}/chauffeur-hire`,
       },
       {
@@ -245,7 +210,7 @@ export default async function ChauffeurServicesLandingPage() {
             name: "Do you offer chauffeur-driven airport transfers in Cape Town?",
             acceptedAnswer: {
               "@type": "Answer",
-              text: "Yes. We provide 24/7 chauffeured airport transfers to and from Cape Town International — meet-and-greet at arrivals, real-time flight tracking, and luggage assistance are included in every transfer.",
+              text: "Yes. We provide 24/7 chauffeured airport transfers to and from Cape Town International. Meet-and-greet at arrivals, real-time flight tracking, and luggage assistance are included in every transfer.",
             },
           },
           {
@@ -261,7 +226,7 @@ export default async function ChauffeurServicesLandingPage() {
             name: "Which vehicles are available for chauffeur hire?",
             acceptedAnswer: {
               "@type": "Answer",
-              text: "Our fleet includes the BMW 5-Series, BMW X5, Hyundai Staria (9 seats), Mercedes V-Class (6 seats), and Range Rover Sport. All vehicles are premium, climate-controlled, and privately driven — no ride-sharing.",
+              text: "Our fleet includes the BMW 5-Series, BMW X5, Hyundai Staria (8 seats), Mercedes V-Class (6 seats), and Range Rover Sport. All vehicles are premium, climate-controlled, and privately driven, no ride-sharing.",
             },
           },
           {
@@ -269,7 +234,7 @@ export default async function ChauffeurServicesLandingPage() {
             name: "Is a private chauffeur better than self-driving in Cape Town?",
             acceptedAnswer: {
               "@type": "Answer",
-              text: "For most visitors, yes — especially for airport transfers, wine routes, and long scenic drives. You arrive relaxed, your group travels together, and there's no parking, no navigation, and no designated driver required.",
+              text: "For most visitors, yes, especially for airport transfers, wine routes, and long scenic drives. You arrive relaxed, your group travels together, and there's no parking, no navigation, and no designated driver required.",
             },
           },
           {
@@ -277,7 +242,7 @@ export default async function ChauffeurServicesLandingPage() {
             name: "How do we book a chauffeur for a visiting executive?",
             acceptedAnswer: {
               "@type": "Answer",
-              text: "Message us on WhatsApp with the flight details, arrival time, hotel, and any onward schedule. We confirm the driver, the vehicle, and the flat fare in writing — usually within 30 minutes.",
+              text: "Message us on WhatsApp with the flight details, arrival time, hotel, and any onward schedule. We confirm the driver, the vehicle, and the flat fare in writing, usually within 30 minutes.",
             },
           },
         ],

@@ -292,7 +292,7 @@ export default function HotelDetailView({ hotel }: Props) {
         <HeroImage>
           <RotatingImage
             images={heroImages}
-            alt={`${hotel.name} — luxury hotel in ${area}`}
+            alt={`${hotel.name}, luxury hotel in ${area}`}
             priority
             sizes="100vw"
           />
@@ -301,7 +301,7 @@ export default function HotelDetailView({ hotel }: Props) {
         <HeroImage>
           <SmartImage
             src={photo}
-            alt={`${hotel.name} — luxury hotel in ${area}`}
+            alt={`${hotel.name}, luxury hotel in ${area}`}
             priority
             sizes="100vw"
           />

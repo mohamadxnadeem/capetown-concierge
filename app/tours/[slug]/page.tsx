@@ -1,6 +1,8 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { brand } from "../../../lib/brand";
+import { TOUR_META } from "../../../lib/tourSeo";
+import { businessRef } from "../../../lib/seo";
 import PrivateTourDetailView from "../../../components/sections/private-tour-detail/PrivateTourDetailView";
 
 type ExperiencePhoto = {
@@ -101,45 +103,8 @@ type PageProps = {
 
 const SITE_URL = brand.siteUrl;
 
-// Slug-based meta overrides (used when CMS meta_title is not set)
-const TOUR_META: Record<string, { title: string; description: string }> = {
-  "cape-peninsula-tour": {
-    title: "Cape Peninsula Private Tour Cape Town | Full Day",
-    description: "Two oceans, Boulders Beach penguins & Chapman's Peak in one private day. No shared groups, flexible pace. Book your Peninsula tour on WhatsApp.",
-  },
-  "cape-town-city-tour": {
-    title: "Cape Town City Tour | Table Mountain Private Driver",
-    description: "Explore Table Mountain, Bo-Kaap, Camps Bay & the Waterfront privately. Dedicated chauffeur, your schedule. Book your Cape Town city tour today.",
-  },
-  "winelands-chauffeur-drive": {
-    title: "Romantic Stellenbosch Winelands Experience | Private Tour Cape Town",
-    description: "Private chauffeur through Stellenbosch & Franschhoek — no shuttles, no timetables. Cape Dutch estates & world-class tastings. Book on WhatsApp.",
-  },
-  "safari-day-trip": {
-    title: "Cape Town Safari Day Trip | Aquila Private Reserve",
-    description: "Big 5 game drive from Cape Town with private transport & meals included. Back by dinner. Book your Aquila safari experience on WhatsApp.",
-  },
-};
-
 function toZarNum(val: string | number): number {
   return Math.round(Number(String(val).replace(/[^0-9.]/g, "")));
-}
-
-function formatPriceRange(
-  priceFrom?: string | number,
-  priceTo?: string | number,
-) {
-  if (
-    (priceFrom === undefined || priceFrom === null || priceFrom === "") &&
-    (priceTo === undefined || priceTo === null || priceTo === "")
-  ) {
-    return "";
-  }
-  const from = priceFrom ? toZarNum(priceFrom) : 0;
-  const to = priceTo ? toZarNum(priceTo) : 0;
-  if (from && to) return `From R${from.toLocaleString()} - R${to.toLocaleString()}`;
-  if (from) return `From R${from.toLocaleString()}`;
-  return `R${to.toLocaleString()}`;
 }
 
 function formatVehiclePrice(price?: string | number) {
@@ -239,9 +204,7 @@ function getSeoKeyword(experience: Experience): string {
 function getPageTitle(experience: Experience) {
   if (experience.meta_title) return experience.meta_title;
   const keyword = getSeoKeyword(experience);
-  const priceZar = experience.price_from ? toZarNum(experience.price_from) || undefined : undefined;
-  const priceStr = priceZar ? ` | From R${priceZar.toLocaleString()}` : "";
-  return `${keyword} | Private Chauffeur Tour${priceStr} | ${brand.name}`;
+  return `${keyword} | Private Chauffeur Tour | ${brand.name}`;
 }
 
 function getPageDescription(experience: Experience) {
@@ -250,7 +213,7 @@ function getPageDescription(experience: Experience) {
   const base =
     experience.short_description ||
     experience.highlight ||
-    `${keyword} — a fully private, chauffeur-driven experience.`;
+    `${keyword}: a fully private, chauffeur-driven experience.`;
   return truncateText(
     `${base} Private, bespoke, and tailored to your pace. Book via WhatsApp.`,
     155
@@ -259,7 +222,7 @@ function getPageDescription(experience: Experience) {
 
 function getSocialTitle(experience: Experience) {
   const name = experience.title || "Private Tour";
-  return `${name} — Private Chauffeur Tour in Cape Town`;
+  return `${name} | Private Chauffeur Tour in Cape Town`;
 }
 
 function getSocialDescription(experience: Experience) {
@@ -268,7 +231,7 @@ function getSocialDescription(experience: Experience) {
     experience.highlight ||
     `A fully private, chauffeur-driven ${experience.title || "tour"} in Cape Town tailored entirely to your pace.`;
   const clean = hook.length > 115 ? `${hook.slice(0, 115).trim()}...` : hook;
-  return `${clean} Book privately via WhatsApp — we respond in 30 min.`;
+  return `${clean} Book privately via WhatsApp. We respond in 30 min.`;
 }
 
 function mapRelatedTours(
@@ -288,7 +251,6 @@ function mapRelatedTours(
         [...(tour.cover_photos || [])].sort((a, b) => a.order - b.order)[0]
           ?.cover_photos || "",
       href: `/tours/${tour.slug}`,
-      price: formatPriceRange(tour.price_from, tour.price_to),
     }));
 }
 
@@ -335,7 +297,7 @@ const FALLBACK_TOUR_SLUGS = [
   "cape-peninsula-tour",
   "winelands-chauffeur-drive",
   "cape-town-city-tour",
-  "sunset-safari-experience",
+  "big-5-safari-from-cape-town",
 ];
 
 export async function generateStaticParams() {
@@ -385,7 +347,7 @@ export async function generateMetadata({
       title: `Private Tour | ${brand.name}`,
       description: "Luxury private tours in Cape Town",
       openGraph: {
-        images: [{ url: ogImage, alt: "Cape Town Concierge — Luxury Private Tours" }],
+        images: [{ url: ogImage, alt: "Cape Town Concierge, Luxury Private Tours" }],
       },
       twitter: {
         card: "summary_large_image",
@@ -443,8 +405,8 @@ export async function generateMetadata({
         {
           url: image || ogImage,
           alt: image
-            ? `${experience.title || "Private Tour"} Cape Town — Private Chauffeur Experience`
-            : "Cape Town Concierge — Luxury Private Tours",
+            ? `${experience.title || "Private Tour"} Cape Town | Private Chauffeur Experience`
+            : "Cape Town Concierge | Luxury Private Tours",
         },
       ],
     },
@@ -485,7 +447,7 @@ export default async function PrivateTourDetailPage({ params }: PageProps) {
       .map((item) => {
         const car = (item as CarsApiItem).car || (item as unknown as Car);
         const p = car?.price;
-        if (!p) return null;
+        if (!p || (car as { is_active?: boolean }).is_active === false) return null;
         const n = Number(String(p).replace(/[^0-9.]/g, ""));
         return isNaN(n) || n === 0 ? null : n;
       })
@@ -498,15 +460,14 @@ export default async function PrivateTourDetailPage({ params }: PageProps) {
   const ogImage = `${SITE_URL}/images/og-cape-town-concierge.jpg`;
   const schemaImage = primaryImage || ogImage;
   const canonicalUrl = `${SITE_URL}/tours/${slug.toLowerCase()}`;
-  const price = experience.price_from || experience.price_to || "";
-  const priceZarForSchema = toZarNum(price);
+  // Tours are priced at the chosen vehicle's full-day rate; the database tour price is never shown.
+  const priceZarForSchema = lowestVehiclePrice;
 
   const tourName = experience.title || "private tour";
   const tourKeyword = getSeoKeyword(experience);
-  const priceFromZar = toZarNum(experience.price_from || "");
-  const priceAnswer = priceFromZar
-    ? `${tourKeyword} starts from R${priceFromZar.toLocaleString()} per vehicle. This is an all-inclusive private experience — contact us via WhatsApp for a personalised quote based on your group size and requirements.`
-    : `Pricing for ${tourKeyword} depends on your group size and any custom requirements. Contact us via WhatsApp for a tailored quote — we typically respond within 30 minutes.`;
+  const priceAnswer = lowestVehiclePrice
+    ? `${tourKeyword} is priced at your chosen vehicle's full-day rate, from R${lowestVehiclePrice.toLocaleString()} per vehicle. This is an all-inclusive private experience. Contact us via WhatsApp for a personalised quote based on your group size and requirements.`
+    : `Pricing for ${tourKeyword} depends on your group size and any custom requirements. Contact us via WhatsApp for a tailored quote. We typically respond within 30 minutes.`;
 
   const faqJsonLd = {
     "@context": "https://schema.org",
@@ -524,7 +485,7 @@ export default async function PrivateTourDetailPage({ params }: PageProps) {
           "@type": "Answer",
           text: experience.duration
             ? `The ${tourName} typically runs for ${experience.duration}. The exact duration depends on your pace and any custom stops you would like to include.`
-            : `The ${tourName} usually runs for a full day — approximately 8 to 10 hours — depending on the route, your pace, and any custom stops.`,
+            : `The ${tourName} usually runs for a full day, approximately 8 to 10 hours, depending on the route, your pace, and any custom stops.`,
         },
       },
       {
@@ -532,7 +493,7 @@ export default async function PrivateTourDetailPage({ params }: PageProps) {
         name: `Is the ${tourName} a private experience?`,
         acceptedAnswer: {
           "@type": "Answer",
-          text: `Yes. The ${tourName} is completely private — you travel exclusively with your group, with no shared passengers or fixed group schedules. Your itinerary, pace, and stops are entirely your own.`,
+          text: `Yes. The ${tourName} is completely private. You travel exclusively with your group, with no shared passengers or fixed group schedules. Your itinerary, pace, and stops are entirely your own.`,
         },
       },
       {
@@ -610,25 +571,7 @@ export default async function PrivateTourDetailPage({ params }: PageProps) {
     description: getPageDescription(experience),
     image: [schemaImage],
     url: canonicalUrl,
-    provider: {
-      "@type": "LocalBusiness",
-      name: brand.name,
-      url: SITE_URL,
-      telephone: brand.phone,
-      sameAs: ["https://share.google/xrWoPQWHwQYfzukgz"],
-      address: {
-        "@type": "PostalAddress",
-        addressLocality: brand.address.locality,
-        addressRegion: brand.address.region,
-        addressCountry: brand.address.country,
-      },
-      geo: {
-        "@type": "GeoCoordinates",
-        latitude: brand.geo.lat,
-        longitude: brand.geo.lng,
-      },
-      priceRange: "$$$$",
-    },
+    provider: businessRef,
     touristType: ["Luxury Travelers", "Couples", "Families"],
     offers: priceZarForSchema
       ? {
@@ -662,6 +605,7 @@ export default async function PrivateTourDetailPage({ params }: PageProps) {
         vehicles={vehicles}
         lowestVehiclePrice={lowestVehiclePrice}
         slug={slug}
+        seo={TOUR_META[slug.toLowerCase()]}
       />
     </>
   );

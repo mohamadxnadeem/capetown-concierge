@@ -50,7 +50,7 @@ export default function PrivateTourMidCta({
     <Wrapper>
       <Title>{title || "Ready to See the Cape Peninsula?"}</Title>
       <Text>
-        {body || "Most guests tell us the Peninsula is the highlight of their entire Cape Town trip. Don't leave it to chance with a shared tour bus — message us and we'll plan the day around you."}
+        {body || "Most guests tell us the Peninsula is the highlight of their entire Cape Town trip. Don't leave it to chance with a shared tour bus. Message us and we'll plan the day around you."}
       </Text>
 
       <CTA
@@ -65,7 +65,7 @@ export default function PrivateTourMidCta({
           })
         }
       >
-        <Button as="span">{buttonLabel || "Check Availability — We Respond in 30 Minutes"}</Button>
+        <Button as="span">{buttonLabel || "Check Availability: We Respond in 30 Minutes"}</Button>
       </CTA>
     </Wrapper>
   );

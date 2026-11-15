@@ -8,6 +8,7 @@ import {
   buildGeneralWhatsAppMessage,
 } from "../../../lib/whatsapp";
 import { getTourContent } from "../../../lib/tourPageContent";
+import type { TourSeo } from "../../../lib/tourSeo";
 import PrivateTourGallery from "./PrivateTourGallery";
 import PrivateTourIntro from "./PrivateTourIntro";
 import PrivateTourWhatToExpect from "./PrivateTourWhatToExpect";
@@ -17,6 +18,7 @@ import PrivateTourVehicles from "./PrivateTourVehicles";
 import PrivateTourInclusions from "./PrivateTourInclusions";
 import PrivateTourHighlights from "./PrivateTourHighlights";
 import PrivateTourReviews from "./PrivateTourReviews";
+import { selectReviews, tourReviewTags } from "../../../lib/googleReviews";
 import PrivateTourFaq from "./PrivateTourFaq";
 import PrivateTourRelatedTours from "./PrivateTourRelatedTours";
 import PrivateTourCta from "./PrivateTourCta";
@@ -24,7 +26,6 @@ import PrivateTourCta from "./PrivateTourCta";
 
 import {
   Experience,
-  ReviewItem,
   TourVehicle,
   RelatedTour,
 } from "./types";
@@ -37,33 +38,13 @@ const Section = styled.section`
   padding: 64px 0;
 `;
 
-const reviewItems: ReviewItem[] = [
-  {
-    quote:
-      "The private Cape Peninsula tour was the highlight of our Cape Town trip. Penguins, two oceans, and Chapman's Peak all in one day without being on a crowded bus. Our driver was knowledgeable, warm, and completely flexible. Cannot recommend this highly enough.",
-    name: "Sarah",
-    subtitle: "Cape Peninsula Private Tour",
-  },
-  {
-    quote:
-      "We did the Stellenbosch Winelands private tour and it was exceptional. Three estates, a long lunch, and not a single moment of being rushed. The driver knew which farms were worth visiting and gave brilliant recommendations the whole way.",
-    name: "Asad",
-    subtitle: "Stellenbosch Winelands Tour",
-  },
-  {
-    quote:
-      "Travelled with my husband for our anniversary and booked a private city tour. The driver took us to all the iconic spots but also knew hidden viewpoints the tourist buses skip. We ended the day watching sunset from Signal Hill. Absolutely magical.",
-    name: "Noor",
-    subtitle: "City & Table Mountain Tour",
-  },
-];
-
 type Props = {
   experience: Experience;
   relatedTours: RelatedTour[];
   vehicles: TourVehicle[];
   lowestVehiclePrice?: number;
   slug?: string;
+  seo?: TourSeo;
 };
 
 export default function PrivateTourDetailView({
@@ -72,6 +53,7 @@ export default function PrivateTourDetailView({
   vehicles,
   lowestVehiclePrice,
   slug,
+  seo,
 }: Props) {
   const safeTourTitle = experience?.title || "private tour";
 
@@ -88,7 +70,7 @@ export default function PrivateTourDetailView({
       <Section>
         <Container>
           <PrivateTourGallery
-            title={safeTourTitle}
+            title={seo?.h1 || safeTourTitle}
             photos={experience.cover_photos || []}
           />
         </Container>
@@ -97,8 +79,8 @@ export default function PrivateTourDetailView({
       <Section>
         <Container>
           <PrivateTourIntro
-            title={safeTourTitle}
-            shortDescription={experience.short_description}
+            title={seo?.h1 || safeTourTitle}
+            shortDescription={seo?.intro || experience.short_description}
             highlight={experience.highlight}
             duration={experience.duration}
             location={experience.location}
@@ -138,7 +120,7 @@ export default function PrivateTourDetailView({
 
       <Section>
         <Container>
-          <PrivateTourReviews reviews={reviewItems} />
+          <PrivateTourReviews reviews={selectReviews(tourReviewTags(slug || experience?.slug), 3)} />
         </Container>
       </Section>
 
