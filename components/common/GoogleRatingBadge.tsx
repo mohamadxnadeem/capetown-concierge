@@ -1,6 +1,7 @@
 "use client";
 
 import styled from "styled-components";
+import { googleRatingLabel, googleReviewCount } from "../../lib/googleReviews";
 
 const Badge = styled.a`
   display: inline-flex;
@@ -67,15 +68,15 @@ export default function GoogleRatingBadge() {
       href="https://share.google/PthhtCdRu9zx9H6Cb"
       target="_blank"
       rel="noopener noreferrer"
-      aria-label="Cape Town Concierge, 4.9 Google Reviews"
+      aria-label={`Cape Town Concierge, ${googleRatingLabel} from ${googleReviewCount} Google reviews`}
     >
       <GoogleG>G</GoogleG>
       <Info>
         <RatingRow>
-          <Score>4.9</Score>
+          <Score>{googleRatingLabel}</Score>
           <Stars>★★★★★</Stars>
         </RatingRow>
-        <Label>Google Reviews</Label>
+        <Label>{googleReviewCount} Google reviews</Label>
       </Info>
     </Badge>
   );

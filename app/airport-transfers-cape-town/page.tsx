@@ -320,7 +320,7 @@ export default async function AirportTransfersCapeTownPage() {
         imageAlt="Luxury airport transfer Cape Town with professional chauffeur meet and greet service"
       />
 
-      <TestimonialsSection />
+      <TestimonialsSection tags={["airport-transfers"]} />
       <TestimonialsCta />
 
       <FeaturedVehicles

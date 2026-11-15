@@ -1,7 +1,13 @@
 "use client";
 
 import styled from "styled-components";
-import { ReviewItem } from "./types";
+import {
+  GOOGLE_REVIEWS_URL,
+  googleRatingLabel,
+  googleReviewCount,
+  googleSummaryText,
+  type GoogleReview,
+} from "../../../lib/googleReviews";
 
 const SectionHeader = styled.div`
   max-width: 760px;
@@ -111,6 +117,8 @@ const ReviewQuote = styled.p`
   color: ${({ theme }) => theme.colors.heading};
   line-height: 1.85;
   min-height: 120px;
+  white-space: pre-line;
+  overflow-wrap: anywhere;
 `;
 
 const ReviewFooter = styled.div`
@@ -130,7 +138,7 @@ const ReviewSubtitle = styled.div`
 `;
 
 type Props = {
-  reviews: ReviewItem[];
+  reviews: GoogleReview[];
 };
 
 export default function PrivateTourReviews({ reviews }: Props) {
@@ -144,16 +152,21 @@ export default function PrivateTourReviews({ reviews }: Props) {
         </SectionText>
       </SectionHeader>
 
-      <VerifiedLine>Over 200 verified five-star reviews across Google and direct bookings.</VerifiedLine>
+      <VerifiedLine>{googleSummaryText}</VerifiedLine>
 
       <ReviewsGrid>
-        {reviews.map((review, index) => (
-          <ReviewCard key={`${review.name}-${index}`}>
+        {reviews.map((review) => (
+          <ReviewCard key={review.id}>
             <QuoteMark>"</QuoteMark>
-            <ReviewQuote>{review.quote}</ReviewQuote>
+            <ReviewQuote>{review.text}</ReviewQuote>
             <ReviewFooter>
-              <ReviewName>{review.name}</ReviewName>
-              <ReviewSubtitle>{review.subtitle}</ReviewSubtitle>
+              <ReviewName>{review.reviewer_name}</ReviewName>
+              <ReviewSubtitle>
+                Google review{review.date_label ? ` · ${review.date_label}` : ""}
+              </ReviewSubtitle>
+              {review.translated_from ? (
+                <ReviewSubtitle>Translated from {review.translated_from}</ReviewSubtitle>
+              ) : null}
             </ReviewFooter>
           </ReviewCard>
         ))}
@@ -161,14 +174,14 @@ export default function PrivateTourReviews({ reviews }: Props) {
 
       <GoogleRow>
         <GoogleButton
-          href="https://share.google/P13pnsYwTEQGoPaSh"
+          href={GOOGLE_REVIEWS_URL}
           target="_blank"
           rel="noopener noreferrer"
           aria-label="Read all reviews on Google"
         >
           <GoogleG>G</GoogleG>
           <GoogleStars>★★★★★</GoogleStars>
-          4.9 · See all reviews on Google
+          {googleRatingLabel} from {googleReviewCount} Google reviews · See all reviews on Google
         </GoogleButton>
       </GoogleRow>
     </>

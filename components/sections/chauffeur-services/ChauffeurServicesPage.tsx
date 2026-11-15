@@ -619,7 +619,7 @@ export default function ChauffeurServicesPage({ vehicles = [] }: { vehicles?: Fe
         </Container>
       </Section>
 
-      <TestimonialsSection />
+      <TestimonialsSection tags={["chauffeur"]} />
       <TestimonialsCta />
 
       <Section>

@@ -1,4 +1,4 @@
-import { Car, FaqItem, ReviewItem } from "./types";
+import { Car, FaqItem } from "./types";
 export { buildWhatsAppLink } from "../../../lib/whatsapp";
 import { brand } from "../../../lib/brand";
 
@@ -153,27 +153,3 @@ export function getVehicleMetaDescription(car: Car): string {
     : `Chauffeur-driven ${name} in Cape Town. Airport transfers, Peninsula and Winelands tours. Private, fuel included. Book on WhatsApp.`;
   return raw.length <= 160 ? raw : raw.slice(0, 157).trimEnd() + "...";
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Generic reviews (unchanged)
-// ─────────────────────────────────────────────────────────────────────────────
-export const genericReviews: ReviewItem[] = [
-  {
-    quote:
-      "Excellent service from start to finish. The vehicle was immaculate and the entire experience felt polished and premium.",
-    name: "James R.",
-    subtitle: "London, UK",
-  },
-  {
-    quote:
-      "A very comfortable and professional experience. Perfect for airport transfers and private touring around Cape Town.",
-    name: "Sophie & Daniel",
-    subtitle: "Dubai, UAE",
-  },
-  {
-    quote:
-      "Reliable, stylish, and easy to book. This was exactly the level of service we wanted during our stay.",
-    name: "Nadia K.",
-    subtitle: "Johannesburg, South Africa",
-  },
-];

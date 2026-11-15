@@ -58,12 +58,6 @@ const localBusinessSchema = {
     opens: "00:00",
     closes: "23:59",
   })),
-  aggregateRating: {
-    "@type": "AggregateRating",
-    ratingValue: "4.9",
-    reviewCount: "27",
-    bestRating: "5",
-  },
   touristType: ["LuxuryTourist", "BusinessTraveler", "FamilyTourist"],
   areaServed: "Cape Town, Western Cape, South Africa",
   hasOfferCatalog: {

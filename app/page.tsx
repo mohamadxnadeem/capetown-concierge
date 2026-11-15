@@ -594,7 +594,7 @@ export default async function HomePage() {
 
       <WhyChooseUs items={trustItems} />
 
-      <TestimonialsSection />
+      <TestimonialsSection tags={["homepage"]} />
       <TestimonialsCta />
 
       <HomepageEnquiryCollapsible />

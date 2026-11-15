@@ -359,10 +359,7 @@ export default async function ChauffeurServiceDetailPage({ params }: PageProps) 
         },
         category: car.category || car.vehicle_type || "Luxury Chauffeur Vehicle",
         url: canonicalUrl,
-        // FIX 12: AggregateRating — unlocks gold stars in search results
-        // Only renders if your API returns review data
-        // Add review_count and review_rating fields to your CMS/API
-        // Minimum: reviewCount >= 1, ratingValue between 1–5
+        // Only rendered when the API returns its own review data. No fabricated fallback.
         ...(car.review_count && car.review_rating
           ? {
               aggregateRating: {
@@ -373,17 +370,7 @@ export default async function ChauffeurServiceDetailPage({ params }: PageProps) 
                 worstRating: 1,
               },
             }
-          : // Fallback: use a conservative global rating from your site reviews
-            // Replace 4.9 and 28 with your actual verified figures
-            {
-              aggregateRating: {
-                "@type": "AggregateRating",
-                ratingValue: "4.9",
-                reviewCount: "28",
-                bestRating: "5",
-                worstRating: "1",
-              },
-            }),
+          : {}),
         ...(numericPrice
           ? {
               offers: {

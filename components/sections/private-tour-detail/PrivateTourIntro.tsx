@@ -1,6 +1,7 @@
 "use client";
 
 import styled from "styled-components";
+import { googleSummaryText } from "../../../lib/googleReviews";
 import Money from "../../common/Money";
 
 const SectionHeader = styled.div`
@@ -144,7 +145,7 @@ export default function PrivateTourIntro({
       </SubText>
 
       <TrustBar>
-        <TrustBadge>⭐ 4.9 rated, 200+ five-star reviews</TrustBadge>
+        <TrustBadge>⭐ {googleSummaryText}</TrustBadge>
         {trustBadges.map((badge) => (
           <TrustBadge key={badge}>{badge}</TrustBadge>
         ))}
