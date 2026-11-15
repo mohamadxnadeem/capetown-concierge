@@ -72,11 +72,8 @@ export default async function HomePage() {
     href: t.href,
     image: t.image,
     alt: t.alt,
-    duration: t.duration,
-    highlights: t.highlights,
     priceUsd: lowestVehiclePrice,
     priceSuffix: "per vehicle",
-    priceNote: "Priced at your chosen vehicle's full-day rate",
   }));
 
   const structuredData = {
@@ -204,10 +201,9 @@ export default async function HomePage() {
           image: v.image,
           alt: v.alt,
           seats: v.seats,
-          luggage: v.luggage,
+          description: v.description,
           priceUsd: v.price,
         }))}
-        ctaLabel="View Vehicle"
         footerLabel="View all vehicles"
         footerHref="/chauffeur-hire"
       />
@@ -227,9 +223,9 @@ export default async function HomePage() {
 
       <MultiDaySection reviews={multiDayReviews} />
 
-      <TestimonialsSection tags={["homepage"]} readAllHref="/reviews" />
-
       <HomeEnquiry />
+
+      <TestimonialsSection tags={["homepage"]} count={60} readAllHref="/reviews" />
     </>
   );
 }

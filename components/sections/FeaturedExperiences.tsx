@@ -14,12 +14,8 @@ type ExperienceItem = {
   image?: string;
   alt?: string;
   priceUsd?: number;
-  /** Unit shown after the price, for example "per vehicle". Defaults to "per day". */
+  /** Unit after the price, for example "per vehicle". Defaults to "per day". */
   priceSuffix?: string;
-  /** Small print under the price. */
-  priceNote?: string;
-  duration?: string;
-  highlights?: string[];
 };
 
 type FeaturedExperiencesProps = {
@@ -28,7 +24,6 @@ type FeaturedExperiencesProps = {
   description?: string;
   items?: ExperienceItem[];
   id?: string;
-  ctaLabel?: string;
   footerLabel?: string;
   footerHref?: string;
 };
@@ -235,35 +230,6 @@ const InlineArrow = styled.span`
   font-weight: 700;
 `;
 
-const MetaLine = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  align-items: center;
-  margin-bottom: 14px;
-`;
-
-const HighlightList = styled.ul`
-  margin: 0 0 18px;
-  padding-left: 18px;
-  color: ${({ theme }) => theme.colors.text};
-  font-size: 0.92rem;
-  line-height: 1.7;
-`;
-
-const PriceBlock = styled.div`
-  margin-bottom: 18px;
-  color: ${({ theme }) => theme.colors.heading};
-  font-weight: 700;
-`;
-
-const PriceNote = styled.div`
-  margin-top: 2px;
-  color: ${({ theme }) => theme.colors.textMuted};
-  font-size: 0.78rem;
-  font-weight: 400;
-`;
-
 const FooterLinkRow = styled.div`
   display: flex;
   justify-content: center;
@@ -273,18 +239,21 @@ const FooterLinkRow = styled.div`
 const FooterLink = styled(Link)`
   display: inline-flex;
   align-items: center;
-  min-height: 48px;
-  padding: 0 24px;
+  justify-content: center;
+  min-height: 46px;
+  padding: 0 18px;
   border-radius: 14px;
-  border: 1px solid ${({ theme }) => theme.colors.primary};
-  color: ${({ theme }) => theme.colors.primary};
+  background: ${({ theme }) => theme.colors.primary};
+  color: ${({ theme }) => theme.colors.white};
   font-weight: 700;
+  font-size: 0.95rem;
   text-decoration: none;
-  transition: background 0.2s ease, color 0.2s ease;
+  box-shadow: ${({ theme }) => theme.shadows.soft};
+  transition: background 0.2s ease, transform 0.2s ease;
 
   &:hover {
-    background: ${({ theme }) => theme.colors.primary};
-    color: ${({ theme }) => theme.colors.white};
+    background: ${({ theme }) => theme.colors.primaryDark};
+    transform: translateY(-1px);
   }
 `;
 
@@ -307,7 +276,6 @@ export default function FeaturedExperiences({
   description = "Discover some of our most requested private tours, scenic routes, and curated full-day experiences across Cape Town and beyond.",
   items = [],
   id,
-  ctaLabel = "View Tour",
   footerLabel,
   footerHref,
 }: FeaturedExperiencesProps) {
@@ -371,35 +339,12 @@ export default function FeaturedExperiences({
                 </CardImageWrap>
 
                 <CardContent>
-                  {item.duration ? (
-                    <MetaLine>
-                      <Badge>{item.duration}</Badge>
-                    </MetaLine>
-                  ) : (
-                    <Badge>
-                      {item.priceUsd ? <Money usd={item.priceUsd} suffix={item.priceSuffix} /> : "Private Tour"}
-                    </Badge>
-                  )}
+                  <Badge>{item.priceUsd ? <Money usd={item.priceUsd} suffix={item.priceSuffix} /> : "Private Tour"}</Badge>
                   <CardTitle>{item.title}</CardTitle>
                   <CardText>{item.description}</CardText>
 
-                  {item.highlights?.length ? (
-                    <HighlightList>
-                      {item.highlights.map((h) => (
-                        <li key={h}>{h}</li>
-                      ))}
-                    </HighlightList>
-                  ) : null}
-
-                  {item.duration && item.priceUsd ? (
-                    <PriceBlock>
-                      <Money usd={item.priceUsd} suffix={item.priceSuffix} />
-                      {item.priceNote ? <PriceNote>{item.priceNote}</PriceNote> : null}
-                    </PriceBlock>
-                  ) : null}
-
                   <CardFooter>
-                    <ViewButton>{ctaLabel}</ViewButton>
+                    <ViewButton>View Tour</ViewButton>
                     <InlineArrow>→</InlineArrow>
                   </CardFooter>
                 </CardContent>

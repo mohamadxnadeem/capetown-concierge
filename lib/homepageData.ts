@@ -19,6 +19,7 @@ type RawCar = {
   cover_photos?: Photo[];
   homepage_featured?: boolean;
   homepage_order?: number;
+  short_description?: string;
 };
 
 type RawStop = { title?: string; order?: number; stop_type?: string };
@@ -43,6 +44,7 @@ export type HomeVehicle = {
   seats?: number;
   luggage?: number;
   price?: number;
+  description: string;
 };
 
 export type HomeTour = {
@@ -184,6 +186,7 @@ export async function fetchHomepageData(): Promise<HomepageData> {
       seats: c.number_of_seats || undefined,
       luggage: c.luggage_capacity ?? undefined,
       price: toNumber(c.price),
+      description: (c.short_description || "").trim(),
     };
   });
 

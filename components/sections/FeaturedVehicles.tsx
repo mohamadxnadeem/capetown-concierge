@@ -9,12 +9,11 @@ import SmartImage from "../common/SmartImage";
 
 type VehicleItem = {
   title: string;
-  description?: string;
+  description: string;
   href: string;
   image?: string;
   alt?: string;
   seats?: number;
-  luggage?: number;
   priceUsd?: number;
 };
 
@@ -23,11 +22,7 @@ type FeaturedVehiclesProps = {
   title?: string;
   description?: string;
   items?: VehicleItem[];
-  /** Optional anchor id for the section. */
   id?: string;
-  /** Label on each card's button. */
-  ctaLabel?: string;
-  /** Optional link shown under the cards, for example "View all vehicles". */
   footerLabel?: string;
   footerHref?: string;
 };
@@ -217,11 +212,6 @@ const CardText = styled.p`
   flex: 1;
 `;
 
-const Spacer = styled.div`
-  flex: 1;
-  min-height: 12px;
-`;
-
 const CardFooter = styled.div`
   display: flex;
   align-items: center;
@@ -264,18 +254,21 @@ const FooterLinkRow = styled.div`
 const FooterLink = styled(Link)`
   display: inline-flex;
   align-items: center;
-  min-height: 48px;
-  padding: 0 24px;
+  justify-content: center;
+  min-height: 46px;
+  padding: 0 18px;
   border-radius: 14px;
-  border: 1px solid ${({ theme }) => theme.colors.primary};
-  color: ${({ theme }) => theme.colors.primary};
+  background: ${({ theme }) => theme.colors.primary};
+  color: ${({ theme }) => theme.colors.white};
   font-weight: 700;
+  font-size: 0.95rem;
   text-decoration: none;
-  transition: background 0.2s ease, color 0.2s ease;
+  box-shadow: ${({ theme }) => theme.shadows.soft};
+  transition: background 0.2s ease, transform 0.2s ease;
 
   &:hover {
-    background: ${({ theme }) => theme.colors.primary};
-    color: ${({ theme }) => theme.colors.white};
+    background: ${({ theme }) => theme.colors.primaryDark};
+    transform: translateY(-1px);
   }
 `;
 
@@ -321,7 +314,6 @@ export default function FeaturedVehicles({
   description = "Discover premium chauffeur-driven vehicles for airport transfers, private travel, executive transport, and luxury touring across Cape Town.",
   items = [],
   id,
-  ctaLabel = "View Vehicle",
   footerLabel,
   footerHref,
 }: FeaturedVehiclesProps) {
@@ -383,21 +375,16 @@ export default function FeaturedVehicles({
                 <CardContent>
                   <MetaRow>
                     {item.seats ? <MetaBadge>{item.seats} Seats</MetaBadge> : null}
-                    {item.luggage ? (
-                      <MetaBadge>
-                        {item.luggage} {item.luggage === 1 ? "Suitcase" : "Suitcases"}
-                      </MetaBadge>
-                    ) : null}
                     {item.priceUsd ? (
                       <MetaBadge><Money usd={item.priceUsd} /></MetaBadge>
                     ) : null}
                   </MetaRow>
 
                   <CardTitle>{item.title}</CardTitle>
-                  {item.description ? <CardText>{item.description}</CardText> : <Spacer />}
+                  <CardText>{item.description}</CardText>
 
                   <CardFooter>
-                    <ViewButton>{ctaLabel}</ViewButton>
+                    <ViewButton>View Vehicle</ViewButton>
                     <InlineArrow>→</InlineArrow>
                   </CardFooter>
                 </CardContent>
