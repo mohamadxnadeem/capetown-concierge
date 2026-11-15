@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
 import styled from "styled-components";
 import {
   GOOGLE_REVIEWS_URL,
@@ -301,14 +302,23 @@ const GoogleStars = styled.span`
   letter-spacing: 1px;
 `;
 
+const ReadAllLink = styled(Link)`
+  color: ${({ theme }) => theme.colors.primary};
+  font-weight: 700;
+  font-size: 0.92rem;
+  text-decoration: underline;
+`;
+
 const SliderFooter = styled.div`
   display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
   align-items: center;
   justify-content: center;
   margin-top: 28px;
 `;
 
-function ReviewCard({ review }: { review: GoogleReview }) {
+export function ReviewCard({ review }: { review: GoogleReview }) {
   const isLong = review.text.length > LONG_REVIEW_CHARS;
   const [expanded, setExpanded] = useState(false);
   const initial = Array.from(review.reviewer_name.trim())[0] || "G";
@@ -353,6 +363,8 @@ function StarRating({ count = 5 }: { count?: number }) {
 }
 
 type TestimonialsSectionProps = {
+  /** Optional link shown under the Google badge, for example to /reviews. */
+  readAllHref?: string;
   /** Review tags for this page, in priority order. Empty means newest eligible reviews. */
   tags?: string[];
   count?: number;
@@ -361,6 +373,7 @@ type TestimonialsSectionProps = {
 export default function TestimonialsSection({
   tags = [],
   count = DEFAULT_COUNT,
+  readAllHref,
 }: TestimonialsSectionProps) {
   const reviews = selectReviews(tags, count);
   const sliderRef = useRef<HTMLDivElement | null>(null);
@@ -425,7 +438,7 @@ export default function TestimonialsSection({
           <MetaStrip>
             <MetaBadge>5-Star Rated Experience</MetaBadge>
             <MetaBadge>{googleReviewCount} Google Reviews</MetaBadge>
-            <MetaBadge>Luxury Travel Service</MetaBadge>
+            <MetaBadge>Private Chauffeur Service</MetaBadge>
           </MetaStrip>
 
           <Controls>
@@ -461,6 +474,7 @@ export default function TestimonialsSection({
             <GoogleStars>★★★★★</GoogleStars>
             {googleRatingLabel} from {googleReviewCount} Google reviews · Read all reviews on Google
           </GoogleButton>
+          {readAllHref ? <ReadAllLink href={readAllHref}>Read all reviews</ReadAllLink> : null}
         </SliderFooter>
       </Container>
     </Section>

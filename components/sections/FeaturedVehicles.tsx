@@ -9,11 +9,12 @@ import SmartImage from "../common/SmartImage";
 
 type VehicleItem = {
   title: string;
-  description: string;
+  description?: string;
   href: string;
   image?: string;
   alt?: string;
   seats?: number;
+  luggage?: number;
   priceUsd?: number;
 };
 
@@ -22,6 +23,13 @@ type FeaturedVehiclesProps = {
   title?: string;
   description?: string;
   items?: VehicleItem[];
+  /** Optional anchor id for the section. */
+  id?: string;
+  /** Label on each card's button. */
+  ctaLabel?: string;
+  /** Optional link shown under the cards, for example "View all vehicles". */
+  footerLabel?: string;
+  footerHref?: string;
 };
 
 
@@ -209,6 +217,11 @@ const CardText = styled.p`
   flex: 1;
 `;
 
+const Spacer = styled.div`
+  flex: 1;
+  min-height: 12px;
+`;
+
 const CardFooter = styled.div`
   display: flex;
   align-items: center;
@@ -240,6 +253,30 @@ const InlineArrow = styled.span`
   color: ${({ theme }) => theme.colors.primary};
   font-size: 1rem;
   font-weight: 700;
+`;
+
+const FooterLinkRow = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: 32px;
+`;
+
+const FooterLink = styled(Link)`
+  display: inline-flex;
+  align-items: center;
+  min-height: 48px;
+  padding: 0 24px;
+  border-radius: 14px;
+  border: 1px solid ${({ theme }) => theme.colors.primary};
+  color: ${({ theme }) => theme.colors.primary};
+  font-weight: 700;
+  text-decoration: none;
+  transition: background 0.2s ease, color 0.2s ease;
+
+  &:hover {
+    background: ${({ theme }) => theme.colors.primary};
+    color: ${({ theme }) => theme.colors.white};
+  }
 `;
 
 const EmptyState = styled.div`
@@ -283,6 +320,10 @@ export default function FeaturedVehicles({
   title = "Travel Cape Town in Comfort and Style",
   description = "Discover premium chauffeur-driven vehicles for airport transfers, private travel, executive transport, and luxury touring across Cape Town.",
   items = [],
+  id,
+  ctaLabel = "View Vehicle",
+  footerLabel,
+  footerHref,
 }: FeaturedVehiclesProps) {
   const sliderRef = useRef<HTMLDivElement | null>(null);
 
@@ -298,11 +339,11 @@ export default function FeaturedVehicles({
   };
 
   return (
-    <Wrapper>
+    <Wrapper id={id}>
       <Container>
         <TopBar>
           <Intro>
-            <Eyebrow>{eyebrow}</Eyebrow>
+            {eyebrow ? <Eyebrow>{eyebrow}</Eyebrow> : null}
             <Title>{title}</Title>
             <Description>{description}</Description>
           </Intro>
@@ -342,16 +383,21 @@ export default function FeaturedVehicles({
                 <CardContent>
                   <MetaRow>
                     {item.seats ? <MetaBadge>{item.seats} Seats</MetaBadge> : null}
+                    {item.luggage ? (
+                      <MetaBadge>
+                        {item.luggage} {item.luggage === 1 ? "Suitcase" : "Suitcases"}
+                      </MetaBadge>
+                    ) : null}
                     {item.priceUsd ? (
                       <MetaBadge><Money usd={item.priceUsd} /></MetaBadge>
                     ) : null}
                   </MetaRow>
 
                   <CardTitle>{item.title}</CardTitle>
-                  <CardText>{item.description}</CardText>
+                  {item.description ? <CardText>{item.description}</CardText> : <Spacer />}
 
                   <CardFooter>
-                    <ViewButton>View Vehicle</ViewButton>
+                    <ViewButton>{ctaLabel}</ViewButton>
                     <InlineArrow>→</InlineArrow>
                   </CardFooter>
                 </CardContent>
@@ -359,6 +405,12 @@ export default function FeaturedVehicles({
             ))}
           </Slider>
         )}
+
+        {footerHref && footerLabel && items.length ? (
+          <FooterLinkRow>
+            <FooterLink href={footerHref}>{footerLabel}</FooterLink>
+          </FooterLinkRow>
+        ) : null}
       </Container>
     </Wrapper>
   );

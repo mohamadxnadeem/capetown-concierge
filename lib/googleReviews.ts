@@ -96,3 +96,13 @@ export function tourReviewTags(slug: string | undefined | null): string[] {
   if (s.includes("safari") || s.includes("big-5") || s.includes("big5")) return ["safari-tour"];
   return [];
 }
+
+/** Eligible reviews carrying a tag, newest first. No top-up with other reviews. */
+export function reviewsWithTag(tag: string): GoogleReview[] {
+  return eligibleReviews.filter((r) => r.featured_on.includes(tag)).sort(byNewest);
+}
+
+/** Every review that may be shown (no hidden, no "do not feature"), newest first, undated last. */
+export function allEligibleReviews(): GoogleReview[] {
+  return [...eligibleReviews].sort(byNewest);
+}

@@ -125,23 +125,6 @@ function toZarNum(val: string | number): number {
   return Math.round(Number(String(val).replace(/[^0-9.]/g, "")));
 }
 
-function formatPriceRange(
-  priceFrom?: string | number,
-  priceTo?: string | number,
-) {
-  if (
-    (priceFrom === undefined || priceFrom === null || priceFrom === "") &&
-    (priceTo === undefined || priceTo === null || priceTo === "")
-  ) {
-    return "";
-  }
-  const from = priceFrom ? toZarNum(priceFrom) : 0;
-  const to = priceTo ? toZarNum(priceTo) : 0;
-  if (from && to) return `From R${from.toLocaleString()} - R${to.toLocaleString()}`;
-  if (from) return `From R${from.toLocaleString()}`;
-  return `R${to.toLocaleString()}`;
-}
-
 function formatVehiclePrice(price?: string | number) {
   if (price === undefined || price === null || price === "") return "";
   const num = toZarNum(price);
@@ -239,9 +222,7 @@ function getSeoKeyword(experience: Experience): string {
 function getPageTitle(experience: Experience) {
   if (experience.meta_title) return experience.meta_title;
   const keyword = getSeoKeyword(experience);
-  const priceZar = experience.price_from ? toZarNum(experience.price_from) || undefined : undefined;
-  const priceStr = priceZar ? ` | From R${priceZar.toLocaleString()}` : "";
-  return `${keyword} | Private Chauffeur Tour${priceStr} | ${brand.name}`;
+  return `${keyword} | Private Chauffeur Tour | ${brand.name}`;
 }
 
 function getPageDescription(experience: Experience) {
@@ -288,7 +269,6 @@ function mapRelatedTours(
         [...(tour.cover_photos || [])].sort((a, b) => a.order - b.order)[0]
           ?.cover_photos || "",
       href: `/tours/${tour.slug}`,
-      price: formatPriceRange(tour.price_from, tour.price_to),
     }));
 }
 
@@ -485,7 +465,7 @@ export default async function PrivateTourDetailPage({ params }: PageProps) {
       .map((item) => {
         const car = (item as CarsApiItem).car || (item as unknown as Car);
         const p = car?.price;
-        if (!p) return null;
+        if (!p || (car as { is_active?: boolean }).is_active === false) return null;
         const n = Number(String(p).replace(/[^0-9.]/g, ""));
         return isNaN(n) || n === 0 ? null : n;
       })
@@ -498,14 +478,13 @@ export default async function PrivateTourDetailPage({ params }: PageProps) {
   const ogImage = `${SITE_URL}/images/og-cape-town-concierge.jpg`;
   const schemaImage = primaryImage || ogImage;
   const canonicalUrl = `${SITE_URL}/tours/${slug.toLowerCase()}`;
-  const price = experience.price_from || experience.price_to || "";
-  const priceZarForSchema = toZarNum(price);
+  // Tours are priced at the chosen vehicle's full-day rate; the database tour price is never shown.
+  const priceZarForSchema = lowestVehiclePrice;
 
   const tourName = experience.title || "private tour";
   const tourKeyword = getSeoKeyword(experience);
-  const priceFromZar = toZarNum(experience.price_from || "");
-  const priceAnswer = priceFromZar
-    ? `${tourKeyword} starts from R${priceFromZar.toLocaleString()} per vehicle. This is an all-inclusive private experience. Contact us via WhatsApp for a personalised quote based on your group size and requirements.`
+  const priceAnswer = lowestVehiclePrice
+    ? `${tourKeyword} is priced at your chosen vehicle's full-day rate, from R${lowestVehiclePrice.toLocaleString()} per vehicle. This is an all-inclusive private experience. Contact us via WhatsApp for a personalised quote based on your group size and requirements.`
     : `Pricing for ${tourKeyword} depends on your group size and any custom requirements. Contact us via WhatsApp for a tailored quote. We typically respond within 30 minutes.`;
 
   const faqJsonLd = {
