@@ -93,7 +93,7 @@ export default function ChauffeurRelatedVehicles({ items }: Props) {
               {vehicle.image && (
                 <SmartImage
                   src={vehicle.image}
-                  alt={vehicle.title}
+                  alt={`${vehicle.title} chauffeur Cape Town`}
                   sizes="(max-width: 768px) 100vw, 33vw"
                 />
               )}

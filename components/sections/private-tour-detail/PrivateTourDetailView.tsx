@@ -17,6 +17,7 @@ import PrivateTourVehicles from "./PrivateTourVehicles";
 import PrivateTourInclusions from "./PrivateTourInclusions";
 import PrivateTourHighlights from "./PrivateTourHighlights";
 import PrivateTourReviews from "./PrivateTourReviews";
+import { selectReviews, tourReviewTags } from "../../../lib/googleReviews";
 import PrivateTourFaq from "./PrivateTourFaq";
 import PrivateTourRelatedTours from "./PrivateTourRelatedTours";
 import PrivateTourCta from "./PrivateTourCta";
@@ -27,7 +28,6 @@ import { getTourSeo, fixTourText } from "../../../lib/tourSeo";
 
 import {
   Experience,
-  ReviewItem,
   TourVehicle,
   RelatedTour,
 } from "./types";
@@ -39,27 +39,6 @@ const PageWrap = styled.main`
 const Section = styled.section`
   padding: 64px 0;
 `;
-
-const reviewItems: ReviewItem[] = [
-  {
-    quote:
-      "The private Cape Peninsula tour was the highlight of our Cape Town trip. Penguins, two oceans, and Chapman's Peak all in one day without being on a crowded bus. Our driver was knowledgeable, warm, and completely flexible. Cannot recommend this highly enough.",
-    name: "Sarah",
-    subtitle: "Cape Peninsula Private Tour",
-  },
-  {
-    quote:
-      "We did the Stellenbosch Winelands private tour and it was exceptional. Three estates, a long lunch, and not a single moment of being rushed. The driver knew which farms were worth visiting and gave brilliant recommendations the whole way.",
-    name: "Asad",
-    subtitle: "Stellenbosch Winelands Tour",
-  },
-  {
-    quote:
-      "Travelled with my husband for our anniversary and booked a private city tour. The driver took us to all the iconic spots but also knew hidden viewpoints the tourist buses skip. We ended the day watching sunset from Signal Hill. Absolutely magical.",
-    name: "Noor",
-    subtitle: "City & Table Mountain Tour",
-  },
-];
 
 type Props = {
   experience: Experience;
@@ -158,7 +137,7 @@ export default function PrivateTourDetailView({
 
       <Section>
         <Container>
-          <PrivateTourReviews reviews={reviewItems} />
+          <PrivateTourReviews reviews={selectReviews(tourReviewTags(slug || experience?.slug), 3)} />
         </Container>
       </Section>
 

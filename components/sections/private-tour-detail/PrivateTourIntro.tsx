@@ -1,6 +1,7 @@
 "use client";
 
 import styled from "styled-components";
+import { googleSummaryText } from "../../../lib/googleReviews";
 import Money from "../../common/Money";
 
 const SectionHeader = styled.div`
@@ -101,8 +102,8 @@ const AlertText = styled.p`
 `;
 
 const DEFAULT_TRUST_BADGES = [
-  "✔ 100% Private — your vehicle, your group, your pace",
-  "✔ Flexible itinerary — you set the stops",
+  "✔ 100% Private: your vehicle, your group, your pace",
+  "✔ Flexible itinerary: you set the stops",
   "✔ Professional chauffeur & local guide included",
 ];
 
@@ -133,11 +134,11 @@ export default function PrivateTourIntro({
       <SubText>
         {shortDescription ||
           highlight ||
-          `Skip the group buses and crowded shuttles. The ${title} is a fully private, chauffeur-driven experience — your vehicle, your schedule, your pace. No shared passengers. No fixed stops you didn't ask for.`}
+          `Skip the group buses and crowded shuttles. The ${title} is a fully private, chauffeur-driven experience with your own vehicle, your own schedule and your own pace. No shared passengers. No fixed stops you didn't ask for.`}
       </SubText>
 
       <TrustBar>
-        <TrustBadge>⭐ 4.9 rated — 200+ five-star reviews</TrustBadge>
+        <TrustBadge>⭐ {googleSummaryText}</TrustBadge>
         {trustBadges.map((badge) => (
           <TrustBadge key={badge}>{badge}</TrustBadge>
         ))}
@@ -157,7 +158,7 @@ export default function PrivateTourIntro({
 
       <AlertCard>
         <AlertText>
-          ⚡ Peak-season dates book out 2–3 weeks ahead. Message us now and we'll hold your date — we respond in under 30 minutes.
+          ⚡ Peak-season dates book out 2 to 3 weeks ahead. Message us now and we'll hold your date. We respond in under 30 minutes.
         </AlertText>
       </AlertCard>
     </SectionHeader>

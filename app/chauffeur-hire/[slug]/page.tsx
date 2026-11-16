@@ -1,7 +1,14 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { brand } from "../../../lib/brand";
+import { FALLBACK_VEHICLE_SLUGS, businessRef, vehicleHref } from "../../../lib/seo";
 import ChauffeurDetailView from "../../../components/sections/chauffeur-services/ChauffeurDetailView";
+import {
+  buildFaqs,
+  getSeoKeyword,
+  getVehicleMetaDescription,
+  getVehicleMetaTitle,
+} from "../../../components/sections/chauffeur-services/utils";
 
 // ─────────────────────────────────────────────
 // TYPES
@@ -63,18 +70,6 @@ type PageProps = {
 };
 
 const SITE_URL = brand.siteUrl;
-
-// ─────────────────────────────────────────────
-// FIX 1: SEO KEYWORD GENERATOR
-// Produces "[Vehicle Name] Chauffeur Service Cape Town" per vehicle
-// This becomes the H1, meta title anchor, and schema name
-// Override per vehicle by adding seo_keyword to your CMS/API
-// ─────────────────────────────────────────────
-function getSeoKeyword(car: Car): string {
-  if (car.seo_keyword) return car.seo_keyword;
-  const name = car.title || "Luxury Vehicle";
-  return `${name} Chauffeur Service Cape Town`;
-}
 
 // ─────────────────────────────────────────────
 // PRICE HELPERS (unchanged)
@@ -145,34 +140,6 @@ function getVehicleBySlug(cars: Car[], slug: string) {
   }) || null;
 }
 
-// Slug-based meta title/description overrides (used when CMS meta_title is not set)
-const VEHICLE_META: Record<string, { title: string; description: string }> = {
-  "bmw-5-series-for-hire-with-driver": {
-    title: "BMW 5-Series Chauffeur Cape Town | Executive Hire",
-    description: "Hire a BMW 5-Series with professional driver in Cape Town. Ideal for airport transfers & business travel. From R8,325/day. Book via WhatsApp.",
-  },
-  "bmw-x5-for-hire-with-driver": {
-    title: "BMW X5 Chauffeur Cape Town | Luxury SUV with Driver",
-    description: "Private BMW X5 hire with professional chauffeur in Cape Town. Perfect for families & small groups. From R8,325/day. WhatsApp to check availability.",
-  },
-  "8-seater-staria-van-with-driver": {
-    title: "Hyundai Staria 9-Seater Cape Town | Group Transfers",
-    description: "Book a 9-seat Hyundai Staria with driver in Cape Town. Ideal for group airport transfers & tours. From R6,475/day. WhatsApp to book today.",
-  },
-  "mercedes-sprinter-with-driver-cape-town": {
-    title: "Mercedes Sprinter Cape Town | 14-Seat Group Hire",
-    description: "14-seater Mercedes Sprinter with professional driver for large group tours & transfers in Cape Town. From R11,100/day. Get a quote on WhatsApp.",
-  },
-  "mercedes-v-class-private-chauffeur-service": {
-    title: "Mercedes V-Class Cape Town | Luxury Group Chauffeur",
-    description: "Premium 6-seat Mercedes V-Class with private chauffeur in Cape Town. Perfect for VIPs & families. From R10,175/day. Book via WhatsApp today.",
-  },
-  "range-rover-sport-chauffeur-service-cape-town": {
-    title: "Range Rover Sport Cape Town | Luxury SUV Chauffeur",
-    description: "Hire a Range Rover Sport with driver in Cape Town. Bold, refined & fully private. From R9,250/day. WhatsApp us to check availability & book.",
-  },
-};
-
 function getPrimaryImage(car: Car) {
   const imageArray = car.cover_photos || car.images || [];
   const sorted = [...imageArray].sort((a, b) => (a.order || 0) - (b.order || 0));
@@ -196,44 +163,12 @@ function getFormattedDailyRate(car: Car) {
   return formatPrice(car.price);
 }
 
-function getMetaFriendlyRate(car: Car) {
-  const value = getFormattedDailyRate(car);
-  if (!value) return "";
-  return value.replace(/^From\s+/i, "");
-}
-
-// ─────────────────────────────────────────────
-// FIX 4: META TITLE — exact keyword first, brand second
-// Old: "[Name] | VIP Chauffeur Hire Cape Town"  (generic, brand-heavy)
-// New: "[SEO Keyword] | Cape Town Concierge"    (keyword-first = higher CTR + ranking)
-// Example: "Range Rover Sport Chauffeur Service Cape Town | Cape Town Concierge"
-// Under 60 chars for the keyword portion, stays within Google's display limit
-// ─────────────────────────────────────────────
 function getPageTitle(car: Car) {
-  if (car.meta_title) return car.meta_title; // CMS override wins
-  const keyword = getSeoKeyword(car);
-  const rate = getMetaFriendlyRate(car);
-  // Append price if it fits — increases CTR significantly for HNWI searches
-  return rate
-    ? `${keyword} | From ${rate} | ` + brand.name
-    : `${keyword} | ` + brand.name;
+  return getVehicleMetaTitle(car);
 }
 
-// ─────────────────────────────────────────────
-// FIX 5: META DESCRIPTION — keyword in first 120 chars, CTA at end
-// Old: starts with "[name] VIP chauffeur hire..." (weak)
-// New: leads with the exact search intent, ends with action trigger
-// ─────────────────────────────────────────────
 function getPageDescription(car: Car) {
-  if (car.meta_description) return car.meta_description; // CMS override wins
-  const keyword = getSeoKeyword(car);
-  const rate = getMetaFriendlyRate(car);
-  const seats = car.number_of_seats ? ` ${car.number_of_seats} seats.` : "";
-  const rateStr = rate ? ` From ${rate}/day.` : "";
-  return truncateText(
-    `${keyword} — private airport transfers, full-day tours & bespoke Cape Town hire.${rateStr}${seats} Professional chauffeur. Book via WhatsApp.`,
-    155
-  );
+  return getVehicleMetaDescription(car);
 }
 
 function getShortVehicleDescription(car: Car) {
@@ -244,14 +179,14 @@ function getShortVehicleDescription(car: Car) {
     car.highlight ||
     truncateText(car.body, 180) ||
     (rate
-      ? `${keyword} — ${rate.toLowerCase()} for private airport transfers, tours, and full-day hire in Cape Town.`
+      ? `${keyword}: ${rate.toLowerCase()} for private airport transfers, tours, and full-day hire in Cape Town.`
       : `Premium ${keyword} for private travel, airport transfers, and chauffeur-driven experiences.`)
   );
 }
 
 function mapRelatedVehicles(cars: Car[], currentSlug: string): RelatedVehicle[] {
   return cars
-    .filter((car) => car.slug && car.slug !== currentSlug)
+    .filter((car) => car.slug && car.slug.toLowerCase() !== currentSlug.toLowerCase())
     .map((car) => ({
       title: car.title || "Vehicle",
       image: getPrimaryImage(car),
@@ -262,66 +197,8 @@ function mapRelatedVehicles(cars: Car[], currentSlug: string): RelatedVehicle[] 
         "Premium chauffeur-driven vehicle for Cape Town travel.",
       seats: car.number_of_seats,
       price: formatPrice(car.price),
-      href: `/chauffeur-hire/${car.slug}`,
+      href: vehicleHref(car.slug),
     }));
-}
-
-// ─────────────────────────────────────────────
-// FIX 6: VEHICLE-SPECIFIC FAQ QUESTIONS
-// Old: 4 generic questions identical on every vehicle
-// New: 8 questions, first 3 embed the exact SEO keyword naturally
-// This is what triggers FAQ rich results in Google — specificity matters
-// ─────────────────────────────────────────────
-function buildVehicleFaqs(car: Car, formattedPrice: string) {
-  const name = car.title || "this luxury vehicle";
-  const keyword = getSeoKeyword(car);
-  const seats = car.number_of_seats ? `${car.number_of_seats}` : "multiple";
-  const luggage = car.luggage_capacity ? `${car.luggage_capacity} bags` : "ample luggage";
-
-  return [
-    {
-      // Q1: Primary keyword in question — strongest FAQ schema signal
-      question: `How much does ${keyword} cost?`,
-      answer: formattedPrice
-        ? `${keyword} starts ${formattedPrice.toLowerCase()} per vehicle per day. This includes your professional chauffeur and fuel. Airport entrance fees and national park entry are not included. Contact us via WhatsApp for a tailored quote.`
-        : `Pricing for ${keyword} depends on your route, duration, and itinerary. Contact us via WhatsApp for availability and a personalised quote.`,
-    },
-    {
-      // Q2: Airport transfer — high search volume variant
-      question: `Is ${name} available for airport transfers in Cape Town?`,
-      answer: `Yes. ${name} is one of our most requested vehicles for Cape Town airport transfers. Your chauffeur tracks your flight arrival, meets you at the terminal with a name board, and handles your luggage. Available 24/7.`,
-    },
-    {
-      // Q3: Cape Peninsula — the #1 tour search
-      question: `Can I use ${name} for a private Cape Peninsula tour?`,
-      answer: `Yes. ${name} is ideal for a private Cape Peninsula tour. Your chauffeur will take you through Chapman's Peak Drive, Hout Bay, Boulders Beach penguin colony, and Cape Point — at your own pace, with no group schedules.`,
-    },
-    {
-      // Q4: Capacity
-      question: `How many passengers can ${name} accommodate?`,
-      answer: `${name} comfortably seats up to ${seats} passengers and accommodates ${luggage}. For larger groups, we also offer the Mercedes V-Class and Mercedes Sprinter.`,
-    },
-    {
-      // Q5: Winelands — second most popular tour
-      question: `Can I book ${name} for a private Winelands tour?`,
-      answer: `Yes. Many of our clients use ${name} for a private Cape Winelands day tour covering Stellenbosch, Franschhoek, and Constantia. Your chauffeur can coordinate restaurant reservations and wine estate visits.`,
-    },
-    {
-      // Q6: Full day hire
-      question: `Can I hire ${name} for a full day in Cape Town?`,
-      answer: `Yes. Full-day hire is available with ${name}. You choose your itinerary, and your chauffeur manages the route and timing. Popular full-day options include the Cape Peninsula, Cape Winelands, and a combined city and coastal drive.`,
-    },
-    {
-      // Q7: Booking process
-      question: `How do I book ${name} chauffeur service?`,
-      answer: `The quickest way to book is via WhatsApp. We typically confirm availability and pricing within 30 minutes. Same-day bookings are accommodated where possible. We serve clients from the US, UK, Middle East, and South Africa.`,
-    },
-    {
-      // Q8: What's included
-      question: `What is included when I book ${name} with a chauffeur?`,
-      answer: `Your booking includes a professional chauffeur in formal attire, the vehicle with fuel, complimentary bottled water, flexible route planning, and flight tracking for airport pickups. Entrance fees to attractions and gratuities are not included.`,
-    },
-  ];
 }
 
 // ─────────────────────────────────────────────
@@ -333,16 +210,7 @@ function buildVehicleFaqs(car: Car, formattedPrice: string) {
 // Ensure any slug not pre-built at build time is rendered on-demand.
 export const dynamicParams = true;
 
-// Fallback slugs used if the API is unreachable at build time.
-// These match the exact slugs in the database — keep in sync if vehicles are renamed.
-const FALLBACK_VEHICLE_SLUGS: string[] = [
-  "bmw-x5-for-hire-with-driver",
-  "bmw-5-series-for-hire-with-driver",
-  "mercedes-v-class-private-chauffeur-service",
-  "mercedes-sprinter-with-driver-cape-town",
-  "range-rover-sport-chauffeur-service-cape-town",
-  "8-seater-staria-van-with-driver",
-];
+// Fallback slugs (lib/seo.ts) are used if the API is unreachable at build time.
 
 export async function generateStaticParams() {
   try {
@@ -372,7 +240,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       title: `Chauffeur Service | ${brand.name}`,
       description: "Premium chauffeur-driven vehicles in Cape Town",
       openGraph: {
-        images: [{ url: ogImage, alt: "Cape Town Concierge — Luxury Chauffeur Service" }],
+        images: [{ url: ogImage, alt: "Cape Town Concierge, Luxury Chauffeur Service" }],
       },
       twitter: {
         card: "summary_large_image",
@@ -381,9 +249,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     };
   }
 
-  const override = VEHICLE_META[slug.toLowerCase()];
-  const title = override?.title || getPageTitle(car);
-  const description = override?.description || getPageDescription(car);
+  const title = getPageTitle(car);
+  const description = getPageDescription(car);
   const image = getPrimaryImage(car);
   const canonicalUrl = `${SITE_URL}/chauffeur-hire/${slug.toLowerCase()}`;
   const keyword = getSeoKeyword(car);
@@ -425,7 +292,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
           url: image || ogImage,
           alt: image
             ? getVehicleImageAlt(car)
-            : "Cape Town Concierge — Luxury Chauffeur Service",
+            : "Cape Town Concierge | Luxury Chauffeur Service",
         },
       ],
     },
@@ -456,9 +323,8 @@ export default async function ChauffeurServiceDetailPage({ params }: PageProps) 
   const pageTitle = getPageTitle(car);
   const pageDescription = getPageDescription(car);
   const keyword = getSeoKeyword(car);
-  const formattedPrice = formatPrice(car.price);
   const numericPrice = car.price;
-  const vehicleFaqs = buildVehicleFaqs(car, formattedPrice);
+  const vehicleFaqs = buildFaqs(car);
 
   // ─────────────────────────────────────────────
   // FIX 11: EXPANDED STRUCTURED DATA
@@ -482,31 +348,6 @@ export default async function ChauffeurServiceDetailPage({ params }: PageProps) 
         },
         category: car.category || car.vehicle_type || "Luxury Chauffeur Vehicle",
         url: canonicalUrl,
-        // FIX 12: AggregateRating — unlocks gold stars in search results
-        // Only renders if your API returns review data
-        // Add review_count and review_rating fields to your CMS/API
-        // Minimum: reviewCount >= 1, ratingValue between 1–5
-        ...(car.review_count && car.review_rating
-          ? {
-              aggregateRating: {
-                "@type": "AggregateRating",
-                ratingValue: car.review_rating,
-                reviewCount: car.review_count,
-                bestRating: 5,
-                worstRating: 1,
-              },
-            }
-          : // Fallback: use a conservative global rating from your site reviews
-            // Replace 4.9 and 28 with your actual verified figures
-            {
-              aggregateRating: {
-                "@type": "AggregateRating",
-                ratingValue: "4.9",
-                reviewCount: "28",
-                bestRating: "5",
-                worstRating: "1",
-              },
-            }),
         ...(numericPrice
           ? {
               offers: {
@@ -526,35 +367,13 @@ export default async function ChauffeurServiceDetailPage({ params }: PageProps) 
         // FIX: name now uses SEO keyword — this is what appears in rich results
         name: keyword,
         serviceType: "Private Chauffeur Service",
-        provider: {
-          "@type": "LocalBusiness",
-          name: brand.name,
-          url: SITE_URL,
-          telephone: brand.phone,
-          // FIX 13: Add address — critical for local SEO ranking
-          address: {
-            "@type": "PostalAddress",
-            addressLocality: brand.address.locality,
-            addressRegion: brand.address.region,
-            addressCountry: brand.address.country,
-          },
-          // FIX 14: Add geo — helps Google Maps and local pack ranking
-          geo: {
-            "@type": "GeoCoordinates",
-            latitude: brand.geo.lat,
-            longitude: brand.geo.lng,
-          },
-          priceRange: "$$$$",
-          sameAs: [
-            "https://share.google/xrWoPQWHwQYfzukgz",
-          ],
-        },
+        provider: businessRef,
         areaServed: [
           { "@type": "City", name: "Cape Town" },
           { "@type": "State", name: "Western Cape" },
         ],
         image: [schemaImage],
-        description: car.chauffeur_service_text || getShortVehicleDescription(car),
+        description: getShortVehicleDescription(car),
         url: canonicalUrl,
       },
 

@@ -76,7 +76,7 @@ export default function DriverBookingNotFoundView({ reference }: Props) {
           This booking link is invalid or has expired. Please contact your
           dispatcher.
         </Body>
-        {reference && reference !== "—" ? (
+        {reference && reference !== "-" ? (
           <Reference>{reference}</Reference>
         ) : null}
       </Card>

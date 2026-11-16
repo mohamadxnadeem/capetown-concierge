@@ -218,7 +218,7 @@ export default function FeaturedVillas({ villas }: Props) {
             <Title>Stay in a hand-picked Cape Town villa</Title>
             <Description>
               From sea-view homes in Camps Bay to vineyard estates in
-              Franschhoek — every villa in the collection is personally
+              Franschhoek, every villa in the collection is personally
               vetted, with full concierge and chauffeur add-ons available.
             </Description>
           </Intro>
@@ -251,7 +251,7 @@ export default function FeaturedVillas({ villas }: Props) {
                     {photo ? (
                       <SmartImage
                         src={photo}
-                        alt={`${villa.name} — luxury villa in ${area}`}
+                        alt={`${villa.name}, luxury villa in ${area}`}
                         sizes="(max-width: 768px) 85vw, (max-width: 1200px) 48vw, 32vw"
                       />
                     ) : null}

@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import Script from "next/script";
 
 import { brand } from "../lib/brand";
+import { buildBusinessSchema } from "../lib/seo";
 import StyledComponentsRegistry from "../lib/styled-components-registry";
 import Providers from "./providers";
 import Header from "../components/common/Header";
@@ -24,86 +25,7 @@ const gaId = process.env.NEXT_PUBLIC_GA_ID;
 const metaPixelId = process.env.NEXT_PUBLIC_META_PIXEL_ID;
 const googleAdsId = process.env.NEXT_PUBLIC_GOOGLE_ADS_ID;
 
-const localBusinessSchema = {
-  "@context": "https://schema.org",
-  "@type": ["LocalBusiness", "TouristInformationCenter"],
-  name: brand.name,
-  url: brand.siteUrl,
-  logo: `${brand.siteUrl}${brand.logoPath}`,
-  image: `${brand.siteUrl}${brand.heroImagePath}`,
-  description:
-    `${brand.name} offers luxury private chauffeur services, bespoke private tours, and premium airport transfers across ${brand.address.locality} and the ${brand.address.region}.`,
-  telephone: brand.phone,
-  email: brand.contactEmail,
-  priceRange: "$$$",
-  currenciesAccepted: "ZAR, USD",
-  paymentAccepted: "Cash, EFT, Credit Card",
-  address: {
-    "@type": "PostalAddress",
-    addressLocality: brand.address.locality,
-    addressRegion: brand.address.region,
-    postalCode: brand.address.postalCode,
-    addressCountry: brand.address.country,
-  },
-  geo: {
-    "@type": "GeoCoordinates",
-    latitude: brand.geo.lat,
-    longitude: brand.geo.lng,
-  },
-  openingHoursSpecification: [
-    "Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"
-  ].map((day) => ({
-    "@type": "OpeningHoursSpecification",
-    dayOfWeek: day,
-    opens: "00:00",
-    closes: "23:59",
-  })),
-  aggregateRating: {
-    "@type": "AggregateRating",
-    ratingValue: "4.9",
-    reviewCount: "27",
-    bestRating: "5",
-  },
-  touristType: ["LuxuryTourist", "BusinessTraveler", "FamilyTourist"],
-  areaServed: "Cape Town, Western Cape, South Africa",
-  hasOfferCatalog: {
-    "@type": "OfferCatalog",
-    name: "Private Tours & Chauffeur Services",
-    itemListElement: [
-      {
-        "@type": "Offer",
-        itemOffered: {
-          "@type": "Service",
-          name: "Private Chauffeur Service Cape Town",
-          url: `${brand.siteUrl}/chauffeur-hire`,
-        },
-      },
-      {
-        "@type": "Offer",
-        itemOffered: {
-          "@type": "Service",
-          name: "Private Tours Cape Town",
-          url: `${brand.siteUrl}/tours`,
-        },
-      },
-      {
-        "@type": "Offer",
-        itemOffered: {
-          "@type": "Service",
-          name: "Airport Transfers Cape Town",
-          url: `${brand.siteUrl}/airport-transfers-cape-town`,
-        },
-      },
-    ],
-  },
-  sameAs: [
-    `https://wa.me/${brand.whatsappNumber}`,
-    brand.social?.instagram,
-    brand.social?.tiktok,
-    brand.social?.facebook,
-    brand.social?.youtube,
-  ].filter((u): u is string => Boolean(u)),
-};
+const localBusinessSchema = buildBusinessSchema();
 
 export default function RootLayout({
   children,
