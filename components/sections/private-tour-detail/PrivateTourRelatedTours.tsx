@@ -5,6 +5,7 @@ import Link from "next/link";
 import Button from "../../common/Button";
 import SmartImage from "../../common/SmartImage";
 import { RelatedTour } from "./types";
+import { getTourSeo, slugFromHref } from "../../../lib/tourSeo";
 
 /* ===== styles unchanged ===== */
 
@@ -145,33 +146,37 @@ export default function PrivateTourRelatedTours({
       </OfferCard>
 
       <Grid>
-        {items.map((item, index) => (
+        {items.map((item, index) => {
+          const seo = getTourSeo(slugFromHref(item.href));
+          const name = seo?.cardName || item.title;
+          return (
           <Card key={`${item.title}-${index}`}>
             <CardImage>
               {item.image ? (
                 <SmartImage
                   src={item.image}
-                  alt={`${item.title} private tour`}
+                  alt={seo?.imageAlt || `${item.title} private tour from Cape Town`}
                   sizes="(max-width: 768px) 100vw, 33vw"
                 />
               ) : null}
             </CardImage>
 
             <CardBody>
-              <CardTitle>{item.title}</CardTitle>
+              <CardTitle>{name}</CardTitle>
 
               <CardText>
                 {TOUR_COPY[item.title] || item.description || "Discover another premium private tour experience in Cape Town."}
               </CardText>
 
-              <Link href={item.href}>
+              <Link href={item.href} aria-label={`Read more about the ${name}`}>
                 <Button as="span" $variant="secondary">
-                  View Tour
+                  See the {name}
                 </Button>
               </Link>
             </CardBody>
           </Card>
-        ))}
+          );
+        })}
       </Grid>
     </>
   );

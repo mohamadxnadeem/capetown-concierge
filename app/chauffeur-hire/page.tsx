@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import RelatedLinks from "../../components/common/RelatedLinks";
 import ChauffeurServicesPage from "../../components/sections/chauffeur-services/ChauffeurServicesPage";
 import { brand } from "../../lib/brand";
 
@@ -306,6 +307,15 @@ export default async function ChauffeurServicesLandingPage() {
         }}
       />
       <ChauffeurServicesPage vehicles={vehicles} />
+      <RelatedLinks
+        title="Private tours with a chauffeur"
+        text="Prefer a planned day out? Our private tours include your own chauffeur and vehicle."
+        links={[
+          { href: "/tours", label: "Compare the best private tours in Cape Town" },
+          { href: "/tours/cape-peninsula-tour", label: "Cape Point private tour from Cape Town" },
+          { href: "/tours/winelands-chauffeur-drive", label: "Private Winelands tour from Cape Town" },
+        ]}
+      />
     </>
   );
 }

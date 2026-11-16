@@ -294,7 +294,7 @@ export default function PrivateTourGallery({ title, photos }: Props) {
               {activePhoto && (
                 <SmartImage
                   src={activePhoto}
-                  alt={title}
+                  alt={`${title}, photo ${activeIndex + 1} of ${sortedPhotos.length}`}
                   priority={activeIndex === 0}
                   sizes="100vw"
                 />
@@ -319,7 +319,7 @@ export default function PrivateTourGallery({ title, photos }: Props) {
               {photo.cover_photos && (
                 <SmartImage
                   src={photo.cover_photos}
-                  alt={title}
+                  alt={`${title}, thumbnail ${index + 1}`}
                   sizes="120px"
                 />
               )}

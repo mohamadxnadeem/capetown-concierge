@@ -1,5 +1,6 @@
 // app/7-day-cape-town-itinerary/page.tsx
 
+import RelatedLinks from "../../components/common/RelatedLinks";
 import type { Metadata } from "next";
 import { brand } from "../../lib/brand";
 import ItineraryPage from "../../components/sections/cape-town-itinerary/ItineraryPage";
@@ -156,6 +157,15 @@ export default function SevenDayCapeTownItineraryPage() {
       />
 
       <ItineraryPage />
+      <RelatedLinks
+        title="Private tours in Cape Town"
+        text="Turn this guide into a plan with a private chauffeur and no shared groups."
+        links={[
+          { href: "/tours", label: "Book private tours in Cape Town for your itinerary" },
+          { href: "/tours/cape-peninsula-tour", label: "Cape Point private tour from Cape Town" },
+          { href: "/tours/winelands-chauffeur-drive", label: "Private Winelands tour from Cape Town" },
+        ]}
+      />
     </>
   );
 }

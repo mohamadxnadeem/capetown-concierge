@@ -20,6 +20,9 @@ import PrivateTourReviews from "./PrivateTourReviews";
 import PrivateTourFaq from "./PrivateTourFaq";
 import PrivateTourRelatedTours from "./PrivateTourRelatedTours";
 import PrivateTourCta from "./PrivateTourCta";
+import Breadcrumbs from "../../common/Breadcrumbs";
+import RelatedLinks from "../../common/RelatedLinks";
+import { getTourSeo, fixTourText } from "../../../lib/tourSeo";
 
 
 import {
@@ -81,14 +84,31 @@ export default function PrivateTourDetailView({
   const midCtaWhatsappLink = `https://wa.me/27636746131?text=${encodeURIComponent(`Hi, I'd like to book the ${safeTourTitle}. Please assist.`)}`;
   const bundleWhatsAppLink = `https://wa.me/27636746131?text=${encodeURIComponent(`Hi, I'd like to enquire about private tours in Cape Town including the ${safeTourTitle}. Please assist.`)}`;
 
-  const stops = [...(experience.stops || [])].sort((a, b) => a.order - b.order);
+  const seo = getTourSeo(slug || experience?.slug);
+  const heading = seo?.h1 || safeTourTitle;
+
+  const stops = [...(experience.stops || [])]
+    .sort((a, b) => a.order - b.order)
+    .map((stop) => ({
+      ...stop,
+      title: fixTourText(stop.title) || stop.title,
+      short_description: fixTourText(stop.short_description),
+      highlight: fixTourText(stop.highlight),
+    }));
 
   return (
     <PageWrap>
+      <Breadcrumbs
+        items={[
+          { label: "Home", href: "/" },
+          { label: "Tours", href: "/tours" },
+          { label: seo?.cardName || safeTourTitle },
+        ]}
+      />
       <Section>
         <Container>
           <PrivateTourGallery
-            title={safeTourTitle}
+            title={seo?.imageAlt || safeTourTitle}
             photos={experience.cover_photos || []}
           />
         </Container>
@@ -97,7 +117,7 @@ export default function PrivateTourDetailView({
       <Section>
         <Container>
           <PrivateTourIntro
-            title={safeTourTitle}
+            title={heading}
             shortDescription={experience.short_description}
             highlight={experience.highlight}
             duration={experience.duration}
@@ -119,7 +139,7 @@ export default function PrivateTourDetailView({
       <Section>
         <Container>
           <PrivateTourItinerary
-            title={safeTourTitle}
+            title={seo?.cardName || safeTourTitle}
             location={experience.location}
             stops={stops}
             sectionTitle={content.itineraryTitle}
@@ -144,13 +164,13 @@ export default function PrivateTourDetailView({
 
       <Section>
         <Container>
-          <PrivateTourVehicles items={vehicles} tourTitle={safeTourTitle} />
+          <PrivateTourVehicles items={vehicles} tourTitle={safeTourTitle} title={content.vehiclesTitle} />
         </Container>
       </Section>
 
       <Section>
         <Container>
-          <PrivateTourInclusions />
+          <PrivateTourInclusions title={content.inclusionsTitle} />
         </Container>
       </Section>
 
@@ -168,7 +188,7 @@ export default function PrivateTourDetailView({
 
       <Section>
         <Container>
-          <PrivateTourFaq items={content.faqItems} lowestVehiclePrice={lowestVehiclePrice} />
+          <PrivateTourFaq items={content.faqItems} lowestVehiclePrice={lowestVehiclePrice} title={content.faqTitle} />
         </Container>
       </Section>
 
@@ -180,6 +200,16 @@ export default function PrivateTourDetailView({
           />
         </Container>
       </Section>
+
+      <RelatedLinks
+        title="Plan your Cape Town trip"
+        text="More ideas and guides to help you plan private days out in Cape Town."
+        links={[
+          ...(seo ? [{ href: seo.guideHref, label: `Read our guide: ${seo.guideLabel}` }] : []),
+          { href: "/tours", label: "Compare all our best private tours in Cape Town" },
+          { href: "/chauffeur-hire", label: "Hire a private chauffeur in Cape Town by the day" },
+        ]}
+      />
 
       <PrivateTourCta
         whatsappLink={whatsappLink}

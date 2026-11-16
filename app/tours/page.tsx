@@ -7,15 +7,25 @@ import FeaturedExperiences from "../../components/sections/FeaturedExperiences";
 import TestimonialsSection from "../../components/sections/testimonials/TestimonialsSection";
 import TestimonialsCta from "../../components/sections/testimonials/TestimonialsCta";
 import WhyChooseUs from "../../components/sections/WhyChooseUs";
+import Breadcrumbs from "../../components/common/Breadcrumbs";
+import RelatedLinks from "../../components/common/RelatedLinks";
+import { TourHubIntro, TourHubFaq } from "../../components/sections/tours-hub/TourHubSections";
+import { HUB_FAQS, HUB_LINKS } from "../../lib/tourHub";
+import { TOUR_ORDER, TOUR_SEO, getTourSeo } from "../../lib/tourSeo";
 
 const SITE_URL = brand.siteUrl;
+
+const TITLE =
+  "Best Private Tours in Cape Town | Cape Point, Winelands, Safari and City";
+const DESCRIPTION =
+  "Compare the best private tours in Cape Town: Cape Point, Winelands, city and Table Mountain, and a Big 5 safari. Your own chauffeur. Book on WhatsApp.";
 
 const OG_IMAGE = `${SITE_URL}/images/og-cape-town-concierge.jpg`;
 
 export const metadata: Metadata = {
-  title: "Private Tours Cape Town | Bespoke Day Experiences",
+  title: TITLE,
   description:
-    "Explore Cape Town privately — Peninsula, Winelands, Table Mountain & more. Fully tailored, no shared groups. Book your private tour on WhatsApp.",
+    DESCRIPTION,
   alternates: {
     canonical: `${SITE_URL}/tours`,
   },
@@ -31,9 +41,9 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "Private Tours Cape Town | Bespoke Day Experiences",
+    title: TITLE,
     description:
-      "Explore Cape Town privately — Peninsula, Winelands, Table Mountain & more. Fully tailored, no shared groups. Book your private tour on WhatsApp.",
+      DESCRIPTION,
     url: `${SITE_URL}/tours`,
     siteName: brand.name,
     type: "website",
@@ -43,15 +53,15 @@ export const metadata: Metadata = {
         url: OG_IMAGE,
         width: 1200,
         height: 630,
-        alt: "Cape Town Concierge — Luxury Chauffeur Service",
+        alt: "Cape Town Concierge, luxury private chauffeur tours",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Private Tours Cape Town | Bespoke Day Experiences",
+    title: TITLE,
     description:
-      "Explore Cape Town privately — Peninsula, Winelands, Table Mountain & more. Fully tailored, no shared groups. Book your private tour on WhatsApp.",
+      DESCRIPTION,
     images: [OG_IMAGE],
   },
 };
@@ -129,18 +139,47 @@ async function getAllExperiences(): Promise<FeaturedExperienceItem[]> {
           truncateText(plainText, 140) ||
           "Discover a premium private tour experience in Cape Town.";
 
+        const seo = getTourSeo(exp.slug);
+
         return {
-          title: exp.title,
+          title: seo?.cardName || exp.title,
           description,
           href: exp.slug ? `/tours/${exp.slug}` : "/tours",
           image: featuredPhoto,
-          alt: `Private ${exp.title} Cape Town with professional chauffeur`,
+          alt: seo?.imageAlt || `Private ${exp.title} from Cape Town with a chauffeur`,
           price: formatApiPrice(exp.price),
         };
       }) as Array<FeaturedExperienceItem | null>)
-      .filter((item): item is FeaturedExperienceItem => item !== null);
+      .filter((item): item is FeaturedExperienceItem => item !== null)
+      .sort((a, b) => {
+        const rank = (href: string) => {
+          const i = TOUR_ORDER.indexOf(href.replace("/tours/", ""));
+          return i === -1 ? 99 : i;
+        };
+        return rank(a.href) - rank(b.href);
+      });
   } catch {
     return [];
+  }
+}
+
+async function getLowestVehiclePrice(): Promise<number | undefined> {
+  try {
+    const res = await fetch(
+      "https://web-production-1ab9.up.railway.app/api/cars-for-hire/all/",
+      { next: { revalidate: 300 } }
+    );
+    if (!res.ok) return undefined;
+    const data = await res.json();
+    const items: Array<{ car?: { price?: string | number }; price?: string | number }> =
+      Array.isArray(data) ? data : Array.isArray(data?.results) ? data.results : [];
+    const prices = items
+      .map((item) => Number(String((item.car || item)?.price ?? "").replace(/[^0-9.]/g, "")))
+      .filter((n) => n > 0 && !isNaN(n))
+      .sort((a, b) => a - b);
+    return prices[0] ? Math.round(prices[0]) : undefined;
+  } catch {
+    return undefined;
   }
 }
 
@@ -148,7 +187,7 @@ const whyItems = [
   {
     title: "Fully Private Experiences",
     description:
-      "Every tour is exclusively yours — no shared groups, no fixed schedules, and no rushing. Travel at your own pace with a dedicated chauffeur.",
+      "Every tour is exclusively yours, with no shared groups, no fixed schedules and no rushing. Travel at your own pace with a dedicated chauffeur.",
   },
   {
     title: "Bespoke Itineraries",
@@ -158,7 +197,7 @@ const whyItems = [
   {
     title: "Professional Local Knowledge",
     description:
-      "Our chauffeurs know Cape Town intimately — from the best viewpoints on Chapman's Peak to the most celebrated estates in Franschhoek.",
+      "Our chauffeurs know Cape Town intimately, from the best viewpoints on Chapman's Peak to the most celebrated wine estates in Stellenbosch.",
   },
   {
     title: "Luxury Transport Included",
@@ -168,22 +207,39 @@ const whyItems = [
 ];
 
 export default async function PrivateToursLandingPage() {
-  const experiences = await getAllExperiences();
+  const [experiences, lowestVehiclePrice] = await Promise.all([
+    getAllExperiences(),
+    getLowestVehiclePrice(),
+  ]);
 
   const structuredData = {
     "@context": "https://schema.org",
     "@graph": [
       {
-        "@type": "WebPage",
-        name: "Private Tours Cape Town | Luxury Chauffeur-Driven Experiences",
+        "@type": "CollectionPage",
+        "@id": `${SITE_URL}/tours#webpage`,
+        name: TITLE,
         url: `${SITE_URL}/tours`,
-        description:
-          "Book a private tour in Cape Town with a professional chauffeur. Cape Peninsula, Cape Winelands, Table Mountain, and bespoke itineraries.",
+        description: DESCRIPTION,
         image: [`${SITE_URL}/images/hero-car.jpg`],
+        breadcrumb: { "@id": `${SITE_URL}/tours#breadcrumb` },
+        mainEntity: { "@id": `${SITE_URL}/tours#itemlist` },
+      },
+      {
+        "@type": "ItemList",
+        "@id": `${SITE_URL}/tours#itemlist`,
+        name: "Private tours in Cape Town",
+        numberOfItems: TOUR_ORDER.length,
+        itemListElement: TOUR_ORDER.map((slug, index) => ({
+          "@type": "ListItem",
+          position: index + 1,
+          name: TOUR_SEO[slug].cardName,
+          url: `${SITE_URL}/tours/${slug}`,
+        })),
       },
       {
         "@type": "Service",
-        name: "Private Tours Cape Town",
+        name: "Best Private Tours in Cape Town",
         serviceType: "Private Chauffeur Tours",
         provider: {
           "@type": "LocalBusiness",
@@ -209,64 +265,23 @@ export default async function PrivateToursLandingPage() {
         ],
         image: [`${SITE_URL}/images/hero-car.jpg`],
         description:
-          "Luxury private tours in Cape Town including Cape Peninsula, Cape Winelands, Table Mountain, and fully bespoke chauffeur-driven itineraries.",
+          "Private chauffeur-driven tours in Cape Town: Cape Point and the Cape Peninsula, the Cape Winelands, a city and Table Mountain day, and a Big 5 safari day trip.",
         url: `${SITE_URL}/tours`,
       },
       {
         "@type": "FAQPage",
-        mainEntity: [
-          {
-            "@type": "Question",
-            name: "What private tours are available in Cape Town?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "We offer a range of private tours including the Cape Peninsula, Cape Winelands (Stellenbosch, Franschhoek, Constantia), Table Mountain, city tours, and fully bespoke itineraries tailored around your preferences.",
-            },
-          },
-          {
-            "@type": "Question",
-            name: "Are your Cape Town tours private or shared?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "All our tours are completely private. You travel exclusively with your group, with no shared passengers. Your itinerary and pace are entirely your own.",
-            },
-          },
-          {
-            "@type": "Question",
-            name: "Is transport included in your private tours?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "Yes. All our private tours include a premium vehicle and professional chauffeur. The transport is central to the experience, ensuring you travel comfortably between each destination.",
-            },
-          },
-          {
-            "@type": "Question",
-            name: "Can I customise my private Cape Town tour itinerary?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "Yes. We can build a fully bespoke itinerary around your interests, timing, and preferences. Just let us know what you'd like to see and we'll take care of the rest.",
-            },
-          },
-          {
-            "@type": "Question",
-            name: "How do I book a private tour in Cape Town?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "The fastest way is via WhatsApp. We typically confirm availability and provide a tailored quote within 30 minutes. Same-day bookings are welcomed where possible.",
-            },
-          },
-        ],
+        mainEntity: HUB_FAQS.map((faq) => ({
+          "@type": "Question",
+          name: faq.question,
+          acceptedAnswer: { "@type": "Answer", text: faq.answer },
+        })),
       },
       {
         "@type": "BreadcrumbList",
+        "@id": `${SITE_URL}/tours#breadcrumb`,
         itemListElement: [
           { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
-          {
-            "@type": "ListItem",
-            position: 2,
-            name: "Private Tours",
-            item: `${SITE_URL}/tours`,
-          },
+          { "@type": "ListItem", position: 2, name: "Tours", item: `${SITE_URL}/tours` },
         ],
       },
     ],
@@ -281,10 +296,10 @@ export default async function PrivateToursLandingPage() {
 
       <HeroBanner
         eyebrow="Private Tours Cape Town"
-        title="Private Tours in Cape Town"
-        description="Chauffeur-driven private tours across Cape Town's most celebrated destinations — Cape Peninsula, Cape Winelands, Table Mountain, and beyond. Fully bespoke, fully private."
+        title="Best Private Tours in Cape Town"
+        description="The best things to do in Cape Town, done privately: Cape Point, the Winelands, Table Mountain and a Big 5 safari, with your own chauffeur."
         primaryCtaLabel="Explore Tours"
-        primaryCtaHref="#tours"
+        primaryCtaHref="#compare"
         secondaryCtaLabel="Book via WhatsApp"
         secondaryCtaHref="https://wa.me/27636746131?text=Hi%2C+I%27d+like+to+book+a+luxury+chauffeur+or+private+tour+in+Cape+Town.+Please+assist."
         image="/images/car.jpg"
@@ -292,8 +307,11 @@ export default async function PrivateToursLandingPage() {
           .slice(0, 6)
           .map((e) => e.image)
           .filter((u): u is string => Boolean(u))}
-        imageAlt="Private tour in Cape Town with luxury chauffeur-driven transport"
+        imageAlt="Luxury chauffeur-driven vehicle on a private tour in Cape Town"
       />
+
+      <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Tours" }]} />
+      <TourHubIntro lowestVehiclePrice={lowestVehiclePrice} />
 
       <TestimonialsSection />
       <TestimonialsCta />
@@ -303,12 +321,20 @@ export default async function PrivateToursLandingPage() {
 
       <FeaturedExperiences
         eyebrow="Our Experiences"
-        title="Private Tours in Cape Town"
-        description="Every experience is designed around your group — no shared schedules, no rushing."
+        title="Our Private Tours in Cape Town"
+        description="Every experience is designed around your group, with no shared schedules and no rushing."
         items={experiences}
       />
 
+      <TourHubFaq />
+
       <WhyChooseUs items={whyItems} />
+
+      <RelatedLinks
+        title="Plan your Cape Town trip"
+        text="Guides and services to help you plan private days out in Cape Town."
+        links={HUB_LINKS}
+      />
     </>
   );
 }

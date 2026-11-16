@@ -1,5 +1,6 @@
 // app/best-wine-farms-in-cape-town/page.tsx
 
+import RelatedLinks from "../../components/common/RelatedLinks";
 import type { Metadata } from "next";
 import { brand } from "../../lib/brand";
 import WineFarmsPage from "../../components/sections/wine-farms/WineFarmsPage";
@@ -142,6 +143,14 @@ export default function BestWineFarmsInCapeTownPage() {
       />
 
       <WineFarmsPage />
+      <RelatedLinks
+        title="Private tours in Cape Town"
+        text="Turn this guide into a plan with a private chauffeur and no shared groups."
+        links={[
+          { href: "/tours/winelands-chauffeur-drive", label: "Private Winelands tour from Cape Town" },
+          { href: "/tours", label: "See all our private tours in Cape Town" },
+        ]}
+      />
     </>
   );
 }

@@ -11,9 +11,7 @@ const FALLBACK_TOUR_SLUGS = [
   "cape-peninsula-tour",
   "winelands-chauffeur-drive",
   "cape-town-city-tour",
-  "safari-day-trip",
-  "sunset-safari-experience",
-  "table-mountain-tour",
+  "big-5-safari-from-cape-town",
 ];
 
 // Vehicle fallbacks intentionally empty — wrong slugs here would pollute the sitemap.

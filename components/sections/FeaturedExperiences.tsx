@@ -292,7 +292,7 @@ export default function FeaturedExperiences({
         ) : (
           <Slider ref={sliderRef}>
             {items.map((item, index) => (
-              <Card key={`${item.title}-${index}`} href={item.href}>
+              <Card key={`${item.title}-${index}`} href={item.href} aria-label={`View details: ${item.title}`}>
                 <CardImageWrap>
                   {item.image ? (
                     <SmartImage

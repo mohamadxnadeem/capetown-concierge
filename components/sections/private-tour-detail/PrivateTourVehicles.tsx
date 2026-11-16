@@ -15,6 +15,7 @@ import { useCurrency } from "../../../context/CurrencyContext";
 type Props = {
   items: TourVehicle[];
   tourTitle: string;
+  title?: string;
 };
 
 
@@ -270,7 +271,7 @@ const VEHICLE_COPY: Record<string, string> = {
   "Range Rover Sport": "Bold, refined, and unmistakable on Cape Town's coastal roads. For travellers who want the Peninsula experience with an extra layer of style. Up to 4 guests.",
 };
 
-export default function PrivateTourVehicles({ items, tourTitle }: Props) {
+export default function PrivateTourVehicles({ items, tourTitle, title }: Props) {
   const sliderRef = useRef<HTMLDivElement | null>(null);
   const autoScrollRef = useRef<NodeJS.Timeout | null>(null);
   const { rates, format } = useCurrency();
@@ -313,7 +314,7 @@ export default function PrivateTourVehicles({ items, tourTitle }: Props) {
     <>
       <SectionHeader>
         <SectionEyebrow>Private Chauffeur Experience</SectionEyebrow>
-        <SectionTitle>Travel in Comfort. Travel in Style.</SectionTitle>
+        <SectionTitle>{title || "Travel in Comfort. Travel in Style."}</SectionTitle>
         <SectionText>
           Every vehicle is private, climate-controlled, and driven by a professional chauffeur. Choose the size that fits your group — from executive sedans to spacious people carriers.
         </SectionText>
