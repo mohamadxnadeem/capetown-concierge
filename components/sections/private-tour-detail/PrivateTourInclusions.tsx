@@ -120,12 +120,12 @@ const NOT_INCLUDED = [
   "Travel insurance",
 ];
 
-export default function PrivateTourInclusions() {
+export default function PrivateTourInclusions({ title }: { title?: string }) {
   return (
     <>
       <SectionHeader>
         <SectionEyebrow>Transparency</SectionEyebrow>
-        <SectionTitle>What's included in your tour</SectionTitle>
+        <SectionTitle>{title || "What's included in your tour"}</SectionTitle>
       </SectionHeader>
 
       <Grid>

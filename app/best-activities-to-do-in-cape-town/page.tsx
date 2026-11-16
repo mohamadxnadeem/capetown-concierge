@@ -1,3 +1,4 @@
+import RelatedLinks from "../../components/common/RelatedLinks";
 import type { Metadata } from "next";
 import { brand } from "../../lib/brand";
 import BestActivitiesPage from "../../components/sections/cape-town-activities/BestActivitiesPage";
@@ -245,6 +246,16 @@ export default async function BestActivitiesToDoInCapeTownPage() {
       />
 
       <BestActivitiesPage featuredExperiences={featuredExperiences} />
+      <RelatedLinks
+        title="Private tours in Cape Town"
+        text="Turn this guide into a plan with a private chauffeur and no shared groups."
+        links={[
+          { href: "/tours", label: "Compare the best private tours in Cape Town" },
+          { href: "/tours/cape-peninsula-tour", label: "Cape Point private tour from Cape Town" },
+          { href: "/tours/big-5-safari-from-cape-town", label: "Private Big 5 safari from Cape Town" },
+          { href: "/tours/cape-town-city-tour", label: "Private Cape Town city and Table Mountain tour" },
+        ]}
+      />
     </>
   );
 }

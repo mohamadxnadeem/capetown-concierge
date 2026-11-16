@@ -100,13 +100,6 @@ const AlertText = styled.p`
   line-height: 1.75;
 `;
 
-const PriceNote = styled.p`
-  margin: 10px 0 0;
-  color: ${({ theme }) => theme.colors.textMuted};
-  font-size: 0.85rem;
-  line-height: 1.6;
-`;
-
 const DEFAULT_TRUST_BADGES = [
   "✔ 100% Private — your vehicle, your group, your pace",
   "✔ Flexible itinerary — you set the stops",
@@ -156,17 +149,11 @@ export default function PrivateTourIntro({
         <QuickInfoBadge>🚗 Hotel pickup included</QuickInfoBadge>
         {lowestVehiclePrice ? (
           <QuickInfoBadge>
-            <Money usd={lowestVehiclePrice} prefix="From " suffix="per vehicle — your whole group, not per person" />
+            <Money usd={lowestVehiclePrice} prefix="From " suffix="per vehicle, for your whole group" />
           </QuickInfoBadge>
         ) : null}
       </QuickInfoRow>
 
-      {lowestVehiclePrice ? (
-        <PriceNote>
-          Travelling as a group? A party of 4 works out to around{" "}
-          <Money usd={Math.floor(lowestVehiclePrice / 4)} prefix="" suffix="" /> per person — fully private, all day, door to door.
-        </PriceNote>
-      ) : null}
 
       <AlertCard>
         <AlertText>
