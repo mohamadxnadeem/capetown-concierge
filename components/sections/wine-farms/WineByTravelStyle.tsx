@@ -49,7 +49,15 @@ export default function WineByTravelStyle() {
             Not every wine farm offers the same kind of experience. Some are
             better for couples, some are more family friendly, and others are
             ideal for luxury travellers, scenic lunches, or shorter outings
-            closer to Cape Town.
+            closer to Cape Town. To see several estates in one day, book a{" "}
+            <Link href="/tours/winelands-chauffeur-drive" style={{color:"inherit",textDecoration:"underline"}}>
+              private Winelands tour
+            </Link>{" "}
+            or arrange{" "}
+            <Link href="/chauffeur-hire" style={{color:"inherit",textDecoration:"underline"}}>
+              chauffeur hire in Cape Town
+            </Link>{" "}
+            for the day.
           </SectionText>
         </SectionHeader>
 
@@ -61,7 +69,7 @@ export default function WineByTravelStyle() {
               especially good for couples thanks to their views, elegant
               atmosphere, and more intimate overall feel. Book our{" "}
               <Link href="/tours/winelands-chauffeur-drive" style={{color:"inherit",textDecoration:"underline"}}>
-                Romantic Stellenbosch Winelands Experience
+                Stellenbosch and Franschhoek private Winelands tour
               </Link>{" "}
               for a fully curated day.
             </CardText>

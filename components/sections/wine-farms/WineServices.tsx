@@ -63,7 +63,7 @@ export default function WineServices() {
           <SectionText>
             While you can visit wine farms on your own, the experience is far
             more enjoyable with a private chauffeur who takes care of the
-            driving, timing, and route — allowing you to fully relax and enjoy
+            driving, timing, and route, allowing you to fully relax and enjoy
             each tasting.
           </SectionText>
         </SectionHeader>

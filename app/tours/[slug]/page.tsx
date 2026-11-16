@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { brand } from "../../../lib/brand";
+import { businessRef } from "../../../lib/seo";
 import PrivateTourDetailView from "../../../components/sections/private-tour-detail/PrivateTourDetailView";
 import { getTourContent } from "../../../lib/tourPageContent";
 import { getTourSeo, TOUR_ORDER } from "../../../lib/tourSeo";
@@ -107,23 +108,6 @@ function toZarNum(val: string | number): number {
   return Math.round(Number(String(val).replace(/[^0-9.]/g, "")));
 }
 
-function formatPriceRange(
-  priceFrom?: string | number,
-  priceTo?: string | number,
-) {
-  if (
-    (priceFrom === undefined || priceFrom === null || priceFrom === "") &&
-    (priceTo === undefined || priceTo === null || priceTo === "")
-  ) {
-    return "";
-  }
-  const from = priceFrom ? toZarNum(priceFrom) : 0;
-  const to = priceTo ? toZarNum(priceTo) : 0;
-  if (from && to) return `From R${from.toLocaleString()} - R${to.toLocaleString()}`;
-  if (from) return `From R${from.toLocaleString()}`;
-  return `R${to.toLocaleString()}`;
-}
-
 function formatVehiclePrice(price?: string | number) {
   if (price === undefined || price === null || price === "") return "";
   const num = toZarNum(price);
@@ -221,9 +205,7 @@ function getSeoKeyword(experience: Experience): string {
 function getPageTitle(experience: Experience) {
   if (experience.meta_title) return experience.meta_title;
   const keyword = getSeoKeyword(experience);
-  const priceZar = experience.price_from ? toZarNum(experience.price_from) || undefined : undefined;
-  const priceStr = priceZar ? ` | From R${priceZar.toLocaleString()}` : "";
-  return `${keyword} | Private Chauffeur Tour${priceStr} | ${brand.name}`;
+  return `${keyword} | Private Chauffeur Tour | ${brand.name}`;
 }
 
 function getPageDescription(experience: Experience) {
@@ -270,7 +252,6 @@ function mapRelatedTours(
         [...(tour.cover_photos || [])].sort((a, b) => a.order - b.order)[0]
           ?.cover_photos || "",
       href: `/tours/${tour.slug}`,
-      price: formatPriceRange(tour.price_from, tour.price_to),
     }));
 }
 
@@ -461,7 +442,7 @@ export default async function PrivateTourDetailPage({ params }: PageProps) {
       .map((item) => {
         const car = (item as CarsApiItem).car || (item as unknown as Car);
         const p = car?.price;
-        if (!p) return null;
+        if (!p || (car as { is_active?: boolean }).is_active === false) return null;
         const n = Number(String(p).replace(/[^0-9.]/g, ""));
         return isNaN(n) || n === 0 ? null : n;
       })
@@ -474,8 +455,8 @@ export default async function PrivateTourDetailPage({ params }: PageProps) {
   const ogImage = `${SITE_URL}/images/og-cape-town-concierge.jpg`;
   const schemaImage = primaryImage || ogImage;
   const canonicalUrl = `${SITE_URL}/tours/${slug.toLowerCase()}`;
-  const price = experience.price_from || experience.price_to || "";
-  const priceZarForSchema = toZarNum(price);
+  // Tours are priced at the chosen vehicle's full-day rate; the database tour price is never shown.
+  const priceZarForSchema = lowestVehiclePrice;
 
   const seo = getTourSeo(slug);
   const tourName = seo?.cardName || experience.title || "private tour";
@@ -527,25 +508,7 @@ export default async function PrivateTourDetailPage({ params }: PageProps) {
     description: pageDescription,
     image: [schemaImage],
     url: canonicalUrl,
-    provider: {
-      "@type": "LocalBusiness",
-      name: brand.name,
-      url: SITE_URL,
-      telephone: brand.phone,
-      sameAs: ["https://share.google/xrWoPQWHwQYfzukgz"],
-      address: {
-        "@type": "PostalAddress",
-        addressLocality: brand.address.locality,
-        addressRegion: brand.address.region,
-        addressCountry: brand.address.country,
-      },
-      geo: {
-        "@type": "GeoCoordinates",
-        latitude: brand.geo.lat,
-        longitude: brand.geo.lng,
-      },
-      priceRange: "$$$$",
-    },
+    provider: businessRef,
     touristType: ["Luxury Travelers", "Couples", "Families"],
     offers: priceZarForSchema
       ? {

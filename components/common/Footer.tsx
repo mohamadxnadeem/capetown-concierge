@@ -4,6 +4,7 @@ import styled from "styled-components";
 import Link from "next/link";
 import Container from "./Container";
 import GoogleRatingBadge from "./GoogleRatingBadge";
+import { googleSummaryText } from "../../lib/googleReviews";
 import { trackWhatsAppClick } from "../../lib/tracking";
 import { buildWhatsAppLink, buildGeneralWhatsAppMessage } from "../../lib/whatsapp";
 import { brand } from "../../lib/brand";
@@ -334,10 +335,10 @@ export default function Footer() {
         ) : null}
 
         <TrustRow>
-          <TrustBadge>⭐ 4.9 Rated Service</TrustBadge>
+          <TrustBadge>⭐ {googleSummaryText}</TrustBadge>
           <TrustBadge>✔ Fully Licensed & Insured</TrustBadge>
           <TrustBadge>✔ Professional PDP Drivers</TrustBadge>
-          <TrustBadge>✔ Private — No Shared Rides</TrustBadge>
+          <TrustBadge>✔ Private: No Shared Rides</TrustBadge>
           <TrustBadge>✔ Cape Town Based</TrustBadge>
         </TrustRow>
 

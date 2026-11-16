@@ -210,7 +210,7 @@ export default function BookingPayNow({ booking }: Props) {
     if (isPaid) {
       return (
         <PaidPill>
-          ✓ Paid{amount ? ` — ${amount}` : ""}
+          ✓ Paid{amount ? `: ${amount}` : ""}
         </PaidPill>
       );
     }
@@ -218,7 +218,7 @@ export default function BookingPayNow({ booking }: Props) {
       return (
         <>
           <AmountLine>Amount due</AmountLine>
-          <AmountValue>{amount || "—"}</AmountValue>
+          <AmountValue>{amount || "-"}</AmountValue>
           <PayButton href={booking.payment_link} $busy={polling}>
             {polling ? "Confirming payment…" : "Pay Now"}
           </PayButton>

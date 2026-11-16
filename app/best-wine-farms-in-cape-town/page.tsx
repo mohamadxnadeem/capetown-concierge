@@ -42,7 +42,7 @@ export const metadata: Metadata = {
         url: OG_IMAGE,
         width: 1200,
         height: 630,
-        alt: "Cape Town Concierge — Luxury Chauffeur Service",
+        alt: "Cape Town Concierge, Luxury Chauffeur Service",
       },
     ],
   },

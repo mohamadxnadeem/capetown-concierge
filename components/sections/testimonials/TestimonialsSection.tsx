@@ -1,10 +1,18 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
 import styled from "styled-components";
-import { testimonials } from "./data";
+import {
+  GOOGLE_REVIEWS_URL,
+  googleRatingLabel,
+  googleReviewCount,
+  selectReviews,
+  type GoogleReview,
+} from "../../../lib/googleReviews";
 
-const GOOGLE_REVIEWS_URL = "https://share.google/P13pnsYwTEQGoPaSh";
+const DEFAULT_COUNT = 27;
+const LONG_REVIEW_CHARS = 280;
 
 const Section = styled.section`
   padding: 80px 0;
@@ -211,7 +219,42 @@ const Review = styled.p`
   color: ${({ theme }) => theme.colors.textMuted};
   line-height: 1.8;
   font-size: 0.98rem;
+  white-space: pre-line;
+  overflow-wrap: anywhere;
   flex: 1;
+
+  &[data-clamped="true"] {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 7;
+    overflow: hidden;
+  }
+`;
+
+const ReadMore = styled.button`
+  align-self: flex-start;
+  margin-top: 10px;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  color: ${({ theme }) => theme.colors.primary};
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-decoration: underline;
+`;
+
+const CardGoogle = styled.span`
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+`;
+
+const TranslatedNote = styled.div`
+  margin-top: 10px;
+  color: ${({ theme }) => theme.colors.textMuted};
+  font-size: 0.78rem;
+  font-style: italic;
 `;
 
 const FooterNote = styled.div`
@@ -259,18 +302,80 @@ const GoogleStars = styled.span`
   letter-spacing: 1px;
 `;
 
+const ReadAllLink = styled(Link)`
+  color: ${({ theme }) => theme.colors.primary};
+  font-weight: 700;
+  font-size: 0.92rem;
+  text-decoration: underline;
+`;
+
 const SliderFooter = styled.div`
   display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
   align-items: center;
   justify-content: center;
   margin-top: 28px;
 `;
 
+export function ReviewCard({ review }: { review: GoogleReview }) {
+  const isLong = review.text.length > LONG_REVIEW_CHARS;
+  const [expanded, setExpanded] = useState(false);
+  const initial = Array.from(review.reviewer_name.trim())[0] || "G";
+
+  return (
+    <Card>
+      <CardHeader>
+        <Initial aria-hidden="true">{initial}</Initial>
+
+        <ClientMeta>
+          <Name>{review.reviewer_name}</Name>
+          <VerifiedBadge>
+            <CardGoogle>
+              <GoogleG>G</GoogleG>Google review
+              {review.date_label ? ` · ${review.date_label}` : ""}
+            </CardGoogle>
+          </VerifiedBadge>
+        </ClientMeta>
+      </CardHeader>
+
+      <Stars aria-label={`${review.rating} star rating`}>
+        <StarRating count={review.rating} />
+      </Stars>
+
+      <Review data-clamped={isLong && !expanded ? "true" : "false"}>{review.text}</Review>
+
+      {isLong ? (
+        <ReadMore type="button" aria-expanded={expanded} onClick={() => setExpanded((v) => !v)}>
+          {expanded ? "Show less" : "Read more"}
+        </ReadMore>
+      ) : null}
+
+      {review.translated_from ? (
+        <TranslatedNote>Translated from {review.translated_from}</TranslatedNote>
+      ) : null}
+    </Card>
+  );
+}
+
 function StarRating({ count = 5 }: { count?: number }) {
   return <>{Array.from({ length: count }).map((_, i) => <span key={i}>★</span>)}</>;
 }
 
-export default function TestimonialsSection() {
+type TestimonialsSectionProps = {
+  /** Optional link shown under the Google badge, for example to /reviews. */
+  readAllHref?: string;
+  /** Review tags for this page, in priority order. Empty means newest eligible reviews. */
+  tags?: string[];
+  count?: number;
+};
+
+export default function TestimonialsSection({
+  tags = [],
+  count = DEFAULT_COUNT,
+  readAllHref,
+}: TestimonialsSectionProps) {
+  const reviews = selectReviews(tags, count);
   const sliderRef = useRef<HTMLDivElement | null>(null);
   const autoScrollRef = useRef<number | null>(null);
 
@@ -332,8 +437,8 @@ export default function TestimonialsSection() {
         <TopBar>
           <MetaStrip>
             <MetaBadge>5-Star Rated Experience</MetaBadge>
-            <MetaBadge>Verified Client Reviews</MetaBadge>
-            <MetaBadge>Luxury Travel Service</MetaBadge>
+            <MetaBadge>{googleReviewCount} Google Reviews</MetaBadge>
+            <MetaBadge>Private Chauffeur Service</MetaBadge>
           </MetaStrip>
 
           <Controls>
@@ -353,25 +458,8 @@ export default function TestimonialsSection() {
           onTouchStart={stopAutoScroll}
           onTouchEnd={startAutoScroll}
         >
-          {testimonials.map((item, index) => (
-            <Card key={`${item.name}-${index}`}>
-              <CardHeader>
-                <Initial>{item.name.charAt(0)}</Initial>
-
-                <ClientMeta>
-                  <Name>{item.name}</Name>
-                  <VerifiedBadge>Verified Client</VerifiedBadge>
-                </ClientMeta>
-              </CardHeader>
-
-              <Stars aria-label="5 star rating">
-                <StarRating />
-              </Stars>
-
-              <Review>”{item.review}”</Review>
-
-              <FooterNote>{item.service}</FooterNote>
-            </Card>
+          {reviews.map((review) => (
+            <ReviewCard key={review.id} review={review} />
           ))}
         </Slider>
 
@@ -384,8 +472,9 @@ export default function TestimonialsSection() {
           >
             <GoogleG>G</GoogleG>
             <GoogleStars>★★★★★</GoogleStars>
-            4.9 · Read all reviews on Google
+            {googleRatingLabel} from {googleReviewCount} Google reviews · Read all reviews on Google
           </GoogleButton>
+          {readAllHref ? <ReadAllLink href={readAllHref}>Read all reviews</ReadAllLink> : null}
         </SliderFooter>
       </Container>
     </Section>

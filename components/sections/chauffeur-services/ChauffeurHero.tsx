@@ -148,11 +148,11 @@ export default function ChauffeurHero({
     <Hero>
       {rotation.length > 0 ? (
         <HeroImageLayer>
-          <RotatingImage images={rotation} alt={title} priority sizes="100vw" />
+          <RotatingImage images={rotation} alt={`${title} chauffeur Cape Town`} priority sizes="100vw" />
         </HeroImageLayer>
       ) : image ? (
         <HeroImageLayer>
-          <SmartImage src={image} alt={title} priority sizes="100vw" />
+          <SmartImage src={image} alt={`${title} chauffeur Cape Town`} priority sizes="100vw" />
         </HeroImageLayer>
       ) : null}
       <HeroOverlay />
