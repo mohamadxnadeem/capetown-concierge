@@ -5,6 +5,7 @@ import Button from "../../common/Button";
 import { Anchor, Container, whatsappLink } from "./shared";
 import { trackWhatsAppClick } from "../../../lib/tracking";
 
+import { useT } from "../../../lib/i18n/LocaleContext";
 const Section = styled.section`
   padding: 84px 0;
   background: linear-gradient(135deg, ${({ theme }) => theme.colors.primary} 0%, ${({ theme }) => theme.colors.primaryDark} 100%);
@@ -45,23 +46,21 @@ const TrustItem = styled.div`
 `;
 
 export default function WineFinalCta() {
+  const tt = useT();
   return (
     <Section>
       <Container>
         <Inner>
-          <Title>Plan Your Private Wine Tour in Cape Town</Title>
+          <Title>{tt("WineFinalCta.plan-your-private-wine-tour")}</Title>
 
           <Text>
-            Let us help you create the perfect wine experience, from selecting
-            the best estates to planning your route, reservations, and
-            chauffeur-driven travel for a seamless, stress-free day.
-          </Text>
+            {tt("WineFinalCta.let-us-help-you-create")}</Text>
 
           <TrustRow>
-            <TrustItem>✔ Private Chauffeur Service</TrustItem>
-            <TrustItem>✔ Custom Wine Route</TrustItem>
-            <TrustItem>✔ Luxury Experience</TrustItem>
-            <TrustItem>✔ Flexible Itinerary</TrustItem>
+            <TrustItem>{tt("WineFinalCta.private-chauffeur-service")}</TrustItem>
+            <TrustItem>{tt("WineFinalCta.custom-wine-route")}</TrustItem>
+            <TrustItem>{tt("WineFinalCta.luxury-experience")}</TrustItem>
+            <TrustItem>{tt("WineFinalCta.flexible-itinerary")}</TrustItem>
           </TrustRow>
 
           <Anchor
@@ -75,7 +74,7 @@ export default function WineFinalCta() {
               })
             }
           >
-            <Button as="span">Start Planning Your Wine Tour</Button>
+            <Button as="span">{tt("WineFinalCta.start-planning-your-wine-tour")}</Button>
           </Anchor>
         </Inner>
       </Container>

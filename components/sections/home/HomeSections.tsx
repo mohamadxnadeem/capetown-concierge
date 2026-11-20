@@ -11,6 +11,8 @@ import { MULTI_DAY_INTRO, MULTI_DAY_STEPS } from "../../../lib/multiDay";
 import type { GoogleReview } from "../../../lib/googleReviews";
 import { ReviewCard } from "../testimonials/TestimonialsSection";
 
+import { useT } from "../../../lib/i18n/LocaleContext";
+import type { TFunction } from "../../../lib/i18n/messages";
 const Band = styled.section<{ $soft?: boolean }>`
   padding: 72px 0;
   background: ${({ theme, $soft }) => ($soft ? theme.colors.backgroundSoft : theme.colors.background)};
@@ -76,35 +78,36 @@ const TextLink = styled(Link)`
   text-decoration: underline;
 `;
 
-const SpecialismCards = [
+const SpecialismCards = (tt: TFunction) => ([
   {
-    title: "Private Chauffeured Drives",
-    text: "Airport transfers, business travel, dinners and as-directed hire by the hour or day. Always private, never shared.",
-    label: "Chauffeur hire in Cape Town",
+    title: tt("HomeSections.private-chauffeured-drives"),
+    text: tt("HomeSections.airport-transfers-business-travel-dinners"),
+    label: tt("HomeSections.chauffeur-hire-in-cape-town"),
     href: "/chauffeur-hire",
   },
   {
-    title: "Day Tours",
-    text: "Full-day private tours of the Cape Peninsula, Winelands, city and safari, with your chauffeur as your guide, at your own pace.",
-    label: "See day tours",
+    title: tt("HomeSections.day-tours"),
+    text: tt("HomeSections.full-day-private-tours-of"),
+    label: tt("HomeSections.see-day-tours"),
     href: "#tours",
   },
   {
-    title: "Multi-Day Trips",
-    text: "The same chauffeur and vehicle for your whole stay, with each day planned around you. From Cape Town and the Winelands to Hermanus and the Garden Route.",
-    label: "Multi-day trips",
+    title: tt("HomeSections.multi-day-trips"),
+    text: tt("HomeSections.the-same-chauffeur-and-vehicle"),
+    label: tt("HomeSections.multi-day-trips-2"),
     // The /multi-day-chauffeur-cape-town page exists but is unlinked for now (King Mo, 2026-11-15).
     href: "#multi-day",
   },
-];
+]);
 
 export function SpecialismsSection() {
+  const tt = useT();
   return (
     <Band>
       <Container>
-        <H2>Our chauffeur service in Cape Town: what we specialise in</H2>
+        <H2>{tt("HomeSections.our-chauffeur-service-in-cape")}</H2>
         <Cards style={{ marginTop: 28 }}>
-          {SpecialismCards.map((c) => (
+          {SpecialismCards(tt).map((c) => (
             <SpecCard key={c.title}>
               <SpecTitle>{c.title}</SpecTitle>
               <SpecText>{c.text}</SpecText>
@@ -170,6 +173,7 @@ const ReviewGridWrap = styled.div`
 `;
 
 export function ReviewGrid({ reviews }: { reviews: GoogleReview[] }) {
+  const tt = useT();
   return (
     <ReviewGridWrap>
       {reviews.map((r) => (
@@ -180,9 +184,10 @@ export function ReviewGrid({ reviews }: { reviews: GoogleReview[] }) {
 }
 
 export function MultiDaySteps() {
+  const tt = useT();
   return (
     <Steps>
-      {MULTI_DAY_STEPS.map((s) => (
+      {MULTI_DAY_STEPS(tt).map((s) => (
         <Step key={s}>{s}</Step>
       ))}
     </Steps>
@@ -237,17 +242,18 @@ type MultiDayProps = {
 };
 
 export function MultiDaySection({ reviews, packages }: MultiDayProps) {
+  const tt = useT();
   return (
     <Band $soft id="multi-day">
       <Container>
-        <H2>Your chauffeur for the whole stay</H2>
-        <Lead>{MULTI_DAY_INTRO}</Lead>
+        <H2>{tt("HomeSections.your-chauffeur-for-the-whole")}</H2>
+        <Lead>{MULTI_DAY_INTRO(tt)}</Lead>
         <MultiDaySteps />
         {packages ? <div style={{ marginBottom: 36 }}>{packages}</div> : null}
         {reviews.length ? <ReviewGrid reviews={reviews} /> : null}
         <CtaRow>
           <ScrollLink href="#enquiry">
-            <Button as="span">Plan My Trip</Button>
+            <Button as="span">{tt("HomeSections.plan-my-trip")}</Button>
           </ScrollLink>
         </CtaRow>
       </Container>

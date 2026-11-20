@@ -7,6 +7,8 @@ import Container from "../common/Container";
 import Money from "../common/Money";
 import SmartImage from "../common/SmartImage";
 
+import { useT } from "../../lib/i18n/LocaleContext";
+import type { TFunction } from "../../lib/i18n/messages";
 type VehicleItem = {
   title: string;
   description: string;
@@ -281,8 +283,8 @@ const EmptyState = styled.div`
   box-shadow: ${({ theme }) => theme.shadows.soft};
 `;
 
-function getVehicleAltText(title: string) {
-  return `${title} chauffeur Cape Town, private vehicle with a professional driver`;
+function getVehicleAltText(title: string, tt: TFunction) {
+  return tt("FeaturedVehicles.chauffeur-cape-town-private-vehicle", { title });
 }
 
 function VehicleImageCard({
@@ -294,12 +296,13 @@ function VehicleImageCard({
   title: string;
   alt?: string;
 }) {
+  const tt = useT();
   return (
     <CardImageWrap>
       {image ? (
         <SmartImage
           src={image}
-          alt={alt || getVehicleAltText(title)}
+          alt={alt || getVehicleAltText(title, tt)}
           sizes="(max-width: 768px) 85vw, (max-width: 1200px) 48vw, 32vw"
         />
       ) : null}
@@ -317,6 +320,7 @@ export default function FeaturedVehicles({
   footerLabel,
   footerHref,
 }: FeaturedVehiclesProps) {
+  const tt = useT();
   const sliderRef = useRef<HTMLDivElement | null>(null);
 
   const scrollByAmount = (direction: "left" | "right") => {
@@ -344,14 +348,14 @@ export default function FeaturedVehicles({
             <Controls>
               <ArrowButton
                 type="button"
-                aria-label="Scroll vehicles left"
+                aria-label={tt("FeaturedVehicles.scroll-vehicles-left")}
                 onClick={() => scrollByAmount("left")}
               >
                 ←
               </ArrowButton>
               <ArrowButton
                 type="button"
-                aria-label="Scroll vehicles right"
+                aria-label={tt("FeaturedVehicles.scroll-vehicles-right")}
                 onClick={() => scrollByAmount("right")}
               >
                 →
@@ -361,7 +365,7 @@ export default function FeaturedVehicles({
         </TopBar>
 
         {!items.length ? (
-          <EmptyState>No vehicles loaded yet.</EmptyState>
+          <EmptyState>{tt("FeaturedVehicles.no-vehicles-loaded-yet")}</EmptyState>
         ) : (
           <Slider ref={sliderRef}>
             {items.map((item, index) => (
@@ -374,7 +378,7 @@ export default function FeaturedVehicles({
 
                 <CardContent>
                   <MetaRow>
-                    {item.seats ? <MetaBadge>{item.seats} Seats</MetaBadge> : null}
+                    {item.seats ? <MetaBadge>{item.seats} {tt("FeaturedVehicles.seats")}</MetaBadge> : null}
                     {item.priceUsd ? (
                       <MetaBadge><Money usd={item.priceUsd} /></MetaBadge>
                     ) : null}
@@ -384,7 +388,7 @@ export default function FeaturedVehicles({
                   <CardText>{item.description}</CardText>
 
                   <CardFooter>
-                    <ViewButton>View Vehicle</ViewButton>
+                    <ViewButton>{tt("FeaturedVehicles.view-vehicle")}</ViewButton>
                     <InlineArrow>→</InlineArrow>
                   </CardFooter>
                 </CardContent>

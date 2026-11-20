@@ -10,6 +10,7 @@ import { brand } from "../../../lib/brand";
 import { localizeMetadata } from "../../../lib/i18n/metadata";
 import { localeFromParam } from "../../../lib/i18n/config";
 
+import { serverT, setRequestLocale } from "../../../lib/i18n/server";
 const SITE_URL = brand.siteUrl;
 const URL = `${SITE_URL}/reviews`;
 const TITLE = "Client Reviews | Cape Town Concierge";
@@ -37,20 +38,21 @@ const baseMetadata: Metadata = {
   },
 };
 
-export default function ReviewsPage() {
+export default async function ReviewsPage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale: localeParam } = await params;
+  setRequestLocale(localeFromParam(localeParam));
+  const tt = serverT();
   const reviews = allEligibleReviews();
   // No AggregateRating or Review markup: Google does not allow it for reviews taken from another site.
   return (
     <Band>
       <Container>
         <h1 style={{ margin: "0 0 12px", fontSize: "clamp(2.2rem, 6vw, 3.4rem)", lineHeight: 1.08 }}>
-          Client reviews
-        </h1>
+          {tt("reviews.client-reviews")}</h1>
         <Lead>
           {googleSummaryText}.{" "}
           <TextLink href={GOOGLE_REVIEWS_URL} target="_blank" rel="noopener noreferrer">
-            Read all reviews on Google
-          </TextLink>
+            {tt("reviews.read-all-reviews-on-google")}</TextLink>
         </Lead>
         <ReviewGrid reviews={reviews} />
       </Container>

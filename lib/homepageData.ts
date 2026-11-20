@@ -1,6 +1,7 @@
 import { endpoints } from "./api";
 import { vehicleHref } from "./seo";
 
+import type { TFunction } from "./i18n/messages";
 /**
  * Homepage data helpers. Vehicles and tours come from the existing public API
  * only. Nothing is hardcoded: if the API fails the homepage shows no cards.
@@ -143,7 +144,7 @@ function byHomepageOrder<T extends { homepage_order?: number }>(a: T, b: T) {
   return (a.homepage_order ?? 0) - (b.homepage_order ?? 0);
 }
 
-export async function fetchHomepageData(): Promise<HomepageData> {
+export async function fetchHomepageData(tt: TFunction): Promise<HomepageData> {
   const [carItems, tourItems] = await Promise.all([
     getJson(endpoints.carsForHire.allPublic(), 300),
     getJson(endpoints.experiences.all(), 300),
@@ -183,7 +184,7 @@ export async function fetchHomepageData(): Promise<HomepageData> {
       title,
       href: vehicleHref(c.slug),
       image: pickPhoto(c.cover_photos),
-      alt: `${title} chauffeur Cape Town, private chauffeur vehicle`,
+      alt: tt("homepageData.chauffeur-cape-town-private-chauffeur", { title }),
       seats: c.number_of_seats || undefined,
       luggage: c.luggage_capacity ?? undefined,
       price: toNumber(c.price),
@@ -204,7 +205,7 @@ export async function fetchHomepageData(): Promise<HomepageData> {
       description: (t.card_summary || "").trim() || (t.short_description || "").trim(),
       href: `/tours/${(t.slug as string).trim()}`,
       image: pickPhoto(t.cover_photos),
-      alt: `${name}, a private full-day tour from Cape Town with your chauffeur guide`,
+      alt: tt("homepageData.a-private-full-day-tour", { name }),
       duration: (t.duration || "").trim(),
       highlights: tourHighlights(t.stops),
     };
@@ -213,7 +214,7 @@ export async function fetchHomepageData(): Promise<HomepageData> {
   // Hero rotation: vehicle photos only (King Mo, 2026-11-15), in homepage order.
   const heroImages = vehicles
     .filter((v) => v.image)
-    .map((v) => ({ src: v.image, alt: `${v.title} waiting for guests with a private chauffeur in Cape Town` }));
+    .map((v) => ({ src: v.image, alt: tt("homepageData.waiting-for-guests-with-a", { title: v.title }) }));
 
   return { vehicles, tours: homeTours, lowestVehiclePrice, heroImages, cleanedTitles };
 }

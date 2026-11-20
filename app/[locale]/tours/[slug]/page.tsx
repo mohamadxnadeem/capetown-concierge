@@ -9,6 +9,9 @@ import PrivateTourDetailView from "../../../../components/sections/private-tour-
 import { getTourContent } from "../../../../lib/tourPageContent";
 import { getTourSeo, TOUR_ORDER } from "../../../../lib/tourSeo";
 
+import { serverT, setRequestLocale } from "../../../../lib/i18n/server";
+import { enT } from "../../../../lib/i18n/messages";
+import type { TFunction } from "../../../../lib/i18n/messages";
 type ExperiencePhoto = {
   id: number;
   experience?: number;
@@ -112,10 +115,10 @@ function toZarNum(val: string | number): number {
   return Math.round(Number(String(val).replace(/[^0-9.]/g, "")));
 }
 
-function formatVehiclePrice(price?: string | number) {
+function formatVehiclePrice(price?: string | number, tt: TFunction = enT) {
   if (price === undefined || price === null || price === "") return "";
   const num = toZarNum(price);
-  return num === 0 ? "" : `From R${num.toLocaleString()} per day`;
+  return num === 0 ? "" : tt("slug.from-r-per-day", { toLocaleString: num.toLocaleString() });
 }
 
 function truncateText(text?: string, maxLength = 140) {
@@ -241,17 +244,17 @@ function getSocialDescription(experience: Experience) {
 
 function mapRelatedTours(
   allExperiences: ExperienceListItem[],
-  currentSlug: string
+  currentSlug: string, tt: TFunction
 ): RelatedTour[] {
   return allExperiences
     .map((item) => item.experience)
     .filter((tour) => tour.slug && tour.slug !== currentSlug)
     .map((tour) => ({
-      title: tour.title || "Private Tour",
+      title: tour.title || tt("slug.private-tour"),
       description:
         tour.short_description ||
         tour.highlight ||
-        "Discover another premium private tour experience in Cape Town.",
+        tt("slug.discover-another-premium-private-tour"),
       image:
         [...(tour.cover_photos || [])].sort((a, b) => a.order - b.order)[0]
           ?.cover_photos || "",
@@ -259,7 +262,7 @@ function mapRelatedTours(
     }));
 }
 
-function mapVehicles(items: CarsApiItem[]): TourVehicle[] {
+function mapVehicles(items: CarsApiItem[], tt: TFunction): TourVehicle[] {
   return items
     .map((item) => item?.car || item)
     .filter((car) => car?.title)
@@ -278,7 +281,7 @@ function mapVehicles(items: CarsApiItem[]): TourVehicle[] {
         car.short_description ||
         car.highlight ||
         truncateText(car.body, 120) ||
-        "A premium chauffeur-driven vehicle suitable for private touring in Cape Town.";
+        tt("slug.a-premium-chauffeur-driven-vehicle");
 
       const rawZar = (() => {
         const p = car.price ?? car.price_from;
@@ -292,7 +295,7 @@ function mapVehicles(items: CarsApiItem[]): TourVehicle[] {
         image: featuredPhoto,
         seats: car.number_of_seats,
         description,
-        price: formatVehiclePrice(car.price),
+        price: formatVehiclePrice(car.price, tt),
         priceRaw: rawZar,
       };
     });
@@ -430,6 +433,8 @@ export async function generateMetadata(props: PageProps): Promise<Metadata> {
 export default async function PrivateTourDetailPage({ params }: PageProps) {
   const { slug, locale: localeParam } = await params;
   const locale = localeFromParam(localeParam);
+  setRequestLocale(locale);
+  const tt = serverT();
 
   const [allExperiences, allVehicles, experienceId] = await Promise.all([
     getAllExperiences(),
@@ -449,8 +454,8 @@ export default async function PrivateTourDetailPage({ params }: PageProps) {
   }
   const experience = overlayContent(experienceBase, getContent(locale, "tours", slug));
 
-  const relatedTours = mapRelatedTours(allExperiences, slug);
-  const vehicles = mapVehicles(allVehicles);
+  const relatedTours = mapRelatedTours(allExperiences, slug, tt);
+  const vehicles = mapVehicles(allVehicles, tt);
 
   const lowestVehiclePrice = (() => {
     const zarPrice = allVehicles
@@ -477,7 +482,7 @@ export default async function PrivateTourDetailPage({ params }: PageProps) {
   const tourName = seo?.cardName || experience.title || "private tour";
   const tourKeyword = tourName;
   const pageDescription = seo?.description || getPageDescription(experience);
-  const tourContent = getTourContent(slug);
+  const tourContent = getTourContent(slug, tt);
 
   // FAQPage must match the visible FAQ. The visible list also has a price
   // question that depends on the visitor's currency, which is left out here.

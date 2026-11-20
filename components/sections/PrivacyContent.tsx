@@ -3,6 +3,7 @@
 import styled from "styled-components";
 import { brand } from "../../lib/brand";
 
+import { useT } from "../../lib/i18n/LocaleContext";
 const Wrapper = styled.main`
   background: ${({ theme }) => theme.colors.background};
   padding: 64px 20px 96px;
@@ -104,148 +105,107 @@ const ContactBlock = styled.div`
 `;
 
 export default function PrivacyContent() {
+  const tt = useT();
   return (
     <Wrapper>
       <Article>
         <Eyebrow>{brand.name}</Eyebrow>
-        <Title>Privacy Policy</Title>
-        <Updated>Last updated: 16 May 2026</Updated>
+        <Title>{tt("PrivacyContent.privacy-policy")}</Title>
+        <Updated>{tt("PrivacyContent.last-updated-16-may-2026")}</Updated>
 
         <Lead>
-          Cape Town Concierge (&ldquo;we&rdquo;, &ldquo;us&rdquo;, &ldquo;our&rdquo;) provides luxury
-          chauffeur and private tour services in Cape Town. This privacy policy
-          explains how we collect, use, and protect personal information when
-          you engage with us &mdash; through our website, WhatsApp, our booking
-          management application, or in person.
-        </Lead>
+          {tt("PrivacyContent.cape-town-concierge-we-us")}</Lead>
 
         <Paragraph>
-          This policy is intended to comply with the Protection of Personal
-          Information Act, 2013 (POPIA) of South Africa.
-        </Paragraph>
+          {tt("PrivacyContent.this-policy-is-intended-to")}</Paragraph>
 
-        <SectionHeading>1. Information we collect</SectionHeading>
-        <Paragraph>When you book a service with us, we collect:</Paragraph>
+        <SectionHeading>{tt("PrivacyContent.1-information-we-collect")}</SectionHeading>
+        <Paragraph>{tt("PrivacyContent.when-you-book-a-service")}</Paragraph>
         <List>
-          <li>Your full name</li>
-          <li>Phone number and WhatsApp number</li>
-          <li>Email address</li>
-          <li>Pickup and dropoff locations</li>
-          <li>Trip dates, times, and any specific requests you share with us</li>
+          <li>{tt("PrivacyContent.your-full-name")}</li>
+          <li>{tt("PrivacyContent.phone-number-and-whatsapp-number")}</li>
+          <li>{tt("PrivacyContent.email-address")}</li>
+          <li>{tt("PrivacyContent.pickup-and-dropoff-locations")}</li>
+          <li>{tt("PrivacyContent.trip-dates-times-and-any")}</li>
         </List>
         <Paragraph>
-          We also collect minimal technical information when you visit our
-          website &mdash; anonymous analytics such as page views and device type.
-        </Paragraph>
+          {tt("PrivacyContent.we-also-collect-minimal-technical")}</Paragraph>
 
-        <SectionHeading>2. How we use your information</SectionHeading>
-        <Paragraph>We use the information you provide to:</Paragraph>
+        <SectionHeading>{tt("PrivacyContent.2-how-we-use-your")}</SectionHeading>
+        <Paragraph>{tt("PrivacyContent.we-use-the-information-you")}</Paragraph>
         <List>
-          <li>Coordinate and deliver the chauffeur or tour service you booked</li>
-          <li>Communicate with you about your booking via WhatsApp, phone, or email</li>
-          <li>Send you a booking confirmation with the details of your trip</li>
-          <li>Respond to enquiries you send us</li>
-          <li>Maintain operational records of our services</li>
+          <li>{tt("PrivacyContent.coordinate-and-deliver-the-chauffeur")}</li>
+          <li>{tt("PrivacyContent.communicate-with-you-about-your")}</li>
+          <li>{tt("PrivacyContent.send-you-a-booking-confirmation")}</li>
+          <li>{tt("PrivacyContent.respond-to-enquiries-you-send")}</li>
+          <li>{tt("PrivacyContent.maintain-operational-records-of-our")}</li>
         </List>
 
-        <SectionHeading>3. Who we share your information with</SectionHeading>
-        <Paragraph>We share your booking details with:</Paragraph>
+        <SectionHeading>{tt("PrivacyContent.3-who-we-share-your")}</SectionHeading>
+        <Paragraph>{tt("PrivacyContent.we-share-your-booking-details")}</Paragraph>
         <List>
           <li>
-            The driver assigned to your trip &mdash; limited to your name, contact
-            number, and pickup location, so they can perform the service
-          </li>
+            {tt("PrivacyContent.the-driver-assigned-to-your")}</li>
           <li>
-            Payment processors (e.g. Yoco) if you pay through a payment link we
-            send you &mdash; limited to what is required to process the payment
-          </li>
+            {tt("PrivacyContent.payment-processors-e-g-yoco")}</li>
           <li>
-            Our hosting and infrastructure providers (Railway, AWS, Apple,
-            Google) &mdash; strictly to operate the service
-          </li>
+            {tt("PrivacyContent.our-hosting-and-infrastructure-providers")}</li>
         </List>
         <Paragraph>
-          We do NOT sell your information to third parties. We do not use it
-          for marketing communications without your consent.
-        </Paragraph>
+          {tt("PrivacyContent.we-do-not-sell-your")}</Paragraph>
 
-        <SectionHeading>4. Data retention</SectionHeading>
+        <SectionHeading>{tt("PrivacyContent.4-data-retention")}</SectionHeading>
         <Paragraph>
-          We retain your booking records for as long as needed to provide the
-          service, comply with our legal obligations (such as tax records),
-          and resolve any disputes that may arise. You may request deletion of
-          your records at any time, subject to those obligations (see &ldquo;Your
-          rights&rdquo; below).
-        </Paragraph>
+          {tt("PrivacyContent.we-retain-your-booking-records")}</Paragraph>
 
-        <SectionHeading>5. Your rights</SectionHeading>
-        <Paragraph>Under POPIA you have the right to:</Paragraph>
+        <SectionHeading>{tt("PrivacyContent.5-your-rights")}</SectionHeading>
+        <Paragraph>{tt("PrivacyContent.under-popia-you-have-the")}</Paragraph>
         <List>
-          <li>Access the personal information we hold about you</li>
-          <li>Correct inaccurate information</li>
+          <li>{tt("PrivacyContent.access-the-personal-information-we")}</li>
+          <li>{tt("PrivacyContent.correct-inaccurate-information")}</li>
           <li>
-            Request that we delete your information (subject to our legal
-            obligations)
-          </li>
-          <li>Object to processing in certain circumstances</li>
+            {tt("PrivacyContent.request-that-we-delete-your")}</li>
+          <li>{tt("PrivacyContent.object-to-processing-in-certain")}</li>
           <li>
-            Lodge a complaint with the Information Regulator of South Africa
-            (inforegulator.org.za)
-          </li>
+            {tt("PrivacyContent.lodge-a-complaint-with-the")}</li>
         </List>
         <Paragraph>
-          To exercise any of these rights, contact us using the details at the
-          end of this policy.
-        </Paragraph>
+          {tt("PrivacyContent.to-exercise-any-of-these")}</Paragraph>
 
-        <SectionHeading>6. Security</SectionHeading>
-        <Paragraph>We take reasonable steps to protect your information:</Paragraph>
+        <SectionHeading>{tt("PrivacyContent.6-security")}</SectionHeading>
+        <Paragraph>{tt("PrivacyContent.we-take-reasonable-steps-to")}</Paragraph>
         <List>
-          <li>All data is transmitted over encrypted (HTTPS) connections</li>
-          <li>Access to our operational systems is restricted to authorised staff</li>
+          <li>{tt("PrivacyContent.all-data-is-transmitted-over")}</li>
+          <li>{tt("PrivacyContent.access-to-our-operational-systems")}</li>
           <li>
-            We use trusted cloud providers (Railway, AWS) with industry-standard
-            security practices
-          </li>
+            {tt("PrivacyContent.we-use-trusted-cloud-providers")}</li>
         </List>
         <Paragraph>
-          No online system is perfectly secure, but we work to keep your
-          information safe.
-        </Paragraph>
+          {tt("PrivacyContent.no-online-system-is-perfectly")}</Paragraph>
 
-        <SectionHeading>7. Cookies</SectionHeading>
+        <SectionHeading>{tt("PrivacyContent.7-cookies")}</SectionHeading>
         <Paragraph>
-          Our website uses minimal cookies &mdash; only those necessary for the
-          site to function plus basic anonymous analytics. We do not use
-          third-party advertising cookies.
-        </Paragraph>
+          {tt("PrivacyContent.our-website-uses-minimal-cookies")}</Paragraph>
 
-        <SectionHeading>8. Children</SectionHeading>
+        <SectionHeading>{tt("PrivacyContent.8-children")}</SectionHeading>
         <Paragraph>
-          Our services are intended for adults (18+). We do not knowingly
-          collect information from children. If you believe we have, please
-          contact us and we will delete it.
-        </Paragraph>
+          {tt("PrivacyContent.our-services-are-intended-for")}</Paragraph>
 
-        <SectionHeading>9. Changes to this policy</SectionHeading>
+        <SectionHeading>{tt("PrivacyContent.9-changes-to-this-policy")}</SectionHeading>
         <Paragraph>
-          We may update this policy from time to time. The &ldquo;Last updated&rdquo;
-          date at the top reflects the most recent change. We encourage you to
-          review the policy periodically.
-        </Paragraph>
+          {tt("PrivacyContent.we-may-update-this-policy")}</Paragraph>
 
-        <SectionHeading>10. Contact us</SectionHeading>
+        <SectionHeading>{tt("PrivacyContent.10-contact-us")}</SectionHeading>
         <Paragraph>
-          For any privacy-related question or to exercise your rights, contact:
-        </Paragraph>
+          {tt("PrivacyContent.for-any-privacy-related-question")}</Paragraph>
         <ContactBlock>
-          <strong>Cape Town Concierge</strong>
+          <strong>{tt("PrivacyContent.cape-town-concierge")}</strong>
           <br />
-          Email: <a href={`mailto:${brand.contactEmail}`}>{brand.contactEmail}</a>
+          {tt("PrivacyContent.email")}{" "}<a href={`mailto:${brand.contactEmail}`}>{brand.contactEmail}</a>
           <br />
-          WhatsApp: <a href={`https://wa.me/${brand.whatsappNumber}`}>{brand.phone}</a>
+          {tt("PrivacyContent.whatsapp")}{" "}<a href={`https://wa.me/${brand.whatsappNumber}`}>{brand.phone}</a>
           <br />
-          Website: <a href={brand.siteUrl}>{brand.siteUrl.replace(/^https?:\/\//, "")}</a>
+          {tt("PrivacyContent.website")}{" "}<a href={brand.siteUrl}>{brand.siteUrl.replace(/^https?:\/\//, "")}</a>
         </ContactBlock>
       </Article>
     </Wrapper>

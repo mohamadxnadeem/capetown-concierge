@@ -2,6 +2,8 @@
 
 import styled from "styled-components";
 
+import { useT } from "../../../lib/i18n/LocaleContext";
+import type { TFunction } from "../../../lib/i18n/messages";
 const SectionHeader = styled.div`
   max-width: 760px;
   margin-bottom: 28px;
@@ -102,37 +104,38 @@ const HelperText = styled.p`
   line-height: 1.7;
 `;
 
-const INCLUDED = [
-  "Private vehicle for your group",
-  "Professional PDP-licensed chauffeur",
-  "Hotel or accommodation pickup and drop-off",
-  "Fuel and all toll fees",
-  "Chilled bottled water in the vehicle",
-  "Flexible itinerary: you set the pace",
-  "Flight tracking for airport-connected bookings",
-  "Local route knowledge and stop recommendations",
-];
+const INCLUDED = (tt: TFunction) => ([
+  tt("PrivateTourInclusions.private-vehicle-for-your-group"),
+  tt("PrivateTourInclusions.professional-pdp-licensed-chauffeur"),
+  tt("PrivateTourInclusions.hotel-or-accommodation-pickup-and"),
+  tt("PrivateTourInclusions.fuel-and-all-toll-fees"),
+  tt("PrivateTourInclusions.chilled-bottled-water-in-the"),
+  tt("PrivateTourInclusions.flexible-itinerary-you-set-the"),
+  tt("PrivateTourInclusions.flight-tracking-for-airport-connected"),
+  tt("PrivateTourInclusions.local-route-knowledge-and-stop"),
+]);
 
-const NOT_INCLUDED = [
-  "Entrance fees to attractions (e.g. Cape Point Nature Reserve ~R380pp, Boulders Beach ~R260pp, Table Mountain Cable Car, payable on the day)",
-  "Meals and drinks unless specified in the tour",
-  "Gratuity for your chauffeur (discretionary but appreciated)",
-  "Travel insurance",
-];
+const NOT_INCLUDED = (tt: TFunction) => ([
+  tt("PrivateTourInclusions.entrance-fees-to-attractions-e"),
+  tt("PrivateTourInclusions.meals-and-drinks-unless-specified"),
+  tt("PrivateTourInclusions.gratuity-for-your-chauffeur-discretionary"),
+  tt("PrivateTourInclusions.travel-insurance"),
+]);
 
 export default function PrivateTourInclusions({ title }: { title?: string }) {
+  const tt = useT();
   return (
     <>
       <SectionHeader>
-        <SectionEyebrow>Transparency</SectionEyebrow>
-        <SectionTitle>{title || "What's included in your tour"}</SectionTitle>
+        <SectionEyebrow>{tt("PrivateTourInclusions.transparency")}</SectionEyebrow>
+        <SectionTitle>{title || tt("PrivateTourInclusions.what-s-included-in-your")}</SectionTitle>
       </SectionHeader>
 
       <Grid>
         <Column>
-          <ColumnTitle>Included</ColumnTitle>
+          <ColumnTitle>{tt("PrivateTourInclusions.included")}</ColumnTitle>
           <ItemList>
-            {INCLUDED.map((item) => (
+            {INCLUDED(tt).map((item) => (
               <Item key={item}>
                 <IncludedIcon>✓</IncludedIcon>
                 {item}
@@ -142,9 +145,9 @@ export default function PrivateTourInclusions({ title }: { title?: string }) {
         </Column>
 
         <Column>
-          <ColumnTitle>Not included</ColumnTitle>
+          <ColumnTitle>{tt("PrivateTourInclusions.not-included")}</ColumnTitle>
           <ItemList>
-            {NOT_INCLUDED.map((item) => (
+            {NOT_INCLUDED(tt).map((item) => (
               <Item key={item}>
                 <ExcludedIcon>-</ExcludedIcon>
                 {item}
@@ -152,8 +155,7 @@ export default function PrivateTourInclusions({ title }: { title?: string }) {
             ))}
           </ItemList>
           <HelperText>
-            Not sure what's relevant for your tour? Message us and we'll walk you through exactly what to expect and budget for.
-          </HelperText>
+            {tt("PrivateTourInclusions.not-sure-what-s-relevant")}</HelperText>
         </Column>
       </Grid>
     </>

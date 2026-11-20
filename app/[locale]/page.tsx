@@ -15,6 +15,8 @@ import { localizeMetadata } from "../../lib/i18n/metadata";
 import { localeFromParam } from "../../lib/i18n/config";
 import { withInLanguage } from "../../lib/seo";
 
+import { serverT, setRequestLocale } from "../../lib/i18n/server";
+import type { TFunction } from "../../lib/i18n/messages";
 const SITE_URL = brand.siteUrl;
 const OG_IMAGE = `${SITE_URL}/images/og-cape-town-concierge.jpg`;
 
@@ -64,12 +66,14 @@ const baseMetadata: Metadata = {
 };
 
 const provider = businessRef;
-const areaServed = { "@type": "City", name: "Cape Town" };
+const areaServed = (tt: TFunction) => ({ "@type": "City", name: tt("locale.cape-town") });
 
 export default async function HomePage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale: localeParam } = await params;
   const locale = localeFromParam(localeParam);
-  const { vehicles, tours, lowestVehiclePrice, heroImages } = await fetchHomepageData();
+  setRequestLocale(locale);
+  const tt = serverT();
+  const { vehicles, tours, lowestVehiclePrice, heroImages } = await fetchHomepageData(tt);
   const multiDayReviews = reviewsWithTag("multi-day");
 
   const tourItems = tours.map((t) => ({
@@ -137,7 +141,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
 
       <HeroBanner
         eyebrow={brand.name}
-        title="Private chauffeur service, day tours and multi-day trips in Cape Town"
+        title={tt("locale.private-chauffeur-service-day-tours")}
         description="A private chauffeur service in Cape Town, with your own chauffeur and guide for a single journey, a full day, or your entire stay."
         primaryCtaLabel="Enquire on WhatsApp"
         primaryCtaHref={buildWhatsAppLink(
@@ -160,7 +164,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
       <FeaturedVehicles
         id="vehicles"
         eyebrow=""
-        title="Choose your chauffeur vehicle"
+        title={tt("locale.choose-your-chauffeur-vehicle")}
         description="Every vehicle comes with a professional chauffeur, fuel and bottled water."
         items={vehicles.map((v) => ({
           title: v.title,
@@ -180,7 +184,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
       <FeaturedExperiences
         id="tours"
         eyebrow=""
-        title="Recommended full-day private tours from Cape Town"
+        title={tt("locale.recommended-full-day-private-tours")}
         description="Private tours with your own chauffeur-guide. Leave when you like, stop where you like."
         items={tourItems}
         footerLabel="View all tours"

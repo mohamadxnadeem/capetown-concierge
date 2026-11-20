@@ -14,6 +14,7 @@ import {
 } from "./shared";
 import { trackWhatsAppClick } from "../../../lib/tracking";
 
+import { useT } from "../../../lib/i18n/LocaleContext";
 const Grid = styled.div`
   display: grid;
   gap: 18px;
@@ -52,45 +53,35 @@ const CTAWrap = styled.div`
 `;
 
 export default function WineServices() {
+  const tt = useT();
   return (
     <Section>
       <Container>
         <SectionHeader>
           <SectionTitle>
-            The Best Way to Experience Cape Town Wine Farms
-          </SectionTitle>
+            {tt("WineServices.the-best-way-to-experience")}</SectionTitle>
 
           <SectionText>
-            While you can visit wine farms on your own, the experience is far
-            more enjoyable with a private chauffeur who takes care of the
-            driving, timing, and route, allowing you to fully relax and enjoy
-            each tasting.
-          </SectionText>
+            {tt("WineServices.while-you-can-visit-wine")}</SectionText>
         </SectionHeader>
 
         <Grid>
           <Card>
-            <CardTitle>No Driving Stress</CardTitle>
+            <CardTitle>{tt("WineServices.no-driving-stress")}</CardTitle>
             <CardText>
-              Enjoy every wine tasting without worrying about driving,
-              directions, or safety between estates.
-            </CardText>
+              {tt("WineServices.enjoy-every-wine-tasting-without")}</CardText>
           </Card>
 
           <Card>
-            <CardTitle>Custom Wine Route</CardTitle>
+            <CardTitle>{tt("WineServices.custom-wine-route")}</CardTitle>
             <CardText>
-              Build your ideal itinerary with the best wine farms, lunch stops,
-              and scenic routes tailored to your preferences.
-            </CardText>
+              {tt("WineServices.build-your-ideal-itinerary-with")}</CardText>
           </Card>
 
           <Card>
-            <CardTitle>Luxury Experience</CardTitle>
+            <CardTitle>{tt("WineServices.luxury-experience")}</CardTitle>
             <CardText>
-              Travel in comfort with a premium chauffeur-driven vehicle designed
-              for relaxed, all-day wine touring.
-            </CardText>
+              {tt("WineServices.travel-in-comfort-with-a")}</CardText>
           </Card>
         </Grid>
 
@@ -106,13 +97,12 @@ export default function WineServices() {
               })
             }
           >
-            <Button as="span">Plan My Wine Tour</Button>
+            <Button as="span">{tt("WineServices.plan-my-wine-tour")}</Button>
           </Anchor>
 
-          <StyledLink href="/chauffeur-hire">
+          <StyledLink href={tt.path("/chauffeur-hire")}>
             <Button as="span" $variant="secondary">
-              View Chauffeur Services
-            </Button>
+              {tt("WineServices.view-chauffeur-services")}</Button>
           </StyledLink>
         </CTAWrap>
       </Container>

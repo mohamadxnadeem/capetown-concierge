@@ -5,6 +5,7 @@ import { trackWhatsAppClick } from "../../../lib/tracking";
 import { Anchor, Container, StyledLink, whatsappLink } from "./shared";
 import styled from "styled-components";
 
+import { useT } from "../../../lib/i18n/LocaleContext";
 const Hero = styled.section`
   padding: 92px 0 72px;
   background:
@@ -55,19 +56,15 @@ const HeroButtons = styled.div`
 `;
 
 export default function ActivitiesHero() {
+  const tt = useT();
   return (
     <Hero>
       <Container>
         <HeroInner>
-          <Eyebrow>Cape Town Travel Guide</Eyebrow>
-          <HeroTitle>Best Activities to Do in Cape Town</HeroTitle>
+          <Eyebrow>{tt("ActivitiesHero.cape-town-travel-guide")}</Eyebrow>
+          <HeroTitle>{tt("ActivitiesHero.best-activities-to-do-in")}</HeroTitle>
           <HeroText>
-            From Table Mountain and Cape Point to wine estates, penguins, yacht
-            charters, and helicopter rides, Cape Town offers some of the most
-            memorable travel experiences in the world. The best way to enjoy
-            them is with a private chauffeur-driven itinerary designed around
-            your pace, preferences, and style of travel.
-          </HeroText>
+            {tt("ActivitiesHero.from-table-mountain-and-cape")}</HeroText>
 
           <HeroButtons>
             <Anchor
@@ -81,7 +78,7 @@ export default function ActivitiesHero() {
                 })
               }
             >
-              <Button as="span">Plan My Cape Town Itinerary</Button>
+              <Button as="span">{tt("ActivitiesHero.plan-my-cape-town-itinerary")}</Button>
             </Anchor>
 
             {/* <StyledLink href="/tours">

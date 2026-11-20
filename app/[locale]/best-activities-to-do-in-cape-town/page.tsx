@@ -6,6 +6,9 @@ import { localizeMetadata } from "../../../lib/i18n/metadata";
 import { localeFromParam } from "../../../lib/i18n/config";
 import { withInLanguage } from "../../../lib/seo";
 
+import { serverT, setRequestLocale } from "../../../lib/i18n/server";
+import { enT } from "../../../lib/i18n/messages";
+import type { TFunction } from "../../../lib/i18n/messages";
 type ExperiencePhoto = {
   id: number;
   cover_photos: string;
@@ -37,11 +40,11 @@ type FeaturedExperienceItem = {
   price?: string;
 };
 
-function formatApiPrice(price?: string | number): string | undefined {
+function formatApiPrice(price?: string | number, tt: TFunction = enT): string | undefined {
   if (!price && price !== 0) return undefined;
   const num = Number(String(price).replace(/[^0-9.]/g, ""));
   if (isNaN(num) || num === 0) return undefined;
-  return `From $${Math.round(num)} per day`;
+  return tt("best-activities-to-do-in-cape-town.from-per-day", { num: Math.round(num) });
 }
 
 function stripHtml(html: string) {
@@ -54,14 +57,14 @@ function truncateText(text: string, maxLength: number) {
   return `${text.slice(0, maxLength).trim()}...`;
 }
 
-async function getFeaturedExperiences(): Promise<FeaturedExperienceItem[]> {
+async function getFeaturedExperiences(tt: TFunction): Promise<FeaturedExperienceItem[]> {
   try {
     const response = await fetch(
       "https://web-production-1ab9.up.railway.app/api/experiences/all/",
       { next: { revalidate: 3600 } }
     );
 
-    if (!response.ok) throw new Error("Failed to fetch experiences");
+    if (!response.ok) throw new Error(tt("best-activities-to-do-in-cape-town.failed-to-fetch-experiences"));
 
     const data: ExperienceApiItem[] = await response.json();
 
@@ -79,15 +82,15 @@ async function getFeaturedExperiences(): Promise<FeaturedExperienceItem[]> {
         experience.short_description ||
         experience.highlight ||
         truncateText(plainTextBody, 140) ||
-        "Discover a premium private tour in Cape Town.";
+        tt("best-activities-to-do-in-cape-town.discover-a-premium-private-tour");
 
       return {
         title: experience.title,
         description,
         href: experience.slug ? `/tours/${experience.slug}` : "/tours",
         image: featuredPhoto,
-        alt: `Private ${experience.title} in Cape Town with Professional Driver`,
-        price: formatApiPrice(experience.price),
+        alt: tt("best-activities-to-do-in-cape-town.private-in-cape-town-with", { title: experience.title }),
+        price: formatApiPrice(experience.price, tt),
       };
     }) as Array<FeaturedExperienceItem | null>).filter(
       (item): item is FeaturedExperienceItem => item !== null
@@ -149,7 +152,9 @@ const baseMetadata: Metadata = {
 export default async function BestActivitiesToDoInCapeTownPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale: localeParam } = await params;
   const locale = localeFromParam(localeParam);
-  const featuredExperiences = await getFeaturedExperiences();
+  setRequestLocale(locale);
+  const tt = serverT();
+  const featuredExperiences = await getFeaturedExperiences(tt);
   const structuredData = {
     "@context": "https://schema.org",
     "@graph": [
@@ -252,7 +257,7 @@ export default async function BestActivitiesToDoInCapeTownPage({ params }: { par
 
       <BestActivitiesPage featuredExperiences={featuredExperiences} />
       <RelatedLinks
-        title="Private tours in Cape Town"
+        title={tt("best-activities-to-do-in-cape-town.private-tours-in-cape-town")}
         text="Turn this guide into a plan with a private chauffeur and no shared groups."
         links={[
           { href: "/tours", label: "Compare the best private tours in Cape Town" },

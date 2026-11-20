@@ -4,6 +4,7 @@ import Link from "next/link";
 import styled from "styled-components";
 import Container from "../common/Container";
 
+import { useT } from "../../lib/i18n/LocaleContext";
 type ServiceItem = {
   title: string;
   description: string;
@@ -153,6 +154,7 @@ export default function ServicesOverview({
   description = "Explore our private chauffeur services, airport transfers, curated tours, and premium travel experiences in Cape Town.",
   services,
 }: ServicesOverviewProps) {
+  const tt = useT();
   return (
     <Wrapper>
       <Container>
@@ -174,7 +176,7 @@ export default function ServicesOverview({
               </div>
 
               <CardFooter>
-                Explore Service <Arrow>→</Arrow>
+                {tt("ServicesOverview.explore-service")}{" "}<Arrow>→</Arrow>
               </CardFooter>
             </Card>
           ))}

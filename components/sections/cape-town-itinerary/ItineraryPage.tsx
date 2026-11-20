@@ -12,15 +12,17 @@ import ItineraryHero from "./ItineraryHero";
 import ItineraryTimeline from "./ItineraryTimeline";
 import { PageWrap } from "./shared";
 
+import { useT } from "../../../lib/i18n/LocaleContext";
 export default function ItineraryPage() {
+  const tt = useT();
   return (
     <PageWrap>
       <ItineraryHero />
-      <ItineraryTimeline items={itineraryDays} />
+      <ItineraryTimeline items={itineraryDays(tt)} />
       <ItineraryAuthoritySection />
       <TestimonialsSection />
       <TestimonialsCta />
-      <AvailableVehicles title="7 Day Cape Town Itinerary" />
+      <AvailableVehicles title={tt("ItineraryPage.7-day-cape-town-itinerary")} />
 
 
       
@@ -30,7 +32,7 @@ export default function ItineraryPage() {
 
       
 
-      <ItineraryFaq items={itineraryFaqItems} />
+      <ItineraryFaq items={itineraryFaqItems(tt)} />
       <ItineraryFinalCta />
     </PageWrap>
   );

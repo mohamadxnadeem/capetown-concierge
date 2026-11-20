@@ -3,6 +3,7 @@
 import styled from "styled-components";
 import Button from "../../common/Button";
 
+import { useT } from "../../../lib/i18n/LocaleContext";
 const OfferCard = styled.div`
   background: linear-gradient(
     135deg,
@@ -48,19 +49,16 @@ type Props = {
 };
 
 export default function PrivateTourBundleOffer({ whatsappLink }: Props) {
+  const tt = useT();
   return (
     <OfferCard>
-      <Eyebrow>Special Offer</Eyebrow>
-      <Title>Save More When You Book 3 Tours</Title>
+      <Eyebrow>{tt("PrivateTourBundleOffer.special-offer")}</Eyebrow>
+      <Title>{tt("PrivateTourBundleOffer.save-more-when-you-book")}</Title>
       <Text>
-        Planning to explore more of Cape Town? Book any 3 private tours together
-        and ask us about a special bundled rate. It’s the perfect option for
-        travellers who want to enjoy more experiences while keeping their trip
-        smooth, stylish, and well organised.
-      </Text>
+        {tt("PrivateTourBundleOffer.planning-to-explore-more-of")}</Text>
 
       <CTAAnchor href={whatsappLink} target="_blank" rel="noopener noreferrer">
-        <Button as="span">Get Multi-Tour Offer on WhatsApp</Button>
+        <Button as="span">{tt("PrivateTourBundleOffer.get-multi-tour-offer-on")}</Button>
       </CTAAnchor>
     </OfferCard>
   );

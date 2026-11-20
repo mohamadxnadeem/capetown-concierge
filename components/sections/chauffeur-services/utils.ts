@@ -2,6 +2,8 @@ import { Car, FaqItem } from "./types";
 export { buildWhatsAppLink } from "../../../lib/whatsapp";
 import { brand } from "../../../lib/brand";
 
+import { enT } from "../../../lib/i18n/messages";
+import type { TFunction } from "../../../lib/i18n/messages";
 export function stripHtml(html?: string) {
   if (!html) return "";
   return html.replace(/<[^>]*>/g, "").replace(/\s+/g, " ").trim();
@@ -22,10 +24,10 @@ export function formatCurrency(amount: number) {
   return `R${Math.round(amount).toLocaleString()}`;
 }
 
-export function formatPrice(price?: string | number) {
+export function formatPrice(price?: string | number, tt: TFunction = enT) {
   if (price === undefined || price === null || price === "") return "";
   const num = Number(String(price).replace(/[^0-9.]/g, ""));
-  return isNaN(num) || num === 0 ? "" : `From R${Math.round(num).toLocaleString()} per day`;
+  return isNaN(num) || num === 0 ? "" : tt("utils.from-r-per-day", { toLocaleString: Math.round(num).toLocaleString() });
 }
 
 export function getBaseDailyRate(
@@ -55,7 +57,7 @@ export function calculateDiscountedRate(baseRate: number, discountPercent: numbe
 
 // Shared copy helpers. Everything vehicle specific comes from the car record.
 export const FULL_DAY_HOURS_LINE =
-  "Each full day is up to 8 hours, and time can be extended at an additional rate.";
+  (tt: TFunction) => (tt("utils.each-full-day-is-up"));
 
 // "Mercedes S Class with driver" -> "Mercedes S Class"
 export function getVehicleName(car: Car): string {
@@ -76,60 +78,60 @@ export function getDayRate(car: Car): string {
   return `R${Math.round(num).toLocaleString("en-US")}`;
 }
 
-function seatsText(car: Car) {
-  return car.number_of_seats ? `up to ${car.number_of_seats} passengers` : "your party";
+function seatsText(car: Car, tt: TFunction) {
+  return car.number_of_seats ? tt("utils.up-to-passengers", { number_of_seats: car.number_of_seats }) : "your party";
 }
 
 // One list, used by the visible FAQ and by the FAQPage JSON-LD.
-export function buildFaqs(car: Car): FaqItem[] {
+export function buildFaqs(car: Car, tt: TFunction): FaqItem[] {
   const name = getVehicleName(car);
   const rate = getDayRate(car);
   const luggage = car.luggage_capacity
-    ? ` and space for ${car.luggage_capacity} ${car.luggage_capacity === 1 ? "bag" : "bags"}`
+    ? tt("utils.and-space-for", { luggage_capacity: car.luggage_capacity, bags: car.luggage_capacity === 1 ? "bag" : "bags" })
     : "";
 
   return [
     {
-      question: `How much does a ${name} with a driver cost in Cape Town?`,
+      question: tt("utils.how-much-does-a-with", { name }),
       answer: rate
-        ? `Hiring the ${name} with a private chauffeur starts from ${rate} per day. The price is per vehicle, not per person, and fuel is included in the day rate. ${FULL_DAY_HOURS_LINE} Message us on WhatsApp for a tailored quote for your dates and itinerary. We reply within 30 minutes.`
-        : `Pricing for the ${name} with a private chauffeur depends on your dates and itinerary. Message us on WhatsApp for a tailored quote. We reply within 30 minutes.`,
+        ? tt("utils.hiring-the-with-a-private", { name, rate, FULL_DAY_HOURS_LINE: FULL_DAY_HOURS_LINE(tt) })
+        : tt("utils.pricing-for-the-with-a", { name }),
     },
     {
-      question: "How long is a full day?",
-      answer: "Up to 8 hours, and time can be extended at an additional rate.",
+      question: tt("utils.how-long-is-a-full"),
+      answer: tt("utils.up-to-8-hours-and"),
     },
     {
-      question: `Can I book a ${name} chauffeur for a Cape Town airport transfer?`,
-      answer: `Yes. Your chauffeur tracks your flight, meets you in arrivals with a name board and looks after your luggage, so you step out of the terminal and into a private ${name}. Airport transfers are available 24 hours a day, 7 days a week, including early-morning and late-night flights. See our airport transfers page for more.`,
+      question: tt("utils.can-i-book-a-chauffeur", { name }),
+      answer: tt("utils.yes-your-chauffeur-tracks-your", { name }),
     },
     {
-      question: `Can I hire a ${name} with a driver for a Cape Peninsula and Cape Point tour?`,
-      answer: `Yes. The Cape Peninsula is one of the most popular days out with a private chauffeur. You travel by Chapman's Peak Drive, Hout Bay, Boulders Beach and Cape Point at your own pace, with no group schedule and no shared vehicle.`,
+      question: tt("utils.can-i-hire-a-with", { name }),
+      answer: tt("utils.yes-the-cape-peninsula-is"),
     },
     {
-      question: `Can I use the ${name} for a Winelands day in Stellenbosch or Franschhoek?`,
-      answer: `Yes. Your chauffeur drives you between estates in Stellenbosch and Franschhoek, so everyone in your party can taste and enjoy the day. Tell us the estates or restaurants you have in mind and we will plan the route around them.`,
+      question: tt("utils.can-i-use-the-for", { name }),
+      answer: tt("utils.yes-your-chauffeur-drives-you"),
     },
     {
-      question: `Can I hire the ${name} with a chauffeur for a full day in Cape Town?`,
-      answer: `Yes. Full-day private hire is one of our most popular services. ${FULL_DAY_HOURS_LINE} You choose the itinerary, whether that is the city and Atlantic Seaboard, the Peninsula or the Winelands, and your chauffeur handles the route and timing.`,
+      question: tt("utils.can-i-hire-the-with", { name }),
+      answer: tt("utils.yes-full-day-private-hire", { FULL_DAY_HOURS_LINE: FULL_DAY_HOURS_LINE(tt) }),
     },
     {
-      question: `How many passengers and bags does the ${name} take?`,
-      answer: `The ${name} takes ${seatsText(car)}${luggage}. If your party or luggage is larger, message us on WhatsApp and we will suggest the right vehicle from our fleet.`,
+      question: tt("utils.how-many-passengers-and-bags", { name }),
+      answer: tt("utils.the-takes-if-your-party", { name, car: seatsText(car, tt), luggage }),
     },
     {
-      question: `Is the ${name} chauffeur service private?`,
-      answer: `Yes. Every booking is fully private. You have the vehicle and a professional, well-presented chauffeur to yourselves, with no other passengers. It suits executives, families, couples and anyone who values discretion.`,
+      question: tt("utils.is-the-chauffeur-service-private", { name }),
+      answer: tt("utils.yes-every-booking-is-fully"),
     },
     {
-      question: `What is included when I book the ${name} with a chauffeur?`,
-      answer: `Your booking includes a professional chauffeur, the ${name} with fuel included in the day rate, complimentary bottled water and flight tracking for airport pickups with a meet and greet name board. Entrance fees to attractions and gratuities are not included.`,
+      question: tt("utils.what-is-included-when-i", { name }),
+      answer: tt("utils.your-booking-includes-a-professional", { name }),
     },
     {
-      question: `How do I book the ${name} with a driver?`,
-      answer: `Message us on WhatsApp with your dates, pickup point and plans. We reply within 30 minutes to confirm availability and your price. We regularly look after travellers from the United States, the United Kingdom, the UAE, Saudi Arabia and the wider Gulf.`,
+      question: tt("utils.how-do-i-book-the", { name }),
+      answer: tt("utils.message-us-on-whatsapp-with"),
     },
   ];
 }

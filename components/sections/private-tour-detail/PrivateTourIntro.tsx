@@ -4,6 +4,8 @@ import styled from "styled-components";
 import { googleSummaryText } from "../../../lib/googleReviews";
 import Money from "../../common/Money";
 
+import { useT } from "../../../lib/i18n/LocaleContext";
+import type { TFunction } from "../../../lib/i18n/messages";
 const SectionHeader = styled.div`
   max-width: 860px;
   margin-bottom: 28px;
@@ -101,11 +103,11 @@ const AlertText = styled.p`
   line-height: 1.75;
 `;
 
-const DEFAULT_TRUST_BADGES = [
-  "✔ 100% Private: your vehicle, your group, your pace",
-  "✔ Flexible itinerary: you set the stops",
-  "✔ Professional chauffeur & local guide included",
-];
+const DEFAULT_TRUST_BADGES = (tt: TFunction) => ([
+  tt("PrivateTourIntro.100-private-your-vehicle-your"),
+  tt("PrivateTourIntro.flexible-itinerary-you-set-the"),
+  tt("PrivateTourIntro.professional-chauffeur-local-guide-included"),
+]);
 
 type Props = {
   title: string;
@@ -124,17 +126,19 @@ export default function PrivateTourIntro({
   duration,
   location,
   lowestVehiclePrice,
-  trustBadges = DEFAULT_TRUST_BADGES,
+  trustBadges: trustBadgesProp,
 }: Props) {
+  const tt = useT();
+  const trustBadges = trustBadgesProp ?? DEFAULT_TRUST_BADGES(tt);
   return (
     <SectionHeader>
-      <SectionEyebrow>Private Tour in Cape Town</SectionEyebrow>
+      <SectionEyebrow>{tt("PrivateTourIntro.private-tour-in-cape-town")}</SectionEyebrow>
       <Title>{title}</Title>
 
       <SubText>
         {shortDescription ||
           highlight ||
-          `Skip the group buses and crowded shuttles. The ${title} is a fully private, chauffeur-driven experience with your own vehicle, your own schedule and your own pace. No shared passengers. No fixed stops you didn't ask for.`}
+          tt("PrivateTourIntro.skip-the-group-buses-and", { title })}
       </SubText>
 
       <TrustBar>
@@ -147,7 +151,7 @@ export default function PrivateTourIntro({
       <QuickInfoRow>
         {duration ? <QuickInfoBadge>⏱ {duration}</QuickInfoBadge> : null}
         {location ? <QuickInfoBadge>📍 {location}</QuickInfoBadge> : null}
-        <QuickInfoBadge>🚗 Hotel pickup included</QuickInfoBadge>
+        <QuickInfoBadge>{tt("PrivateTourIntro.hotel-pickup-included")}</QuickInfoBadge>
         {lowestVehiclePrice ? (
           <QuickInfoBadge>
             <Money usd={lowestVehiclePrice} prefix="From " suffix="per vehicle, for your whole group" />
@@ -158,8 +162,7 @@ export default function PrivateTourIntro({
 
       <AlertCard>
         <AlertText>
-          ⚡ Peak-season dates book out 2 to 3 weeks ahead. Message us now and we'll hold your date. We respond in under 30 minutes.
-        </AlertText>
+          {tt("PrivateTourIntro.peak-season-dates-book-out")}</AlertText>
       </AlertCard>
     </SectionHeader>
   );

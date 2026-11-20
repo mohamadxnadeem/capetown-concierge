@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { trackWhatsAppClick } from "../../../lib/tracking";
 import { PAYMENT_BADGE } from "../../../lib/vehicleTrustBadges";
 
+import { useT } from "../../../lib/i18n/LocaleContext";
 type Props = {
   title: string;
   whatsappLink: string;
@@ -71,15 +72,13 @@ const PayBadge = styled.p`
 `;
 
 export default function ChauffeurFinalCta({ title, whatsappLink }: Props) {
+  const tt = useT();
   return (
     <FinalCta>
       <FinalCtaInner>
-        <FinalCtaTitle>Ready to Book {title}?</FinalCtaTitle>
+        <FinalCtaTitle>{tt("ChauffeurFinalCta.ready-to-book")}{" "}{title}?</FinalCtaTitle>
         <FinalCtaText>
-          Every booking is private, and each full day is up to 8 hours, with
-          time extended at an additional rate. Message us on WhatsApp to
-          confirm availability and your price. We reply within 30 minutes.
-        </FinalCtaText>
+          {tt("ChauffeurFinalCta.every-booking-is-private-and")}</FinalCtaText>
 
         <PrimaryButton
           href={whatsappLink}
@@ -93,13 +92,12 @@ export default function ChauffeurFinalCta({ title, whatsappLink }: Props) {
             })
           }
         >
-          Check Availability on WhatsApp
-        </PrimaryButton>
+          {tt("ChauffeurFinalCta.check-availability-on-whatsapp")}</PrimaryButton>
 
         <div>
           <PayBadge>
-            <strong>{PAYMENT_BADGE.title}</strong>
-            <span>{PAYMENT_BADGE.subtitle}</span>
+            <strong>{PAYMENT_BADGE(tt).title}</strong>
+            <span>{PAYMENT_BADGE(tt).subtitle}</span>
           </PayBadge>
         </div>
       </FinalCtaInner>

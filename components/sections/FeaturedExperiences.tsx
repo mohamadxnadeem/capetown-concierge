@@ -7,6 +7,8 @@ import Container from "../common/Container";
 import SmartImage from "../common/SmartImage";
 import Money from "../common/Money";
 
+import { useT } from "../../lib/i18n/LocaleContext";
+import type { TFunction } from "../../lib/i18n/messages";
 type ExperienceItem = {
   title: string;
   description: string;
@@ -266,8 +268,8 @@ const EmptyState = styled.div`
   box-shadow: ${({ theme }) => theme.shadows.soft};
 `;
 
-function getExperienceAltText(title: string) {
-  return `Private ${title} in Cape Town with Professional Driver`;
+function getExperienceAltText(title: string, tt: TFunction) {
+  return tt("FeaturedExperiences.private-in-cape-town-with", { title });
 }
 
 export default function FeaturedExperiences({
@@ -279,6 +281,7 @@ export default function FeaturedExperiences({
   footerLabel,
   footerHref,
 }: FeaturedExperiencesProps) {
+  const tt = useT();
   const sliderRef = useRef<HTMLDivElement | null>(null);
 
   const scrollByAmount = (direction: "left" | "right") => {
@@ -306,14 +309,14 @@ export default function FeaturedExperiences({
             <Controls>
               <ArrowButton
                 type="button"
-                aria-label="Scroll private tours left"
+                aria-label={tt("FeaturedExperiences.scroll-private-tours-left")}
                 onClick={() => scrollByAmount("left")}
               >
                 ←
               </ArrowButton>
               <ArrowButton
                 type="button"
-                aria-label="Scroll private tours right"
+                aria-label={tt("FeaturedExperiences.scroll-private-tours-right")}
                 onClick={() => scrollByAmount("right")}
               >
                 →
@@ -323,28 +326,28 @@ export default function FeaturedExperiences({
         </TopBar>
 
         {!items.length ? (
-          <EmptyState>No private tours loaded yet.</EmptyState>
+          <EmptyState>{tt("FeaturedExperiences.no-private-tours-loaded-yet")}</EmptyState>
         ) : (
           <Slider ref={sliderRef}>
             {items.map((item, index) => (
-              <Card key={`${item.title}-${index}`} href={item.href} aria-label={`View details: ${item.title}`}>
+              <Card key={`${item.title}-${index}`} href={item.href} aria-label={tt("FeaturedExperiences.view-details", { title: item.title })}>
                 <CardImageWrap>
                   {item.image ? (
                     <SmartImage
                       src={item.image}
-                      alt={item.alt || getExperienceAltText(item.title)}
+                      alt={item.alt || getExperienceAltText(item.title, tt)}
                       sizes="(max-width: 768px) 85vw, (max-width: 1200px) 48vw, 32vw"
                     />
                   ) : null}
                 </CardImageWrap>
 
                 <CardContent>
-                  <Badge>{item.priceUsd ? <Money usd={item.priceUsd} suffix={item.priceSuffix} /> : "Private Tour"}</Badge>
+                  <Badge>{item.priceUsd ? <Money usd={item.priceUsd} suffix={item.priceSuffix} /> : tt("FeaturedExperiences.private-tour")}</Badge>
                   <CardTitle>{item.title}</CardTitle>
                   <CardText>{item.description}</CardText>
 
                   <CardFooter>
-                    <ViewButton>View Tour</ViewButton>
+                    <ViewButton>{tt("FeaturedExperiences.view-tour")}</ViewButton>
                     <InlineArrow>→</InlineArrow>
                   </CardFooter>
                 </CardContent>

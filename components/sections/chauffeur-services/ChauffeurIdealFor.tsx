@@ -2,6 +2,7 @@
 
 import styled from "styled-components";
 
+import { useT } from "../../../lib/i18n/LocaleContext";
 type Props = {
   items: string[];
 };
@@ -47,10 +48,11 @@ const Tag = styled.div`
 `;
 
 export default function ChauffeurIdealFor({ items }: Props) {
+  const tt = useT();
   return (
     <Card>
       <CardInner>
-        <Title>Ideal For</Title>
+        <Title>{tt("ChauffeurIdealFor.ideal-for")}</Title>
         <TagsWrap>
           {items.map((item, index) => (
             <Tag key={`${item}-${index}`}>{item}</Tag>

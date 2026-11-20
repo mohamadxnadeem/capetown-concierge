@@ -3,6 +3,7 @@
 import Link from "next/link";
 import styled from "styled-components";
 
+import { useT } from "../../lib/i18n/LocaleContext";
 const Wrap = styled.main`
   min-height: 60vh;
   display: flex;
@@ -67,17 +68,16 @@ const Secondary = styled(Link)`
 `;
 
 export default function GlobalError({ reset }: { error: Error; reset: () => void }) {
+  const tt = useT();
   return (
     <Wrap>
-      <Eyebrow>Something went wrong</Eyebrow>
-      <Title>We hit a snag</Title>
+      <Eyebrow>{tt("error.something-went-wrong")}</Eyebrow>
+      <Title>{tt("error.we-hit-a-snag")}</Title>
       <Body>
-        This page failed to load. Please try again. If the problem persists,
-        message us on WhatsApp and we'll sort it out immediately.
-      </Body>
+        {tt("error.this-page-failed-to-load")}</Body>
       <Actions>
-        <Primary onClick={reset}>Try again</Primary>
-        <Secondary href="/">Back to home</Secondary>
+        <Primary onClick={reset}>{tt("error.try-again")}</Primary>
+        <Secondary href={tt.path("/")}>{tt("error.back-to-home")}</Secondary>
       </Actions>
     </Wrap>
   );

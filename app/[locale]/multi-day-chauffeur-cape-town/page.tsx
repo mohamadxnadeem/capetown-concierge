@@ -18,6 +18,7 @@ import { localizeMetadata } from "../../../lib/i18n/metadata";
 import { localeFromParam } from "../../../lib/i18n/config";
 import { withInLanguage } from "../../../lib/seo";
 
+import { serverT, setRequestLocale } from "../../../lib/i18n/server";
 const SITE_URL = brand.siteUrl;
 const URL = `${SITE_URL}/multi-day-chauffeur-cape-town`;
 const TITLE = "Multi-Day Chauffeur in Cape Town | Cape Town Concierge";
@@ -55,6 +56,8 @@ const baseMetadata: Metadata = {
 export default async function MultiDayPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale: localeParam } = await params;
   const locale = localeFromParam(localeParam);
+  setRequestLocale(locale);
+  const tt = serverT();
   const reviews = reviewsWithTag("multi-day");
 
   const jsonLd = {
@@ -62,7 +65,7 @@ export default async function MultiDayPage({ params }: { params: Promise<{ local
     "@graph": [
       {
         "@type": "FAQPage",
-        mainEntity: MULTI_DAY_FAQS.map((f) => ({
+        mainEntity: MULTI_DAY_FAQS(tt).map((f) => ({
           "@type": "Question",
           name: f.question,
           acceptedAnswer: { "@type": "Answer", text: f.answer },
@@ -85,19 +88,18 @@ export default async function MultiDayPage({ params }: { params: Promise<{ local
       <Band>
         <Container>
           <h1 style={{ margin: "0 0 16px", fontSize: "clamp(2.2rem, 6vw, 3.6rem)", lineHeight: 1.08 }}>
-            Multi-Day Chauffeur in Cape Town
-          </h1>
-          <Lead>{MULTI_DAY_INTRO}</Lead>
+            {tt("multi-day-chauffeur-cape-town.multi-day-chauffeur-in-cape")}</h1>
+          <Lead>{MULTI_DAY_INTRO(tt)}</Lead>
           <CtaRow>
             <WhatsAppCta source="multi_day_hero" label="Plan on WhatsApp" />
-            <QuoteNote>Tailored quote within 30 minutes</QuoteNote>
+            <QuoteNote>{tt("multi-day-chauffeur-cape-town.tailored-quote-within-30-minutes")}</QuoteNote>
           </CtaRow>
         </Container>
       </Band>
 
       <Band $soft>
         <Container>
-          <H2>How it works</H2>
+          <H2>{tt("multi-day-chauffeur-cape-town.how-it-works")}</H2>
           <MultiDaySteps />
         </Container>
       </Band>
@@ -105,21 +107,21 @@ export default async function MultiDayPage({ params }: { params: Promise<{ local
       {reviews.length ? (
         <Band>
           <Container>
-            <H2>What clients say</H2>
+            <H2>{tt("multi-day-chauffeur-cape-town.what-clients-say")}</H2>
             <ReviewGrid reviews={reviews} />
           </Container>
         </Band>
       ) : null}
 
-      <FaqSection title="Multi-day chauffeur questions" items={MULTI_DAY_FAQS} />
+      <FaqSection title={tt("multi-day-chauffeur-cape-town.multi-day-chauffeur-questions")} items={MULTI_DAY_FAQS(tt)} />
 
       <Band $soft>
         <Container>
-          <H2>Tell us your dates</H2>
-          <Lead>Share your dates, the number of guests and what you enjoy. We will send a day-by-day plan.</Lead>
+          <H2>{tt("multi-day-chauffeur-cape-town.tell-us-your-dates")}</H2>
+          <Lead>{tt("multi-day-chauffeur-cape-town.share-your-dates-the-number")}</Lead>
           <CtaRow>
             <WhatsAppCta source="multi_day_footer" label="Enquire on WhatsApp" />
-            <QuoteNote>Tailored quote within 30 minutes</QuoteNote>
+            <QuoteNote>{tt("multi-day-chauffeur-cape-town.tailored-quote-within-30-minutes")}</QuoteNote>
           </CtaRow>
         </Container>
       </Band>

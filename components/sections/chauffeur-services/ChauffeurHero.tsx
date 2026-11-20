@@ -8,6 +8,7 @@ import RotatingImage from "../../common/RotatingImage";
 import { trackWhatsAppClick } from "../../../lib/tracking";
 import Money from "../../common/Money";
 
+import { useT } from "../../../lib/i18n/LocaleContext";
 type Props = {
   title: string;
   description: string;
@@ -143,29 +144,30 @@ export default function ChauffeurHero({
   images,
   whatsappLink,
 }: Props) {
+  const tt = useT();
   const rotation = (images ?? []).filter(Boolean);
   return (
     <Hero>
       {rotation.length > 0 ? (
         <HeroImageLayer>
-          <RotatingImage images={rotation} alt={`${title} chauffeur Cape Town`} priority sizes="100vw" />
+          <RotatingImage images={rotation} alt={tt("ChauffeurHero.chauffeur-cape-town", { title })} priority sizes="100vw" />
         </HeroImageLayer>
       ) : image ? (
         <HeroImageLayer>
-          <SmartImage src={image} alt={`${title} chauffeur Cape Town`} priority sizes="100vw" />
+          <SmartImage src={image} alt={tt("ChauffeurHero.chauffeur-cape-town", { title })} priority sizes="100vw" />
         </HeroImageLayer>
       ) : null}
       <HeroOverlay />
       <HeroContent>
         <Container>
           <HeroInner>
-            <Eyebrow>Private Chauffeur Vehicle</Eyebrow>
+            <Eyebrow>{tt("ChauffeurHero.private-chauffeur-vehicle")}</Eyebrow>
             <HeroTitle>{title}</HeroTitle>
             <HeroText>{description}</HeroText>
             <HeroMeta>
               {vehicleType && <HeroMetaItem>{vehicleType}</HeroMetaItem>}
-              {seats && <HeroMetaItem>{seats} Seats</HeroMetaItem>}
-              {luggage && <HeroMetaItem>{luggage} Luggage</HeroMetaItem>}
+              {seats && <HeroMetaItem>{seats} {tt("ChauffeurHero.seats")}</HeroMetaItem>}
+              {luggage && <HeroMetaItem>{luggage} {tt("ChauffeurHero.luggage")}</HeroMetaItem>}
               {priceUsd ? <HeroMetaItem><Money usd={priceUsd} /></HeroMetaItem> : null}
             </HeroMeta>
             <HeroButtons>
@@ -181,8 +183,7 @@ export default function ChauffeurHero({
                   })
                 }
               >
-                Check Availability on WhatsApp
-              </PrimaryButton>
+                {tt("ChauffeurHero.check-availability-on-whatsapp")}</PrimaryButton>
             </HeroButtons>
           </HeroInner>
         </Container>

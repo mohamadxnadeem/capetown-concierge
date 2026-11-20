@@ -7,6 +7,7 @@ import {
   type TrustBadge,
 } from "../../../lib/vehicleTrustBadges";
 
+import { useT } from "../../../lib/i18n/LocaleContext";
 const Wrap = styled.section`
   padding: 32px 0 0;
 `;
@@ -113,10 +114,11 @@ function Body({ badge }: { badge: TrustBadge }) {
 }
 
 export default function TrustBadges() {
-  const badges = SHARED_TRUST_BADGES;
+  const tt = useT();
+  const badges = SHARED_TRUST_BADGES(tt);
 
   return (
-    <Wrap aria-label="Why book with us">
+    <Wrap aria-label={tt("TrustBadges.why-book-with-us")}>
       <Container>
         <List>
           {badges.map((badge) => (

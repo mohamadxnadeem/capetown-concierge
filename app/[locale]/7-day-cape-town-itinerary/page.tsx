@@ -8,6 +8,7 @@ import { localizeMetadata } from "../../../lib/i18n/metadata";
 import { localeFromParam } from "../../../lib/i18n/config";
 import { withInLanguage } from "../../../lib/seo";
 
+import { serverT, setRequestLocale } from "../../../lib/i18n/server";
 const SITE_URL = brand.siteUrl;
 
 const OG_IMAGE = `${SITE_URL}/images/og-cape-town-concierge.jpg`;
@@ -59,6 +60,8 @@ const baseMetadata: Metadata = {
 export default async function SevenDayCapeTownItineraryPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale: localeParam } = await params;
   const locale = localeFromParam(localeParam);
+  setRequestLocale(locale);
+  const tt = serverT();
   const structuredData = {
     "@context": "https://schema.org",
     "@graph": [
@@ -163,7 +166,7 @@ export default async function SevenDayCapeTownItineraryPage({ params }: { params
 
       <ItineraryPage />
       <RelatedLinks
-        title="Private tours in Cape Town"
+        title={tt("7-day-cape-town-itinerary.private-tours-in-cape-town")}
         text="Turn this guide into a plan with a private chauffeur and no shared groups."
         links={[
           { href: "/tours", label: "Book private tours in Cape Town for your itinerary" },

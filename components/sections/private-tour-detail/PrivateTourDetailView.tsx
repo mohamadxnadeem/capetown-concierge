@@ -32,6 +32,7 @@ import {
   RelatedTour,
 } from "./types";
 
+import { useT } from "../../../lib/i18n/LocaleContext";
 const PageWrap = styled.main`
   background: ${({ theme }) => theme.colors.background};
 `;
@@ -55,9 +56,10 @@ export default function PrivateTourDetailView({
   lowestVehiclePrice,
   slug,
 }: Props) {
+  const tt = useT();
   const safeTourTitle = experience?.title || "private tour";
 
-  const content = getTourContent(slug || experience?.slug);
+  const content = getTourContent(slug || experience?.slug, tt);
 
   const whatsappLink = `https://wa.me/27636746131?text=${encodeURIComponent(`Hi, I'd like to book the ${safeTourTitle}. Please assist.`)}`;
   const midCtaWhatsappLink = `https://wa.me/27636746131?text=${encodeURIComponent(`Hi, I'd like to book the ${safeTourTitle}. Please assist.`)}`;
@@ -181,7 +183,7 @@ export default function PrivateTourDetailView({
       </Section>
 
       <RelatedLinks
-        title="Plan your Cape Town trip"
+        title={tt("PrivateTourDetailView.plan-your-cape-town-trip")}
         text="More ideas and guides to help you plan private days out in Cape Town."
         links={[
           ...(seo ? [{ href: seo.guideHref, label: `Read our guide: ${seo.guideLabel}` }] : []),

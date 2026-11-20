@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 
 import { brand } from "../lib/brand";
 import SiteDocument from "../components/common/SiteDocument";
@@ -10,6 +10,10 @@ export const metadata: Metadata = {
   metadataBase: new URL(brand.siteUrl),
   title: brand.name,
   description: brand.tagline,
+};
+
+export const viewport: Viewport = {
+  themeColor: "#0b5b33",
 };
 
 export default function GlobalNotFound() {

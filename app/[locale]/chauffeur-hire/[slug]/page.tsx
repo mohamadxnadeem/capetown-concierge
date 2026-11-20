@@ -13,6 +13,9 @@ import {
   getVehicleMetaTitle,
 } from "../../../../components/sections/chauffeur-services/utils";
 
+import { serverT, setRequestLocale } from "../../../../lib/i18n/server";
+import { enT } from "../../../../lib/i18n/messages";
+import type { TFunction } from "../../../../lib/i18n/messages";
 // ─────────────────────────────────────────────
 // TYPES
 // ─────────────────────────────────────────────
@@ -77,11 +80,11 @@ const SITE_URL = brand.siteUrl;
 // ─────────────────────────────────────────────
 // PRICE HELPERS (unchanged)
 // ─────────────────────────────────────────────
-function formatPrice(price?: string | number) {
+function formatPrice(price?: string | number, tt: TFunction = enT) {
   if (price === undefined || price === null || price === "") return "";
   const num = Number(String(price).replace(/[^0-9.]/g, ""));
   if (isNaN(num) || num === 0) return "";
-  return `From R${Math.round(num).toLocaleString()} per day`;
+  return tt("slug.from-r-per-day-2", { toLocaleString: Math.round(num).toLocaleString() });
 }
 
 function getNumericPriceValue(
@@ -162,8 +165,8 @@ function getVehicleImageAlt(car: Car) {
   return getSeoKeyword(car);
 }
 
-function getFormattedDailyRate(car: Car) {
-  return formatPrice(car.price);
+function getFormattedDailyRate(car: Car, tt: TFunction) {
+  return formatPrice(car.price, tt);
 }
 
 function getPageTitle(car: Car) {
@@ -174,20 +177,20 @@ function getPageDescription(car: Car) {
   return getVehicleMetaDescription(car);
 }
 
-function getShortVehicleDescription(car: Car) {
+function getShortVehicleDescription(car: Car, tt: TFunction) {
   const keyword = getSeoKeyword(car);
-  const rate = getFormattedDailyRate(car);
+  const rate = getFormattedDailyRate(car, tt);
   return (
     car.short_description ||
     car.highlight ||
     truncateText(car.body, 180) ||
     (rate
-      ? `${keyword}: ${rate.toLowerCase()} for private airport transfers, tours, and full-day hire in Cape Town.`
-      : `Premium ${keyword} for private travel, airport transfers, and chauffeur-driven experiences.`)
+      ? tt("slug.for-private-airport-transfers-tours", { keyword, toLowerCase: rate.toLowerCase() })
+      : tt("slug.premium-for-private-travel-airport", { keyword }))
   );
 }
 
-function mapRelatedVehicles(cars: Car[], currentSlug: string): RelatedVehicle[] {
+function mapRelatedVehicles(cars: Car[], currentSlug: string, tt: TFunction): RelatedVehicle[] {
   return cars
     .filter((car) => car.slug && car.slug.toLowerCase() !== currentSlug.toLowerCase())
     .map((car) => ({
@@ -197,9 +200,9 @@ function mapRelatedVehicles(cars: Car[], currentSlug: string): RelatedVehicle[] 
         car.short_description ||
         car.highlight ||
         truncateText(car.body, 120) ||
-        "Premium chauffeur-driven vehicle for Cape Town travel.",
+        tt("slug.premium-chauffeur-driven-vehicle-for"),
       seats: car.number_of_seats,
-      price: formatPrice(car.price),
+      price: formatPrice(car.price, tt),
       href: vehicleHref(car.slug),
     }));
 }
@@ -323,13 +326,15 @@ export async function generateMetadata(props: PageProps): Promise<Metadata> {
 export default async function ChauffeurServiceDetailPage({ params }: PageProps) {
   const { slug, locale: localeParam } = await params;
   const locale = localeFromParam(localeParam);
+  setRequestLocale(locale);
+  const tt = serverT();
   const vehicles = normalizeCars(await getAllVehicles());
   const carBase = getVehicleBySlug(vehicles, slug);
 
   if (!carBase) notFound();
   const car = overlayContent(carBase, getContent(locale, "vehicles", slug.toLowerCase()));
 
-  const relatedVehicles = mapRelatedVehicles(vehicles, slug);
+  const relatedVehicles = mapRelatedVehicles(vehicles, slug, tt);
   const image = getPrimaryImage(car);
   const ogImage = `${SITE_URL}/images/og-cape-town-concierge.jpg`;
   const schemaImage = image || ogImage;
@@ -338,7 +343,7 @@ export default async function ChauffeurServiceDetailPage({ params }: PageProps) 
   const pageDescription = getPageDescription(car);
   const keyword = getSeoKeyword(car);
   const numericPrice = car.price;
-  const vehicleFaqs = buildFaqs(car);
+  const vehicleFaqs = buildFaqs(car, tt);
 
   // ─────────────────────────────────────────────
   // FIX 11: EXPANDED STRUCTURED DATA
@@ -355,7 +360,7 @@ export default async function ChauffeurServiceDetailPage({ params }: PageProps) 
         "@type": "Product",
         name: keyword,
         image: [schemaImage],
-        description: getShortVehicleDescription(car),
+        description: getShortVehicleDescription(car, tt),
         brand: {
           "@type": "Brand",
           name: brand.name,
@@ -387,7 +392,7 @@ export default async function ChauffeurServiceDetailPage({ params }: PageProps) 
           { "@type": "State", name: "Western Cape" },
         ],
         image: [schemaImage],
-        description: getShortVehicleDescription(car),
+        description: getShortVehicleDescription(car, tt),
         url: canonicalUrl,
       },
 

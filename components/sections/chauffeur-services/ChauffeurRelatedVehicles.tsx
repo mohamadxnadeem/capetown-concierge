@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { RelatedVehicle } from "./types";
 import SmartImage from "../../common/SmartImage";
 
+import { useT } from "../../../lib/i18n/LocaleContext";
 type Props = {
   items: RelatedVehicle[];
 };
@@ -80,11 +81,12 @@ const RelatedText = styled.p`
 `;
 
 export default function ChauffeurRelatedVehicles({ items }: Props) {
+  const tt = useT();
   if (!items.length) return null;
 
   return (
     <>
-      <Title>Other Vehicles You May Also Like</Title>
+      <Title>{tt("ChauffeurRelatedVehicles.other-vehicles-you-may-also")}</Title>
 
       <RelatedGrid>
         {items.map((vehicle, index) => (
@@ -93,7 +95,7 @@ export default function ChauffeurRelatedVehicles({ items }: Props) {
               {vehicle.image && (
                 <SmartImage
                   src={vehicle.image}
-                  alt={`${vehicle.title} chauffeur Cape Town`}
+                  alt={tt("ChauffeurRelatedVehicles.chauffeur-cape-town", { title: vehicle.title })}
                   sizes="(max-width: 768px) 100vw, 33vw"
                 />
               )}
@@ -103,7 +105,7 @@ export default function ChauffeurRelatedVehicles({ items }: Props) {
 
               <RelatedMeta>
                 {vehicle.seats ? (
-                  <RelatedBadge>{vehicle.seats} Seats</RelatedBadge>
+                  <RelatedBadge>{vehicle.seats} {tt("ChauffeurRelatedVehicles.seats")}</RelatedBadge>
                 ) : null}
 
                 {vehicle.price ? (
@@ -113,7 +115,7 @@ export default function ChauffeurRelatedVehicles({ items }: Props) {
 
               <RelatedText>
                 {vehicle.description ||
-                  "Explore another premium chauffeur-driven vehicle in Cape Town."}
+                  tt("ChauffeurRelatedVehicles.explore-another-premium-chauffeur-driven")}
               </RelatedText>
             </RelatedBody>
           </RelatedCard>

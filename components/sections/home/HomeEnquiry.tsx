@@ -7,6 +7,7 @@ import EnquiryForm from "../EnquiryForm";
 import { buildWhatsAppLink, buildGeneralWhatsAppMessage } from "../../../lib/whatsapp";
 import { trackWhatsAppClick } from "../../../lib/tracking";
 
+import { useT } from "../../../lib/i18n/LocaleContext";
 const Wrap = styled.section`
   padding: 72px 0;
   background: ${({ theme }) => theme.colors.background};
@@ -76,25 +77,26 @@ const FormSide = styled.div`
 `;
 
 export default function HomeEnquiry() {
+  const tt = useT();
   const href = buildWhatsAppLink(
     buildGeneralWhatsAppMessage("a private chauffeur, day tour or multi-day trip in Cape Town")
   );
   return (
     <Wrap id="enquiry">
       <Container>
-        <H2>Plan your trip</H2>
-        <Lead>Message us on WhatsApp for the fastest reply, or send the form and we will reply by email.</Lead>
+        <H2>{tt("HomeEnquiry.plan-your-trip")}</H2>
+        <Lead>{tt("HomeEnquiry.message-us-on-whatsapp-for")}</Lead>
         <Split>
           <WaCard>
-            <WaTitle>Enquire on WhatsApp</WaTitle>
-            <WaText>Tell us your dates and what you would like to do. We reply with a tailored quote within 30 minutes.</WaText>
+            <WaTitle>{tt("HomeEnquiry.enquire-on-whatsapp")}</WaTitle>
+            <WaText>{tt("HomeEnquiry.tell-us-your-dates-and")}</WaText>
             <Anchor
               href={href}
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => trackWhatsAppClick({ source: "homepage_enquiry", label: "Enquire on WhatsApp" })}
             >
-              <Button as="span">Enquire on WhatsApp</Button>
+              <Button as="span">{tt("HomeEnquiry.enquire-on-whatsapp")}</Button>
             </Anchor>
           </WaCard>
           <FormSide>

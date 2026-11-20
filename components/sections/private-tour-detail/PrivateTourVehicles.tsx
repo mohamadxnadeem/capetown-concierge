@@ -12,6 +12,8 @@ import {
 import { trackWhatsAppClick } from "../../../lib/tracking";
 import { useCurrency } from "../../../context/CurrencyContext";
 
+import { useT } from "../../../lib/i18n/LocaleContext";
+import type { TFunction } from "../../../lib/i18n/messages";
 type Props = {
   items: TourVehicle[];
   tourTitle: string;
@@ -262,16 +264,17 @@ function VehicleImage({
   );
 }
 
-const VEHICLE_COPY: Record<string, string> = {
-  "BMW 5-Series": "An executive sedan that balances refined comfort with smooth, quiet performance. Perfect for couples or solo travellers who want a premium, discreet experience across the Peninsula.",
-  "BMW X5": "A luxury SUV with elevated road presence and a spacious interior, ideal for families or small groups who want comfort without sacrificing style.",
-  "Hyundai Staria": "A premium people carrier with generous legroom and panoramic windows. Comfortable, stylish, and built for a full day on the road.",
-  "Mercedes Sprinter": "Cape Town's finest group transporter: spacious, smooth, and well-appointed for larger parties of up to 14. Everyone travels together in comfort, and no one squeezes in.",
-  "Mercedes V-Class": "The benchmark for group luxury travel. Rear-facing captain seats, ample boot space, and a first-class cabin feel. The favourite choice for families and executive groups.",
-  "Range Rover Sport": "Bold, refined, and unmistakable on Cape Town's coastal roads. For travellers who want the Peninsula experience with an extra layer of style. Up to 4 guests.",
-};
+const VEHICLE_COPY = (tt: TFunction): Record<string, string> => ({
+  "BMW 5-Series": tt("PrivateTourVehicles.an-executive-sedan-that-balances"),
+  "BMW X5": tt("PrivateTourVehicles.a-luxury-suv-with-elevated"),
+  "Hyundai Staria": tt("PrivateTourVehicles.a-premium-people-carrier-with"),
+  "Mercedes Sprinter": tt("PrivateTourVehicles.cape-town-s-finest-group"),
+  "Mercedes V-Class": tt("PrivateTourVehicles.the-benchmark-for-group-luxury"),
+  "Range Rover Sport": tt("PrivateTourVehicles.bold-refined-and-unmistakable-on"),
+});
 
 export default function PrivateTourVehicles({ items, tourTitle, title }: Props) {
+  const tt = useT();
   const sliderRef = useRef<HTMLDivElement | null>(null);
   const autoScrollRef = useRef<NodeJS.Timeout | null>(null);
   const { rates, format } = useCurrency();
@@ -313,33 +316,32 @@ export default function PrivateTourVehicles({ items, tourTitle, title }: Props) 
   return (
     <>
       <SectionHeader>
-        <SectionEyebrow>Private Chauffeur Experience</SectionEyebrow>
-        <SectionTitle>{title || "Travel in Comfort. Travel in Style."}</SectionTitle>
+        <SectionEyebrow>{tt("PrivateTourVehicles.private-chauffeur-experience")}</SectionEyebrow>
+        <SectionTitle>{title || tt("PrivateTourVehicles.travel-in-comfort-travel-in")}</SectionTitle>
         <SectionText>
-          Every vehicle is private, climate-controlled, and driven by a professional chauffeur. Choose the size that fits your group, from executive sedans to spacious people carriers.
-        </SectionText>
+          {tt("PrivateTourVehicles.every-vehicle-is-private-climate")}</SectionText>
       </SectionHeader>
 
       <ValueStrip>
-        <ValueItem>✔ Private Chauffeur Service</ValueItem>
-        <ValueItem>✔ Fuel Included</ValueItem>
-        <ValueItem>✔ Toll Fees Included</ValueItem>
-        <ValueItem>✔ Hotel Pickup</ValueItem>
-        <ValueItem>✔ Flexible Itinerary</ValueItem>
+        <ValueItem>{tt("PrivateTourVehicles.private-chauffeur-service")}</ValueItem>
+        <ValueItem>{tt("PrivateTourVehicles.fuel-included")}</ValueItem>
+        <ValueItem>{tt("PrivateTourVehicles.toll-fees-included")}</ValueItem>
+        <ValueItem>{tt("PrivateTourVehicles.hotel-pickup")}</ValueItem>
+        <ValueItem>{tt("PrivateTourVehicles.flexible-itinerary")}</ValueItem>
       </ValueStrip>
 
       <CarouselWrap>
         <Controls>
           <ArrowButton
             type="button"
-            aria-label="Scroll vehicles left"
+            aria-label={tt("PrivateTourVehicles.scroll-vehicles-left")}
             onClick={() => scrollByAmount("left")}
           >
             ←
           </ArrowButton>
           <ArrowButton
             type="button"
-            aria-label="Scroll vehicles right"
+            aria-label={tt("PrivateTourVehicles.scroll-vehicles-right")}
             onClick={() => scrollByAmount("right")}
           >
             →
@@ -357,7 +359,7 @@ export default function PrivateTourVehicles({ items, tourTitle, title }: Props) 
                 <CardImage>
                   <VehicleImage
                     image={item.image}
-                    alt={`${item.title} available for ${tourTitle}`}
+                    alt={tt("PrivateTourVehicles.available-for", { title: item.title, tourTitle })}
                   />
                 </CardImage>
 
@@ -366,23 +368,23 @@ export default function PrivateTourVehicles({ items, tourTitle, title }: Props) 
 
                   <MetaRow>
                     {item.seats ? (
-                      <MetaBadge>Up to {item.seats} guests</MetaBadge>
+                      <MetaBadge>{tt("PrivateTourVehicles.up-to")}{" "}{item.seats} {tt("PrivateTourVehicles.guests")}</MetaBadge>
                     ) : null}
                     {item.priceRaw ? (
-                      <MetaBadge>From {format(item.priceRaw)} per vehicle</MetaBadge>
+                      <MetaBadge>{tt("PrivateTourVehicles.from")}{" "}{format(item.priceRaw)} {tt("PrivateTourVehicles.per-vehicle")}</MetaBadge>
                     ) : null}
-                    <MetaBadge>Fuel Included</MetaBadge>
-                    <MetaBadge>Toll Fees Included</MetaBadge>
-                    <MetaBadge>Local Guide</MetaBadge>
+                    <MetaBadge>{tt("PrivateTourVehicles.fuel-included-2")}</MetaBadge>
+                    <MetaBadge>{tt("PrivateTourVehicles.toll-fees-included-2")}</MetaBadge>
+                    <MetaBadge>{tt("PrivateTourVehicles.local-guide")}</MetaBadge>
                   </MetaRow>
 
                   <TrustRow>
-                    <TrustBadge>⭐ 5-Star Experience</TrustBadge>
-                    <TrustBadge>🔥 Popular Choice</TrustBadge>
+                    <TrustBadge>{tt("PrivateTourVehicles.5-star-experience")}</TrustBadge>
+                    <TrustBadge>{tt("PrivateTourVehicles.popular-choice")}</TrustBadge>
                   </TrustRow>
 
                   <CardText>
-                    {VEHICLE_COPY[item.title] || item.description || "A comfortable chauffeur-driven vehicle suitable for premium touring in Cape Town."}
+                    {VEHICLE_COPY(tt)[item.title] || item.description || tt("PrivateTourVehicles.a-comfortable-chauffeur-driven-vehicle")}
                   </CardText>
 
                   <CTAAnchor
@@ -399,8 +401,7 @@ export default function PrivateTourVehicles({ items, tourTitle, title }: Props) 
                     }
                   >
                     <Button as="span" $variant="secondary">
-                      Get a Price for My Dates
-                    </Button>
+                      {tt("PrivateTourVehicles.get-a-price-for-my")}</Button>
                   </CTAAnchor>
                 </CardBody>
               </Card>

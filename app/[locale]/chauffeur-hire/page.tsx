@@ -7,6 +7,8 @@ import { localizeMetadata } from "../../../lib/i18n/metadata";
 import { localeFromParam } from "../../../lib/i18n/config";
 import { withInLanguage } from "../../../lib/seo";
 
+import { serverT, setRequestLocale } from "../../../lib/i18n/server";
+import type { TFunction } from "../../../lib/i18n/messages";
 type CarPhoto = {
   cover_photos?: string;
   is_featured?: boolean;
@@ -49,19 +51,19 @@ function truncateText(text: string, maxLength: number) {
   return `${text.slice(0, maxLength).trim()}...`;
 }
 
-const CHAUFFEUR_VEHICLE_DESC: Record<string, string> = {
-    "BMW X5": "A luxury SUV with elevated road presence and a spacious, refined interior. Ideal for families or small groups who want serious comfort without compromising on style.",
-};
+const CHAUFFEUR_VEHICLE_DESC = (tt: TFunction): Record<string, string> => ({
+    "BMW X5": tt("chauffeur-hire.a-luxury-suv-with-elevated"),
+});
 
 // Varied alt text so the cards do not repeat one sentence. Each names the vehicle.
-const CARD_ALT_PATTERNS: Array<(title: string) => string> = [
-  (t) => `${t} chauffeur Cape Town, private vehicle with a professional driver`,
-  (t) => `${t} for chauffeur hire in Cape Town, ready for guests`,
-  (t) => `Chauffeur-driven ${t} in Cape Town for airport transfers and tours`,
-  (t) => `${t} with a private chauffeur, Cape Town`,
-];
+const CARD_ALT_PATTERNS = (tt: TFunction): Array<(title: string) => string> => ([
+  (t) => tt("chauffeur-hire.chauffeur-cape-town-private-vehicle", { t }),
+  (t) => tt("chauffeur-hire.for-chauffeur-hire-in-cape", { t }),
+  (t) => tt("chauffeur-hire.chauffeur-driven-in-cape-town", { t }),
+  (t) => tt("chauffeur-hire.with-a-private-chauffeur-cape", { t }),
+]);
 
-async function getVehicles(): Promise<FeaturedVehicleItem[]> {
+async function getVehicles(tt: TFunction): Promise<FeaturedVehicleItem[]> {
   try {
     const response = await fetch(
       "https://web-production-1ab9.up.railway.app/api/cars-for-hire/all/",
@@ -87,19 +89,19 @@ async function getVehicles(): Promise<FeaturedVehicleItem[]> {
           title: car.title,
           description:
             (car.title === "Hyundai Staria" && car.number_of_seats
-              ? `A premium ${car.number_of_seats}-seat people carrier with generous legroom and panoramic windows. Comfortable, stylish, and built for a full day on the road, whether that's a city tour, a wine route, or an airport run.`
+              ? tt("chauffeur-hire.a-premium-seat-people-carrier", { number_of_seats: car.number_of_seats })
               : undefined) ||
-            CHAUFFEUR_VEHICLE_DESC[car.title] ||
+            CHAUFFEUR_VEHICLE_DESC(tt)[car.title] ||
             car.short_description ||
             car.highlight ||
             truncateText(stripHtml(car.body || ""), 140) ||
-            "Luxury chauffeur vehicle available for private travel in Cape Town.",
+            tt("chauffeur-hire.luxury-chauffeur-vehicle-available-for"),
           href:
             typeof car.slug === "string" && car.slug.trim()
               ? vehicleHref(car.slug)
               : "/chauffeur-hire",
           image: featuredPhoto,
-          alt: CARD_ALT_PATTERNS[index % CARD_ALT_PATTERNS.length](car.title),
+          alt: CARD_ALT_PATTERNS(tt)[index % CARD_ALT_PATTERNS(tt).length](car.title),
           seats: car.number_of_seats,
           priceUsd: car.price ? Number(String(car.price).replace(/[^0-9.]/g, "")) || undefined : undefined,
         };
@@ -169,13 +171,15 @@ const baseMetadata: Metadata = {
 export default async function ChauffeurServicesLandingPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale: localeParam } = await params;
   const locale = localeFromParam(localeParam);
-  const vehicles = await getVehicles();
+  setRequestLocale(locale);
+  const tt = serverT();
+  const vehicles = await getVehicles(tt);
 
   const areaServed = [
-    { "@type": "City", name: "Cape Town" },
-    { "@type": "AdministrativeArea", name: "Cape Winelands" },
-    { "@type": "AdministrativeArea", name: "Garden Route" },
-    { "@type": "AdministrativeArea", name: "Western Cape" },
+    { "@type": "City", name: tt("chauffeur-hire.cape-town") },
+    { "@type": "AdministrativeArea", name: tt("chauffeur-hire.cape-winelands") },
+    { "@type": "AdministrativeArea", name: tt("chauffeur-hire.garden-route") },
+    { "@type": "AdministrativeArea", name: tt("chauffeur-hire.western-cape") },
   ];
 
   const structuredData = {
@@ -278,7 +282,7 @@ export default async function ChauffeurServicesLandingPage({ params }: { params:
       />
       <ChauffeurServicesPage vehicles={vehicles} />
       <RelatedLinks
-        title="Private tours with a chauffeur"
+        title={tt("chauffeur-hire.private-tours-with-a-chauffeur")}
         text="Prefer a planned day out? Our private tours include your own chauffeur and vehicle."
         links={[
           { href: "/tours", label: "Compare the best private tours in Cape Town" },

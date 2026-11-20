@@ -5,6 +5,7 @@ import styled, { keyframes } from "styled-components";
 import { CarPhoto } from "./types";
 import SmartImage from "../../common/SmartImage";
 
+import { useT } from "../../../lib/i18n/LocaleContext";
 type Props = {
   images: CarPhoto[];
   title?: string;
@@ -157,6 +158,7 @@ const ThumbButton = styled.button<{ $active: boolean }>`
 `;
 
 export default function ChauffeurGallery({ images, title = "Vehicle Gallery", altName = "Luxury vehicle" }: Props) {
+  const tt = useT();
   const galleryImages = useMemo(
     () => [...images].sort((a, b) => (a.order || 0) - (b.order || 0)),
     [images]
@@ -192,10 +194,10 @@ export default function ChauffeurGallery({ images, title = "Vehicle Gallery", al
 
           {galleryImages.length > 1 && (
             <>
-              <NavButton type="button" $left onClick={goPrev} aria-label="Previous image">
+              <NavButton type="button" $left onClick={goPrev} aria-label={tt("ChauffeurGallery.previous-image")}>
                 ←
               </NavButton>
-              <NavButton type="button" $right onClick={goNext} aria-label="Next image">
+              <NavButton type="button" $right onClick={goNext} aria-label={tt("ChauffeurGallery.next-image")}>
                 →
               </NavButton>
             </>
@@ -206,7 +208,7 @@ export default function ChauffeurGallery({ images, title = "Vehicle Gallery", al
               {activeImage && (
                 <SmartImage
                   src={activeImage}
-                  alt={`${altName} chauffeur Cape Town - photo ${activeImageIndex + 1}`}
+                  alt={tt("ChauffeurGallery.chauffeur-cape-town-photo", { altName, v: activeImageIndex + 1 })}
                   priority
                   sizes="(max-width: 1200px) 100vw, 60vw"
                 />
@@ -225,12 +227,12 @@ export default function ChauffeurGallery({ images, title = "Vehicle Gallery", al
               type="button"
               $active={index === activeImageIndex}
               onClick={() => setActiveImageIndex(index)}
-              aria-label={`Show image ${index + 1}`}
+              aria-label={tt("ChauffeurGallery.show-image", { v: index + 1 })}
             >
               {image.cover_photos && (
                 <SmartImage
                   src={image.cover_photos}
-                  alt={`${altName} chauffeur Cape Town - photo ${index + 1}`}
+                  alt={tt("ChauffeurGallery.chauffeur-cape-town-photo", { altName, v: index + 1 })}
                   sizes="108px"
                 />
               )}

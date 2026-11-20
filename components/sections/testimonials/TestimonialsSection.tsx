@@ -11,6 +11,7 @@ import {
   type GoogleReview,
 } from "../../../lib/googleReviews";
 
+import { useT } from "../../../lib/i18n/LocaleContext";
 const DEFAULT_COUNT = 27;
 const LONG_REVIEW_CHARS = 280;
 
@@ -319,6 +320,7 @@ const SliderFooter = styled.div`
 `;
 
 export function ReviewCard({ review }: { review: GoogleReview }) {
+  const tt = useT();
   const isLong = review.text.length > LONG_REVIEW_CHARS;
   const [expanded, setExpanded] = useState(false);
   const initial = Array.from(review.reviewer_name.trim())[0] || "G";
@@ -332,14 +334,13 @@ export function ReviewCard({ review }: { review: GoogleReview }) {
           <Name>{review.reviewer_name}</Name>
           <VerifiedBadge>
             <CardGoogle>
-              <GoogleG>G</GoogleG>Google review
-              {review.date_label ? ` · ${review.date_label}` : ""}
+              <GoogleG>{tt("TestimonialsSection.g")}</GoogleG>{tt("TestimonialsSection.google-review")}{review.date_label ? tt("TestimonialsSection.text", { date_label: review.date_label }) : ""}
             </CardGoogle>
           </VerifiedBadge>
         </ClientMeta>
       </CardHeader>
 
-      <Stars aria-label={`${review.rating} star rating`}>
+      <Stars aria-label={tt("TestimonialsSection.star-rating", { rating: review.rating })}>
         <StarRating count={review.rating} />
       </Stars>
 
@@ -347,12 +348,12 @@ export function ReviewCard({ review }: { review: GoogleReview }) {
 
       {isLong ? (
         <ReadMore type="button" aria-expanded={expanded} onClick={() => setExpanded((v) => !v)}>
-          {expanded ? "Show less" : "Read more"}
+          {expanded ? tt("TestimonialsSection.show-less") : tt("TestimonialsSection.read-more")}
         </ReadMore>
       ) : null}
 
       {review.translated_from ? (
-        <TranslatedNote>Translated from {review.translated_from}</TranslatedNote>
+        <TranslatedNote>{tt("TestimonialsSection.translated-from")}{" "}{review.translated_from}</TranslatedNote>
       ) : null}
     </Card>
   );
@@ -375,6 +376,7 @@ export default function TestimonialsSection({
   count = DEFAULT_COUNT,
   readAllHref,
 }: TestimonialsSectionProps) {
+  const tt = useT();
   const reviews = selectReviews(tags, count);
   const sliderRef = useRef<HTMLDivElement | null>(null);
   const autoScrollRef = useRef<number | null>(null);
@@ -426,26 +428,24 @@ export default function TestimonialsSection({
     <Section>
       <Container>
         <Header>
-          <Eyebrow>Client Reviews</Eyebrow>
-          <Title>Trusted by Travellers Visiting Cape Town</Title>
+          <Eyebrow>{tt("TestimonialsSection.client-reviews")}</Eyebrow>
+          <Title>{tt("TestimonialsSection.trusted-by-travellers-visiting-cape")}</Title>
           <Description>
-            Real feedback from clients who booked private chauffeur drives, tours,
-            and curated Cape Town experiences with us.
-          </Description>
+            {tt("TestimonialsSection.real-feedback-from-clients-who")}</Description>
         </Header>
 
         <TopBar>
           <MetaStrip>
-            <MetaBadge>5-Star Rated Experience</MetaBadge>
-            <MetaBadge>{googleReviewCount} Google Reviews</MetaBadge>
-            <MetaBadge>Private Chauffeur Service</MetaBadge>
+            <MetaBadge>{tt("TestimonialsSection.5-star-rated-experience")}</MetaBadge>
+            <MetaBadge>{googleReviewCount} {tt("TestimonialsSection.google-reviews")}</MetaBadge>
+            <MetaBadge>{tt("TestimonialsSection.private-chauffeur-service")}</MetaBadge>
           </MetaStrip>
 
           <Controls>
-            <Arrow type="button" aria-label="Scroll testimonials left" onClick={() => scroll("left")}>
+            <Arrow type="button" aria-label={tt("TestimonialsSection.scroll-testimonials-left")} onClick={() => scroll("left")}>
               ←
             </Arrow>
-            <Arrow type="button" aria-label="Scroll testimonials right" onClick={() => scroll("right")}>
+            <Arrow type="button" aria-label={tt("TestimonialsSection.scroll-testimonials-right")} onClick={() => scroll("right")}>
               →
             </Arrow>
           </Controls>
@@ -468,13 +468,12 @@ export default function TestimonialsSection({
             href={GOOGLE_REVIEWS_URL}
             target="_blank"
             rel="noopener noreferrer"
-            aria-label="Read all reviews on Google"
+            aria-label={tt("TestimonialsSection.read-all-reviews-on-google")}
           >
-            <GoogleG>G</GoogleG>
+            <GoogleG>{tt("TestimonialsSection.g")}</GoogleG>
             <GoogleStars>★★★★★</GoogleStars>
-            {googleRatingLabel} from {googleReviewCount} Google reviews · Read all reviews on Google
-          </GoogleButton>
-          {readAllHref ? <ReadAllLink href={readAllHref}>Read all reviews</ReadAllLink> : null}
+            {googleRatingLabel} {tt("TestimonialsSection.from")}{" "}{googleReviewCount} {tt("TestimonialsSection.google-reviews-read-all-reviews")}</GoogleButton>
+          {readAllHref ? <ReadAllLink href={readAllHref}>{tt("TestimonialsSection.read-all-reviews")}</ReadAllLink> : null}
         </SliderFooter>
       </Container>
     </Section>

@@ -4,6 +4,7 @@ import styled from "styled-components";
 import Button from "../../common/Button";
 import { trackWhatsAppClick } from "../../../lib/tracking";
 
+import { useT } from "../../../lib/i18n/LocaleContext";
 const Wrapper = styled.div`
   margin-top: 34px;
   padding: 26px;
@@ -46,11 +47,12 @@ export default function PrivateTourMidCta({
   title,
   body,
 }: Props) {
+  const tt = useT();
   return (
     <Wrapper>
-      <Title>{title || "Ready to See the Cape Peninsula?"}</Title>
+      <Title>{title || tt("PrivateTourMidCta.ready-to-see-the-cape")}</Title>
       <Text>
-        {body || "Most guests tell us the Peninsula is the highlight of their entire Cape Town trip. Don't leave it to chance with a shared tour bus. Message us and we'll plan the day around you."}
+        {body || tt("PrivateTourMidCta.most-guests-tell-us-the")}
       </Text>
 
       <CTA
@@ -65,7 +67,7 @@ export default function PrivateTourMidCta({
           })
         }
       >
-        <Button as="span">{buttonLabel || "Check Availability: We Respond in 30 Minutes"}</Button>
+        <Button as="span">{buttonLabel || tt("PrivateTourMidCta.check-availability-we-respond-in")}</Button>
       </CTA>
     </Wrapper>
   );

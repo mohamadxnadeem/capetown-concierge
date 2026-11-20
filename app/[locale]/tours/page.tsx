@@ -16,6 +16,9 @@ import { localizeMetadata } from "../../../lib/i18n/metadata";
 import { localeFromParam } from "../../../lib/i18n/config";
 import { withInLanguage } from "../../../lib/seo";
 
+import { serverT, setRequestLocale } from "../../../lib/i18n/server";
+import { enT } from "../../../lib/i18n/messages";
+import type { TFunction } from "../../../lib/i18n/messages";
 const SITE_URL = brand.siteUrl;
 
 const TITLE =
@@ -99,11 +102,11 @@ type FeaturedExperienceItem = {
   price?: string;
 };
 
-function formatApiPrice(price?: string | number): string | undefined {
+function formatApiPrice(price?: string | number, tt: TFunction = enT): string | undefined {
   if (!price && price !== 0) return undefined;
   const num = Number(String(price).replace(/[^0-9.]/g, ""));
   if (isNaN(num) || num === 0) return undefined;
-  return `From $${Math.round(num)} per day`;
+  return tt("tours.from-per-day", { num: Math.round(num) });
 }
 
 function stripHtml(html: string) {
@@ -116,7 +119,7 @@ function truncateText(text: string, maxLength: number) {
   return `${text.slice(0, maxLength).trim()}...`;
 }
 
-async function getAllExperiences(): Promise<FeaturedExperienceItem[]> {
+async function getAllExperiences(tt: TFunction): Promise<FeaturedExperienceItem[]> {
   try {
     const res = await fetch(
       "https://web-production-1ab9.up.railway.app/api/experiences/all/",
@@ -140,7 +143,7 @@ async function getAllExperiences(): Promise<FeaturedExperienceItem[]> {
           exp.short_description ||
           exp.highlight ||
           truncateText(plainText, 140) ||
-          "Discover a premium private tour experience in Cape Town.";
+          tt("tours.discover-a-premium-private-tour");
 
         const seo = getTourSeo(exp.slug);
 
@@ -149,8 +152,8 @@ async function getAllExperiences(): Promise<FeaturedExperienceItem[]> {
           description,
           href: exp.slug ? `/tours/${exp.slug}` : "/tours",
           image: featuredPhoto,
-          alt: seo?.imageAlt || `Private ${exp.title} from Cape Town with a chauffeur`,
-          price: formatApiPrice(exp.price),
+          alt: seo?.imageAlt || tt("tours.private-from-cape-town-with", { title: exp.title }),
+          price: formatApiPrice(exp.price, tt),
         };
       }) as Array<FeaturedExperienceItem | null>)
       .filter((item): item is FeaturedExperienceItem => item !== null)
@@ -186,34 +189,36 @@ async function getLowestVehiclePrice(): Promise<number | undefined> {
   }
 }
 
-const whyItems = [
+const whyItems = (tt: TFunction) => ([
   {
-    title: "Fully Private Experiences",
+    title: tt("tours.fully-private-experiences"),
     description:
-      "Every tour is exclusively yours, with no shared groups, no fixed schedules and no rushing. Travel at your own pace with a dedicated chauffeur.",
+      tt("tours.every-tour-is-exclusively-yours"),
   },
   {
-    title: "Bespoke Itineraries",
+    title: tt("tours.bespoke-itineraries"),
     description:
-      "We shape each tour around your interests, from wine estate preferences to scenic stop requests. No two itineraries are the same.",
+      tt("tours.we-shape-each-tour-around"),
   },
   {
-    title: "Professional Local Knowledge",
+    title: tt("tours.professional-local-knowledge"),
     description:
-      "Our chauffeurs know Cape Town intimately, from the best viewpoints on Chapman's Peak to the most celebrated wine estates in Stellenbosch.",
+      tt("tours.our-chauffeurs-know-cape-town"),
   },
   {
-    title: "Luxury Transport Included",
+    title: tt("tours.luxury-transport-included"),
     description:
-      "All tours include a premium vehicle and professional chauffeur, so you can focus entirely on the experience rather than navigation.",
+      tt("tours.all-tours-include-a-premium"),
   },
-];
+]);
 
 export default async function PrivateToursLandingPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale: localeParam } = await params;
   const locale = localeFromParam(localeParam);
+  setRequestLocale(locale);
+  const tt = serverT();
   const [experiences, lowestVehiclePrice] = await Promise.all([
-    getAllExperiences(),
+    getAllExperiences(tt),
     getLowestVehiclePrice(),
   ]);
 
@@ -275,7 +280,7 @@ export default async function PrivateToursLandingPage({ params }: { params: Prom
       },
       {
         "@type": "FAQPage",
-        mainEntity: HUB_FAQS.map((faq) => ({
+        mainEntity: HUB_FAQS(tt).map((faq) => ({
           "@type": "Question",
           name: faq.question,
           acceptedAnswer: { "@type": "Answer", text: faq.answer },
@@ -301,7 +306,7 @@ export default async function PrivateToursLandingPage({ params }: { params: Prom
 
       <HeroBanner
         eyebrow="Private Tours Cape Town"
-        title="Best Private Tours in Cape Town"
+        title={tt("tours.best-private-tours-in-cape")}
         description="The best things to do in Cape Town, done privately: Cape Point, the Winelands, Table Mountain and a Big 5 safari, with your own chauffeur."
         primaryCtaLabel="Explore Tours"
         primaryCtaHref="#compare"
@@ -321,24 +326,23 @@ export default async function PrivateToursLandingPage({ params }: { params: Prom
       <TestimonialsSection tags={["tours"]} />
       <TestimonialsCta />
       <div style={{textAlign:"center",padding:"8px 0 4px",fontSize:"0.9rem",color:"#6c7a74"}}>
-        Also need an <Link href="/airport-transfers-cape-town" style={{color:"inherit",textDecoration:"underline"}}>airport transfer</Link> to or from Cape Town? We handle that too.
-      </div>
+        {tt("tours.also-need-an")}{" "}<Link href={tt.path("/airport-transfers-cape-town")} style={{color:"inherit",textDecoration:"underline"}}>{tt("tours.airport-transfer")}</Link> {tt("tours.to-or-from-cape-town")}</div>
 
       <FeaturedExperiences
         eyebrow="Our Experiences"
-        title="Our Private Tours in Cape Town"
+        title={tt("tours.our-private-tours-in-cape")}
         description="Every experience is designed around your group, with no shared schedules and no rushing."
         items={experiences}
       />
 
       <TourHubFaq />
 
-      <WhyChooseUs items={whyItems} />
+      <WhyChooseUs items={whyItems(tt)} />
 
       <RelatedLinks
-        title="Plan your Cape Town trip"
+        title={tt("tours.plan-your-cape-town-trip")}
         text="Guides and services to help you plan private days out in Cape Town."
-        links={HUB_LINKS}
+        links={HUB_LINKS(tt)}
       />
     </>
   );

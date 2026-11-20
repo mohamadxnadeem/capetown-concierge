@@ -1,5 +1,7 @@
 import type { Locale } from "./config";
+import { localePath } from "./paths";
 
+import { BODY } from "./bundles";
 import enCommon from "../../messages/en/common.json";
 import enMeta from "../../messages/en/meta.json";
 import arCommon from "../../messages/ar/common.json";
@@ -13,10 +15,10 @@ type Dict = Record<string, string>;
 export type Namespace = "common" | "meta";
 
 const BUNDLES: Record<Locale, Record<Namespace, Dict>> = {
-  en: { common: enCommon as Dict, meta: enMeta as Dict },
-  ar: { common: arCommon as Dict, meta: arMeta as Dict },
-  "pt-BR": { common: ptCommon as Dict, meta: ptMeta as Dict },
-  ru: { common: ruCommon as Dict, meta: ruMeta as Dict },
+  en: { common: { ...BODY.en, ...(enCommon as Dict) }, meta: enMeta as Dict },
+  ar: { common: { ...BODY.ar, ...(arCommon as Dict) }, meta: arMeta as Dict },
+  "pt-BR": { common: { ...BODY["pt-BR"], ...(ptCommon as Dict) }, meta: ptMeta as Dict },
+  ru: { common: { ...BODY.ru, ...(ruCommon as Dict) }, meta: ruMeta as Dict },
 };
 
 function interpolate(text: string, vars?: Record<string, string | number>) {
@@ -39,9 +41,18 @@ export function hasTranslation(locale: Locale, ns: Namespace, key: string) {
   return Boolean(BUNDLES[locale]?.[ns]?.[key]);
 }
 
-export type TFunction = (key: string, vars?: Record<string, string | number>) => string;
+export type TFunction = ((key: string, vars?: Record<string, string | number>) => string) & {
+  /** Prefixes an internal path with the locale (and maps tour and vehicle slugs). English is unchanged. */
+  path: (path: string) => string;
+};
 
 /** Server or client safe. Namespace "common" by default. */
 export function getT(locale: Locale, ns: Namespace = "common"): TFunction {
-  return (key, vars) => translate(locale, ns, key, vars);
+  const t = ((key: string, vars?: Record<string, string | number>) =>
+    translate(locale, ns, key, vars)) as TFunction;
+  t.path = (path: string) => localePath(locale, path);
+  return t;
 }
+
+/** Default translator for helpers that are also called outside a component (English). */
+export const enT = getT("en");

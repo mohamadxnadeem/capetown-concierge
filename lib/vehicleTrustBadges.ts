@@ -1,3 +1,4 @@
+import type { TFunction } from "./i18n/messages";
 export type TrustIconName =
   | "fuel"
   | "map"
@@ -12,36 +13,36 @@ export type TrustBadge = {
   href?: string;
 };
 
-export const SHARED_TRUST_BADGES: TrustBadge[] = [
+export const SHARED_TRUST_BADGES = (tt: TFunction): TrustBadge[] => ([
   {
-    title: "Fuel, Tolls & Parking Included",
-    subtitle: "No extras at Chapman's Peak or the Waterfront",
+    title: tt("vehicleTrustBadges.fuel-tolls-parking-included"),
+    subtitle: tt("vehicleTrustBadges.no-extras-at-chapman-s"),
     icon: "fuel",
   },
   {
-    title: "Your Chauffeur Is Your Guide",
-    subtitle: "Registered driver-guides. No separate guide fee",
+    title: tt("vehicleTrustBadges.your-chauffeur-is-your-guide"),
+    subtitle: tt("vehicleTrustBadges.registered-driver-guides-no-separate"),
     icon: "map",
   },
   {
-    title: "Flight Tracked, Never Rushed",
-    subtitle: "Land late and your chauffeur is still there",
+    title: tt("vehicleTrustBadges.flight-tracked-never-rushed"),
+    subtitle: tt("vehicleTrustBadges.land-late-and-your-chauffeur"),
     icon: "plane",
   },
   {
-    title: "Child Seats Fitted Free",
-    subtitle: "Tell us ages when booking, ready before pickup",
+    title: tt("vehicleTrustBadges.child-seats-fitted-free"),
+    subtitle: tt("vehicleTrustBadges.tell-us-ages-when-booking"),
     icon: "shield",
   },
   {
-    title: "Free Cancellation, 72 Hours",
-    subtitle: "Single-day bookings. Full policy linked",
+    title: tt("vehicleTrustBadges.free-cancellation-72-hours"),
+    subtitle: tt("vehicleTrustBadges.single-day-bookings-full-policy"),
     icon: "calendar-check",
     href: "/cancellation-policy",
   },
-];
+]);
 
-export const PAYMENT_BADGE = {
-  title: "Pay Securely by Card",
-  subtitle: "Secure Yoco link plus a written booking agreement",
-};
+export const PAYMENT_BADGE = (tt: TFunction) => ({
+  title: tt("vehicleTrustBadges.pay-securely-by-card"),
+  subtitle: tt("vehicleTrustBadges.secure-yoco-link-plus-a"),
+});

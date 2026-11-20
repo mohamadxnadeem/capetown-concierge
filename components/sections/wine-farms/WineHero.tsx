@@ -12,6 +12,7 @@ import {
 } from "./shared";
 import { trackWhatsAppClick } from "../../../lib/tracking";
 
+import { useT } from "../../../lib/i18n/LocaleContext";
 const Hero = styled.section`
   padding: 96px 0 72px;
   background:
@@ -63,22 +64,17 @@ const ButtonRow = styled.div`
 `;
 
 export default function WineHero() {
+  const tt = useT();
   return (
     <Hero>
       <Container>
         <HeroInner>
-          <Eyebrow>Cape Winelands Guide</Eyebrow>
+          <Eyebrow>{tt("WineHero.cape-winelands-guide")}</Eyebrow>
 
-          <Title>Best Wine Farms in Cape Town</Title>
+          <Title>{tt("WineHero.best-wine-farms-in-cape")}</Title>
 
           <Description>
-            Discover some of the most beautiful wine estates in Stellenbosch,
-            Franschhoek, and the surrounding Cape Winelands, from luxury wine
-            tastings and fine dining to relaxed countryside escapes. The best
-            way to experience them is with a private chauffeur-driven wine tour
-            that lets you enjoy the day without worrying about driving, timing,
-            or planning the route.
-          </Description>
+            {tt("WineHero.discover-some-of-the-most")}</Description>
 
           <ButtonRow>
             <Anchor
@@ -92,22 +88,21 @@ export default function WineHero() {
                 })
               }
             >
-              <Button as="span">Plan My Private Wine Tour</Button>
+              <Button as="span">{tt("WineHero.plan-my-private-wine-tour")}</Button>
             </Anchor>
 
-            <StyledLink href="/chauffeur-hire">
+            <StyledLink href={tt.path("/chauffeur-hire")}>
               <Button as="span" $variant="secondary">
-                Chauffeur Hire in Cape Town
-              </Button>
+                {tt("WineHero.chauffeur-hire-in-cape-town")}</Button>
             </StyledLink>
           </ButtonRow>
 
           <ValueStrip>
-            <ValueItem>Private Chauffeur Service</ValueItem>
-            <ValueItem>Flexible Wine Route</ValueItem>
-            <ValueItem>No Driving Stress</ValueItem>
-            <ValueItem>Luxury Wine Estates</ValueItem>
-            <ValueItem>Custom Itinerary</ValueItem>
+            <ValueItem>{tt("WineHero.private-chauffeur-service")}</ValueItem>
+            <ValueItem>{tt("WineHero.flexible-wine-route")}</ValueItem>
+            <ValueItem>{tt("WineHero.no-driving-stress")}</ValueItem>
+            <ValueItem>{tt("WineHero.luxury-wine-estates")}</ValueItem>
+            <ValueItem>{tt("WineHero.custom-itinerary")}</ValueItem>
           </ValueStrip>
         </HeroInner>
       </Container>

@@ -13,6 +13,8 @@ import { localizeMetadata } from "../../../lib/i18n/metadata";
 import { localeFromParam } from "../../../lib/i18n/config";
 import { withInLanguage } from "../../../lib/seo";
 
+import { serverT, setRequestLocale } from "../../../lib/i18n/server";
+import type { TFunction } from "../../../lib/i18n/messages";
 const SITE_URL = brand.siteUrl;
 const WHATSAPP = "https://wa.me/27636746131?text=Hi%2C+I%27d+like+to+book+an+airport+transfer+in+Cape+Town.+Please+assist.";
 
@@ -113,11 +115,11 @@ function truncateText(text: string, maxLength: number) {
   return `${text.slice(0, maxLength).trim()}...`;
 }
 
-const AIRPORT_VEHICLE_DESC: Record<string, string> = {
-    "BMW X5": "A luxury SUV with a refined interior and serious boot space, ideal for couples or small groups who want a more elevated arrival experience.",
-};
+const AIRPORT_VEHICLE_DESC = (tt: TFunction): Record<string, string> => ({
+    "BMW X5": tt("airport-transfers-cape-town.a-luxury-suv-with-a"),
+});
 
-async function getVehicles(): Promise<FeaturedVehicleItem[]> {
+async function getVehicles(tt: TFunction): Promise<FeaturedVehicleItem[]> {
   try {
     const res = await fetch(
       "https://web-production-1ab9.up.railway.app/api/cars-for-hire/all/",
@@ -143,19 +145,19 @@ async function getVehicles(): Promise<FeaturedVehicleItem[]> {
         const plainText = stripHtml(car.body || "");
         const description =
           (car.title === "Hyundai Staria" && car.number_of_seats
-            ? `A premium ${car.number_of_seats}-seat people carrier with generous legroom, perfect for families or groups arriving with luggage who want a spacious, comfortable ride into the city.`
+            ? tt("airport-transfers-cape-town.a-premium-seat-people-carrier", { number_of_seats: car.number_of_seats })
             : undefined) ||
-          AIRPORT_VEHICLE_DESC[car.title] ||
+          AIRPORT_VEHICLE_DESC(tt)[car.title] ||
           car.short_description ||
           car.highlight ||
           truncateText(plainText, 140) ||
-          "Luxury chauffeur vehicle available for airport transfers in Cape Town.";
+          tt("airport-transfers-cape-town.luxury-chauffeur-vehicle-available-for");
         return {
           title: car.title,
           description,
           href: vehicleHref(car.slug),
           image,
-          alt: `${car.title} airport transfer Cape Town`,
+          alt: tt("airport-transfers-cape-town.airport-transfer-cape-town", { title: car.title }),
           seats: car.number_of_seats,
           priceUsd: car.price ? Number(String(car.price).replace(/[^0-9.]/g, "")) || undefined : undefined,
         };
@@ -166,33 +168,35 @@ async function getVehicles(): Promise<FeaturedVehicleItem[]> {
   }
 }
 
-const whyItems = [
+const whyItems = (tt: TFunction) => ([
   {
-    title: "Meet & Greet at Arrivals",
+    title: tt("airport-transfers-cape-town.meet-greet-at-arrivals"),
     description:
-      "Your chauffeur tracks your flight in real time and meets you in the arrivals hall with a name board, no waiting around trying to find your ride.",
+      tt("airport-transfers-cape-town.your-chauffeur-tracks-your-flight"),
   },
   {
-    title: "24/7 Availability",
+    title: tt("airport-transfers-cape-town.24-7-availability"),
     description:
-      "Early morning, last flight of the night, or anything in between. We operate around the clock for all Cape Town International arrivals and departures.",
+      tt("airport-transfers-cape-town.early-morning-last-flight-of"),
   },
   {
-    title: "No Hidden Fees",
+    title: tt("airport-transfers-cape-town.no-hidden-fees"),
     description:
-      "Your quoted price covers the vehicle, chauffeur, fuel, parking, and toll fees. What you see is what you pay. No surprises after a long flight.",
+      tt("airport-transfers-cape-town.your-quoted-price-covers-the"),
   },
   {
-    title: "The Right Vehicle for Your Group",
+    title: tt("airport-transfers-cape-town.the-right-vehicle-for-your"),
     description:
-      "From executive sedans for solo travellers to the 14-seat Mercedes Sprinter for large groups. We match the vehicle to your party size and luggage. Just tell us what you need.",
+      tt("airport-transfers-cape-town.from-executive-sedans-for-solo"),
   },
-];
+]);
 
 export default async function AirportTransfersCapeTownPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale: localeParam } = await params;
   const locale = localeFromParam(localeParam);
-  const vehicles = await getVehicles();
+  setRequestLocale(locale);
+  const tt = serverT();
+  const vehicles = await getVehicles(tt);
 
   const structuredData = {
     "@context": "https://schema.org",
@@ -304,7 +308,7 @@ export default async function AirportTransfersCapeTownPage({ params }: { params:
 
       <HeroBanner
         eyebrow="Airport Transfers Cape Town (CPT)"
-        title="Private VIP Airport Transfers in Cape Town (CPT)"
+        title={tt("airport-transfers-cape-town.private-vip-airport-transfers-in")}
         description="Private airport transfers to and from Cape Town International (CPT). Your driver meets you at arrivals, tracks your flight in real time, and has you at your hotel in a premium vehicle, without the queues, the metered taxis, or the guesswork."
         primaryCtaLabel="Book Your Transfer"
         primaryCtaHref={WHATSAPP}
@@ -317,23 +321,22 @@ export default async function AirportTransfersCapeTownPage({ params }: { params:
 
       <FeaturedVehicles
         eyebrow="Transfer Fleet"
-        title="Choose Your Airport Transfer Vehicle"
+        title={tt("airport-transfers-cape-town.choose-your-airport-transfer-vehicle")}
         description="Every vehicle comes with a professional chauffeur, flight tracking, and meet & greet at arrivals."
         items={vehicles}
       />
       <div style={{textAlign:"center",padding:"0 0 24px",fontSize:"0.9rem",color:"#6c7a74"}}>
-        Need a driver beyond the airport? You can also <Link href="/chauffeur-hire" style={{color:"inherit",textDecoration:"underline"}}>hire a private driver</Link> across the day, week or a full multi-city trip.
-      </div>
+        {tt("airport-transfers-cape-town.need-a-driver-beyond-the")}{" "}<Link href={tt.path("/chauffeur-hire")} style={{color:"inherit",textDecoration:"underline"}}>{tt("airport-transfers-cape-town.hire-a-private-driver")}</Link> {tt("airport-transfers-cape-town.across-the-day-week-or")}</div>
 
       <WhyChooseUs
         eyebrow="Why Choose Us"
-        title="Premium Airport Transfers Built Around You"
-        items={whyItems}
+        title={tt("airport-transfers-cape-town.premium-airport-transfers-built-around")}
+        items={whyItems(tt)}
       />
 
       <FaqSection
         eyebrow="Airport Transfer FAQ"
-        title="Common Questions About Airport Transfers in Cape Town"
+        title={tt("airport-transfers-cape-town.common-questions-about-airport-transfers")}
         items={[
           {
             question: "Where will my driver meet me at Cape Town International Airport?",

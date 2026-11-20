@@ -9,6 +9,7 @@ import {
   type GoogleReview,
 } from "../../../lib/googleReviews";
 
+import { useT } from "../../../lib/i18n/LocaleContext";
 const SectionHeader = styled.div`
   max-width: 760px;
   margin-bottom: 28px;
@@ -142,14 +143,14 @@ type Props = {
 };
 
 export default function PrivateTourReviews({ reviews }: Props) {
+  const tt = useT();
   return (
     <>
       <SectionHeader>
-        <SectionEyebrow>What Our Guests Say</SectionEyebrow>
-        <SectionTitle>Trusted by Travellers Around the World</SectionTitle>
+        <SectionEyebrow>{tt("PrivateTourReviews.what-our-guests-say")}</SectionEyebrow>
+        <SectionTitle>{tt("PrivateTourReviews.trusted-by-travellers-around-the")}</SectionTitle>
         <SectionText>
-          Real clients. Real experiences. Our guests come from over 40 countries, and here's what they say about travelling the Cape with us.
-        </SectionText>
+          {tt("PrivateTourReviews.real-clients-real-experiences-our")}</SectionText>
       </SectionHeader>
 
       <VerifiedLine>{googleSummaryText}</VerifiedLine>
@@ -162,10 +163,10 @@ export default function PrivateTourReviews({ reviews }: Props) {
             <ReviewFooter>
               <ReviewName>{review.reviewer_name}</ReviewName>
               <ReviewSubtitle>
-                Google review{review.date_label ? ` · ${review.date_label}` : ""}
+                {tt("PrivateTourReviews.google-review")}{review.date_label ? tt("PrivateTourReviews.text", { date_label: review.date_label }) : ""}
               </ReviewSubtitle>
               {review.translated_from ? (
-                <ReviewSubtitle>Translated from {review.translated_from}</ReviewSubtitle>
+                <ReviewSubtitle>{tt("PrivateTourReviews.translated-from")}{" "}{review.translated_from}</ReviewSubtitle>
               ) : null}
             </ReviewFooter>
           </ReviewCard>
@@ -177,12 +178,11 @@ export default function PrivateTourReviews({ reviews }: Props) {
           href={GOOGLE_REVIEWS_URL}
           target="_blank"
           rel="noopener noreferrer"
-          aria-label="Read all reviews on Google"
+          aria-label={tt("PrivateTourReviews.read-all-reviews-on-google")}
         >
-          <GoogleG>G</GoogleG>
+          <GoogleG>{tt("PrivateTourReviews.g")}</GoogleG>
           <GoogleStars>★★★★★</GoogleStars>
-          {googleRatingLabel} from {googleReviewCount} Google reviews · See all reviews on Google
-        </GoogleButton>
+          {googleRatingLabel} {tt("PrivateTourReviews.from")}{" "}{googleReviewCount} {tt("PrivateTourReviews.google-reviews-see-all-reviews")}</GoogleButton>
       </GoogleRow>
     </>
   );

@@ -1,42 +1,43 @@
-export const MULTI_DAY_STEPS = [
-  "Share your dates and preferences",
-  "Receive a tailored day-by-day plan",
-  "Your chauffeur is assigned for the stay",
-  "Adjust anything on WhatsApp",
-];
+import type { TFunction } from "./i18n/messages";
+export const MULTI_DAY_STEPS = (tt: TFunction) => ([
+  tt("multiDay.share-your-dates-and-preferences"),
+  tt("multiDay.receive-a-tailored-day-by"),
+  tt("multiDay.your-chauffeur-is-assigned-for"),
+  tt("multiDay.adjust-anything-on-whatsapp"),
+]);
 
 export const MULTI_DAY_INTRO =
-  "Many of our clients book the same chauffeur for several days. Tell us your dates and what you enjoy, and we'll plan each day, reserve what needs reserving, and handle every journey from arrival to departure.";
+  (tt: TFunction) => (tt("multiDay.many-of-our-clients-book"));
 
-export const MULTI_DAY_FAQS: { question: string; answer: string }[] = [
+export const MULTI_DAY_FAQS = (tt: TFunction): { question: string; answer: string }[] => ([
   {
-    question: "How many days can I book a chauffeur for?",
+    question: tt("multiDay.how-many-days-can-i"),
     answer:
-      "As many as you like. Most clients book between two days and two weeks, and some keep the same chauffeur for their whole stay. Tell us your dates and we will plan around them.",
+      tt("multiDay.as-many-as-you-like"),
   },
   {
-    question: "Will I have the same chauffeur every day?",
+    question: tt("multiDay.will-i-have-the-same"),
     answer:
-      "Yes. Your chauffeur is assigned for the whole stay, so they learn your preferences, your pace and the plan for each day. If you want a different vehicle on a particular day, we can arrange that.",
+      tt("multiDay.yes-your-chauffeur-is-assigned"),
   },
   {
-    question: "What is included?",
+    question: tt("multiDay.what-is-included"),
     answer:
-      "Every day includes a professional chauffeur, your vehicle, fuel and bottled water. Entrance fees, meals and gratuities are not included unless we tell you otherwise in your plan.",
+      tt("multiDay.every-day-includes-a-professional"),
   },
   {
-    question: "How long is a full day?",
+    question: tt("multiDay.how-long-is-a-full"),
     answer:
-      "A full day is up to 8 hours. If you would like more time on a particular day, extra hours are available at an additional rate, which we confirm in your quote.",
+      tt("multiDay.a-full-day-is-up"),
   },
   {
-    question: "Can you take us to Hermanus and along the Garden Route?",
+    question: tt("multiDay.can-you-take-us-to"),
     answer:
-      "Yes. Multi-day trips can run from Cape Town and the Winelands to Hermanus and the Garden Route. We plan the routes, the overnight stops and the driving times with you, so each day stays comfortable.",
+      tt("multiDay.yes-multi-day-trips-can"),
   },
   {
-    question: "How do I book?",
+    question: tt("multiDay.how-do-i-book"),
     answer:
-      "Message us on WhatsApp or use the enquiry form with your dates, the number of guests and what you enjoy. We reply with a tailored day-by-day plan and quote within 30 minutes.",
+      tt("multiDay.message-us-on-whatsapp-or"),
   },
-];
+]);
