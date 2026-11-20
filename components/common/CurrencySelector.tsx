@@ -79,14 +79,14 @@ const DropdownWrap = styled.div`
 const Panel = styled.div<{ $visible: boolean }>`
   position: absolute;
   top: calc(100% + 10px);
-  right: 0;
+  inset-inline-end: 0;
   z-index: 9999;
   width: 260px;
 
   @media (max-width: 767px) {
     width: min(260px, calc(100vw - 24px));
-    right: 0;
-    left: auto;
+    inset-inline-end: 0;
+    inset-inline-start: auto;
   }
   border-radius: 18px;
   background: rgba(6, 32, 18, 0.97);
@@ -137,7 +137,7 @@ const CurrencyRow = styled.button<{ $active: boolean }>`
   border: none;
   cursor: pointer;
   transition: background 0.15s ease;
-  text-align: left;
+  text-align: start;
 
   &:hover {
     background: ${({ $active }) =>

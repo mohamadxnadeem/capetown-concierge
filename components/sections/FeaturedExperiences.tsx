@@ -78,6 +78,7 @@ const Description = styled.p`
 `;
 
 const Controls = styled.div`
+  direction: ltr; /* arrows keep physical left/right so they match the scroll direction */
   display: flex;
   gap: 10px;
 `;
@@ -220,6 +221,12 @@ const ViewButton = styled.span`
 `;
 
 const InlineArrow = styled.span`
+  display: inline-block;
+
+  [dir="rtl"] & {
+    transform: scaleX(-1);
+  }
+
   color: ${({ theme }) => theme.colors.primary};
   font-size: 1rem;
   font-weight: 700;

@@ -79,8 +79,8 @@ const Overlay = styled.div`
 
 const TileContent = styled.div`
   position: absolute;
-  left: 0;
-  right: 0;
+  inset-inline-start: 0;
+  inset-inline-end: 0;
   bottom: 0;
   z-index: 2;
   padding: 22px 22px 24px;
@@ -120,6 +120,11 @@ const TileCta = styled.div`
 
   &::after {
     content: " →";
+    display: inline-block;
+
+    [dir="rtl"] & {
+      transform: scaleX(-1);
+    }
   }
 `;
 

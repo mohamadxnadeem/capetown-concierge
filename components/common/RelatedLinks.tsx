@@ -22,7 +22,7 @@ const Text = styled.p`
 
 const List = styled.ul`
   margin: 0;
-  padding-left: 18px;
+  padding-inline-start: 18px;
   display: grid;
   gap: 8px;
 

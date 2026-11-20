@@ -6,8 +6,8 @@ import { trackWhatsAppClick } from "../../../lib/tracking";
 
 const Bar = styled.div`
   position: fixed;
-  left: 16px;
-  right: 16px;
+  inset-inline-start: 16px;
+  inset-inline-end: 16px;
   bottom: 16px;
   z-index: 60;
   display: flex;
@@ -21,8 +21,8 @@ const Bar = styled.div`
   box-shadow: 0 14px 34px rgba(0, 0, 0, 0.22);
 
   @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
-    left: 24px;
-    right: 24px;
+    inset-inline-start: 24px;
+    inset-inline-end: 24px;
     max-width: 860px;
     margin: 0 auto;
   }

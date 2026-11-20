@@ -73,10 +73,10 @@ const RightSide = styled.div`
   display: flex;
   align-items: center;
   gap: 12px;
-  padding-right: 20px;
+  padding-inline-end: 20px;
 
   @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
-    padding-right: 0;
+    padding-inline-end: 0;
   }
 `;
 

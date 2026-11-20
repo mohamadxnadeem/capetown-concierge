@@ -20,12 +20,18 @@ const Overlay = styled.div<{ $isOpen: boolean }>`
 const Drawer = styled.aside<{ $isOpen: boolean }>`
   position: fixed;
   top: 0;
-  left: 0;
+  inset-inline-start: 0;
   width: min(360px, 88vw);
   height: 100vh;
   background: linear-gradient(180deg, ${({ theme }) => theme.colors.primary} 0%, ${({ theme }) => theme.colors.primaryDark} 100%);
   box-shadow: 10px 0 30px rgba(18, 61, 43, 0.2);
   transform: translateX(${({ $isOpen }) => ($isOpen ? "0" : "-100%")});
+
+  /* Arabic: the menu slides in from the right edge */
+  [dir="rtl"] & {
+    transform: translateX(${({ $isOpen }) => ($isOpen ? "0" : "100%")});
+    box-shadow: -10px 0 30px rgba(18, 61, 43, 0.2);
+  }
   transition: transform 0.3s ease;
   z-index: 1300;
   padding: 24px;

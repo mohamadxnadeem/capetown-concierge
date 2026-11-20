@@ -142,8 +142,16 @@ const Arrow = styled.span`
   transform: translateX(0);
   transition: transform 0.2s ease;
 
+  [dir="rtl"] & {
+    transform: scaleX(-1) translateX(0);
+  }
+
   ${Card}:hover & {
     transform: translateX(4px);
+
+    [dir="rtl"] & {
+      transform: scaleX(-1) translateX(4px);
+    }
   }
 `;
 

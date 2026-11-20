@@ -744,7 +744,7 @@ const Thumb = styled.div`
 const ItineraryNotes = styled.p`
   margin: 0;
   padding: 10px 12px;
-  border-left: 3px solid ${({ theme }) => theme.colors.primary};
+  border-inline-start: 3px solid ${({ theme }) => theme.colors.primary};
   background: ${({ theme }) => theme.colors.background};
   color: ${({ theme }) => theme.colors.text};
   font-size: 0.92rem;

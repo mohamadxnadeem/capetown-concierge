@@ -177,7 +177,7 @@ const FeatureItem = styled.li`
 
   &::before {
     content: "✓";
-    margin-right: 8px;
+    margin-inline-end: 8px;
     color: ${({ theme }) => theme.colors.primary};
     font-weight: 700;
   }

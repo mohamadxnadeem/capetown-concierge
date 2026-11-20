@@ -149,7 +149,7 @@ const SocialLabel = styled.span`
   letter-spacing: 0.06em;
   text-transform: uppercase;
   font-weight: 700;
-  margin-right: 6px;
+  margin-inline-end: 6px;
 `;
 
 const SocialLink = styled.a`

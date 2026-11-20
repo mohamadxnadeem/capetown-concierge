@@ -52,7 +52,7 @@ const Content = styled.div`
   position: absolute;
   z-index: 2;
   bottom: 0;
-  left: 0;
+  inset-inline-start: 0;
   width: 100%;
   padding: 40px 20px;
 

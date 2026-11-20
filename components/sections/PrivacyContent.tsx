@@ -72,7 +72,7 @@ const Paragraph = styled.p`
 
 const List = styled.ul`
   margin: 0 0 16px;
-  padding-left: 22px;
+  padding-inline-start: 22px;
   color: ${({ theme }) => theme.colors.text};
   font-size: 1rem;
   line-height: 1.8;

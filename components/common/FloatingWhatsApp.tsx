@@ -14,7 +14,7 @@ const pulse = keyframes`
 const Wrap = styled.a`
   position: fixed;
   bottom: 24px;
-  right: 20px;
+  inset-inline-end: 20px;
   z-index: 999;
   display: flex;
   align-items: center;

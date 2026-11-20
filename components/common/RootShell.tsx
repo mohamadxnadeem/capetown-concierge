@@ -104,7 +104,7 @@ const localBusinessSchema = {
  * Shared <html> shell used by the [locale] root layout and the English-only
  * root layout (booking, driver, villas, hotels).
  */
-export default function RootShell({
+export default async function RootShell({
   locale,
   children,
 }: {
@@ -112,6 +112,8 @@ export default function RootShell({
   children: React.ReactNode;
 }) {
   const pageLocale = HTML_LANG[locale];
+  // Arabic web font is only imported (and so only preloaded) for /ar pages.
+  const arabicVariable = locale === "ar" ? (await import("../../lib/i18n/arabicFont")).arabicFont.variable : undefined;
   const messages = getCommonMessages(locale);
   const statuses = getAllPageStatuses();
   const bannerTexts: BannerTexts = {};
@@ -130,7 +132,7 @@ export default function RootShell({
         <link rel="preconnect" href="https://cape-town-concierge.s3.eu-north-1.amazonaws.com" />
         <link rel="dns-prefetch" href="//wa.me" />
       </head>
-      <body>
+      <body className={arabicVariable}>
         <StyledComponentsRegistry>
           <LocaleProvider locale={locale} messages={messages} statuses={statuses}>
             <JsonLd data={localBusinessSchema} />
