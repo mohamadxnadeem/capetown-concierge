@@ -1,4 +1,11 @@
 import { brand } from "./brand";
+import { HTML_LANG, type Locale } from "./i18n/config";
+
+/** Adds inLanguage to a JSON-LD node on non-English pages. English output is unchanged. */
+export function withInLanguage<T extends object>(schema: T, locale: Locale): T {
+  if (locale === "en") return schema;
+  return { ...schema, inLanguage: HTML_LANG[locale] };
+}
 
 const SITE_URL = brand.siteUrl;
 
@@ -18,8 +25,8 @@ export const businessSameAs: string[] = [
   brand.social?.youtube,
 ].filter((u): u is string => Boolean(u));
 
-export function buildBusinessSchema() {
-  return {
+export function buildBusinessSchema(locale: Locale = "en") {
+  return withInLanguage({
     "@context": "https://schema.org",
     "@type": ["LocalBusiness", "TravelAgency"],
     "@id": BUSINESS_ID,
@@ -80,7 +87,7 @@ export function buildBusinessSchema() {
       ],
     },
     sameAs: businessSameAs,
-  };
+  }, locale);
 }
 
 /**

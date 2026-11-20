@@ -3,6 +3,8 @@
 import { useState } from "react";
 import type { FormEvent } from "react";
 import styled from "styled-components";
+import { useLocale, useT } from "../../../lib/i18n/LocaleContext";
+import { LANGUAGE_FIELD } from "../../../lib/i18n/config";
 import { buildWhatsAppLink } from "../../../lib/whatsapp";
 import { trackWhatsAppClick } from "../../../lib/tracking";
 
@@ -150,6 +152,9 @@ const Note = styled.p`
 `;
 
 export default function ChauffeurDateEnquiry({ vehicle }: Props) {
+  const t = useT();
+  const locale = useLocale();
+  const language = LANGUAGE_FIELD[locale];
   const [start, setStart] = useState("");
   const [end, setEnd] = useState("");
   const [guests, setGuests] = useState("2");
@@ -160,14 +165,14 @@ export default function ChauffeurDateEnquiry({ vehicle }: Props) {
   function validate(): Errors {
     const today = todayLocalISO();
     const e: Errors = {};
-    if (!start) e.start = "Please choose a start date.";
-    else if (start < today) e.start = "Start date cannot be in the past.";
-    if (!end) e.end = "Please choose an end date.";
-    else if (start && end < start) e.end = "End date cannot be before the start date.";
+    if (!start) e.start = t("dates.err.startRequired");
+    else if (start < today) e.start = t("dates.err.startPast");
+    if (!end) e.end = t("dates.err.endRequired");
+    else if (start && end < start) e.end = t("dates.err.endBefore");
     const g = Number(guests);
-    if (!guests || !Number.isInteger(g) || g < 1 || g > 8) e.guests = "Enter 1 to 8 guests.";
-    if (!pickup.trim()) e.pickup = "Please tell us the pickup area or hotel.";
-    if (!name.trim()) e.name = "Please enter your name.";
+    if (!guests || !Number.isInteger(g) || g < 1 || g > 8) e.guests = t("dates.err.guests");
+    if (!pickup.trim()) e.pickup = t("dates.err.pickup");
+    if (!name.trim()) e.name = t("dates.err.name");
     return e;
   }
 
@@ -179,11 +184,11 @@ export default function ChauffeurDateEnquiry({ vehicle }: Props) {
 
     const guestCount = Number(guests);
     const message =
-      `Hi, I'd like to check availability for the ${vehicle} chauffeur service.\n` +
-      `Dates: ${formatDate(start)} to ${formatDate(end)}\n` +
-      `Guests: ${guestCount}\n` +
-      `Pickup: ${pickup.trim()}\n` +
-      `Name: ${name.trim()}`;
+      `${t("dates.msg.intro", { vehicle })}\n` +
+      `${t("dates.msg.dates", { start: formatDate(start), end: formatDate(end) })}\n` +
+      `${t("dates.msg.guests", { guests: guestCount })}\n` +
+      `${t("dates.msg.pickup", { pickup: pickup.trim() })}\n` +
+      `${t("dates.msg.name", { name: name.trim() })}`;
 
     // Open WhatsApp synchronously so mobile browsers do not block it.
     window.open(buildWhatsAppLink(message), "_blank", "noopener,noreferrer");
@@ -195,8 +200,9 @@ export default function ChauffeurDateEnquiry({ vehicle }: Props) {
         headers: { "Content-Type": "application/json", Accept: "application/json" },
         body: JSON.stringify({
           name: name.trim(),
-          subject: `Date enquiry: ${vehicle}`,
-          _subject: `Date enquiry: ${vehicle}`,
+          subject: `[${language}] Date enquiry: ${vehicle}`,
+          _subject: `[${language}] Date enquiry: ${vehicle}`,
+          language,
           message,
           _captcha: "false",
         }),
@@ -227,14 +233,14 @@ export default function ChauffeurDateEnquiry({ vehicle }: Props) {
   return (
     <Card>
       <CardInner>
-        <Title>Check Your Dates</Title>
+        <Title>{t("dates.title")}</Title>
 
         <Form onSubmit={handleSubmit} noValidate>
           <Field role="group" aria-labelledby="cde-dates-label">
-            <GroupLabel id="cde-dates-label">Your travel dates</GroupLabel>
+            <GroupLabel id="cde-dates-label">{t("dates.travelDates")}</GroupLabel>
             <DateRow>
               <Field>
-                <Label htmlFor="cde-start">Start date</Label>
+                <Label htmlFor="cde-start">{t("dates.start")}</Label>
                 <Input
                   id="cde-start"
                   type="date"
@@ -248,7 +254,7 @@ export default function ChauffeurDateEnquiry({ vehicle }: Props) {
                 {errors.start ? <ErrorText id="cde-start-err">{errors.start}</ErrorText> : null}
               </Field>
               <Field>
-                <Label htmlFor="cde-end">End date</Label>
+                <Label htmlFor="cde-end">{t("dates.end")}</Label>
                 <Input
                   id="cde-end"
                   type="date"
@@ -265,7 +271,7 @@ export default function ChauffeurDateEnquiry({ vehicle }: Props) {
           </Field>
 
           <Field>
-            <Label htmlFor="cde-guests">Guests</Label>
+            <Label htmlFor="cde-guests">{t("dates.guests")}</Label>
             <Input
               id="cde-guests"
               type="number"
@@ -282,11 +288,11 @@ export default function ChauffeurDateEnquiry({ vehicle }: Props) {
           </Field>
 
           <Field>
-            <Label htmlFor="cde-pickup">Pickup area or hotel</Label>
+            <Label htmlFor="cde-pickup">{t("dates.pickup")}</Label>
             <Input
               id="cde-pickup"
               type="text"
-              placeholder="e.g. One&Only, V&A Waterfront"
+              placeholder={t("dates.pickupPlaceholder")}
               value={pickup}
               onChange={(e) => setPickup(e.target.value)}
               aria-invalid={errors.pickup ? "true" : "false"}
@@ -297,7 +303,7 @@ export default function ChauffeurDateEnquiry({ vehicle }: Props) {
           </Field>
 
           <Field>
-            <Label htmlFor="cde-name">Name</Label>
+            <Label htmlFor="cde-name">{t("dates.name")}</Label>
             <Input
               id="cde-name"
               type="text"
@@ -311,10 +317,10 @@ export default function ChauffeurDateEnquiry({ vehicle }: Props) {
             {errors.name ? <ErrorText id="cde-name-err">{errors.name}</ErrorText> : null}
           </Field>
 
-          <Submit type="submit">Send on WhatsApp</Submit>
+          <Submit type="submit">{t("dates.submit")}</Submit>
         </Form>
 
-        <Note>We reply within 30 minutes. No payment needed to ask.</Note>
+        <Note>{t("dates.note")}</Note>
       </CardInner>
     </Card>
   );

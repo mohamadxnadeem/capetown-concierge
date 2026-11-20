@@ -41,6 +41,18 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     return [
+      // Old domains: permanent, path-preserving redirects to the live site.
+      ...[
+        "capetown-concierge.com",
+        "www.capetown-concierge.com",
+        "whycapetown.com",
+        "www.whycapetown.com",
+      ].map((host) => ({
+        source: "/:path*",
+        has: [{ type: "host" as const, value: host }],
+        destination: "https://www.capetown-concierge.co.za/:path*",
+        permanent: true,
+      })),
       // Non-www → www canonical redirect.
       // Google indexed the www version (canonical siteUrl = www); without
       // this redirect, clicks from Google land on the bare domain and 404.

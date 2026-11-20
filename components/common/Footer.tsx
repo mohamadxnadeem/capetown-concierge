@@ -7,6 +7,8 @@ import GoogleRatingBadge from "./GoogleRatingBadge";
 import { googleSummaryText } from "../../lib/googleReviews";
 import { trackWhatsAppClick } from "../../lib/tracking";
 import { buildWhatsAppLink, buildGeneralWhatsAppMessage } from "../../lib/whatsapp";
+import { buildLocalizedGeneralMessage } from "../../lib/whatsapp";
+import { useLocale, useLocalePath, useT } from "../../lib/i18n/LocaleContext";
 import { brand } from "../../lib/brand";
 
 const footerWhatsappLink = "https://wa.me/27636746131?text=Hi%2C+I%27d+like+to+book+a+luxury+chauffeur+or+private+tour+in+Cape+Town.+Please+assist.";
@@ -206,20 +208,23 @@ const LegalLink = styled(Link)`
   }
 `;
 
+const TELEGRAM_LINK = process.env.NEXT_PUBLIC_TELEGRAM_LINK || "";
+
 export default function Footer() {
+  const t = useT();
+  const lp = useLocalePath();
+  const locale = useLocale();
+  const waLink =
+    locale === "en" ? footerWhatsappLink : buildWhatsAppLink(buildLocalizedGeneralMessage(locale));
   return (
     <Wrapper>
       <Container>
         <Grid>
           <Brand>
             <BrandName>{brand.name}</BrandName>
-            <BrandText>
-              Premium private chauffeur services, bespoke tours, and luxury
-              airport transfers across Cape Town and the Western Cape. Available
-              7 days a week.
-            </BrandText>
+            <BrandText>{t("footer.brandText")}</BrandText>
             <WhatsAppButton
-              href={footerWhatsappLink}
+              href={waLink}
               target="_blank"
               rel="noopener noreferrer"
               onClick={() =>
@@ -233,41 +238,54 @@ export default function Footer() {
                 <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z" />
                 <path d="M12 0C5.373 0 0 5.373 0 12c0 2.126.556 4.12 1.527 5.849L.057 23.535a.75.75 0 0 0 .928.928l5.701-1.476A11.942 11.942 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75a9.713 9.713 0 0 1-4.93-1.343l-.355-.21-3.685.953.978-3.565-.229-.367A9.713 9.713 0 0 1 2.25 12C2.25 6.615 6.615 2.25 12 2.25S21.75 6.615 21.75 12 17.385 21.75 12 21.75z" />
               </svg>
-              Message Us on WhatsApp
+              {t("footer.messageUs")}
             </WhatsAppButton>
+            {locale === "ru" && TELEGRAM_LINK ? (
+              <WhatsAppButton
+                href={TELEGRAM_LINK}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() =>
+                  window.gtag?.("event", "telegram_click", { source: "footer_telegram" })
+                }
+              >
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <path d="M21.9 4.3 18.7 19.5c-.2 1-.9 1.3-1.7.8l-4.8-3.5-2.3 2.2c-.3.3-.5.5-1 .5l.3-4.9 8.9-8c.4-.3-.1-.5-.6-.2L6.5 13.3 1.8 11.8c-1-.3-1-1 .2-1.5L20.3 3.2c.9-.3 1.6.2 1.6 1.1z" />
+                </svg>
+                {t("header.telegram")}
+              </WhatsAppButton>
+            ) : null}
           </Brand>
 
           <Column>
-            <ColTitle>Services</ColTitle>
+            <ColTitle>{t("footer.services")}</ColTitle>
             <NavList>
-              <NavItem><NavLink href="/villas">Luxury Villas</NavLink></NavItem>
-              <NavItem><NavLink href="/hotels">Luxury Hotels</NavLink></NavItem>
-              <NavItem><NavLink href="/chauffeur-hire">Chauffeur Hire</NavLink></NavItem>
-              <NavItem><NavLink href="/tours">Day Tours</NavLink></NavItem>
-              <NavItem><NavLink href="/airport-transfers-cape-town">Airport Transfers</NavLink></NavItem>
-              <NavItem><NavLink href="/best-activities-to-do-in-cape-town">Best Activities</NavLink></NavItem>
-              <NavItem><NavLink href="/contact">Contact Us</NavLink></NavItem>
-              <NavItem><NavLink href="/privacy">Privacy Policy</NavLink></NavItem>
+              <NavItem><NavLink href={lp("/chauffeur-hire")}>{t("footer.chauffeurHire")}</NavLink></NavItem>
+              <NavItem><NavLink href={lp("/tours")}>{t("footer.dayTours")}</NavLink></NavItem>
+              <NavItem><NavLink href={lp("/airport-transfers-cape-town")}>{t("footer.airportTransfers")}</NavLink></NavItem>
+              <NavItem><NavLink href={lp("/best-activities-to-do-in-cape-town")}>{t("footer.bestActivities")}</NavLink></NavItem>
+              <NavItem><NavLink href={lp("/contact")}>{t("footer.contactUs")}</NavLink></NavItem>
+              <NavItem><NavLink href={lp("/privacy")}>{t("footer.privacy")}</NavLink></NavItem>
             </NavList>
           </Column>
 
           <Column>
-            <ColTitle>Contact</ColTitle>
+            <ColTitle>{t("footer.contact")}</ColTitle>
             <ContactItem>
-              <ContactLabel>WhatsApp / Phone</ContactLabel>
+              <ContactLabel>{t("footer.whatsappPhone")}</ContactLabel>
               {brand.phone}
             </ContactItem>
             <ContactItem>
-              <ContactLabel>Location</ContactLabel>
+              <ContactLabel>{t("footer.location")}</ContactLabel>
               {brand.address.locality}, {brand.address.region}
             </ContactItem>
             <ContactItem>
-              <ContactLabel>Availability</ContactLabel>
-              7 days a week
+              <ContactLabel>{t("footer.availability")}</ContactLabel>
+              {t("footer.availabilityValue")}
             </ContactItem>
             <ContactItem>
-              <ContactLabel>Response Time</ContactLabel>
-              Within 30 minutes
+              <ContactLabel>{t("footer.responseTime")}</ContactLabel>
+              {t("footer.responseValue")}
             </ContactItem>
           </Column>
         </Grid>
@@ -282,7 +300,7 @@ export default function Footer() {
           brand.social.facebook ||
           brand.social.youtube) ? (
           <SocialRow>
-            <SocialLabel>Follow us</SocialLabel>
+            <SocialLabel>{t("footer.followUs")}</SocialLabel>
             {brand.social.instagram ? (
               <SocialLink
                 href={brand.social.instagram}
@@ -336,20 +354,20 @@ export default function Footer() {
 
         <TrustRow>
           <TrustBadge>⭐ {googleSummaryText}</TrustBadge>
-          <TrustBadge>✔ Fully Licensed & Insured</TrustBadge>
-          <TrustBadge>✔ Professional PDP Drivers</TrustBadge>
-          <TrustBadge>✔ Private: No Shared Rides</TrustBadge>
-          <TrustBadge>✔ Cape Town Based</TrustBadge>
+          <TrustBadge>✔ {t("footer.trustLicensed")}</TrustBadge>
+          <TrustBadge>✔ {t("footer.trustPdp")}</TrustBadge>
+          <TrustBadge>✔ {t("footer.trustPrivate")}</TrustBadge>
+          <TrustBadge>✔ {t("footer.trustBased")}</TrustBadge>
         </TrustRow>
 
         <Bottom>
           <Copyright>
-            © {new Date().getFullYear()} {brand.name}. All rights reserved.
+            © {new Date().getFullYear()} {brand.name}. {t("footer.rights")}
           </Copyright>
           <LegalLinks>
-            <LegalLink href="/contact">Contact</LegalLink>
-            <LegalLink href="/cancellation-policy">Cancellation Policy</LegalLink>
-            <LegalLink href="/privacy">Privacy Policy</LegalLink>
+            <LegalLink href={lp("/contact")}>{t("footer.contact")}</LegalLink>
+            <LegalLink href={lp("/cancellation-policy")}>{t("footer.cancellation")}</LegalLink>
+            <LegalLink href={lp("/privacy")}>{t("footer.privacy")}</LegalLink>
           </LegalLinks>
         </Bottom>
       </Container>

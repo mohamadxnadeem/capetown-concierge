@@ -1,7 +1,8 @@
 import type { MetadataRoute } from "next";
 import { brand } from "../lib/brand";
-import { fetchVillas } from "../lib/villas";
-import { fetchHotels } from "../lib/hotels";
+import { TRANSLATED_LOCALES } from "../lib/i18n/config";
+import { isReviewed } from "../lib/i18n/status";
+import { localizedPath } from "../lib/i18n/metadata";
 import { FALLBACK_VEHICLE_SLUGS } from "../lib/seo";
 
 const SITE_URL = brand.siteUrl;
@@ -68,12 +69,29 @@ async function getExperienceSlugs(): Promise<string[]> {
   }
 }
 
+/**
+ * Adds ar / pt-BR / ru URLs, but only for pages whose translation is marked
+ * "reviewed" in messages/status.json. Drafts never appear here.
+ */
+function buildLocaleRoutes(englishRoutes: MetadataRoute.Sitemap): MetadataRoute.Sitemap {
+  const out: MetadataRoute.Sitemap = [];
+  for (const route of englishRoutes) {
+    const path = route.url.replace(SITE_URL, "") || "/";
+    const seg = path.split("/").filter(Boolean);
+    const kind = seg[0] === "tours" ? "tours" : seg[0] === "chauffeur-hire" && seg[1] ? "vehicles" : null;
+    const detail = kind && seg[1] ? { kind: kind as "tours" | "vehicles", slug: seg[1] } : undefined;
+    for (const locale of TRANSLATED_LOCALES) {
+      if (!isReviewed(locale, path)) continue;
+      out.push({ ...route, url: `${SITE_URL}${localizedPath(locale, path, detail)}` });
+    }
+  }
+  return out;
+}
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [vehicleSlugs, experienceSlugs, villas, hotels] = await Promise.all([
+  const [vehicleSlugs, experienceSlugs] = await Promise.all([
     getVehicleSlugs(),
     getExperienceSlugs(),
-    fetchVillas().catch(() => []),
-    fetchHotels().catch(() => []),
   ]);
 
   const staticRoutes: MetadataRoute.Sitemap = [
@@ -126,18 +144,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.7,
     },
     {
-      url: `${SITE_URL}/villas`,
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 0.6,
-    },
-    {
-      url: `${SITE_URL}/hotels`,
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 0.6,
-    },
-    {
       url: `${SITE_URL}/contact`,
       lastModified: new Date(),
       changeFrequency: "monthly",
@@ -171,29 +177,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.85,
   }));
 
-  const villaRoutes: MetadataRoute.Sitemap = villas
-    .filter((v) => Boolean(v.slug))
-    .map((v) => ({
-      url: `${SITE_URL}/villas/${v.slug.toLowerCase()}`,
-      lastModified: new Date(),
-      changeFrequency: "monthly" as const,
-      priority: 0.5,
-    }));
-
-  const hotelRoutes: MetadataRoute.Sitemap = hotels
-    .filter((h) => Boolean(h.slug))
-    .map((h) => ({
-      url: `${SITE_URL}/hotels/${h.slug.toLowerCase()}`,
-      lastModified: new Date(),
-      changeFrequency: "monthly" as const,
-      priority: 0.5,
-    }));
-
   return [
     ...staticRoutes,
     ...vehicleRoutes,
     ...tourRoutes,
-    ...villaRoutes,
-    ...hotelRoutes,
+    ...buildLocaleRoutes([...staticRoutes, ...vehicleRoutes, ...tourRoutes]),
   ];
 }
