@@ -1,7 +1,13 @@
 import type { MetadataRoute } from "next";
-import { brand } from "../lib/brand";
+import {
+  HTML_LANG,
+  LOCALES,
+  STATIC_PAGE_PATHS,
+  type Locale,
+} from "../lib/i18n/config";
+import { staticVersions, absoluteUrl, type LocaleVersions } from "../lib/i18n/seo";
+import { versionsFromTranslations, type Translations } from "../lib/i18n/content";
 
-const SITE_URL = brand.siteUrl;
 
 // Fallback slugs used when the Railway API is unreachable during build.
 // Update this list whenever a new tour or vehicle is added to the CMS.
@@ -16,143 +22,104 @@ const FALLBACK_TOUR_SLUGS = [
 // The sitemap uses real CMS slugs when the API is reachable.
 const FALLBACK_VEHICLE_SLUGS: string[] = [];
 
-type CarsApiItem = {
-  car?: { slug?: string };
+type Freq = NonNullable<MetadataRoute.Sitemap[number]["changeFrequency"]>;
+
+type ApiItem = {
+  car?: { slug?: string; translations?: Translations };
+  experience?: { slug?: string; translations?: Translations };
   slug?: string;
+  translations?: Translations;
 };
 
-type ExperienceListItem = {
-  experience?: { slug?: string };
-  slug?: string;
-};
-
-async function getVehicleSlugs(): Promise<string[]> {
+async function getItems(url: string, revalidate: number): Promise<ApiItem[] | null> {
   try {
-    const res = await fetch(
-      "https://web-production-1ab9.up.railway.app/api/cars-for-hire/all/",
-      { next: { revalidate: 300 } }
-    );
-    if (!res.ok) return FALLBACK_VEHICLE_SLUGS;
+    const res = await fetch(url, { next: { revalidate } });
+    if (!res.ok) return null;
     const data = await res.json();
-    const items: CarsApiItem[] = Array.isArray(data)
-      ? data
-      : Array.isArray(data?.results)
-      ? data.results
-      : [];
-    const apiSlugs = items
-      .map((item) => item?.car?.slug || item?.slug)
-      .filter((slug): slug is string => Boolean(slug))
-      .map((slug) => slug.toLowerCase());
-    return Array.from(new Set([...apiSlugs, ...FALLBACK_VEHICLE_SLUGS]));
+    return Array.isArray(data) ? data : Array.isArray(data?.results) ? data.results : [];
   } catch {
-    return FALLBACK_VEHICLE_SLUGS;
+    return null;
   }
 }
 
-async function getExperienceSlugs(): Promise<string[]> {
-  try {
-    const res = await fetch(
-      "https://web-production-1ab9.up.railway.app/api/experiences/all/",
-      { next: { revalidate: 3600 } }
+/** One sitemap entry per reviewed language version, each listing all reviewed alternates. */
+function entriesFor(
+  versions: LocaleVersions,
+  changeFrequency: Freq,
+  priority: number
+): MetadataRoute.Sitemap {
+  const live = (LOCALES as readonly Locale[]).filter((l) => {
+    const v = versions[l];
+    return v && (l === "en" || v.status === "reviewed");
+  });
+  const languages: Record<string, string> = {};
+  for (const l of live) languages[HTML_LANG[l]] = absoluteUrl(versions[l]!.path);
+  if (versions.en) languages["x-default"] = absoluteUrl(versions.en.path);
+  return live.map((l) => ({
+    url: absoluteUrl(versions[l]!.path),
+    lastModified: new Date(),
+    changeFrequency,
+    priority,
+    ...(live.length > 1 ? { alternates: { languages } } : {}),
+  }));
+}
+
+function dynamicEntries(
+  section: string,
+  items: ApiItem[] | null,
+  fallbackSlugs: string[],
+  changeFrequency: Freq,
+  priority: number
+): MetadataRoute.Sitemap {
+  const out: MetadataRoute.Sitemap = [];
+  const seen = new Set<string>();
+  for (const item of items ?? []) {
+    const obj = item?.experience || item?.car || item;
+    const slug = obj?.slug?.toLowerCase();
+    if (!slug) continue;
+    const enSlug = (obj?.translations?.en?.slug || slug).toLowerCase();
+    seen.add(enSlug);
+    out.push(
+      ...entriesFor(versionsFromTranslations(section, obj?.translations, enSlug), changeFrequency, priority)
     );
-    if (!res.ok) return FALLBACK_TOUR_SLUGS;
-    const data: ExperienceListItem[] = await res.json();
-    const apiSlugs = data
-      .map((item) => item?.experience?.slug || item?.slug)
-      .filter((slug): slug is string => Boolean(slug))
-      .map((slug) => slug.toLowerCase());
-    return Array.from(new Set([...apiSlugs, ...FALLBACK_TOUR_SLUGS]));
-  } catch {
-    return FALLBACK_TOUR_SLUGS;
   }
+  for (const slug of fallbackSlugs) {
+    if (seen.has(slug)) continue;
+    out.push(...entriesFor(versionsFromTranslations(section, undefined, slug), changeFrequency, priority));
+  }
+  return out;
 }
 
+const STATIC_META: Record<string, { freq: Freq; priority: number }> = {
+  "/": { freq: "weekly", priority: 1.0 },
+  "/chauffeur-hire": { freq: "weekly", priority: 0.9 },
+  "/tours": { freq: "weekly", priority: 0.9 },
+  "/airport-transfers-cape-town": { freq: "weekly", priority: 0.9 },
+  "/best-wine-farms-in-cape-town": { freq: "monthly", priority: 0.8 },
+  "/best-activities-to-do-in-cape-town": { freq: "monthly", priority: 0.8 },
+  "/7-day-cape-town-itinerary": { freq: "monthly", priority: 0.7 },
+  "/contact": { freq: "monthly", priority: 0.5 },
+  "/cancellation-policy": { freq: "yearly", priority: 0.3 },
+  "/privacy": { freq: "yearly", priority: 0.3 },
+};
+
+/**
+ * One sitemap of every indexable URL in every language. Draft translations
+ * are left out. Villas and hotels are hidden for now.
+ */
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [vehicleSlugs, experienceSlugs] = await Promise.all([
-    getVehicleSlugs(),
-    getExperienceSlugs(),
+  const [vehicles, experiences] = await Promise.all([
+    getItems("https://web-production-1ab9.up.railway.app/api/cars-for-hire/all/", 300),
+    getItems("https://web-production-1ab9.up.railway.app/api/experiences/all/", 3600),
   ]);
 
-  const staticRoutes: MetadataRoute.Sitemap = [
-    {
-      url: SITE_URL,
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 1.0,
-    },
-    {
-      url: `${SITE_URL}/chauffeur-hire`,
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 0.9,
-    },
-    {
-      url: `${SITE_URL}/tours`,
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 0.9,
-    },
-    {
-      url: `${SITE_URL}/airport-transfers-cape-town`,
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 0.9,
-    },
-    {
-      url: `${SITE_URL}/best-wine-farms-in-cape-town`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.8,
-    },
-    {
-      url: `${SITE_URL}/best-activities-to-do-in-cape-town`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.8,
-    },
-    {
-      url: `${SITE_URL}/7-day-cape-town-itinerary`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.7,
-    },
-    {
-      url: `${SITE_URL}/contact`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.5,
-    },
-    {
-      url: `${SITE_URL}/cancellation-policy`,
-      lastModified: new Date(),
-      changeFrequency: "yearly",
-      priority: 0.3,
-    },
-    {
-      url: `${SITE_URL}/privacy`,
-      lastModified: new Date(),
-      changeFrequency: "yearly",
-      priority: 0.3,
-    },
-  ];
-
-  const vehicleRoutes: MetadataRoute.Sitemap = vehicleSlugs.map((slug) => ({
-    url: `${SITE_URL}/chauffeur-hire/${slug}`,
-    lastModified: new Date(),
-    changeFrequency: "monthly" as const,
-    priority: 0.75,
-  }));
-
-  const tourRoutes: MetadataRoute.Sitemap = experienceSlugs.map((slug) => ({
-    url: `${SITE_URL}/tours/${slug}`,
-    lastModified: new Date(),
-    changeFrequency: "monthly" as const,
-    priority: 0.85,
-  }));
+  const staticRoutes = (STATIC_PAGE_PATHS as readonly string[]).flatMap((path) =>
+    entriesFor(staticVersions(path), STATIC_META[path].freq, STATIC_META[path].priority)
+  );
 
   return [
     ...staticRoutes,
-    ...vehicleRoutes,
-    ...tourRoutes,
+    ...dynamicEntries("/chauffeur-hire", vehicles, FALLBACK_VEHICLE_SLUGS, "monthly", 0.75),
+    ...dynamicEntries("/tours", experiences, FALLBACK_TOUR_SLUGS, "monthly", 0.85),
   ];
 }

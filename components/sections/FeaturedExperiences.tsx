@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import Link from "../common/LocaleLink";
 import { useRef } from "react";
 import styled from "styled-components";
 import Container from "../common/Container";

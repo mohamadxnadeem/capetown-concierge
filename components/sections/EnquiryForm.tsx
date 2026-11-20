@@ -2,6 +2,9 @@
 
 import { useState } from "react";
 import styled from "styled-components";
+import { useLocale, useT } from "../i18n/LocaleProvider";
+import { FORM_LANGUAGE } from "../../lib/i18n/config";
+import type { TFunction } from "../../lib/i18n/messages";
 
 const Wrap = styled.div`
   background: ${({ theme }) => theme.colors.backgroundSoft};
@@ -141,19 +144,22 @@ type FormState = {
 
 type Errors = Partial<Record<keyof FormState, string>>;
 
-function validate(form: FormState): Errors {
+function validate(form: FormState, t: TFunction): Errors {
   const errors: Errors = {};
-  if (!form.name.trim()) errors.name = "Full name is required.";
+  if (!form.name.trim()) errors.name = t("form.err.name");
   if (!form.email.trim()) {
-    errors.email = "Email address is required.";
+    errors.email = t("form.err.emailRequired");
   } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
-    errors.email = "Please enter a valid email address.";
+    errors.email = t("form.err.emailInvalid");
   }
-  if (!form.service) errors.service = "Please select a service type.";
+  if (!form.service) errors.service = t("form.err.service");
   return errors;
 }
 
 export default function EnquiryForm() {
+  const locale = useLocale();
+  const t = useT();
+  const language = FORM_LANGUAGE[locale];
   const [form, setForm] = useState<FormState>({
     name: "",
     email: "",
@@ -178,7 +184,7 @@ export default function EnquiryForm() {
   }
 
   async function handleSubmit() {
-    const newErrors = validate(form);
+    const newErrors = validate(form, t);
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       return;
@@ -189,6 +195,7 @@ export default function EnquiryForm() {
         `Name: ${form.name}`,
         `Email: ${form.email}`,
         form.phone ? `Phone: ${form.phone}` : null,
+        `Language: ${language}`,
         `Service: ${form.service}`,
         form.date ? `Travel Date: ${form.date}` : null,
         form.groupSize ? `Group Size: ${form.groupSize}` : null,
@@ -203,7 +210,8 @@ export default function EnquiryForm() {
         body: JSON.stringify({
           name: form.name,
           email: form.email,
-          subject: `New Enquiry — ${form.service}`,
+          subject: `[${language}] New enquiry: ${form.service}`,
+          language,
           message: body,
           _captcha: "false",
         }),
@@ -220,21 +228,21 @@ export default function EnquiryForm() {
   if (submitted) {
     return (
       <Wrap>
-        <SuccessMsg>Thanks — we&apos;ll be in touch within 30 minutes.</SuccessMsg>
+        <SuccessMsg>{t("form.success")}</SuccessMsg>
       </Wrap>
     );
   }
 
   return (
     <Wrap>
-      <FormTitle>Send an Enquiry</FormTitle>
+      <FormTitle>{t("form.title")}</FormTitle>
       <FormSubtitle>
-        Prefer email? Fill in your details and we&apos;ll get back to you within 30 minutes.
+        {t("form.subtitle")}
       </FormSubtitle>
 
       <FieldGrid>
         <div>
-          <Label htmlFor="enq-name">Full Name *</Label>
+          <Label htmlFor="enq-name">{t("form.name")}</Label>
           <Input
             id="enq-name"
             name="name"
@@ -242,13 +250,13 @@ export default function EnquiryForm() {
             autoComplete="name"
             value={form.name}
             onChange={handleChange}
-            placeholder="Jane Smith"
+            placeholder={t("form.namePlaceholder")}
           />
           {errors.name && <ErrorMsg>{errors.name}</ErrorMsg>}
         </div>
 
         <div>
-          <Label htmlFor="enq-email">Email Address *</Label>
+          <Label htmlFor="enq-email">{t("form.email")}</Label>
           <Input
             id="enq-email"
             name="email"
@@ -256,13 +264,13 @@ export default function EnquiryForm() {
             autoComplete="email"
             value={form.email}
             onChange={handleChange}
-            placeholder="jane@example.com"
+            placeholder={t("form.emailPlaceholder")}
           />
           {errors.email && <ErrorMsg>{errors.email}</ErrorMsg>}
         </div>
 
         <div>
-          <Label htmlFor="enq-phone">Phone (with country code)</Label>
+          <Label htmlFor="enq-phone">{t("form.phone")}</Label>
           <Input
             id="enq-phone"
             name="phone"
@@ -270,31 +278,31 @@ export default function EnquiryForm() {
             autoComplete="tel"
             value={form.phone}
             onChange={handleChange}
-            placeholder="+1 555 000 0000"
+            placeholder={t("form.phonePlaceholder")}
           />
         </div>
 
         <div>
-          <Label htmlFor="enq-service">Service Type *</Label>
+          <Label htmlFor="enq-service">{t("form.service")}</Label>
           <Select
             id="enq-service"
             name="service"
             value={form.service}
             onChange={handleChange}
           >
-            <option value="">Select a service…</option>
-            <option value="Airport Transfer">Airport Transfer</option>
-            <option value="Full-Day Chauffeur">Full-Day Chauffeur</option>
-            <option value="Private Tour">Private Tour</option>
-            <option value="Winelands Tour">Winelands Tour</option>
-            <option value="Safari Day Trip">Safari Day Trip</option>
-            <option value="Other">Other</option>
+            <option value="">{t("form.servicePlaceholder")}</option>
+            <option value="Airport Transfer">{t("form.service.airport")}</option>
+            <option value="Full-Day Chauffeur">{t("form.service.fullDay")}</option>
+            <option value="Private Tour">{t("form.service.privateTour")}</option>
+            <option value="Winelands Tour">{t("form.service.winelands")}</option>
+            <option value="Safari Day Trip">{t("form.service.safari")}</option>
+            <option value="Other">{t("form.service.other")}</option>
           </Select>
           {errors.service && <ErrorMsg>{errors.service}</ErrorMsg>}
         </div>
 
         <div>
-          <Label htmlFor="enq-date">Travel Date</Label>
+          <Label htmlFor="enq-date">{t("form.date")}</Label>
           <Input
             id="enq-date"
             name="date"
@@ -305,7 +313,7 @@ export default function EnquiryForm() {
         </div>
 
         <div>
-          <Label htmlFor="enq-group">Group Size</Label>
+          <Label htmlFor="enq-group">{t("form.group")}</Label>
           <Input
             id="enq-group"
             name="groupSize"
@@ -314,24 +322,24 @@ export default function EnquiryForm() {
             max="50"
             value={form.groupSize}
             onChange={handleChange}
-            placeholder="2"
+            placeholder={t("form.groupPlaceholder")}
           />
         </div>
 
         <FullWidth>
-          <Label htmlFor="enq-message">Message</Label>
+          <Label htmlFor="enq-message">{t("form.message")}</Label>
           <Textarea
             id="enq-message"
             name="message"
             value={form.message}
             onChange={handleChange}
-            placeholder="Any specific requests or questions…"
+            placeholder={t("form.messagePlaceholder")}
           />
         </FullWidth>
       </FieldGrid>
 
       <SubmitButton onClick={handleSubmit} disabled={submitting}>
-        {submitting ? "Sending…" : "Send Enquiry"}
+        {submitting ? t("form.sending") : t("form.send")}
       </SubmitButton>
     </Wrap>
   );

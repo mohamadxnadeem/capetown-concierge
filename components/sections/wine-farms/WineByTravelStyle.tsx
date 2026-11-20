@@ -1,7 +1,7 @@
 "use client";
 
 import styled from "styled-components";
-import Link from "next/link";
+import Link from "../../common/LocaleLink";
 import {
   Container,
   Section,
