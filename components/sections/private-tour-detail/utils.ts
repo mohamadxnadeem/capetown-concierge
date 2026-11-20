@@ -1,4 +1,4 @@
-import { Experience, FaqItem, ReviewItem } from "./types";
+import { Experience, FaqItem } from "./types";
 export { buildWhatsAppLink } from "../../../lib/whatsapp";
 
 export function stripHtml(html?: string) {
@@ -61,24 +61,3 @@ export function buildTourFaqs(tourTitle: string): FaqItem[] {
     },
   ];
 }
-
-export const genericTourReviews: ReviewItem[] = [
-  {
-    quote:
-      "A beautifully organised private experience with great flexibility, comfort, and local insight throughout the day.",
-    name: "James R.",
-    subtitle: "London, UK",
-  },
-  {
-    quote:
-      "Everything felt smooth and personalised. We loved being able to move at our own pace and enjoy the day without stress.",
-    name: "Sophie & Daniel",
-    subtitle: "Dubai, UAE",
-  },
-  {
-    quote:
-      "Professional, comfortable, and very well planned. It felt far more premium than a standard group tour.",
-    name: "Nadia K.",
-    subtitle: "Johannesburg, South Africa",
-  },
-];

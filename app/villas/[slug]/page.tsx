@@ -33,7 +33,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const ogImage = getVillaPrimaryPhoto(villa) ?? FALLBACK_OG;
   const canonical = `${SITE_URL}/villas/${villa.slug.toLowerCase()}`;
 
-  const title = `${villa.name} — Luxury Villa in ${area}, Cape Town`;
+  const title = `${villa.name} | Luxury Villa in ${area}, Cape Town`;
 
   const description =
     villa.short_description ||
@@ -46,10 +46,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     description: description.slice(0, 160),
     alternates: { canonical },
     robots: {
-      index: true,
+      index: false,
       follow: true,
       googleBot: {
-        index: true,
+        index: false,
         follow: true,
         "max-image-preview": "large",
         "max-snippet": -1,

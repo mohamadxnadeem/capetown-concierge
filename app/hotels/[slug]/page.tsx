@@ -33,7 +33,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const canonical = `${SITE_URL}/hotels/${hotel.slug.toLowerCase()}`;
 
   const starText = hotel.star_rating ? `${hotel.star_rating}-star ` : "";
-  const title = `${hotel.name} — Luxury ${starText}Hotel in ${area}`;
+  const title = `${hotel.name} | Luxury ${starText}Hotel in ${area}`;
 
   const description =
     hotel.short_description ||
@@ -46,10 +46,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     description: description.slice(0, 160),
     alternates: { canonical },
     robots: {
-      index: true,
+      index: false,
       follow: true,
       googleBot: {
-        index: true,
+        index: false,
         follow: true,
         "max-image-preview": "large",
         "max-snippet": -1,

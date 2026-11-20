@@ -34,5 +34,7 @@ export const sigmaVipBrand: BrandConfig = {
     border: "#e3e8e5",
     white: "#ffffff",
     error: "#a12626",
+    gold: "#C9A961",
+    cream: "#F5F0E6",
   },
 };

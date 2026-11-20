@@ -14,6 +14,8 @@ type ExperienceItem = {
   image?: string;
   alt?: string;
   priceUsd?: number;
+  /** Unit after the price, for example "per vehicle". Defaults to "per day". */
+  priceSuffix?: string;
 };
 
 type FeaturedExperiencesProps = {
@@ -21,6 +23,9 @@ type FeaturedExperiencesProps = {
   title?: string;
   description?: string;
   items?: ExperienceItem[];
+  id?: string;
+  footerLabel?: string;
+  footerHref?: string;
 };
 
 const Wrapper = styled.section`
@@ -225,6 +230,33 @@ const InlineArrow = styled.span`
   font-weight: 700;
 `;
 
+const FooterLinkRow = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: 32px;
+`;
+
+const FooterLink = styled(Link)`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 46px;
+  padding: 0 18px;
+  border-radius: 14px;
+  background: ${({ theme }) => theme.colors.primary};
+  color: ${({ theme }) => theme.colors.white};
+  font-weight: 700;
+  font-size: 0.95rem;
+  text-decoration: none;
+  box-shadow: ${({ theme }) => theme.shadows.soft};
+  transition: background 0.2s ease, transform 0.2s ease;
+
+  &:hover {
+    background: ${({ theme }) => theme.colors.primaryDark};
+    transform: translateY(-1px);
+  }
+`;
+
 const EmptyState = styled.div`
   padding: 28px;
   border-radius: ${({ theme }) => theme.radius.lg};
@@ -243,6 +275,9 @@ export default function FeaturedExperiences({
   title = "Explore Signature Private Tours in Cape Town",
   description = "Discover some of our most requested private tours, scenic routes, and curated full-day experiences across Cape Town and beyond.",
   items = [],
+  id,
+  footerLabel,
+  footerHref,
 }: FeaturedExperiencesProps) {
   const sliderRef = useRef<HTMLDivElement | null>(null);
 
@@ -258,11 +293,11 @@ export default function FeaturedExperiences({
   };
 
   return (
-    <Wrapper>
+    <Wrapper id={id}>
       <Container>
         <TopBar>
           <Intro>
-            <Eyebrow>{eyebrow}</Eyebrow>
+            {eyebrow ? <Eyebrow>{eyebrow}</Eyebrow> : null}
             <Title>{title}</Title>
             <Description>{description}</Description>
           </Intro>
@@ -304,7 +339,7 @@ export default function FeaturedExperiences({
                 </CardImageWrap>
 
                 <CardContent>
-                  <Badge>{item.priceUsd ? <Money usd={item.priceUsd} /> : "Private Tour"}</Badge>
+                  <Badge>{item.priceUsd ? <Money usd={item.priceUsd} suffix={item.priceSuffix} /> : "Private Tour"}</Badge>
                   <CardTitle>{item.title}</CardTitle>
                   <CardText>{item.description}</CardText>
 
@@ -317,6 +352,12 @@ export default function FeaturedExperiences({
             ))}
           </Slider>
         )}
+
+        {footerHref && footerLabel && items.length ? (
+          <FooterLinkRow>
+            <FooterLink href={footerHref}>{footerLabel}</FooterLink>
+          </FooterLinkRow>
+        ) : null}
       </Container>
     </Wrapper>
   );
