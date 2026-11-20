@@ -85,6 +85,10 @@ const Chevron = styled.span<{ $open: boolean }>`
 
 const Wrap = styled.div`
   position: relative;
+
+  @media (max-width: 767px) {
+    position: static;
+  }
 `;
 
 const Panel = styled.div<{ $visible: boolean }>`
@@ -95,9 +99,13 @@ const Panel = styled.div<{ $visible: boolean }>`
   width: 260px;
 
   @media (max-width: 767px) {
+    /* Anchor to the header (not the button) so the panel is always fully on screen, LTR and RTL. */
     width: min(260px, calc(100vw - 24px));
-    right: 0;
+    max-width: calc(100vw - 24px);
+    top: calc(100% + 6px);
+    right: auto;
     left: auto;
+    inset-inline-end: 12px;
   }
   border-radius: 18px;
   background: rgba(6, 32, 18, 0.97);
