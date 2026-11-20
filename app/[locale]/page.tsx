@@ -145,7 +145,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
         description="A private chauffeur service in Cape Town, with your own chauffeur and guide for a single journey, a full day, or your entire stay."
         primaryCtaLabel="Enquire on WhatsApp"
         primaryCtaHref={buildWhatsAppLink(
-          buildGeneralWhatsAppMessage("a private chauffeur, day tour or multi-day trip in Cape Town")
+          buildGeneralWhatsAppMessage("a private chauffeur, day tour or multi-day trip in Cape Town", locale)
         )}
         secondaryCtaLabel="View Tours"
         secondaryCtaHref="#tours"
