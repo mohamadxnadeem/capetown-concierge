@@ -12,8 +12,8 @@ type Props = {
 
 const StickyBar = styled.div`
   position: fixed;
-  left: 16px;
-  right: 16px;
+  inset-inline-start: 16px;
+  inset-inline-end: 16px;
   bottom: 16px;
   z-index: 60;
   display: flex;

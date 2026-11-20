@@ -80,7 +80,7 @@ const OverlayTop = styled.div`
 const Counter = styled.div`
   position: absolute;
   top: 18px;
-  right: 18px;
+  inset-inline-end: 18px;
   z-index: 3;
   min-height: 38px;
   padding: 0 14px;

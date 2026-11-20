@@ -1,5 +1,8 @@
 "use client";
 
+import { useLocale } from "../../i18n/LocaleProvider";
+import { withLang, hasLocaleVersion } from "../../../lib/i18n/content";
+import type { Locale } from "../../../lib/i18n/config";
 import { useEffect, useMemo, useState } from "react";
 import PrivateTourVehicles from "../private-tour-detail/PrivateTourVehicles";
 import { Container, Section } from "../wine-farms/shared";
@@ -49,9 +52,10 @@ function pickImage(item: CarsForHireApiItem): string | undefined {
   return carImages[0]?.cover_photos || topImages[0]?.cover_photos || undefined;
 }
 
-function normalizeVehicles(data: CarsForHireApiItem[]): VehicleCardItem[] {
+function normalizeVehicles(data: CarsForHireApiItem[], locale: Locale): VehicleCardItem[] {
   return data
     .filter((item) => item?.car?.is_active !== false && item?.car?.title)
+    .filter((item) => hasLocaleVersion(item?.car, locale))
     .map((item) => {
       const car = item.car!;
       const priceValue = car.price_from ?? car.price ?? "";
@@ -72,6 +76,7 @@ function normalizeVehicles(data: CarsForHireApiItem[]): VehicleCardItem[] {
 export default function AvailableVehicles({
   title = "Private Wine Tour in Cape Town",
 }: Props) {
+  const locale = useLocale();
   const [vehicles, setVehicles] = useState<VehicleCardItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
@@ -84,7 +89,7 @@ export default function AvailableVehicles({
         setLoading(true);
         setHasError(false);
 
-        const res = await fetch(API_URL);
+        const res = await fetch(withLang(API_URL, locale));
         if (!res.ok) {
           throw new Error(`Failed to fetch vehicles: ${res.status}`);
         }
@@ -92,7 +97,7 @@ export default function AvailableVehicles({
         const json = (await res.json()) as CarsForHireApiItem[];
         if (!isMounted) return;
 
-        setVehicles(normalizeVehicles(json));
+        setVehicles(normalizeVehicles(json, locale));
       } catch (error) {
         console.error("AvailableVehicles fetch error:", error);
         if (isMounted) setHasError(true);
@@ -106,7 +111,7 @@ export default function AvailableVehicles({
     return () => {
       isMounted = false;
     };
-  }, []);
+  }, [locale]);
 
   const items = useMemo(() => vehicles, [vehicles]);
 

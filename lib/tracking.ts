@@ -36,6 +36,7 @@ export function trackWhatsAppClick({
     source,
     vehicle: vehicle || "",
     tour: tour || "",
+    page_locale: document.documentElement.lang || "en",
   });
 
   // Google Ads conversion

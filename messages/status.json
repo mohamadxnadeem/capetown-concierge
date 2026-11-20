@@ -1,0 +1,6 @@
+{
+  "_comment": "Per-page translation status for hardcoded pages. Keys are English paths. Values: draft or reviewed. Draft pages render noindex, are left out of the sitemap, hreflang and the language switcher. English is always reviewed. Only change a value to reviewed after a native speaker has signed the page off.",
+  "ar": {},
+  "pt-BR": {},
+  "ru": {}
+}

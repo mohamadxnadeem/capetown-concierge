@@ -34,7 +34,7 @@ const Trigger = styled.button<{ $isOpen: boolean }>`
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  text-align: left;
+  text-align: start;
   cursor: pointer;
 
   &:hover {

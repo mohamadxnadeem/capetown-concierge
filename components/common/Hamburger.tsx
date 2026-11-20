@@ -39,7 +39,7 @@ const Icon = styled.span`
   &::after {
     content: "";
     position: absolute;
-    left: 0;
+    inset-inline-start: 0;
     width: 18px;
     height: 2px;
     background: white;

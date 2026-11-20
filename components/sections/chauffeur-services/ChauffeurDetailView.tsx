@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import styled from "styled-components";
-import Link from "next/link";
+import Link from "../../common/LocaleLink";
 import Container from "../../common/Container";
 import { Car, RelatedVehicle } from "./types";
 import {
@@ -229,7 +229,7 @@ const ExpandButton = styled.button`
   justify-content: space-between;
   gap: 16px;
   cursor: pointer;
-  text-align: left;
+  text-align: start;
 
   &:hover {
     background: rgba(11, 91, 51, 0.03);
