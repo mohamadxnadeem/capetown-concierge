@@ -313,7 +313,7 @@ export default async function PrivateToursLandingPage() {
       <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Tours" }]} />
       <TourHubIntro lowestVehiclePrice={lowestVehiclePrice} />
 
-      <TestimonialsSection />
+      <TestimonialsSection tags={["tours"]} />
       <TestimonialsCta />
       <div style={{textAlign:"center",padding:"8px 0 4px",fontSize:"0.9rem",color:"#6c7a74"}}>
         Also need an <Link href="/airport-transfers-cape-town" style={{color:"inherit",textDecoration:"underline"}}>airport transfer</Link> to or from Cape Town? We handle that too.

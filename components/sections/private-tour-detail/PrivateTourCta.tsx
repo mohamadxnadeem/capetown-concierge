@@ -62,7 +62,7 @@ export default function PrivateTourCta({ whatsappLink, title, body }: Props) {
       <CTABox>
         <CTATitle>{title || "Ready to book? Here's how it works"}</CTATitle>
         <CTAText>
-          {body || "Send us a WhatsApp with your travel dates and group size. We'll confirm availability and send you a price within 30 minutes. No deposit is required to hold a date while you decide — just message us and we'll take it from there."}
+          {body || "Send us a WhatsApp with your travel dates and group size. We'll confirm availability and send you a price within 30 minutes. No deposit is required to hold a date while you decide. Just message us and we'll take it from there."}
         </CTAText>
 
         <CTAButtons>

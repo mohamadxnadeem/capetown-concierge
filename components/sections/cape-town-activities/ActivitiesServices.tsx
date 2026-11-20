@@ -1,6 +1,7 @@
 "use client";
 
 import styled from "styled-components";
+import Link from "next/link";
 import Button from "../../common/Button";
 import { Container, Section, SectionHeader, SectionText, SectionTitle, StyledLink } from "./shared";
 import { ServiceItem } from "./types";
@@ -46,8 +47,20 @@ export default function ActivitiesServices({ items }: Props) {
           <SectionTitle>How We Help You Experience Cape Town Better</SectionTitle>
           <SectionText>
             Instead of trying to piece everything together yourself, we help you
-            enjoy Cape Town with private tours, chauffeur service, and a smoother
-            itinerary built around the experiences that suit you best.
+            enjoy Cape Town with private tours, such as our{" "}
+            <Link href="/tours/cape-peninsula-tour" style={{color:"inherit",textDecoration:"underline"}}>
+              private Cape Peninsula tour
+            </Link>{" "}
+            and{" "}
+            <Link href="/tours/winelands-chauffeur-drive" style={{color:"inherit",textDecoration:"underline"}}>
+              private Winelands tour
+            </Link>
+            , plus{" "}
+            <Link href="/chauffeur-hire" style={{color:"inherit",textDecoration:"underline"}}>
+              chauffeur hire in Cape Town
+            </Link>
+            , and a smoother itinerary built around the experiences that suit
+            you best.
           </SectionText>
         </SectionHeader>
 

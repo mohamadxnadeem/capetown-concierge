@@ -30,6 +30,8 @@ export interface BrandConfig {
     border: string;
     white: string;
     error: string;
+    gold: string;
+    cream: string;
   };
   social?: {
     instagram?: string;

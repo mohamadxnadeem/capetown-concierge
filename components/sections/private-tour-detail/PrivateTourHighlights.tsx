@@ -74,7 +74,7 @@ const DEFAULT_TITLE = "Why Guests Choose a Private Tour Over a Group Bus";
 const DEFAULT_ITEMS: HighlightItem[] = [
   {
     heading: "No Shared Vehicle. Ever.",
-    body: "Your group books the entire vehicle. No strangers, no compromises, no waiting for 20 people to get back on board. It’s your day — completely.",
+    body: "Your group books the entire vehicle. No strangers, no compromises, no waiting for 20 people to get back on board. It’s your day, completely.",
   },
   {
     heading: "A Chauffeur Who Knows the Peninsula",
@@ -82,11 +82,11 @@ const DEFAULT_ITEMS: HighlightItem[] = [
   },
   {
     heading: "Your Schedule, Not Ours",
-    body: "Spend 20 minutes at one stop or two hours — it’s your call. We build the day around what matters to you, not a preset timetable designed for the lowest common denominator.",
+    body: "Spend 20 minutes at one stop or two hours, it’s your call. We build the day around what matters to you, not a preset timetable designed for the lowest common denominator.",
   },
   {
     heading: "Everything Taken Care Of",
-    body: "Hotel pickup, cold water in the car, toll fees, fuel, local guidance — it’s all included. You focus on the experience. We handle everything else.",
+    body: "Hotel pickup, cold water in the car, toll fees, fuel, local guidance, it’s all included. You focus on the experience. We handle everything else.",
   },
 ];
 

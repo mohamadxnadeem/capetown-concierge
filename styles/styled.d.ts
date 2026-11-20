@@ -18,6 +18,8 @@ declare module "styled-components" {
       danger?: string;
       success?: string;
       warning?: string;
+      gold: string;
+      cream: string;
     };
     breakpoints: {
       xs?: string;

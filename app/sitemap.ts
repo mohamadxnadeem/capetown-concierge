@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { brand } from "../lib/brand";
+import { FALLBACK_VEHICLE_SLUGS } from "../lib/seo";
 
 const SITE_URL = brand.siteUrl;
 
@@ -12,9 +13,7 @@ const FALLBACK_TOUR_SLUGS = [
   "big-5-safari-from-cape-town",
 ];
 
-// Vehicle fallbacks intentionally empty — wrong slugs here would pollute the sitemap.
-// The sitemap uses real CMS slugs when the API is reachable.
-const FALLBACK_VEHICLE_SLUGS: string[] = [];
+// Vehicle fallbacks come from lib/seo.ts (real live slugs, lowercase).
 
 type CarsApiItem = {
   car?: { slug?: string };
@@ -91,6 +90,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified: new Date(),
       changeFrequency: "weekly",
       priority: 0.9,
+    },
+    {
+      url: `${SITE_URL}/reviews`,
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 0.6,
     },
     {
       url: `${SITE_URL}/airport-transfers-cape-town`,

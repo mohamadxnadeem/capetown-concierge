@@ -102,7 +102,7 @@ const OG_IMAGE = `${SITE_URL}/images/og-cape-town-concierge.jpg`;
 export const metadata: Metadata = {
   title: "Things to Do in Cape Town | Luxury Experiences",
   description:
-    "Discover Cape Town's best activities — from safaris to scenic drives. Privately curated experiences with a dedicated chauffeur. Plan your trip today.",
+    "Discover Cape Town's best activities, from safaris to scenic drives. Privately curated experiences with a dedicated chauffeur. Plan your trip today.",
   alternates: {
     canonical: `${SITE_URL}/best-activities-to-do-in-cape-town`,
   },
@@ -120,7 +120,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Things to Do in Cape Town | Luxury Experiences",
     description:
-      "Discover Cape Town's best activities — from safaris to scenic drives. Privately curated experiences with a dedicated chauffeur. Plan your trip today.",
+      "Discover Cape Town's best activities, from safaris to scenic drives. Privately curated experiences with a dedicated chauffeur. Plan your trip today.",
     url: `${SITE_URL}/best-activities-to-do-in-cape-town`,
     siteName: brand.name,
     type: "website",
@@ -130,7 +130,7 @@ export const metadata: Metadata = {
         url: OG_IMAGE,
         width: 1200,
         height: 630,
-        alt: "Cape Town Concierge — Luxury Chauffeur Service",
+        alt: "Cape Town Concierge, Luxury Chauffeur Service",
       },
     ],
   },
@@ -138,7 +138,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Things to Do in Cape Town | Luxury Experiences",
     description:
-      "Discover Cape Town's best activities — from safaris to scenic drives. Privately curated experiences with a dedicated chauffeur. Plan your trip today.",
+      "Discover Cape Town's best activities, from safaris to scenic drives. Privately curated experiences with a dedicated chauffeur. Plan your trip today.",
     images: [OG_IMAGE],
   },
 };

@@ -105,6 +105,14 @@ const nextConfig: NextConfig = {
         destination: "/booking-confirmation/:group_reference",
         permanent: true,
       },
+      // V-Class slug was briefly changed in admin to "mercedes-v-class".
+      // King Mo (2026-11-15): keep the original URL. Not a case-only redirect,
+      // the destination is a different, longer slug, so it cannot loop.
+      {
+        source: "/chauffeur-hire/mercedes-v-class",
+        destination: "/chauffeur-hire/mercedes-v-class-private-chauffeur-service",
+        permanent: true,
+      },
       // NOTE: do NOT add case-only redirects (e.g. BMW-X5 → bmw-x5).
       // Next.js matches sources case-insensitively so they loop on the
       // lowercase URL. Slug lowercasing is handled in code instead.
