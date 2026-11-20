@@ -1,3 +1,5 @@
+import { enT } from "./i18n/messages";
+import type { TFunction } from "./i18n/messages";
 export type HighlightItem = {
   heading: string;
   body: string;
@@ -26,326 +28,326 @@ export type TourPageContent = {
 };
 
 const SHARED_CTA_BODY =
-  "Send us a WhatsApp with your travel dates and group size. We'll confirm availability and send you a price within 30 minutes. No deposit is required to hold a date while you decide. Just message us and we'll take it from there.";
+  (tt: TFunction) => (tt("tourPageContent.send-us-a-whatsapp-with"));
 
-const BADGES = [
-  "✔ 100% Private: your vehicle, your group, your pace",
-  "✔ Flexible itinerary: you set the stops",
-  "✔ Professional chauffeur & local guide included",
-];
+const BADGES = (tt: TFunction) => ([
+  tt("tourPageContent.100-private-your-vehicle-your"),
+  tt("tourPageContent.flexible-itinerary-you-set-the"),
+  tt("tourPageContent.professional-chauffeur-local-guide-included"),
+]);
 
-const NO_SHARED: HighlightItem = {
-  heading: "No Shared Vehicle. Ever.",
-  body: "Your group books the entire vehicle. No strangers, no compromises, no waiting for 20 people to get back on board. It's your day, completely.",
-};
+const NO_SHARED = (tt: TFunction): HighlightItem => ({
+  heading: tt("tourPageContent.no-shared-vehicle-ever"),
+  body: tt("tourPageContent.your-group-books-the-entire"),
+});
 
-const EVERYTHING: HighlightItem = {
-  heading: "Everything Taken Care Of",
-  body: "Hotel pickup, cold water in the car, toll fees, fuel and local guidance are all included. You focus on the experience. We handle everything else.",
-};
+const EVERYTHING = (tt: TFunction): HighlightItem => ({
+  heading: tt("tourPageContent.everything-taken-care-of"),
+  body: tt("tourPageContent.hotel-pickup-cold-water-in"),
+});
 
-const CAPE_PENINSULA: TourPageContent = {
-  trustBadges: BADGES,
-  itineraryTitle: "Your Cape Point and Cape Peninsula Route, Stop by Stop",
+const CAPE_PENINSULA = (tt: TFunction): TourPageContent => ({
+  trustBadges: BADGES(tt),
+  itineraryTitle: tt("tourPageContent.your-cape-point-and-cape"),
   itinerarySubheading:
-    "No group timetables and no one rushing you back to the bus. Linger with the penguins at Boulders Beach, take your time at Cape Point, or ask your chauffeur to pull over for a photo on the coast road.",
-  highlightsTitle: "Why Take the Cape Peninsula Privately",
+    tt("tourPageContent.no-group-timetables-and-no"),
+  highlightsTitle: tt("tourPageContent.why-take-the-cape-peninsula"),
   highlights: [
-    NO_SHARED,
+    NO_SHARED(tt),
     {
-      heading: "A Chauffeur Who Knows the Peninsula",
-      body: "Your driver knows this route well. They know where the light is best for photos, which viewpoints the big buses skip, and when to suggest lingering a little longer.",
+      heading: tt("tourPageContent.a-chauffeur-who-knows-the"),
+      body: tt("tourPageContent.your-driver-knows-this-route"),
     },
     {
-      heading: "Your Schedule, Not Ours",
-      body: "Spend 20 minutes at one stop or two hours. We build the day around what matters to you, not a preset timetable.",
+      heading: tt("tourPageContent.your-schedule-not-ours"),
+      body: tt("tourPageContent.spend-20-minutes-at-one"),
     },
-    EVERYTHING,
+    EVERYTHING(tt),
   ],
-  midCtaTitle: "Ready to See Cape Point Privately?",
+  midCtaTitle: tt("tourPageContent.ready-to-see-cape-point"),
   midCtaBody:
-    "The Cape Peninsula is one of the most popular days out from Cape Town. Message us and we will plan the day around you instead of a shared tour bus.",
-  midCtaButtonLabel: "Check Availability: We Respond in 30 Minutes",
-  ctaTitle: "Ready to book? Here's how it works",
-  ctaBody: SHARED_CTA_BODY,
-  faqTitle: "Cape Point Private Tour: Your Questions, Answered",
-  inclusionsTitle: "What's included in your Cape Peninsula tour",
-  vehiclesTitle: "Your vehicle for the Cape Peninsula",
+    tt("tourPageContent.the-cape-peninsula-is-one"),
+  midCtaButtonLabel: tt("tourPageContent.check-availability-we-respond-in"),
+  ctaTitle: tt("tourPageContent.ready-to-book-here-s"),
+  ctaBody: SHARED_CTA_BODY(tt),
+  faqTitle: tt("tourPageContent.cape-point-private-tour-your"),
+  inclusionsTitle: tt("tourPageContent.what-s-included-in-your"),
+  vehiclesTitle: tt("tourPageContent.your-vehicle-for-the-cape"),
   faqItems: [
     {
-      question: "How long does the Cape Point private tour take?",
+      question: tt("tourPageContent.how-long-does-the-cape"),
       answer:
-        "Plan for about 8 hours from hotel pickup to drop-off. We build in flexibility by design, so if you want longer at Boulders Beach or Cape Point, just say so.",
+        tt("tourPageContent.plan-for-about-8-hours"),
     },
     {
-      question: "What do we see on the Cape Peninsula tour?",
+      question: tt("tourPageContent.what-do-we-see-on"),
       answer:
-        "The suggested route includes Muizenberg Beach, Boulders Beach and its penguin colony, Cape Point Lighthouse, the Cape of Good Hope, lunch at Dixie's in Simon's Town and the scenic Chapman's Peak drive on the way back.",
+        tt("tourPageContent.the-suggested-route-includes-muizenberg"),
     },
     {
-      question: "Will we see the penguins at Boulders Beach?",
+      question: tt("tourPageContent.will-we-see-the-penguins"),
       answer:
-        "Boulders Beach is home to a colony of African penguins and is a planned stop on the tour. Your chauffeur will give you as much time there as you want.",
+        tt("tourPageContent.boulders-beach-is-home-to"),
     },
     {
-      question: "Where do we stop for lunch on the Cape Peninsula tour?",
+      question: tt("tourPageContent.where-do-we-stop-for"),
       answer:
-        "Lunch at Dixie's in Simon's Town is part of the suggested route. If you prefer somewhere else or have dietary needs, tell us when you book and we will plan around it.",
+        tt("tourPageContent.lunch-at-dixie-s-in"),
     },
     {
-      question: "Can we change the Cape Peninsula route?",
+      question: tt("tourPageContent.can-we-change-the-cape"),
       answer:
-        "Yes. The suggested route is a starting point. Want to skip a stop, add one or fit around a lunch reservation? Tell us when you book and we will tailor the day.",
+        tt("tourPageContent.yes-the-suggested-route-is"),
     },
     {
-      question: "Is the Cape Peninsula tour suitable for families and children?",
+      question: tt("tourPageContent.is-the-cape-peninsula-tour"),
       answer:
-        "Very much so. The private format means no rushing and no crowds, and your chauffeur will adapt the pace to your group. Boulders Beach and Cape Point are particular hits with younger travellers.",
+        tt("tourPageContent.very-much-so-the-private"),
     },
   ],
-};
+});
 
-const CAPE_TOWN_CITY: TourPageContent = {
-  trustBadges: BADGES,
-  itineraryTitle: "Your Cape Town City and Table Mountain Day",
+const CAPE_TOWN_CITY = (tt: TFunction): TourPageContent => ({
+  trustBadges: BADGES(tt),
+  itineraryTitle: tt("tourPageContent.your-cape-town-city-and"),
   itinerarySubheading:
-    "Cape Town's most iconic landmarks, explored at your pace with your own chauffeur. Spend longer where you love it and skip what you do not.",
-  highlightsTitle: "Why See Cape Town's Landmarks Privately",
+    tt("tourPageContent.cape-town-s-most-iconic"),
+  highlightsTitle: tt("tourPageContent.why-see-cape-town-s"),
   highlights: [
-    NO_SHARED,
+    NO_SHARED(tt),
     {
-      heading: "A Chauffeur Who Knows the City",
-      body: "Your driver knows Cape Town's streets, viewpoints and quieter corners. They know where the light is best for photos and when to suggest lingering a little longer.",
+      heading: tt("tourPageContent.a-chauffeur-who-knows-the-2"),
+      body: tt("tourPageContent.your-driver-knows-cape-town"),
     },
     {
-      heading: "Table Mountain Timed Around You",
-      body: "Table Mountain depends on the weather on the day, so we keep the order of your stops flexible and plan the mountain for the best conditions.",
+      heading: tt("tourPageContent.table-mountain-timed-around-you"),
+      body: tt("tourPageContent.table-mountain-depends-on-the"),
     },
-    EVERYTHING,
+    EVERYTHING(tt),
   ],
-  midCtaTitle: "Ready to See Cape Town Properly?",
+  midCtaTitle: tt("tourPageContent.ready-to-see-cape-town"),
   midCtaBody:
-    "A private chauffeur day gives you the full picture of the city without the queues or a shared bus. Message us and let's plan your day.",
-  midCtaButtonLabel: "Check Availability: We Respond in 30 Minutes",
-  ctaTitle: "Ready to book? Here's how it works",
-  ctaBody: SHARED_CTA_BODY,
-  faqTitle: "Cape Town City Tour: Your Questions, Answered",
-  inclusionsTitle: "What's included in your city and Table Mountain tour",
-  vehiclesTitle: "Your vehicle for the city tour",
+    tt("tourPageContent.a-private-chauffeur-day-gives"),
+  midCtaButtonLabel: tt("tourPageContent.check-availability-we-respond-in"),
+  ctaTitle: tt("tourPageContent.ready-to-book-here-s"),
+  ctaBody: SHARED_CTA_BODY(tt),
+  faqTitle: tt("tourPageContent.cape-town-city-tour-your"),
+  inclusionsTitle: tt("tourPageContent.what-s-included-in-your-2"),
+  vehiclesTitle: tt("tourPageContent.your-vehicle-for-the-city"),
   faqItems: [
     {
-      question: "What does the private Cape Town city tour include?",
+      question: tt("tourPageContent.what-does-the-private-cape"),
       answer:
-        "The suggested day covers Bo-Kaap, Signal Hill, Camps Bay, the V&A Waterfront and sunset at Table Mountain. A harbour cruise and a scenic helicopter flight can be added.",
+        tt("tourPageContent.the-suggested-day-covers-bo"),
     },
     {
-      question: "How long is the city and Table Mountain tour?",
+      question: tt("tourPageContent.how-long-is-the-city"),
       answer:
-        "Plan for about 8 hours from hotel pickup to drop-off. Saving Table Mountain for the late afternoon means you can finish with the city lights coming on.",
+        tt("tourPageContent.plan-for-about-8-hours-2"),
     },
     {
-      question: "What if the weather is bad on Table Mountain?",
+      question: tt("tourPageContent.what-if-the-weather-is"),
       answer:
-        "Table Mountain is weather dependent. Because the day is private, your chauffeur can reorder the stops and move the mountain to the clearest part of the day.",
+        tt("tourPageContent.table-mountain-is-weather-dependent"),
     },
     {
-      question: "Can we add the helicopter flight or a harbour cruise?",
+      question: tt("tourPageContent.can-we-add-the-helicopter"),
       answer:
-        "Yes. A scenic helicopter flight and a harbour cruise from the V&A Waterfront are listed as options on the itinerary. Message us on WhatsApp and we will help you plan them into the day.",
+        tt("tourPageContent.yes-a-scenic-helicopter-flight"),
     },
     {
-      question: "Can we customise the city tour?",
+      question: tt("tourPageContent.can-we-customise-the-city"),
       answer:
-        "Absolutely. Want to spend longer at the Waterfront, skip a stop or add somewhere new? Tell us when you book and we will tailor the day around you.",
+        tt("tourPageContent.absolutely-want-to-spend-longer"),
     },
     {
-      question: "Is the city tour suitable for families and children?",
+      question: tt("tourPageContent.is-the-city-tour-suitable"),
       answer:
-        "Very much so. The private format means no rushing and the flexibility to adapt the day for younger travellers. Camps Bay and the Waterfront are easy favourites with families.",
+        tt("tourPageContent.very-much-so-the-private-2"),
     },
   ],
-};
+});
 
-const WINELANDS: TourPageContent = {
+const WINELANDS = (tt: TFunction): TourPageContent => ({
   trustBadges: [
-    "✔ 100% Private: your vehicle, your group, your pace",
-    "✔ Flexible itinerary: you choose the estates",
-    "✔ Professional chauffeur & local guide included",
+    tt("tourPageContent.100-private-your-vehicle-your"),
+    tt("tourPageContent.flexible-itinerary-you-choose-the"),
+    tt("tourPageContent.professional-chauffeur-local-guide-included"),
   ],
-  itineraryTitle: "Your Winelands Estates, Stop by Stop",
+  itineraryTitle: tt("tourPageContent.your-winelands-estates-stop-by"),
   itinerarySubheading:
-    "No shuttle timetable and no one rushing you between estates. Linger over a tasting, explore the gardens at Babylonstoren, or ask your chauffeur to stop at a viewpoint along the way.",
-  highlightsTitle: "Why Choose a Private Winelands Tour Over a Shared Shuttle",
+    tt("tourPageContent.no-shuttle-timetable-and-no"),
+  highlightsTitle: tt("tourPageContent.why-choose-a-private-winelands"),
   highlights: [
-    NO_SHARED,
+    NO_SHARED(tt),
     {
-      heading: "A Chauffeur Who Knows the Winelands",
-      body: "Your driver knows the wine routes well. They know which estates are worth the detour, the best time to arrive before the crowds, and when to suggest one more stop.",
+      heading: tt("tourPageContent.a-chauffeur-who-knows-the-3"),
+      body: tt("tourPageContent.your-driver-knows-the-wine"),
     },
     {
-      heading: "Your Pace, Not a Shuttle Timetable",
-      body: "Spend 45 minutes at one estate or three hours. Nobody is herding you back onto a bus. The day flows around your appetite, your conversation and how good the wine turns out to be.",
+      heading: tt("tourPageContent.your-pace-not-a-shuttle"),
+      body: tt("tourPageContent.spend-45-minutes-at-one"),
     },
-    EVERYTHING,
+    EVERYTHING(tt),
   ],
-  midCtaTitle: "Ready to Experience the Cape Winelands?",
+  midCtaTitle: tt("tourPageContent.ready-to-experience-the-cape"),
   midCtaBody:
-    "Don't leave your wine day to a shared shuttle. Message us and we'll plan it around you, your group and the estates you most want to see.",
-  midCtaButtonLabel: "Check Availability: We Respond in 30 Minutes",
-  ctaTitle: "Ready to book? Here's how it works",
-  ctaBody: SHARED_CTA_BODY,
-  faqTitle: "Private Winelands Tour: Your Questions, Answered",
-  inclusionsTitle: "What's included in your Winelands tour",
-  vehiclesTitle: "Your vehicle for the Winelands",
+    tt("tourPageContent.don-t-leave-your-wine"),
+  midCtaButtonLabel: tt("tourPageContent.check-availability-we-respond-in"),
+  ctaTitle: tt("tourPageContent.ready-to-book-here-s"),
+  ctaBody: SHARED_CTA_BODY(tt),
+  faqTitle: tt("tourPageContent.private-winelands-tour-your-questions"),
+  inclusionsTitle: tt("tourPageContent.what-s-included-in-your-3"),
+  vehiclesTitle: tt("tourPageContent.your-vehicle-for-the-winelands"),
   faqItems: [
     {
-      question: "Which wine estates are on the private Winelands tour?",
+      question: tt("tourPageContent.which-wine-estates-are-on"),
       answer:
-        "The suggested route visits Waterford Estate, Babylonstoren and Delaire Graff Estate in the Stellenbosch Winelands, then returns to Cape Town in the early evening.",
+        tt("tourPageContent.the-suggested-route-visits-waterford"),
     },
     {
-      question: "How long is the Winelands tour?",
+      question: tt("tourPageContent.how-long-is-the-winelands"),
       answer:
-        "Plan for about 8 hours from hotel pickup to drop-off. If you want to linger over lunch or a tasting, just say so.",
+        tt("tourPageContent.plan-for-about-8-hours-3"),
     },
     {
-      question: "Can we visit Franschhoek or choose different estates?",
+      question: tt("tourPageContent.can-we-visit-franschhoek-or"),
       answer:
-        "Yes. The suggested route is a starting point, not a rule. Franschhoek is not on the standard route, but you can ask for different estates when you book and we will build the day around your preferences.",
+        tt("tourPageContent.yes-the-suggested-route-is-2"),
     },
     {
-      question: "Can we taste wine freely?",
+      question: tt("tourPageContent.can-we-taste-wine-freely"),
       answer:
-        "Yes. A professional chauffeur drives all day, so your group can enjoy the tastings without worrying about driving.",
+        tt("tourPageContent.yes-a-professional-chauffeur-drives"),
     },
     {
-      question: "Is the Winelands tour good for a romantic trip or anniversary?",
+      question: tt("tourPageContent.is-the-winelands-tour-good"),
       answer:
-        "It is a popular day for couples and special occasions. A private vehicle, vineyard views and no strangers make it feel special. Let us know the occasion when you book.",
+        tt("tourPageContent.it-is-a-popular-day"),
     },
   ],
-};
+});
 
-const SAFARI: TourPageContent = {
+const SAFARI = (tt: TFunction): TourPageContent => ({
   trustBadges: [
-    "✔ 100% Private: your vehicle, your group, your pace",
-    "✔ Transport & meals included",
-    "✔ Professional chauffeur & local guide included",
+    tt("tourPageContent.100-private-your-vehicle-your"),
+    tt("tourPageContent.transport-meals-included"),
+    tt("tourPageContent.professional-chauffeur-local-guide-included"),
   ],
-  itineraryTitle: "Your Big 5 Safari Day, from Hotel Pickup to Game Drive",
+  itineraryTitle: tt("tourPageContent.your-big-5-safari-day"),
   itinerarySubheading:
-    "No shared game vehicles with strangers and no rigid schedule. Your chauffeur collects you from your hotel, drives you to Aquila and brings you back to Cape Town the same night.",
-  highlightsTitle: "Why Choose a Private Safari Day Trip from Cape Town",
+    tt("tourPageContent.no-shared-game-vehicles-with"),
+  highlightsTitle: tt("tourPageContent.why-choose-a-private-safari"),
   highlights: [
     {
-      heading: "Private Transport, Both Ways",
-      body: "No shared shuttle with strangers. Your group has a dedicated luxury vehicle and chauffeur for the full day, from hotel pickup to the drive back after dark.",
+      heading: tt("tourPageContent.private-transport-both-ways"),
+      body: tt("tourPageContent.no-shared-shuttle-with-strangers"),
     },
     {
-      heading: "A Chauffeur Who Plans Around You",
-      body: "Your driver coordinates timing, knows the route and handles every logistical detail so you arrive relaxed and ready for the game drive.",
+      heading: tt("tourPageContent.a-chauffeur-who-plans-around"),
+      body: tt("tourPageContent.your-driver-coordinates-timing-knows"),
     },
     {
-      heading: "Everything Included",
-      body: "Transport, game drive, meals and local guidance are all in. You focus on the experience. We handle the rest.",
+      heading: tt("tourPageContent.everything-included"),
+      body: tt("tourPageContent.transport-game-drive-meals-and"),
     },
     {
-      heading: "A Safari Without a Multi-Day Trip",
-      body: "The Big 5 are not in Cape Town itself. Aquila is about two hours away, so you can see them on a single private day and be back at your hotel the same night.",
+      heading: tt("tourPageContent.a-safari-without-a-multi"),
+      body: tt("tourPageContent.the-big-5-are-not"),
     },
   ],
-  midCtaTitle: "Ready for a Big 5 Safari Day from Cape Town?",
+  midCtaTitle: tt("tourPageContent.ready-for-a-big-5"),
   midCtaBody:
-    "You can do a Big 5 safari and be back in Cape Town the same night. Message us and we'll sort the transport, the timing and everything in between.",
-  midCtaButtonLabel: "Check Availability: We Respond in 30 Minutes",
-  ctaTitle: "Ready to book? Here's how it works",
-  ctaBody: SHARED_CTA_BODY,
-  faqTitle: "Big 5 Safari Day Trip: Your Questions, Answered",
-  inclusionsTitle: "What's included in your safari day trip",
-  vehiclesTitle: "Your vehicle for the safari day trip",
+    tt("tourPageContent.you-can-do-a-big"),
+  midCtaButtonLabel: tt("tourPageContent.check-availability-we-respond-in"),
+  ctaTitle: tt("tourPageContent.ready-to-book-here-s"),
+  ctaBody: SHARED_CTA_BODY(tt),
+  faqTitle: tt("tourPageContent.big-5-safari-day-trip"),
+  inclusionsTitle: tt("tourPageContent.what-s-included-in-your-4"),
+  vehiclesTitle: tt("tourPageContent.your-vehicle-for-the-safari"),
   faqItems: [
     {
-      question: "How far is Aquila from Cape Town?",
+      question: tt("tourPageContent.how-far-is-aquila-from"),
       answer:
-        "Aquila Private Game Reserve is about 2 hours from Cape Town. Your chauffeur handles the full drive both ways.",
+        tt("tourPageContent.aquila-private-game-reserve-is"),
     },
     {
-      question: "What time do we leave and when are we back?",
+      question: tt("tourPageContent.what-time-do-we-leave"),
       answer:
-        "On the suggested itinerary your chauffeur collects you from your hotel at around 12h30, the game drive starts at 16h00 and you are back at your hotel at around 21h00. Message us if you need a different pickup time.",
+        tt("tourPageContent.on-the-suggested-itinerary-your"),
     },
     {
-      question: "Which animals can we see on the Big 5 safari?",
+      question: tt("tourPageContent.which-animals-can-we-see"),
       answer:
-        "Aquila's Big 5 are lion, elephant, rhino, buffalo and leopard. Sightings vary by day, as with any wildlife experience.",
+        tt("tourPageContent.aquila-s-big-5-are"),
     },
     {
-      question: "Are meals and the game drive included?",
+      question: tt("tourPageContent.are-meals-and-the-game"),
       answer:
-        "Yes. The package includes private transport to and from Cape Town, welcome drinks and snacks on arrival, the game drive and meals at the reserve.",
+        tt("tourPageContent.yes-the-package-includes-private"),
     },
     {
-      question: "Is the safari suitable for children?",
+      question: tt("tourPageContent.is-the-safari-suitable-for"),
       answer:
-        "Families often tell us it is one of the most memorable days of their trip. Tell us the ages of your children when you book and we will confirm the details with the reserve.",
+        tt("tourPageContent.families-often-tell-us-it"),
     },
     {
-      question: "Can we change the timing or add extra activities?",
+      question: tt("tourPageContent.can-we-change-the-timing"),
       answer:
-        "The game drive time is set by the reserve, but we can adjust your pickup time and return journey to suit your hotel plans. Message us and we'll work it out.",
+        tt("tourPageContent.the-game-drive-time-is"),
     },
   ],
-};
+});
 
-const GENERIC: TourPageContent = {
-  trustBadges: BADGES,
-  itineraryTitle: "Your Private Tour, Stop by Stop",
+const GENERIC = (tt: TFunction): TourPageContent => ({
+  trustBadges: BADGES(tt),
+  itineraryTitle: tt("tourPageContent.your-private-tour-stop-by"),
   itinerarySubheading:
-    "No group timetables and no strangers. Every stop is yours to explore at your own pace with your dedicated chauffeur.",
-  highlightsTitle: "Why Choose a Private Tour",
+    tt("tourPageContent.no-group-timetables-and-no-2"),
+  highlightsTitle: tt("tourPageContent.why-choose-a-private-tour"),
   highlights: [
-    NO_SHARED,
+    NO_SHARED(tt),
     {
-      heading: "A Chauffeur Who Knows Cape Town",
-      body: "Your driver knows the route well and will suggest the best moments to linger.",
+      heading: tt("tourPageContent.a-chauffeur-who-knows-cape"),
+      body: tt("tourPageContent.your-driver-knows-the-route"),
     },
     {
-      heading: "Your Schedule, Not Ours",
-      body: "We build the day around what matters to you, not a preset timetable.",
+      heading: tt("tourPageContent.your-schedule-not-ours"),
+      body: tt("tourPageContent.we-build-the-day-around"),
     },
-    EVERYTHING,
+    EVERYTHING(tt),
   ],
-  midCtaTitle: "Ready to plan your private tour?",
+  midCtaTitle: tt("tourPageContent.ready-to-plan-your-private"),
   midCtaBody:
-    "Message us and we'll plan the day around you instead of a shared tour bus.",
-  midCtaButtonLabel: "Check Availability: We Respond in 30 Minutes",
-  ctaTitle: "Ready to book? Here's how it works",
-  ctaBody: SHARED_CTA_BODY,
-  faqTitle: "Your Questions, Answered",
-  inclusionsTitle: "What's included in your tour",
-  vehiclesTitle: "Travel in Comfort. Travel in Style.",
+    tt("tourPageContent.message-us-and-we-ll"),
+  midCtaButtonLabel: tt("tourPageContent.check-availability-we-respond-in"),
+  ctaTitle: tt("tourPageContent.ready-to-book-here-s"),
+  ctaBody: SHARED_CTA_BODY(tt),
+  faqTitle: tt("tourPageContent.your-questions-answered"),
+  inclusionsTitle: tt("tourPageContent.what-s-included-in-your-5"),
+  vehiclesTitle: tt("tourPageContent.travel-in-comfort-travel-in"),
   faqItems: [
     {
-      question: "Is this a private tour or a shared group tour?",
+      question: tt("tourPageContent.is-this-a-private-tour"),
       answer:
-        "It is completely private. You and your group have the vehicle to yourselves for the full day.",
+        tt("tourPageContent.it-is-completely-private-you"),
     },
     {
-      question: "Can we customise the itinerary?",
+      question: tt("tourPageContent.can-we-customise-the-itinerary"),
       answer:
-        "Yes. Tell us when you book and we will tailor the day around you.",
+        tt("tourPageContent.yes-tell-us-when-you"),
     },
   ],
-};
+});
 
-const TOUR_CONTENT: Record<string, TourPageContent> = {
-  "cape-peninsula-tour": CAPE_PENINSULA,
-  "cape-town-city-tour": CAPE_TOWN_CITY,
-  "winelands-chauffeur-drive": WINELANDS,
-  "big-5-safari-from-cape-town": SAFARI,
-};
+const TOUR_CONTENT = (tt: TFunction): Record<string, TourPageContent> => ({
+  "cape-peninsula-tour": CAPE_PENINSULA(tt),
+  "cape-town-city-tour": CAPE_TOWN_CITY(tt),
+  "winelands-chauffeur-drive": WINELANDS(tt),
+  "big-5-safari-from-cape-town": SAFARI(tt),
+});
 
-export function getTourContent(slug?: string): TourPageContent {
-  if (!slug) return GENERIC;
-  return TOUR_CONTENT[slug.toLowerCase()] ?? GENERIC;
+export function getTourContent(slug?: string, tt: TFunction = enT): TourPageContent {
+  if (!slug) return GENERIC(tt);
+  return TOUR_CONTENT(tt)[slug.toLowerCase()] ?? GENERIC(tt);
 }

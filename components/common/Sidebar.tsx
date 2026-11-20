@@ -3,6 +3,7 @@
 import Link from "next/link";
 import styled from "styled-components";
 import { brand } from "../../lib/brand";
+import { useLocalePath, useT } from "../../lib/i18n/LocaleContext";
 
 const Overlay = styled.div<{ $isOpen: boolean }>`
   position: fixed;
@@ -94,49 +95,45 @@ type SidebarProps = {
 };
 
 export default function Sidebar({ isOpen, onClose }: SidebarProps) {
+  const t = useT();
+  const lp = useLocalePath();
   return (
     <>
       <Overlay $isOpen={isOpen} onClick={onClose} />
       <Drawer $isOpen={isOpen}>
         <TopRow>
           <Title>{brand.name}</Title>
-          <CloseButton onClick={onClose} aria-label="Close menu">
+          <CloseButton onClick={onClose} aria-label={t("sidebar.close")}>
             ×
           </CloseButton>
         </TopRow>
 
         <Nav>
-          <NavLink href="/" onClick={onClose}>
-            Home
+          <NavLink href={lp("/")} onClick={onClose}>
+            {t("sidebar.home")}
           </NavLink>
-          <NavLink href="/villas" onClick={onClose}>
-            Luxury Villas
+          <NavLink href={lp("/chauffeur-hire")} onClick={onClose}>
+            {t("sidebar.chauffeurHire")}
           </NavLink>
-          <NavLink href="/hotels" onClick={onClose}>
-            Luxury Hotels
+          <NavLink href={lp("/tours")} onClick={onClose}>
+            {t("sidebar.dayTours")}
           </NavLink>
-          <NavLink href="/chauffeur-hire" onClick={onClose}>
-            Chauffeur Hire
+          <NavLink href={lp("/airport-transfers-cape-town")} onClick={onClose}>
+            {t("sidebar.airportTransfers")}
           </NavLink>
-          <NavLink href="/tours" onClick={onClose}>
-            Day Tours
+          <NavLink href={lp("/best-wine-farms-in-cape-town")} onClick={onClose}>
+            {t("sidebar.wineFarms")}
           </NavLink>
-          <NavLink href="/airport-transfers-cape-town" onClick={onClose}>
-            Airport Transfers
+          <NavLink href={lp("/best-activities-to-do-in-cape-town")} onClick={onClose}>
+            {t("sidebar.experiences")}
           </NavLink>
-          <NavLink href="/best-wine-farms-in-cape-town" onClick={onClose}>
-            Wine Farms
-          </NavLink>
-          <NavLink href="/best-activities-to-do-in-cape-town" onClick={onClose}>
-            Experiences
-          </NavLink>
-          <NavLink href="/7-day-cape-town-itinerary" onClick={onClose}>
-            7 Day Itinerary
+          <NavLink href={lp("/7-day-cape-town-itinerary")} onClick={onClose}>
+            {t("sidebar.itinerary")}
           </NavLink>
         </Nav>
 
         <FooterNote>
-          Premium chauffeur services, private tours, and curated Cape Town travel.
+          {t("sidebar.note")}
         </FooterNote>
       </Drawer>
     </>

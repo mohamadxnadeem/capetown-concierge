@@ -5,6 +5,7 @@ import Button from "../../common/Button";
 import { trackWhatsAppClick } from "../../../lib/tracking";
 import { Anchor, Container, whatsappLink } from "./shared";
 
+import { useT } from "../../../lib/i18n/LocaleContext";
 const FinalCta = styled.section`
   padding: 84px 0;
   background: linear-gradient(135deg, ${({ theme }) => theme.colors.primary} 0%, ${({ theme }) => theme.colors.primaryDark} 100%);
@@ -45,22 +46,20 @@ const TrustItem = styled.div`
 `;
 
 export default function ItineraryFinalCta() {
+  const tt = useT();
   return (
     <FinalCta>
       <Container>
         <Inner>
-          <Title>Want This Cape Town Trip Planned for You?</Title>
+          <Title>{tt("ItineraryFinalCta.want-this-cape-town-trip")}</Title>
           <Text>
-            Message us on WhatsApp and we can help you turn this 7 day itinerary
-            into a private, chauffeur-driven Cape Town experience tailored to
-            your dates, preferences, and travel style.
-          </Text>
+            {tt("ItineraryFinalCta.message-us-on-whatsapp-and")}</Text>
 
           <TrustRow>
-            <TrustItem>Private Chauffeur Service</TrustItem>
-            <TrustItem>Flexible Itinerary</TrustItem>
-            <TrustItem>Luxury Experience</TrustItem>
-            <TrustItem>Custom Planning</TrustItem>
+            <TrustItem>{tt("ItineraryFinalCta.private-chauffeur-service")}</TrustItem>
+            <TrustItem>{tt("ItineraryFinalCta.flexible-itinerary")}</TrustItem>
+            <TrustItem>{tt("ItineraryFinalCta.luxury-experience")}</TrustItem>
+            <TrustItem>{tt("ItineraryFinalCta.custom-planning")}</TrustItem>
           </TrustRow>
 
           <Anchor
@@ -74,7 +73,7 @@ export default function ItineraryFinalCta() {
               })
             }
           >
-            <Button as="span">Plan My 7 Day Cape Town Trip</Button>
+            <Button as="span">{tt("ItineraryFinalCta.plan-my-7-day-cape")}</Button>
           </Anchor>
         </Inner>
       </Container>

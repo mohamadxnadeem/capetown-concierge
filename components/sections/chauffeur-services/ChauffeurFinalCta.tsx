@@ -2,7 +2,9 @@
 
 import styled from "styled-components";
 import { trackWhatsAppClick } from "../../../lib/tracking";
+import { PAYMENT_BADGE } from "../../../lib/vehicleTrustBadges";
 
+import { useT } from "../../../lib/i18n/LocaleContext";
 type Props = {
   title: string;
   whatsappLink: string;
@@ -47,15 +49,36 @@ const PrimaryButton = styled.a`
   box-shadow: ${({ theme }) => theme.shadows.soft};
 `;
 
+const PayBadge = styled.p`
+  display: inline-flex;
+  flex-direction: column;
+  gap: 2px;
+  margin: 20px auto 0;
+  padding: 10px 16px;
+  border-radius: 10px;
+  border: 1px solid ${({ theme }) => theme.colors.gold}4D;
+  background: ${({ theme }) => theme.colors.primaryDark};
+  color: ${({ theme }) => theme.colors.cream};
+  font-size: 0.82rem;
+  line-height: 1.4;
+
+  strong {
+    font-size: 0.9rem;
+  }
+
+  span {
+    opacity: 0.85;
+  }
+`;
+
 export default function ChauffeurFinalCta({ title, whatsappLink }: Props) {
+  const tt = useT();
   return (
     <FinalCta>
       <FinalCtaInner>
-        <FinalCtaTitle>Ready to Book {title}?</FinalCtaTitle>
+        <FinalCtaTitle>{tt("ChauffeurFinalCta.ready-to-book")}{" "}{title}?</FinalCtaTitle>
         <FinalCtaText>
-          Message us on WhatsApp to confirm availability, pricing, and the best
-          chauffeur option for your Cape Town travel plans.
-        </FinalCtaText>
+          {tt("ChauffeurFinalCta.every-booking-is-private-and")}</FinalCtaText>
 
         <PrimaryButton
           href={whatsappLink}
@@ -69,8 +92,14 @@ export default function ChauffeurFinalCta({ title, whatsappLink }: Props) {
             })
           }
         >
-          Check Availability on WhatsApp
-        </PrimaryButton>
+          {tt("ChauffeurFinalCta.check-availability-on-whatsapp")}</PrimaryButton>
+
+        <div>
+          <PayBadge>
+            <strong>{PAYMENT_BADGE(tt).title}</strong>
+            <span>{PAYMENT_BADGE(tt).subtitle}</span>
+          </PayBadge>
+        </div>
       </FinalCtaInner>
     </FinalCta>
   );

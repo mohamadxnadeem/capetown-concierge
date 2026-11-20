@@ -3,6 +3,7 @@
 import styled from "styled-components";
 import { ReviewItem } from "./types";
 
+import { useT } from "../../../lib/i18n/LocaleContext";
 type Props = {
   reviews: ReviewItem[];
 };
@@ -56,9 +57,10 @@ const ReviewSubtitle = styled.div`
 `;
 
 export default function ChauffeurReviews({ reviews }: Props) {
+  const tt = useT();
   return (
     <>
-      <Title>Client Feedback</Title>
+      <Title>{tt("ChauffeurReviews.client-feedback")}</Title>
 
       <ReviewsGrid>
         {reviews.map((review, index) => (

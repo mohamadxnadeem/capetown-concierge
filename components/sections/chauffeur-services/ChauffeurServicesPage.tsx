@@ -10,6 +10,8 @@ import Link from "next/link";
 import { trackWhatsAppClick } from "../../../lib/tracking";
 import { brand } from "../../../lib/brand";
 
+import { useT } from "../../../lib/i18n/LocaleContext";
+import type { TFunction } from "../../../lib/i18n/messages";
 type FeaturedVehicleItem = {
   title: string;
   description: string;
@@ -276,122 +278,123 @@ const Anchor = styled.a`
 
 // Trust core — the shared promise for the executive assistant and the
 // leisure principal. Every claim below is already verified live copy.
-const trustCore = [
+const trustCore = (tt: TFunction) => ([
   {
-    title: "Presentation & Discretion",
-    text: "Smartly-presented PDP-licensed drivers, spotlessly kept vehicles, and a quiet, low-key manner of service. Your guest steps into the car and forgets the logistics ever existed.",
+    title: tt("ChauffeurServicesPage.presentation-discretion"),
+    text: tt("ChauffeurServicesPage.smartly-presented-pdp-licensed-drivers"),
   },
   {
-    title: "Punctuality, Flight Tracked",
-    text: "Airport pickups track your inbound flight in real time. Your driver is on the kerb before the wheels touch the tarmac — early flight, late flight, or a diverted one.",
+    title: tt("ChauffeurServicesPage.punctuality-flight-tracked"),
+    text: tt("ChauffeurServicesPage.airport-pickups-track-your-inbound"),
   },
   {
-    title: "Reliability, Not Rideshare",
-    text: "A named driver assigned to your booking and a named account manager in the office. No app roulette, no last-minute cancellations, no substitute cars you weren't expecting.",
+    title: tt("ChauffeurServicesPage.reliability-not-rideshare"),
+    text: tt("ChauffeurServicesPage.a-named-driver-assigned-to"),
   },
   {
-    title: "One Point of Contact",
-    text: "Message us on WhatsApp for the entire trip — quote, confirmation, driver details, live updates. Median response inside 30 minutes, seven days a week.",
+    title: tt("ChauffeurServicesPage.one-point-of-contact"),
+    text: tt("ChauffeurServicesPage.message-us-on-whatsapp-for"),
   },
-];
+]);
 
 // Executive / Corporate section
-const executiveBullets = [
+const executiveBullets = (tt: TFunction) => ([
   {
-    title: "Trusted by executive assistants",
-    text: "Assistants book us for CEOs, founders, and family principals visiting Cape Town. You brief us once. We handle the rest.",
+    title: tt("ChauffeurServicesPage.trusted-by-executive-assistants"),
+    text: tt("ChauffeurServicesPage.assistants-book-us-for-ceos"),
   },
   {
-    title: "Fixed pricing, no surge",
-    text: "Every quote is flat and confirmed in writing before the trip. No fare estimates, no per-minute meters, no surprise supplements.",
+    title: tt("ChauffeurServicesPage.fixed-pricing-no-surge"),
+    text: tt("ChauffeurServicesPage.every-quote-is-flat-and"),
   },
   {
-    title: "Meet-and-greet at CPT arrivals",
-    text: "Your driver waits inside the arrivals hall with a name board. Luggage is loaded straight into the boot. The car is on the kerb ready to move.",
+    title: tt("ChauffeurServicesPage.meet-and-greet-at-cpt"),
+    text: tt("ChauffeurServicesPage.your-driver-waits-inside-the"),
   },
   {
-    title: "Full-day executive hire",
-    text: "Board meetings, back-to-back site visits, restaurant runs, off-site retreats — the same vehicle and the same driver stay with your principal for the day.",
+    title: tt("ChauffeurServicesPage.full-day-executive-hire"),
+    text: tt("ChauffeurServicesPage.board-meetings-back-to-back"),
   },
   {
-    title: "Multi-day and multi-city",
-    text: "One driver, multiple days. Extending into the Winelands, the Garden Route, or up to Hermanus? We plan the route and coordinate the overnights.",
+    title: tt("ChauffeurServicesPage.multi-day-and-multi-city"),
+    text: tt("ChauffeurServicesPage.one-driver-multiple-days-extending"),
   },
   {
-    title: "Discreet, sensible drivers",
-    text: "Our chauffeurs are experienced at driving VIP and executive guests. Conversation only if invited. Nothing leaves the car.",
+    title: tt("ChauffeurServicesPage.discreet-sensible-drivers"),
+    text: tt("ChauffeurServicesPage.our-chauffeurs-are-experienced-at"),
   },
-];
+]);
 
 // Private / Leisure section
-const leisureBullets = [
+const leisureBullets = (tt: TFunction) => ([
   {
-    title: "Family-friendly by default",
-    text: "Child seats and boosters on request, boot space for a proper family's luggage, and drivers who are patient and warm with kids.",
+    title: tt("ChauffeurServicesPage.family-friendly-by-default"),
+    text: tt("ChauffeurServicesPage.child-seats-and-boosters-on"),
   },
   {
-    title: "Wine-country day hire",
-    text: "A chauffeur means nobody in your party is the designated driver. Stellenbosch, Franschhoek, Constantia — tasted properly, driven home safely.",
+    title: tt("ChauffeurServicesPage.wine-country-day-hire"),
+    text: tt("ChauffeurServicesPage.a-chauffeur-means-nobody-in"),
   },
   {
-    title: "Scenic routes, unhurried",
-    text: "Chapman's Peak, Cape Point, the Twelve Apostles — your driver knows where to stop for the view, and where the light is best late afternoon.",
+    title: tt("ChauffeurServicesPage.scenic-routes-unhurried"),
+    text: tt("ChauffeurServicesPage.chapman-s-peak-cape-point"),
   },
   {
-    title: "Effortless multi-day trip",
-    text: "One driver and one vehicle for the whole stay. Villas, restaurants, tours, transfers — coordinated together instead of booked separately every day.",
+    title: tt("ChauffeurServicesPage.effortless-multi-day-trip"),
+    text: tt("ChauffeurServicesPage.one-driver-and-one-vehicle"),
   },
-];
+]);
 
-const includedItems = [
+const includedItems = (tt: TFunction) => ([
   {
-    title: "Professional PDP-Licensed Driver",
-    text: "A named chauffeur assigned to your booking, fully licensed, focused on service, presentation, and route planning throughout the journey.",
+    title: tt("ChauffeurServicesPage.professional-pdp-licensed-driver"),
+    text: tt("ChauffeurServicesPage.a-named-chauffeur-assigned-to"),
   },
   {
-    title: "Luxury Chauffeur-Driven Fleet",
-    text: "Choose from a hand-picked fleet of premium vehicles for executive travel, family trips, airport transfers, and full-day chauffeur hire in Cape Town.",
+    title: tt("ChauffeurServicesPage.luxury-chauffeur-driven-fleet"),
+    text: tt("ChauffeurServicesPage.choose-from-a-hand-picked"),
   },
   {
-    title: "Fully Flexible Itinerary",
-    text: "Your route can be shaped around airport transfers, executive meetings, restaurants, private tours, wine farms, and scenic Cape Town travel — planned around your schedule.",
+    title: tt("ChauffeurServicesPage.fully-flexible-itinerary"),
+    text: tt("ChauffeurServicesPage.your-route-can-be-shaped"),
   },
-];
+]);
 
-const serviceFaqs = [
+const serviceFaqs = (tt: TFunction) => ([
   {
-    question: "What is included when I hire a chauffeur in Cape Town?",
+    question: tt("ChauffeurServicesPage.what-is-included-when-i"),
     answer:
-      "Every chauffeur hire booking includes the vehicle, a professional PDP-licensed chauffeur, fuel, and toll fees. For airport transfers your driver tracks your flight and meets you at arrivals with a name board. For full-day chauffeur hire we plan the route around your schedule.",
+      tt("ChauffeurServicesPage.every-chauffeur-hire-booking-includes"),
   },
   {
-    question: "Do you offer chauffeur-driven airport transfers in Cape Town?",
+    question: tt("ChauffeurServicesPage.do-you-offer-chauffeur-driven"),
     answer:
-      "Yes. We provide 24/7 chauffeured airport transfers to and from Cape Town International — meet-and-greet at arrivals, real-time flight tracking, and luggage assistance are included in every transfer.",
+      tt("ChauffeurServicesPage.yes-we-provide-24-7"),
   },
   {
-    question: "Can I hire a chauffeur for a full day?",
+    question: tt("ChauffeurServicesPage.can-i-hire-a-chauffeur"),
     answer:
-      "Yes. Full-day chauffeur hire is available for city travel, wine routes, meetings, restaurant runs, scenic drives, and bespoke itineraries. The day runs entirely on your schedule with the same driver and vehicle throughout.",
+      tt("ChauffeurServicesPage.yes-full-day-chauffeur-hire"),
   },
   {
-    question: "Which vehicles are available for chauffeur hire?",
+    question: tt("ChauffeurServicesPage.which-vehicles-are-available-for"),
     answer:
-      "Our fleet includes the BMW 5-Series, BMW X5, Hyundai Staria (9 seats), Mercedes V-Class (6 seats), and Range Rover Sport. All vehicles are premium, climate-controlled, and privately driven — no ride-sharing.",
+      tt("ChauffeurServicesPage.our-fleet-includes-the-bmw"),
   },
   {
-    question: "Is a private chauffeur better than self-driving in Cape Town?",
+    question: tt("ChauffeurServicesPage.is-a-private-chauffeur-better"),
     answer:
-      "For most visitors, yes — especially for airport transfers, wine routes, and long scenic drives. You arrive relaxed, your group travels together, and there's no parking, no navigation, and no designated driver required.",
+      tt("ChauffeurServicesPage.for-most-visitors-yes-especially"),
   },
   {
-    question: "How do we book a chauffeur for a visiting executive?",
+    question: tt("ChauffeurServicesPage.how-do-we-book-a"),
     answer:
-      "Message us on WhatsApp with the flight details, arrival time, hotel, and any onward schedule. We confirm the driver, the vehicle, and the flat fare in writing — usually within 30 minutes.",
+      tt("ChauffeurServicesPage.message-us-on-whatsapp-with"),
   },
-];
+]);
 
 export default function ChauffeurServicesPage({ vehicles = [] }: { vehicles?: FeaturedVehicleItem[] }) {
+  const tt = useT();
   const whatsappLink = "https://wa.me/27636746131?text=Hi%2C+I%27d+like+to+enquire+about+chauffeur+hire+in+Cape+Town.+Please+assist.";
 
   const heroPool = vehicles.slice(0, 6);
@@ -400,44 +403,42 @@ export default function ChauffeurServicesPage({ vehicles = [] }: { vehicles?: Fe
     .filter((u): u is string => Boolean(u));
   const heroAlts = heroPool.map((v, i) =>
     i === 0
-      ? `${v.title} — chauffeur hire in Cape Town with a professional private driver`
+      ? tt("ChauffeurServicesPage.chauffeur-hire-in-cape-town", { title: v.title })
       : i === 1
-      ? `Chauffeur hire in Cape Town — ${v.title} with luxury interior and vetted driver`
-      : `${v.title} chauffeur-driven private hire, Cape Town`
+      ? tt("ChauffeurServicesPage.chauffeur-hire-in-cape-town-2", { title: v.title })
+      : tt("ChauffeurServicesPage.chauffeur-driven-private-hire-cape", { title: v.title })
   );
 
   return (
     <PageWrap>
       <HeroBanner
         eyebrow={brand.name}
-        title="Chauffeur Hire in Cape Town"
-        description="Private drivers and luxury vehicles for airport transfers, executive travel, and full-day chauffeur hire across Cape Town and the Western Cape. Flat pricing, PDP-licensed chauffeurs, meet-and-greet at Cape Town International."
+        title={tt("ChauffeurServicesPage.chauffeur-hire-in-cape-town-3")}
+        description="Chauffeur hire in Cape Town with private drivers and luxury vehicles for airport transfers, executive travel and full days across the Western Cape. Flat pricing, PDP-licensed chauffeurs, meet-and-greet at Cape Town International."
         primaryCtaLabel="Enquire on WhatsApp"
         primaryCtaHref={whatsappLink}
         secondaryCtaLabel="View Fleet"
         secondaryCtaHref="#chauffeur-fleet"
         image="/images/hero-car.jpg"
         images={heroImages}
-        imageAlt="Chauffeur hire in Cape Town — luxury private driver and premium vehicle"
+        imageAlt="Chauffeur hire in Cape Town, luxury private driver and premium vehicle"
         imageAlts={heroAlts}
       />
 
       <Section>
         <Container>
           <Header>
-            <Eyebrow>Chauffeur Hire in Cape Town</Eyebrow>
-            <Title>Private drivers and luxury vehicles, arranged properly</Title>
+            <Eyebrow>{tt("ChauffeurServicesPage.chauffeur-hire-in-cape-town-3")}</Eyebrow>
+            <Title>{tt("ChauffeurServicesPage.private-drivers-and-luxury-vehicles")}</Title>
             <Intro>
-              Chauffeur hire in Cape Town from a small, hand-run operation. A
-              named driver, a hand-picked vehicle, one point of contact from
-              the enquiry through to the last drop-off. Used equally by
-              executive assistants booking transfers for principals, and by
-              families here on holiday who want the trip to feel effortless.
-            </Intro>
+              {tt("ChauffeurServicesPage.chauffeur-hire-in-cape-town-4")}{" "}
+              <Link href={tt.path("/")} style={{ color: "inherit", textDecoration: "underline" }}>
+                {tt("ChauffeurServicesPage.chauffeur-service")}</Link>{" "}
+              {tt("ChauffeurServicesPage.we-offer-across-the-cape")}</Intro>
           </Header>
 
           <CardGrid>
-            {trustCore.map((item) => (
+            {trustCore(tt).map((item) => (
               <Card key={item.title}>
                 <CardTitle>{item.title}</CardTitle>
                 <CardText>{item.text}</CardText>
@@ -450,8 +451,8 @@ export default function ChauffeurServicesPage({ vehicles = [] }: { vehicles?: Fe
       <div id="chauffeur-fleet">
         <FeaturedVehicles
           eyebrow="Luxury Fleet"
-          title="Choose Your Chauffeur-Driven Vehicle"
-          description="The vehicles available for chauffeur hire in Cape Town, with real per-day pricing. Every car is climate-controlled, privately driven, and assigned to your booking — no ride-sharing."
+          title={tt("ChauffeurServicesPage.choose-your-chauffeur-driven-vehicle")}
+          description="The vehicles available for chauffeur hire in Cape Town, with real per-day pricing. Every car is climate-controlled, privately driven, and assigned to your booking, with no ride-sharing."
           items={vehicles}
         />
       </div>
@@ -459,21 +460,17 @@ export default function ChauffeurServicesPage({ vehicles = [] }: { vehicles?: Fe
       <Section>
         <Container>
           <Header>
-            <Eyebrow>Executive &amp; Corporate</Eyebrow>
-            <Title>Executive chauffeur hire in Cape Town</Title>
+            <Eyebrow>{tt("ChauffeurServicesPage.executive-corporate")}</Eyebrow>
+            <Title>{tt("ChauffeurServicesPage.executive-chauffeur-hire-in-cape")}</Title>
             <Intro>
-              Booking a driver for a CEO, founder, or family principal
-              visiting Cape Town? This is the section for you. Below is what
-              we handle without needing to be asked, so you can brief us once
-              and go back to the rest of your day.
-            </Intro>
+              {tt("ChauffeurServicesPage.booking-a-driver-for-a")}</Intro>
           </Header>
 
           <AuthorityWrap>
             <AuthorityCard>
-              <AuthorityCardTitle>What executive assistants use us for</AuthorityCardTitle>
+              <AuthorityCardTitle>{tt("ChauffeurServicesPage.what-executive-assistants-use-us")}</AuthorityCardTitle>
               <BulletList>
-                {executiveBullets.map((b) => (
+                {executiveBullets(tt).map((b) => (
                   <Bullet key={b.title}>
                     <strong>{b.title}</strong>
                     {b.text}
@@ -484,42 +481,19 @@ export default function ChauffeurServicesPage({ vehicles = [] }: { vehicles?: Fe
 
             <RichText>
               <p>
-                For an incoming executive the trip should be invisible. The
-                car is where it is meant to be, the driver is smartly
-                presented and waiting, luggage is loaded, and the ride to the
-                hotel is quiet. That is the standard we work to on every
-                executive chauffeur hire in Cape Town — whether it&apos;s a
-                one-hour transfer from{" "}
-                <Link href="/airport-transfers-cape-town" style={{color:"inherit"}}>
-                  Cape Town International
-                </Link>{" "}
-                or a five-day multi-city schedule.
-              </p>
+                {tt("ChauffeurServicesPage.for-an-incoming-executive-the")}{" "}
+                <Link href={tt.path("/airport-transfers-cape-town")} style={{color:"inherit"}}>
+                  {tt("ChauffeurServicesPage.cape-town-international")}</Link>{" "}
+                {tt("ChauffeurServicesPage.or-a-five-day-multi")}</p>
 
               <p>
-                We work in pairs: your driver on the road, and a single point
-                of contact in the office you can message on WhatsApp for the
-                entire booking. Flight delays, schedule changes, an extra
-                stop on the way to the hotel — one message, sorted. No
-                dispatch queue, no ticket numbers, no repeating yourself.
-              </p>
+                {tt("ChauffeurServicesPage.we-work-in-pairs-your")}</p>
 
               <p>
-                Every quote is confirmed in writing before the trip, at a
-                flat rate. There is no surge pricing, no per-minute meter,
-                and no supplement for late-night arrivals. If the schedule
-                changes on the day, we tell you the new price before we make
-                the change — never after.
-              </p>
+                {tt("ChauffeurServicesPage.every-quote-is-confirmed-in")}</p>
 
               <p>
-                The fleet is chosen with executive guests in mind: a BMW
-                5-Series or Range Rover Sport for a solo principal, a
-                Mercedes V-Class or BMW X5 for a family or a small
-                delegation, a Hyundai Staria (9 seats) for a larger party.
-                All climate-controlled, all recently kept, all driven by the
-                same PDP-licensed chauffeurs.
-              </p>
+                {tt("ChauffeurServicesPage.the-fleet-is-chosen-with")}</p>
             </RichText>
           </AuthorityWrap>
         </Container>
@@ -528,21 +502,17 @@ export default function ChauffeurServicesPage({ vehicles = [] }: { vehicles?: Fe
       <Section>
         <Container>
           <Header>
-            <Eyebrow>Private &amp; Family</Eyebrow>
-            <Title>Chauffeur hire for private and family travel</Title>
+            <Eyebrow>{tt("ChauffeurServicesPage.private-family")}</Eyebrow>
+            <Title>{tt("ChauffeurServicesPage.chauffeur-hire-for-private-and")}</Title>
             <Intro>
-              The same standard of service for guests who are here for the
-              trip itself — honeymoons, milestone birthdays, family holidays,
-              and Winelands weekends. Discreet, unhurried, and shaped around
-              how you want the day to feel.
-            </Intro>
+              {tt("ChauffeurServicesPage.the-same-standard-of-service")}</Intro>
           </Header>
 
           <AuthorityWrap>
             <AuthorityCard>
-              <AuthorityCardTitle>Private clients hire us to</AuthorityCardTitle>
+              <AuthorityCardTitle>{tt("ChauffeurServicesPage.private-clients-hire-us-to")}</AuthorityCardTitle>
               <BulletList>
-                {leisureBullets.map((b) => (
+                {leisureBullets(tt).map((b) => (
                   <Bullet key={b.title}>
                     <strong>{b.title}</strong>
                     {b.text}
@@ -553,44 +523,22 @@ export default function ChauffeurServicesPage({ vehicles = [] }: { vehicles?: Fe
 
             <RichText>
               <p>
-                A private chauffeur across a holiday changes the shape of a
-                Cape Town trip. Nobody is navigating, nobody is designated
-                driver, nobody is watching the meter on a rideshare. You get
-                out of the car at the top of Chapman&apos;s Peak, at the
-                penguin colony, at the cellar door, at the restaurant. Then
-                you get back in.
-              </p>
+                {tt("ChauffeurServicesPage.a-private-chauffeur-across-a")}</p>
 
               <p>
-                For families with children we prepare boosters and child
-                seats on request, and pick drivers who are patient and warm
-                with younger passengers. Popular routes include{" "}
-                <Link href="/tours/cape-peninsula-tour" style={{color:"inherit"}}>
-                  the Cape Peninsula
-                </Link>{" "}
-                as a full day, an unhurried loop of the{" "}
-                <Link href="/best-wine-farms-in-cape-town" style={{color:"inherit"}}>
-                  Cape Winelands
-                </Link>{" "}
-                through Stellenbosch and Franschhoek, and quieter town
-                mornings around the V&amp;A Waterfront and Kirstenbosch.
-              </p>
+                {tt("ChauffeurServicesPage.for-families-with-children-we")}{" "}
+                <Link href={tt.path("/tours/cape-peninsula-tour")} style={{color:"inherit"}}>
+                  {tt("ChauffeurServicesPage.the-cape-peninsula")}</Link>{" "}
+                {tt("ChauffeurServicesPage.as-a-full-day-an")}{" "}
+                <Link href={tt.path("/best-wine-farms-in-cape-town")} style={{color:"inherit"}}>
+                  {tt("ChauffeurServicesPage.cape-winelands")}</Link>{" "}
+                {tt("ChauffeurServicesPage.through-stellenbosch-and-franschhoek-and")}</p>
 
               <p>
-                For couples and honeymoons we tend to pair a Range Rover Sport
-                or a Mercedes V-Class with a route planned for scenery and
-                timing — the light along Chapman&apos;s Peak late afternoon,
-                a stop at Boulders Beach before the crowds, dinner in Camps
-                Bay to catch sunset over the Atlantic.
-              </p>
+                {tt("ChauffeurServicesPage.for-couples-and-honeymoons-we")}</p>
 
               <p>
-                We keep it low-key. Your driver is a courteous, seasoned
-                professional who will offer local knowledge when asked and
-                stay quietly out of the way when not. That balance —
-                helpful, never intrusive — is what makes the trip feel
-                private.
-              </p>
+                {tt("ChauffeurServicesPage.we-keep-it-low-key")}</p>
             </RichText>
           </AuthorityWrap>
         </Container>
@@ -599,17 +547,14 @@ export default function ChauffeurServicesPage({ vehicles = [] }: { vehicles?: Fe
       <Section>
         <Container>
           <Header>
-            <Eyebrow>What&rsquo;s Included</Eyebrow>
-            <Title>Included with every chauffeur hire</Title>
+            <Eyebrow>{tt("ChauffeurServicesPage.what-s-included")}</Eyebrow>
+            <Title>{tt("ChauffeurServicesPage.included-with-every-chauffeur-hire")}</Title>
             <Intro>
-              Every booking is built to make Cape Town travel feel more
-              comfortable, more efficient, and more polished — same
-              standards whether you&apos;re here for a meeting or a holiday.
-            </Intro>
+              {tt("ChauffeurServicesPage.every-booking-is-built-to")}</Intro>
           </Header>
 
           <IncludedGrid>
-            {includedItems.map((item) => (
+            {includedItems(tt).map((item) => (
               <IncludedCard key={item.title}>
                 <IncludedTitle>{item.title}</IncludedTitle>
                 <IncludedText>{item.text}</IncludedText>
@@ -619,18 +564,18 @@ export default function ChauffeurServicesPage({ vehicles = [] }: { vehicles?: Fe
         </Container>
       </Section>
 
-      <TestimonialsSection />
+      <TestimonialsSection tags={["chauffeur"]} />
       <TestimonialsCta />
 
       <Section>
         <Container>
           <Header>
-            <Eyebrow>Chauffeur Hire FAQ</Eyebrow>
-            <Title>Common questions about chauffeur hire in Cape Town</Title>
+            <Eyebrow>{tt("ChauffeurServicesPage.chauffeur-hire-faq")}</Eyebrow>
+            <Title>{tt("ChauffeurServicesPage.common-questions-about-chauffeur-hire")}</Title>
           </Header>
 
           <FaqList>
-            {serviceFaqs.map((item) => (
+            {serviceFaqs(tt).map((item) => (
               <FaqItem key={item.question}>
                 <FaqQuestion>{item.question}</FaqQuestion>
                 <FaqAnswer>{item.answer}</FaqAnswer>
@@ -642,12 +587,9 @@ export default function ChauffeurServicesPage({ vehicles = [] }: { vehicles?: Fe
 
       <FinalCta>
         <FinalCtaInner>
-          <FinalTitle>Enquire about chauffeur hire in Cape Town</FinalTitle>
+          <FinalTitle>{tt("ChauffeurServicesPage.enquire-about-chauffeur-hire-in")}</FinalTitle>
           <FinalText>
-            Message us on WhatsApp with the dates, the arrival time, and how
-            you want the trip to feel. We come back with a flat quote,
-            usually within 30 minutes.
-          </FinalText>
+            {tt("ChauffeurServicesPage.message-us-on-whatsapp-with-2")}</FinalText>
 
           <ButtonRow>
             <Anchor
@@ -656,7 +598,7 @@ export default function ChauffeurServicesPage({ vehicles = [] }: { vehicles?: Fe
               rel="noopener noreferrer"
               onClick={() => trackWhatsAppClick({ source: "chauffeur_hire_cta", label: "Enquire on WhatsApp" })}
             >
-              <Button as="span">Enquire on WhatsApp →</Button>
+              <Button as="span">{tt("ChauffeurServicesPage.enquire-on-whatsapp")}</Button>
             </Anchor>
           </ButtonRow>
         </FinalCtaInner>

@@ -1,0 +1,65 @@
+import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
+import {
+  ENGLISH_ONLY_SEGMENTS,
+  LOCALES,
+  LOCALE_PREFIX,
+  type Locale,
+} from "./lib/i18n/config";
+import { englishSlugFor, type ContentKind } from "./lib/i18n/slugs";
+
+/**
+ * Locale routing.
+ *   /tours            -> internally /en/tours   (English keeps its URLs, no prefix)
+ *   /ru/tours         -> internally /ru/tours
+ *   /ru/<local-slug>  -> internally /ru/tours/<english-slug>
+ * Language prefixed versions of English-only pages (booking, villas, hotels, ...) return 404.
+ */
+const SLUG_KINDS: Record<string, ContentKind> = {
+  tours: "tours",
+  "chauffeur-hire": "vehicles",
+};
+
+const PREFIXED = LOCALES.filter((l) => l !== "en");
+
+export function proxy(request: NextRequest) {
+  const { pathname } = request.nextUrl;
+  const parts = pathname.split("/").filter(Boolean);
+  const first = parts[0]?.toLowerCase();
+
+  // English is served from the root only. /en/... is not a public URL.
+  if (first === "en") {
+    const url = request.nextUrl.clone();
+    url.pathname = "/" + parts.slice(1).join("/");
+    return NextResponse.redirect(url, 308);
+  }
+
+  const locale = PREFIXED.find((l) => LOCALE_PREFIX[l] === first) as Locale | undefined;
+
+  if (!locale) {
+    const url = request.nextUrl.clone();
+    url.pathname = "/en" + (pathname === "/" ? "" : pathname);
+    return NextResponse.rewrite(url);
+  }
+
+  const rest = parts.slice(1);
+  const url = request.nextUrl.clone();
+
+  if (rest[0] && ENGLISH_ONLY_SEGMENTS.includes(rest[0])) {
+    url.pathname = `/${LOCALE_PREFIX[locale]}/not-available-in-this-language`;
+    return NextResponse.rewrite(url);
+  }
+
+  const kind = SLUG_KINDS[rest[0] ?? ""];
+  if (kind && rest[1]) {
+    rest[1] = englishSlugFor(locale, kind, rest[1]);
+  }
+  url.pathname = `/${LOCALE_PREFIX[locale]}${rest.length ? "/" + rest.join("/") : ""}`;
+  return NextResponse.rewrite(url);
+}
+
+export const config = {
+  // Skip Next internals, API routes, images and any file with an extension
+  // (sitemap.xml, robots.txt, icon.png, favicon, ...).
+  matcher: ["/((?!api|_next|images|.*\\..*).*)"],
+};

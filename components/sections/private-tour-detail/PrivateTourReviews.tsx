@@ -1,8 +1,15 @@
 "use client";
 
 import styled from "styled-components";
-import { ReviewItem } from "./types";
+import {
+  GOOGLE_REVIEWS_URL,
+  googleRatingLabel,
+  googleReviewCount,
+  googleSummaryText,
+  type GoogleReview,
+} from "../../../lib/googleReviews";
 
+import { useT } from "../../../lib/i18n/LocaleContext";
 const SectionHeader = styled.div`
   max-width: 760px;
   margin-bottom: 28px;
@@ -111,6 +118,8 @@ const ReviewQuote = styled.p`
   color: ${({ theme }) => theme.colors.heading};
   line-height: 1.85;
   min-height: 120px;
+  white-space: pre-line;
+  overflow-wrap: anywhere;
 `;
 
 const ReviewFooter = styled.div`
@@ -130,30 +139,35 @@ const ReviewSubtitle = styled.div`
 `;
 
 type Props = {
-  reviews: ReviewItem[];
+  reviews: GoogleReview[];
 };
 
 export default function PrivateTourReviews({ reviews }: Props) {
+  const tt = useT();
   return (
     <>
       <SectionHeader>
-        <SectionEyebrow>What Our Guests Say</SectionEyebrow>
-        <SectionTitle>Trusted by Travellers Around the World</SectionTitle>
+        <SectionEyebrow>{tt("PrivateTourReviews.what-our-guests-say")}</SectionEyebrow>
+        <SectionTitle>{tt("PrivateTourReviews.trusted-by-travellers-around-the")}</SectionTitle>
         <SectionText>
-          Real clients. Real experiences. Our guests come from over 40 countries — here's what they say about travelling the Cape with us.
-        </SectionText>
+          {tt("PrivateTourReviews.real-clients-real-experiences-our")}</SectionText>
       </SectionHeader>
 
-      <VerifiedLine>Over 200 verified five-star reviews across Google and direct bookings.</VerifiedLine>
+      <VerifiedLine>{googleSummaryText}</VerifiedLine>
 
       <ReviewsGrid>
-        {reviews.map((review, index) => (
-          <ReviewCard key={`${review.name}-${index}`}>
+        {reviews.map((review) => (
+          <ReviewCard key={review.id}>
             <QuoteMark>"</QuoteMark>
-            <ReviewQuote>{review.quote}</ReviewQuote>
+            <ReviewQuote>{review.text}</ReviewQuote>
             <ReviewFooter>
-              <ReviewName>{review.name}</ReviewName>
-              <ReviewSubtitle>{review.subtitle}</ReviewSubtitle>
+              <ReviewName>{review.reviewer_name}</ReviewName>
+              <ReviewSubtitle>
+                {tt("PrivateTourReviews.google-review")}{review.date_label ? tt("PrivateTourReviews.text", { date_label: review.date_label }) : ""}
+              </ReviewSubtitle>
+              {review.translated_from ? (
+                <ReviewSubtitle>{tt("PrivateTourReviews.translated-from")}{" "}{review.translated_from}</ReviewSubtitle>
+              ) : null}
             </ReviewFooter>
           </ReviewCard>
         ))}
@@ -161,15 +175,14 @@ export default function PrivateTourReviews({ reviews }: Props) {
 
       <GoogleRow>
         <GoogleButton
-          href="https://share.google/P13pnsYwTEQGoPaSh"
+          href={tt.path(GOOGLE_REVIEWS_URL)}
           target="_blank"
           rel="noopener noreferrer"
-          aria-label="Read all reviews on Google"
+          aria-label={tt("PrivateTourReviews.read-all-reviews-on-google")}
         >
-          <GoogleG>G</GoogleG>
+          <GoogleG>{tt("PrivateTourReviews.g")}</GoogleG>
           <GoogleStars>★★★★★</GoogleStars>
-          4.9 · See all reviews on Google
-        </GoogleButton>
+          {googleRatingLabel} {tt("PrivateTourReviews.from")}{" "}{googleReviewCount} {tt("PrivateTourReviews.google-reviews-see-all-reviews")}</GoogleButton>
       </GoogleRow>
     </>
   );

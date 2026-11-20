@@ -1,125 +1,126 @@
 import { AddOnItem, FaqItem, ItineraryDay } from "./types";
 
-export const itineraryDays: ItineraryDay[] = [
+import type { TFunction } from "../../../lib/i18n/messages";
+export const itineraryDays = (tt: TFunction): ItineraryDay[] => ([
   {
-    day: "Day 1",
-    title: "Arrival, Hotel Check-In & Atlantic Seaboard Sunset",
+    day: tt("data.day-1"),
+    title: tt("data.arrival-hotel-check-in-atlantic"),
     image: "/images/activities/campsbay.jpg",
     description:
-      "Start your Cape Town trip with a smooth airport pickup, private transfer to your hotel, and a relaxed afternoon around the V&A Waterfront, Clifton, or Camps Bay before sunset.",
-    highlights: ["Airport pickup", "Hotel transfer", "V&A Waterfront", "Camps Bay sunset"],
+      tt("data.start-your-cape-town-trip"),
+    highlights: [tt("data.airport-pickup"), tt("data.hotel-transfer"), tt("data.v-a-waterfront"), tt("data.camps-bay-sunset")],
     bestBookedAs:
-      "A private chauffeur-driven arrival day with flexible stops depending on your flight time.",
+      tt("data.a-private-chauffeur-driven-arrival"),
   },
   {
-    day: "Day 2",
-    title: "Cape Peninsula Private Tour",
+    day: tt("data.day-2"),
+    title: tt("data.cape-peninsula-private-tour"),
     image: "/images/activities/capepoint.jpg",
     description:
-      "Spend the day exploring one of Cape Town’s most iconic scenic routes, including Chapman’s Peak Drive, Cape Point, the Cape of Good Hope, and Boulders Beach penguins.",
-    highlights: ["Chapman’s Peak", "Cape Point", "Cape of Good Hope", "Penguins"],
+      tt("data.spend-the-day-exploring-one"),
+    highlights: [tt("data.chapman-s-peak"), tt("data.cape-point"), tt("data.cape-of-good-hope"), tt("data.penguins")],
     bestBookedAs:
-      "A full-day private peninsula tour with chauffeur service and flexible scenic stops.",
+      tt("data.a-full-day-private-peninsula"),
   },
   {
-    day: "Day 3",
-    title: "Wine Farms in Stellenbosch or Franschhoek",
+    day: tt("data.day-3"),
+    title: tt("data.wine-farms-in-stellenbosch-or"),
     image: "/images/wine/graff.jpg",
     description:
-      "Enjoy a premium Winelands experience with wine tastings, mountain views, and lunch at some of the Cape’s most beautiful estates.",
-    highlights: ["Wine tasting", "Luxury estates", "Lunch stop", "Scenic countryside"],
+      tt("data.enjoy-a-premium-winelands-experience"),
+    highlights: [tt("data.wine-tasting"), tt("data.luxury-estates"), tt("data.lunch-stop-2"), tt("data.scenic-countryside")],
     bestBookedAs:
-      "A private wine tour with chauffeur service so you can fully enjoy the tastings.",
+      tt("data.a-private-wine-tour-with"),
   },
   {
-    day: "Day 4",
-    title: "Table Mountain, City & Culture",
+    day: tt("data.day-4"),
+    title: tt("data.table-mountain-city-culture"),
     image: "/images/activities/tablemountain.jpg",
     description:
-      "Take in Table Mountain, the Bo-Kaap, and selected city highlights while keeping the day relaxed and tailored around your pace.",
-    highlights: ["Table Mountain", "Bo-Kaap", "City highlights", "Local culture"],
+      tt("data.take-in-table-mountain-the"),
+    highlights: [tt("data.table-mountain-2"), tt("data.bo-kaap"), tt("data.city-highlights"), tt("data.local-culture")],
     bestBookedAs:
-      "A half-day or full-day private city experience with chauffeur-driven transport.",
+      tt("data.a-half-day-or-full"),
   },
   {
-    day: "Day 5",
-    title: "Beach, Leisure & Scenic Lifestyle Day",
+    day: tt("data.day-5"),
+    title: tt("data.beach-leisure-scenic-lifestyle-day"),
     image: "/images/activities/beach.jpg",
     description:
-      "Slow the pace down with a lifestyle day around Camps Bay, Clifton, cafés, beach views, and scenic coastal stops.",
-    highlights: ["Clifton", "Camps Bay", "Coastal drive", "Relaxed luxury"],
+      tt("data.slow-the-pace-down-with"),
+    highlights: [tt("data.clifton"), tt("data.camps-bay"), tt("data.coastal-drive"), tt("data.relaxed-luxury")],
     bestBookedAs:
-      "A chauffeur-driven leisure day with beach stops, lunch, and flexible timing.",
+      tt("data.a-chauffeur-driven-leisure-day"),
   },
   {
-    day: "Day 6",
-    title: "Luxury Add-On or Safari Experience",
+    day: tt("data.day-6"),
+    title: tt("data.luxury-add-on-or-safari"),
     image: "/images/activities/safari.jpg",
     description:
-      "Choose a premium experience such as a helicopter ride, yacht charter, or safari day trip depending on how adventurous or luxurious you want the trip to feel.",
-    highlights: ["Helicopter ride", "Yacht charter", "Safari option", "Luxury add-on"],
+      tt("data.choose-a-premium-experience-such"),
+    highlights: [tt("data.helicopter-ride"), tt("data.yacht-charter"), tt("data.safari-option"), tt("data.luxury-add-on")],
     bestBookedAs:
-      "A custom private day built around your preferred experience and travel style.",
+      tt("data.a-custom-private-day-built"),
   },
   {
-    day: "Day 7",
-    title: "Final Morning, Last Stops & Departure",
+    day: tt("data.day-7"),
+    title: tt("data.final-morning-last-stops-departure"),
     image: "/images/activities/capetown.jpg",
     description:
-      "Use your final day for a relaxed breakfast, some last-minute shopping, or one final scenic stop before your private airport transfer.",
-    highlights: ["Final stop", "Shopping", "Relaxed morning", "Airport transfer"],
+      tt("data.use-your-final-day-for"),
+    highlights: [tt("data.final-stop"), tt("data.shopping"), tt("data.relaxed-morning"), tt("data.airport-transfer")],
     bestBookedAs:
-      "A private chauffeur departure service with optional final city or coastal stop.",
+      tt("data.a-private-chauffeur-departure-service"),
   },
-];
+]);
 
-export const addOnItems: AddOnItem[] = [
+export const addOnItems = (tt: TFunction): AddOnItem[] => ([
   {
-    title: "Helicopter Ride",
+    title: tt("data.helicopter-ride-2"),
     description:
-      "Add a premium aerial experience over Cape Town and the Atlantic Seaboard.",
+      tt("data.add-a-premium-aerial-experience"),
   },
   {
-    title: "Private Yacht Charter",
+    title: tt("data.private-yacht-charter"),
     description:
-      "Perfect for sunset cruising, celebrations, and a luxury day on the water.",
+      tt("data.perfect-for-sunset-cruising-celebrations"),
   },
   {
-    title: "Safari Day Trip",
+    title: tt("data.safari-day-trip-2"),
     description:
-      "Add a Big Five wildlife experience as a premium full-day excursion.",
+      tt("data.add-a-big-five-wildlife-2"),
   },
-];
+]);
 
-export const itineraryFaqItems: FaqItem[] = [
+export const itineraryFaqItems = (tt: TFunction): FaqItem[] => ([
   {
-    question: "Is 7 days enough for Cape Town?",
+    question: tt("data.is-7-days-enough-for"),
     answer:
-      "Yes, 7 days is enough to experience Cape Town comfortably when the itinerary is planned well. It allows time for scenic touring, wine farms, beaches, and at least one premium add-on experience.",
+      tt("data.yes-7-days-is-enough"),
   },
   {
-    question: "What is the best way to get around Cape Town during a 7 day trip?",
+    question: tt("data.what-is-the-best-way"),
     answer:
-      "A private chauffeur is one of the most comfortable and efficient ways to experience Cape Town, especially for wine tours, scenic drives, airport transfers, and full-day touring.",
+      tt("data.a-private-chauffeur-is-one"),
   },
   {
-    question: "Can this itinerary be customised?",
+    question: tt("data.can-this-itinerary-be-customised"),
     answer:
-      "Yes, the itinerary can be tailored around your travel pace, hotel location, preferred stops, and whether you want a more relaxed or more activity-filled trip.",
+      tt("data.yes-the-itinerary-can-be"),
   },
   {
-    question: "Can wine farms and Cape Peninsula be done in one day?",
+    question: tt("data.can-wine-farms-and-cape"),
     answer:
-      "They are best done on separate days. This allows you to enjoy each experience properly without rushing or spending too much time on the road.",
+      tt("data.they-are-best-done-on"),
   },
   {
-    question: "Is this itinerary good for couples?",
+    question: tt("data.is-this-itinerary-good-for"),
     answer:
-      "Yes, this itinerary works especially well for couples because it combines scenic touring, wine experiences, lifestyle moments, and optional luxury add-ons.",
+      tt("data.yes-this-itinerary-works-especially"),
   },
   {
-    question: "Can you arrange the full itinerary with chauffeur service?",
+    question: tt("data.can-you-arrange-the-full"),
     answer:
-      "Yes, the full 7 day itinerary can be arranged with private chauffeur-driven transport, airport transfers, day touring, and custom route planning.",
+      tt("data.yes-the-full-7-day"),
   },
-];
+]);

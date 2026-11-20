@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { trackWhatsAppClick } from "../../../lib/tracking";
 import Money from "../../common/Money";
 
+import { useT } from "../../../lib/i18n/LocaleContext";
 type Props = {
   title: string;
   priceUsd?: number;
@@ -68,13 +69,13 @@ export default function ChauffeurStickyBar({
   priceUsd,
   whatsappLink,
 }: Props) {
+  const tt = useT();
   return (
     <StickyBar>
       <StickyCopy>
         <StickyTitle>{title}</StickyTitle>
         <StickySubtext>
-          {priceUsd ? <Money usd={priceUsd} /> : "Private chauffeur vehicle"} • Check availability now
-        </StickySubtext>
+          {priceUsd ? <Money usd={priceUsd} /> : tt("ChauffeurStickyBar.private-chauffeur-vehicle")} {tt("ChauffeurStickyBar.check-availability-now")}</StickySubtext>
       </StickyCopy>
 
       <Button
@@ -89,8 +90,7 @@ export default function ChauffeurStickyBar({
           })
         }
       >
-        Book Now
-      </Button>
+        {tt("ChauffeurStickyBar.book-now")}</Button>
     </StickyBar>
   );
 }
