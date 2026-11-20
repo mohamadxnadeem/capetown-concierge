@@ -16,7 +16,10 @@ export type ContentEntry = {
   duration?: string;
   location?: string;
   body?: string;
-  stops?: { title?: string; description?: string }[];
+  chauffeur_service_text?: string;
+  features?: string[];
+  ideal_for?: string[];
+  stops?: { title?: string; short_description?: string }[];
   meta?: { title?: string; description?: string };
 };
 type ContentFile = Record<string, ContentEntry>;
@@ -68,10 +71,17 @@ export function englishSlugFor(locale: Locale, kind: ContentKind, slug: string):
 export function overlayContent<T extends object>(item: T, entry?: ContentEntry): T {
   if (!entry) return item;
   const out: Record<string, unknown> = { ...(item as Record<string, unknown>) };
-  const keys = ["title", "short_description", "highlight", "card_summary", "duration", "location", "body"] as const;
+  const keys = ["title", "short_description", "highlight", "card_summary", "duration", "location", "body", "chauffeur_service_text"] as const;
   for (const k of keys) {
     const v = entry[k];
     if (typeof v === "string" && v.trim() && k in out) out[k] = v;
+  }
+  for (const k of ["features", "ideal_for"] as const) {
+    const tr = entry[k];
+    const cur = out[k];
+    if (Array.isArray(tr) && Array.isArray(cur) && tr.some((x) => x?.trim())) {
+      out[k] = cur.map((x, i) => (typeof x === "string" && tr[i]?.trim() ? tr[i] : x));
+    }
   }
   const stops = out.stops;
   if (Array.isArray(stops) && entry.stops?.length) {
@@ -80,7 +90,9 @@ export function overlayContent<T extends object>(item: T, entry?: ContentEntry):
       if (!tr || typeof stop !== "object" || stop === null) return stop;
       const next: Record<string, unknown> = { ...(stop as Record<string, unknown>) };
       if (tr.title?.trim() && "title" in next) next.title = tr.title;
-      if (tr.description?.trim() && "description" in next) next.description = tr.description;
+      if (tr.short_description?.trim() && "short_description" in next) {
+        next.short_description = tr.short_description;
+      }
       return next;
     });
   }

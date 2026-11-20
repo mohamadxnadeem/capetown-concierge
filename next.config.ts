@@ -24,6 +24,10 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  experimental: {
+    // Unmatched URLs render the English 404 inside the site shell (the root layout is [locale]).
+    globalNotFound: true,
+  },
   reactStrictMode: true,
   trailingSlash: false,
   async headers() {

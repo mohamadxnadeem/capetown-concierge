@@ -1,1 +1,26 @@
-{}
+{
+  "/:title": "",
+  "/:description": "",
+  "/chauffeur-hire:title": "",
+  "/chauffeur-hire:description": "",
+  "/tours:title": "",
+  "/tours:description": "",
+  "/reviews:title": "",
+  "/reviews:description": "",
+  "/airport-transfers-cape-town:title": "",
+  "/airport-transfers-cape-town:description": "",
+  "/best-wine-farms-in-cape-town:title": "",
+  "/best-wine-farms-in-cape-town:description": "",
+  "/best-activities-to-do-in-cape-town:title": "",
+  "/best-activities-to-do-in-cape-town:description": "",
+  "/7-day-cape-town-itinerary:title": "",
+  "/7-day-cape-town-itinerary:description": "",
+  "/multi-day-chauffeur-cape-town:title": "",
+  "/multi-day-chauffeur-cape-town:description": "",
+  "/contact:title": "",
+  "/contact:description": "",
+  "/cancellation-policy:title": "",
+  "/cancellation-policy:description": "",
+  "/privacy:title": "",
+  "/privacy:description": ""
+}
