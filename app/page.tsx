@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import HeroBanner from "../components/sections/HeroBanner";
 import ServiceTiles from "../components/sections/ServiceTiles";
-import FeaturedVillas from "../components/sections/FeaturedVillas";
 import FeaturedVehicles from "../components/sections/FeaturedVehicles";
 import WhyChooseUs from "../components/sections/WhyChooseUs";
 import FeaturedExperiences from "../components/sections/FeaturedExperiences";
@@ -9,7 +8,6 @@ import TestimonialsSection from "../components/sections/testimonials/Testimonial
 import TestimonialsCta from "../components/sections/testimonials/TestimonialsCta";
 import HomepageEnquiryCollapsible from "../components/sections/HomepageEnquiryCollapsible";
 import GoogleRatingBadge from "../components/common/GoogleRatingBadge";
-import { fetchVillas, getVillaPrimaryPhoto } from "../lib/villas";
 import { brand } from "../lib/brand";
 
 const SITE_URL = brand.siteUrl;
@@ -341,19 +339,14 @@ async function getFeaturedVehicles(): Promise<FeaturedVehicleItem[]> {
 }
 
 export default async function HomePage() {
-  const [featuredVehicleItems, featuredExperienceItems, villas] =
+  const [featuredVehicleItems, featuredExperienceItems] =
     await Promise.all([
       getFeaturedVehicles(),
       getFeaturedExperiences(),
-      fetchVillas().catch(() => []),
     ]);
 
   // Cover images for the service tiles — pull from real CMS data, fall
   // back to bundled assets if a category has none yet.
-  const villaTileImages = villas
-    .slice(0, 4)
-    .map((v) => getVillaPrimaryPhoto(v))
-    .filter((u): u is string => Boolean(u));
   const vehicleTileImages = featuredVehicleItems
     .slice(0, 4)
     .map((v) => v.image)
@@ -369,26 +362,15 @@ export default async function HomePage() {
   // mismatch).
   const heroRotationImages: string[] = [];
   const maxRotation = Math.max(
-    villaTileImages.length,
     vehicleTileImages.length,
     tourTileImages.length
   );
   for (let i = 0; i < maxRotation; i++) {
-    if (villaTileImages[i]) heroRotationImages.push(villaTileImages[i]);
     if (vehicleTileImages[i]) heroRotationImages.push(vehicleTileImages[i]);
     if (tourTileImages[i]) heroRotationImages.push(tourTileImages[i]);
   }
 
   const serviceTiles = [
-    {
-      href: "/villas",
-      eyebrow: "Stay",
-      title: "Luxury Villas",
-      description:
-        "Hand-picked villas in Camps Bay, Clifton, Constantia and the Winelands — concierge from arrival to departure.",
-      images: villaTileImages.length ? villaTileImages : ["/images/hero-image.jpg"],
-      alt: "Luxury Cape Town villa rentals with concierge service",
-    },
     {
       href: "/chauffeur-hire",
       eyebrow: "Drive",
@@ -569,15 +551,15 @@ export default async function HomePage() {
 
       <HeroBanner
         eyebrow={brand.name}
-        title="Cape Town's luxury concierge — villas, chauffeurs, and curated day tours."
-        description="A single team that plans, books, and runs the whole trip. Villas in the city's best addresses, private chauffeur hire in luxury vehicles, and concierge-led day tours of Cape Town and the Winelands."
+        title="Cape Town's luxury concierge: private chauffeurs and curated day tours."
+        description="A single team that plans, books, and runs the whole trip. Private chauffeur hire in luxury vehicles, and concierge-led day tours of Cape Town and the Winelands."
         primaryCtaLabel="Chat on WhatsApp"
         primaryCtaHref="https://wa.me/27636746131?text=Hi%2C+I%27d+like+to+plan+a+stay+with+Cape+Town+Concierge.+Please+assist."
-        secondaryCtaLabel="Explore villas"
-        secondaryCtaHref="/villas"
+        secondaryCtaLabel="Explore chauffeur hire"
+        secondaryCtaHref="/chauffeur-hire"
         image="/images/car.jpg"
         images={heroRotationImages}
-        imageAlt="Cape Town Concierge — luxury villas, chauffeur hire and private day tours"
+        imageAlt="Cape Town Concierge — chauffeur hire and private day tours"
       />
 
       <ServiceTiles tiles={serviceTiles} />
@@ -585,8 +567,6 @@ export default async function HomePage() {
       <div style={{ textAlign: "center", padding: "20px 20px 0" }}>
         <GoogleRatingBadge />
       </div>
-
-      <FeaturedVillas villas={villas} />
 
       <FeaturedVehicles items={featuredVehicleItems} />
 

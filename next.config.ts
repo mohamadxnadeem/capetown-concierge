@@ -50,6 +50,18 @@ const nextConfig: NextConfig = {
         destination: "https://www.capetown-concierge.co.za/:path*",
         permanent: true,
       },
+      // Alternate domains → canonical www .co.za (path preserved, root included)
+      ...[
+        "www.capetown-concierge.com",
+        "capetown-concierge.com",
+        "www.whycapetown.com",
+        "whycapetown.com",
+      ].map((host) => ({
+        source: "/:path*",
+        has: [{ type: "host" as const, value: host }],
+        destination: "https://www.capetown-concierge.co.za/:path*",
+        permanent: true,
+      })),
       // Shared group links from the app used /proposal/<ref>/
       {
         source: "/proposal/:ref",

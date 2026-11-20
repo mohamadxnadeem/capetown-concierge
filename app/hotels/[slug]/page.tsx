@@ -46,10 +46,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     description: description.slice(0, 160),
     alternates: { canonical },
     robots: {
-      index: true,
+      index: false,
       follow: true,
       googleBot: {
-        index: true,
+        index: false,
         follow: true,
         "max-image-preview": "large",
         "max-snippet": -1,
