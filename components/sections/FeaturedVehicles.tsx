@@ -7,6 +7,8 @@ import Container from "../common/Container";
 import Money from "../common/Money";
 import SmartImage from "../common/SmartImage";
 
+import { useT } from "../../lib/i18n/LocaleContext";
+import type { TFunction } from "../../lib/i18n/messages";
 type VehicleItem = {
   title: string;
   description: string;
@@ -22,6 +24,9 @@ type FeaturedVehiclesProps = {
   title?: string;
   description?: string;
   items?: VehicleItem[];
+  id?: string;
+  footerLabel?: string;
+  footerHref?: string;
 };
 
 
@@ -242,6 +247,33 @@ const InlineArrow = styled.span`
   font-weight: 700;
 `;
 
+const FooterLinkRow = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: 32px;
+`;
+
+const FooterLink = styled(Link)`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 46px;
+  padding: 0 18px;
+  border-radius: 14px;
+  background: ${({ theme }) => theme.colors.primary};
+  color: ${({ theme }) => theme.colors.white};
+  font-weight: 700;
+  font-size: 0.95rem;
+  text-decoration: none;
+  box-shadow: ${({ theme }) => theme.shadows.soft};
+  transition: background 0.2s ease, transform 0.2s ease;
+
+  &:hover {
+    background: ${({ theme }) => theme.colors.primaryDark};
+    transform: translateY(-1px);
+  }
+`;
+
 const EmptyState = styled.div`
   padding: 28px;
   border-radius: ${({ theme }) => theme.radius.lg};
@@ -251,8 +283,8 @@ const EmptyState = styled.div`
   box-shadow: ${({ theme }) => theme.shadows.soft};
 `;
 
-function getVehicleAltText(title: string) {
-  return `Luxury ${title} Chauffeur Service Cape Town - VIP Transport`;
+function getVehicleAltText(title: string, tt: TFunction) {
+  return tt("FeaturedVehicles.chauffeur-cape-town-private-vehicle", { title });
 }
 
 function VehicleImageCard({
@@ -264,12 +296,13 @@ function VehicleImageCard({
   title: string;
   alt?: string;
 }) {
+  const tt = useT();
   return (
     <CardImageWrap>
       {image ? (
         <SmartImage
           src={image}
-          alt={alt || getVehicleAltText(title)}
+          alt={alt || getVehicleAltText(title, tt)}
           sizes="(max-width: 768px) 85vw, (max-width: 1200px) 48vw, 32vw"
         />
       ) : null}
@@ -283,7 +316,11 @@ export default function FeaturedVehicles({
   title = "Travel Cape Town in Comfort and Style",
   description = "Discover premium chauffeur-driven vehicles for airport transfers, private travel, executive transport, and luxury touring across Cape Town.",
   items = [],
+  id,
+  footerLabel,
+  footerHref,
 }: FeaturedVehiclesProps) {
+  const tt = useT();
   const sliderRef = useRef<HTMLDivElement | null>(null);
 
   const scrollByAmount = (direction: "left" | "right") => {
@@ -298,11 +335,11 @@ export default function FeaturedVehicles({
   };
 
   return (
-    <Wrapper>
+    <Wrapper id={id}>
       <Container>
         <TopBar>
           <Intro>
-            <Eyebrow>{eyebrow}</Eyebrow>
+            {eyebrow ? <Eyebrow>{eyebrow}</Eyebrow> : null}
             <Title>{title}</Title>
             <Description>{description}</Description>
           </Intro>
@@ -311,14 +348,14 @@ export default function FeaturedVehicles({
             <Controls>
               <ArrowButton
                 type="button"
-                aria-label="Scroll vehicles left"
+                aria-label={tt("FeaturedVehicles.scroll-vehicles-left")}
                 onClick={() => scrollByAmount("left")}
               >
                 ←
               </ArrowButton>
               <ArrowButton
                 type="button"
-                aria-label="Scroll vehicles right"
+                aria-label={tt("FeaturedVehicles.scroll-vehicles-right")}
                 onClick={() => scrollByAmount("right")}
               >
                 →
@@ -328,11 +365,11 @@ export default function FeaturedVehicles({
         </TopBar>
 
         {!items.length ? (
-          <EmptyState>No vehicles loaded yet.</EmptyState>
+          <EmptyState>{tt("FeaturedVehicles.no-vehicles-loaded-yet")}</EmptyState>
         ) : (
           <Slider ref={sliderRef}>
             {items.map((item, index) => (
-              <Card key={`${item.title}-${index}`} href={item.href}>
+              <Card key={`${item.title}-${index}`} href={tt.path(item.href)}>
                 <VehicleImageCard
                   image={item.image}
                   title={item.title}
@@ -341,7 +378,7 @@ export default function FeaturedVehicles({
 
                 <CardContent>
                   <MetaRow>
-                    {item.seats ? <MetaBadge>{item.seats} Seats</MetaBadge> : null}
+                    {item.seats ? <MetaBadge>{item.seats} {tt("FeaturedVehicles.seats")}</MetaBadge> : null}
                     {item.priceUsd ? (
                       <MetaBadge><Money usd={item.priceUsd} /></MetaBadge>
                     ) : null}
@@ -351,7 +388,7 @@ export default function FeaturedVehicles({
                   <CardText>{item.description}</CardText>
 
                   <CardFooter>
-                    <ViewButton>View Vehicle</ViewButton>
+                    <ViewButton>{tt("FeaturedVehicles.view-vehicle")}</ViewButton>
                     <InlineArrow>→</InlineArrow>
                   </CardFooter>
                 </CardContent>
@@ -359,6 +396,12 @@ export default function FeaturedVehicles({
             ))}
           </Slider>
         )}
+
+        {footerHref && footerLabel && items.length ? (
+          <FooterLinkRow>
+            <FooterLink href={tt.path(footerHref)}>{footerLabel}</FooterLink>
+          </FooterLinkRow>
+        ) : null}
       </Container>
     </Wrapper>
   );

@@ -1,155 +1,156 @@
-export const wineFarms = [
+import type { TFunction } from "../../../lib/i18n/messages";
+export const wineFarms = (tt: TFunction) => ([
   {
-    title: "Delaire Graff Estate",
+    title: tt("data.delaire-graff-estate"),
     image: "/images/wine/graff.jpg",
     description:
-      "One of the most exclusive wine estates in Stellenbosch, known for panoramic vineyard views, fine dining, art, and a polished luxury atmosphere.",
-    bestFor: "Luxury travellers, couples",
+      tt("data.one-of-the-most-exclusive"),
+    bestFor: tt("data.luxury-travellers-couples"),
     ideal:
-      "Best experienced as part of a private chauffeur-driven wine tour with a scenic route and lunch reservation.",
-    tags: ["Most romantic", "Luxury", "Scenic views"],
+      tt("data.best-experienced-as-part-of"),
+    tags: [tt("data.most-romantic"), tt("data.luxury"), tt("data.scenic-views")],
   },
   {
-    title: "Babylonstoren",
+    title: tt("data.babylonstoren"),
     image: "/images/wine/babylonstoren.jpg",
     description:
-      "A visually iconic Cape estate combining wine, gardens, fresh produce, and a beautifully curated farm-style luxury experience.",
-    bestFor: "Couples, families, lifestyle travellers",
+      tt("data.a-visually-iconic-cape-estate"),
+    bestFor: tt("data.couples-families-lifestyle-travellers"),
     ideal:
-      "Ideal for a slower, immersive wine day as part of a full-day private chauffeur itinerary.",
-    tags: ["Family friendly", "Most scenic", "Lifestyle"],
+      tt("data.ideal-for-a-slower-immersive"),
+    tags: [tt("data.family-friendly"), tt("data.most-scenic"), tt("data.lifestyle")],
   },
   {
-    title: "Boschendal",
+    title: tt("data.boschendal"),
     image: "/images/wine/boschendal.JPG",
     description:
-      "A historic estate offering wine tasting, picnics, open spaces, and a relaxed countryside feel that works especially well for laid-back wine days.",
-    bestFor: "Groups, families, couples",
+      tt("data.a-historic-estate-offering-wine"),
+    bestFor: tt("data.groups-families-couples"),
     ideal:
-      "Perfect for a relaxed private wine tour with flexible timing and scenic lunch stops.",
-    tags: ["Family friendly", "Picnics", "Relaxed atmosphere"],
+      tt("data.perfect-for-a-relaxed-private"),
+    tags: [tt("data.family-friendly"), tt("data.picnics"), tt("data.relaxed-atmosphere")],
   },
   {
-    title: "Tokara Wine Estate",
+    title: tt("data.tokara-wine-estate"),
     image: "/images/wine/tokara.jpg",
     description:
-      "A premium Stellenbosch wine estate known for award-winning wines, olive oil tastings, and spectacular mountain views.",
-    bestFor: "Couples, food lovers",
+      tt("data.a-premium-stellenbosch-wine-estate"),
+    bestFor: tt("data.couples-food-lovers"),
     ideal:
-      "A strong choice for tastings and lunch on a refined private chauffeur-driven wine route.",
-    tags: ["Food lovers", "Scenic views", "Premium tasting"],
+      tt("data.a-strong-choice-for-tastings"),
+    tags: [tt("data.food-lovers"), tt("data.scenic-views"), tt("data.premium-tasting")],
   },
   {
-    title: "Groot Constantia",
+    title: tt("data.groot-constantia"),
     image: "/images/wine/groot.jpg",
     description:
-      "One of South Africa’s most historic wine estates, offering heritage, beautiful grounds, and a convenient wine experience closer to Cape Town.",
-    bestFor: "First-time visitors, history lovers, shorter itineraries",
+      tt("data.one-of-south-africa-s"),
+    bestFor: tt("data.first-time-visitors-history-lovers"),
     ideal:
-      "Best included in a shorter private wine experience or paired with other Cape Town highlights.",
-    tags: ["Historic", "Closest to Cape Town", "Great for short trips"],
+      tt("data.best-included-in-a-shorter"),
+    tags: [tt("data.historic"), tt("data.closest-to-cape-town"), tt("data.great-for-short-trips")],
   },
   {
-    title: "Waterford Estate",
+    title: tt("data.waterford-estate"),
     image: "/images/wine/waterfords.png",
     description:
-      "A refined Stellenbosch estate known for elegant tastings, chocolate pairings, and a more polished premium wine experience.",
-    bestFor: "Luxury travellers, couples",
+      tt("data.a-refined-stellenbosch-estate-known"),
+    bestFor: tt("data.luxury-travellers-couples"),
     ideal:
-      "Perfect for a curated private wine route focused on elegant tastings and premium pairings.",
-    tags: ["Most romantic", "Luxury", "Chocolate pairing"],
+      tt("data.perfect-for-a-curated-private"),
+    tags: [tt("data.most-romantic"), tt("data.luxury"), tt("data.chocolate-pairing")],
   },
   {
-    title: "Vredenheim Wild Cat Experience",
+    title: tt("data.vredenheim-wild-cat-experience"),
     image: "/images/wine/wildcat.jpg",
     description:
-      "A more unique and memorable stop combining wine estate charm with the distinctive wild cat experience.",
-    bestFor: "Families, returning visitors, unique experiences",
+      tt("data.a-more-unique-and-memorable"),
+    bestFor: tt("data.families-returning-visitors-unique-experiences"),
     ideal:
-      "Great as part of a more varied full-day wine itinerary with private chauffeur transport.",
-    tags: ["Family friendly", "Unique experience", "Something different"],
+      tt("data.great-as-part-of-a"),
+    tags: [tt("data.family-friendly"), tt("data.unique-experience"), tt("data.something-different")],
   },
   {
-    title: "Spier Wine Farm",
+    title: tt("data.spier-wine-farm"),
     image: "/images/wine/spier.jpg",
     description:
-      "A well-known estate offering wine tasting, beautiful grounds, and a relaxed atmosphere with broad appeal.",
-    bestFor: "Families, groups, casual wine lovers",
+      tt("data.a-well-known-estate-offering"),
+    bestFor: tt("data.families-groups-casual-wine-lovers"),
     ideal:
-      "A versatile stop on a private wine day, especially for travellers wanting variety and a relaxed experience.",
-    tags: ["Family friendly", "Easy going", "Great all-rounder"],
+      tt("data.a-versatile-stop-on-a"),
+    tags: [tt("data.family-friendly"), tt("data.easy-going"), tt("data.great-all-rounder")],
   },
   {
-    title: "Postcard Café",
+    title: tt("data.postcard-caf"),
     image: "/images/wine/postcard.jpg",
     description:
-      "A hidden gem with some of the most beautiful vineyard views in Stellenbosch and one of the best scenic lunch spots in the Winelands.",
-    bestFor: "Couples, scenic lovers",
+      tt("data.a-hidden-gem-with-some"),
+    bestFor: tt("data.couples-scenic-lovers"),
     ideal:
-      "Best included as a lunch stop during a private wine tour for a relaxed and picturesque break.",
-    tags: ["Most scenic", "Lunch stop", "Romantic views"],
+      tt("data.best-included-as-a-lunch"),
+    tags: [tt("data.most-scenic"), tt("data.lunch-stop"), tt("data.romantic-views")],
   },
   {
-    title: "Lanzerac Wine Estate",
+    title: tt("data.lanzerac-wine-estate"),
     image: "/images/wine/lanzarac.jpg",
     description:
-      "One of the oldest wine estates in Stellenbosch, offering heritage, elegance, and refined wine tasting in a luxury setting.",
-    bestFor: "Luxury travellers, couples",
+      tt("data.one-of-the-oldest-wine"),
+    bestFor: tt("data.luxury-travellers-couples"),
     ideal:
-      "Perfect for a premium wine tour with a focus on history, elegance, and relaxed tastings.",
-    tags: ["Historic", "Luxury", "Most romantic"],
+      tt("data.perfect-for-a-premium-wine"),
+    tags: [tt("data.historic"), tt("data.luxury"), tt("data.most-romantic")],
   },
-];
+]);
 
-export const wineFaqItems = [
+export const wineFaqItems = (tt: TFunction) => ([
   {
-    question: "What are the best wine farms to visit near Cape Town?",
+    question: tt("data.what-are-the-best-wine"),
     answer:
-      "Top wine farms near Cape Town include Delaire Graff, Babylonstoren, Boschendal, Tokara, Groot Constantia, Waterford Estate, Vredenheim, Spier, Postcard Café, and Lanzerac. They offer a mix of luxury, scenery, history, and unique wine experiences.",
+      tt("data.top-wine-farms-near-cape"),
   },
   {
-    question: "Which wine farms are most romantic for couples?",
+    question: tt("data.which-wine-farms-are-most"),
     answer:
-      "Delaire Graff, Waterford Estate, Lanzerac, and Postcard Café are especially popular for couples because of their views, elegant atmosphere, and more intimate overall experience.",
+      tt("data.delaire-graff-waterford-estate-lanzerac"),
   },
   {
-    question: "Which wine farms are best for families?",
+    question: tt("data.which-wine-farms-are-best"),
     answer:
-      "Babylonstoren, Boschendal, Spier, and Vredenheim are among the best family-friendly wine farms because they offer more space, a relaxed atmosphere, and broader appeal for mixed-age groups.",
+      tt("data.babylonstoren-boschendal-spier-and-vredenheim"),
   },
   {
-    question: "Which wine farms are best for first-time visitors?",
+    question: tt("data.which-wine-farms-are-best-2"),
     answer:
-      "Delaire Graff, Tokara, Boschendal, Groot Constantia, and Babylonstoren are strong choices for first-time visitors because they give a well-rounded introduction to the Cape Winelands.",
+      tt("data.delaire-graff-tokara-boschendal-groot"),
   },
   {
-    question: "Is Stellenbosch, Franschhoek, or Constantia better for wine tasting?",
+    question: tt("data.is-stellenbosch-franschhoek-or-constantia"),
     answer:
-      "Stellenbosch offers the widest range of iconic estates, Franschhoek is known for a more refined food-and-wine atmosphere, and Constantia is ideal for shorter wine experiences closer to Cape Town.",
+      tt("data.stellenbosch-offers-the-widest-range"),
   },
   {
-    question: "Can you visit multiple wine farms in one day?",
+    question: tt("data.can-you-visit-multiple-wine"),
     answer:
-      "Yes, most private wine tours comfortably include 3 to 4 wine farms in one day, depending on your pace, tasting preferences, and whether you include lunch.",
+      tt("data.yes-most-private-wine-tours"),
   },
   {
-    question: "Do I need a chauffeur for a wine tour?",
+    question: tt("data.do-i-need-a-chauffeur"),
     answer:
-      "A private chauffeur is highly recommended for a wine tour because it allows you to enjoy tastings fully, avoid driving stress, and experience the day in a more relaxed and premium way.",
+      tt("data.a-private-chauffeur-is-highly"),
   },
   {
-    question: "How far are the wine farms from Cape Town?",
+    question: tt("data.how-far-are-the-wine"),
     answer:
-      "Most Stellenbosch and Franschhoek wine farms are around 45 minutes to 1 hour from Cape Town, while Constantia is much closer and works well for shorter outings.",
+      tt("data.most-stellenbosch-and-franschhoek-wine"),
   },
   {
-    question: "Can I customise my wine tour itinerary?",
+    question: tt("data.can-i-customise-my-wine"),
     answer:
-      "Yes, private wine tours can be tailored around your preferred estates, lunch venues, pace of travel, and the kind of atmosphere you want from the day.",
+      tt("data.yes-private-wine-tours-can"),
   },
   {
-    question: "Which wine farms are best for scenic views and photos?",
+    question: tt("data.which-wine-farms-are-best-3"),
     answer:
-      "Delaire Graff, Babylonstoren, Tokara, and Postcard Café are some of the best wine farms for scenic views, photos, and a more visually memorable Cape Winelands experience.",
+      tt("data.delaire-graff-babylonstoren-tokara-and"),
   },
-];
+]);

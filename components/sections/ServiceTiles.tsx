@@ -5,6 +5,7 @@ import styled from "styled-components";
 import Container from "../common/Container";
 import RotatingImage from "../common/RotatingImage";
 
+import { useT } from "../../lib/i18n/LocaleContext";
 export interface ServiceTile {
   href: string;
   eyebrow: string;
@@ -124,12 +125,13 @@ const TileCta = styled.div`
 `;
 
 export default function ServiceTiles({ tiles }: Props) {
+  const tt = useT();
   return (
     <Wrapper>
       <Container>
         <Grid>
           {tiles.map((tile) => (
-            <Tile key={tile.href} href={tile.href}>
+            <Tile key={tile.href} href={tt.path(tile.href)}>
               <ImageLayer>
                 <RotatingImage
                   images={tile.images}
@@ -142,7 +144,7 @@ export default function ServiceTiles({ tiles }: Props) {
                 <TileEyebrow>{tile.eyebrow}</TileEyebrow>
                 <TileTitle>{tile.title}</TileTitle>
                 <TileDescription>{tile.description}</TileDescription>
-                <TileCta>Explore</TileCta>
+                <TileCta>{tt("ServiceTiles.explore")}</TileCta>
               </TileContent>
             </Tile>
           ))}

@@ -24,6 +24,10 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  experimental: {
+    // Unmatched URLs render the English 404 inside the site shell (the root layout is [locale]).
+    globalNotFound: true,
+  },
   reactStrictMode: true,
   trailingSlash: false,
   async headers() {
@@ -41,6 +45,18 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     return [
+      // Old domains: permanent, path-preserving redirects to the live site.
+      ...[
+        "capetown-concierge.com",
+        "www.capetown-concierge.com",
+        "whycapetown.com",
+        "www.whycapetown.com",
+      ].map((host) => ({
+        source: "/:path*",
+        has: [{ type: "host" as const, value: host }],
+        destination: "https://www.capetown-concierge.co.za/:path*",
+        permanent: true,
+      })),
       // Non-www → www canonical redirect.
       // Google indexed the www version (canonical siteUrl = www); without
       // this redirect, clicks from Google land on the bare domain and 404.
@@ -91,6 +107,14 @@ const nextConfig: NextConfig = {
       {
         source: "/proposal/:group_reference",
         destination: "/booking-confirmation/:group_reference",
+        permanent: true,
+      },
+      // V-Class slug was briefly changed in admin to "mercedes-v-class".
+      // King Mo (2026-11-15): keep the original URL. Not a case-only redirect,
+      // the destination is a different, longer slug, so it cannot loop.
+      {
+        source: "/chauffeur-hire/mercedes-v-class",
+        destination: "/chauffeur-hire/mercedes-v-class-private-chauffeur-service",
         permanent: true,
       },
       // NOTE: do NOT add case-only redirects (e.g. BMW-X5 → bmw-x5).

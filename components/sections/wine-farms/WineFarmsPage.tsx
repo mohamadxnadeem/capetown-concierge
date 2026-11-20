@@ -13,14 +13,16 @@ import TestimonialsSection from "../testimonials/TestimonialsSection";
 import TestimonialsCta from "../testimonials/TestimonialsCta";
 import { wineFarms, wineFaqItems } from "./data";
 
+import { useT } from "../../../lib/i18n/LocaleContext";
 export default function WineFarmsPage() {
+  const tt = useT();
   return (
     <PageWrap>
       <WineHero />
-      <WineTimeline items={wineFarms} />
+      <WineTimeline items={wineFarms(tt)} />
       <TestimonialsSection />
       <TestimonialsCta />
-      <AvailableVehicles title="Private Wine Tour in Cape Town" />
+      <AvailableVehicles title={tt("WineFarmsPage.private-wine-tour-in-cape")} />
 
       <WineRegions />
       <WineByTravelStyle />
@@ -30,7 +32,7 @@ export default function WineFarmsPage() {
 
       
 
-      <WineFaq items={wineFaqItems} />
+      <WineFaq items={wineFaqItems(tt)} />
       <WineFinalCta />
     </PageWrap>
   );

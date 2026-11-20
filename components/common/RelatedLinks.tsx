@@ -1,5 +1,6 @@
 "use client";
 
+import { useT } from "../../lib/i18n/LocaleContext";
 import Link from "next/link";
 import styled from "styled-components";
 import Container from "./Container";
@@ -45,6 +46,7 @@ export default function RelatedLinks({
   text?: string;
   links: RelatedLink[];
 }) {
+  const tt = useT();
   return (
     <Wrap>
       <Container>
@@ -53,7 +55,7 @@ export default function RelatedLinks({
         <List>
           {links.map((link) => (
             <li key={link.href}>
-              <Link href={link.href}>{link.label}</Link>
+              <Link href={tt.path(link.href)}>{link.label}</Link>
             </li>
           ))}
         </List>

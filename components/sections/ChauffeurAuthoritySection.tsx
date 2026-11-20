@@ -5,6 +5,7 @@ import Link from "next/link";
 import styled from "styled-components";
 import { brand } from "../../lib/brand";
 
+import { useT } from "../../lib/i18n/LocaleContext";
 const Section = styled.section`
   padding: 72px 0;
   background: ${({ theme }) => theme.colors.white};
@@ -168,54 +169,42 @@ const InlineLink = styled(Link)`
 `;
 
 export default function ChauffeurAuthoritySection() {
+  const tt = useT();
   const [open, setOpen] = useState(false);
 
   return (
     <Section>
       <Container>
         <SectionHeader>
-          <Eyebrow>Chauffeur Service Cape Town</Eyebrow>
-          <Title>The Premier Chauffeur & Private Tour Service in Cape Town</Title>
+          <Eyebrow>{tt("ChauffeurAuthoritySection.chauffeur-service-cape-town")}</Eyebrow>
+          <Title>{tt("ChauffeurAuthoritySection.the-premier-chauffeur-private-tour")}</Title>
           <Intro>
-            Discover a more polished way to experience Cape Town with private
-            chauffeur-driven travel, premium vehicles, and custom touring
-            designed around comfort, reliability, and a five-star guest
-            experience.
-          </Intro>
+            {tt("ChauffeurAuthoritySection.discover-a-more-polished-way")}</Intro>
         </SectionHeader>
 
         <Grid>
           <Card>
-            <CardTitle>Luxury Fleet</CardTitle>
+            <CardTitle>{tt("ChauffeurAuthoritySection.luxury-fleet")}</CardTitle>
             <CardText>
-              Travel in premium vehicles including the Mercedes V-Class,
-              Hyundai Staria, and executive options suited to airport transfers,
-              VIP travel, couples, and families.
-            </CardText>
+              {tt("ChauffeurAuthoritySection.travel-in-premium-vehicles-including")}</CardText>
           </Card>
 
           <Card>
-            <CardTitle>Private Touring</CardTitle>
+            <CardTitle>{tt("ChauffeurAuthoritySection.private-touring")}</CardTitle>
             <CardText>
-              Enjoy tailored experiences such as Cape Peninsula routes, scenic
-              coastal drives, and Cape Winelands days with private chauffeur
-              service from start to finish.
-            </CardText>
+              {tt("ChauffeurAuthoritySection.enjoy-tailored-experiences-such-as")}</CardText>
           </Card>
 
           <Card>
-            <CardTitle>All-Inclusive Experience</CardTitle>
+            <CardTitle>{tt("ChauffeurAuthoritySection.all-inclusive-experience")}</CardTitle>
             <CardText>
-              Our service is designed to feel seamless, with professional
-              drivers, route planning, comfort, and attention to detail that
-              elevates the whole journey.
-            </CardText>
+              {tt("ChauffeurAuthoritySection.our-service-is-designed-to")}</CardText>
           </Card>
         </Grid>
 
         <ExpandWrap>
           <ExpandButton type="button" onClick={() => setOpen((v) => !v)}>
-            <ExpandTitle>Why our chauffeur service stands out in Cape Town</ExpandTitle>
+            <ExpandTitle>{tt("ChauffeurAuthoritySection.why-our-chauffeur-service-stands")}</ExpandTitle>
             <ExpandIcon $open={open}>+</ExpandIcon>
           </ExpandButton>
 
@@ -223,43 +212,19 @@ export default function ChauffeurAuthoritySection() {
             <ExpandInner>
               <RichText>
                 <p>
-                  If you are searching for the best chauffeur service in Cape
-                  Town, the experience should be about far more than simply
-                  getting from one place to another. At {brand.name}, we
-                  focus on delivering a private, polished, and premium standard
-                  of travel for clients who value comfort, reliability, and
-                  attention to detail. Our chauffeur service in Cape Town is
-                  designed for airport transfers, full-day private driving,
-                  business transport, and custom travel experiences that feel
-                  seamless from start to finish.
-                </p>
+                  {tt("ChauffeurAuthoritySection.if-you-are-searching-for")}{" "}{brand.name}{tt("ChauffeurAuthoritySection.we-focus-on-delivering-a")}</p>
 
                 <p>
-                  Our fleet is carefully positioned for different travel styles.
-                  The Mercedes V-Class is ideal for premium group travel, family
-                  trips, and VIP clients who want space and elegance. The
-                  Hyundai Staria offers a modern, comfortable option for airport
-                  transfers and full-day touring, while executive vehicles are
-                  perfect for couples, professionals, and travellers who want a
-                  more private luxury feel.
-                </p>
+                  {tt("ChauffeurAuthoritySection.our-fleet-is-carefully-positioned")}</p>
 
                 <p>
-                  We also specialise in private tours and tailor-made
-                  itineraries. Some of the most requested experiences include
-                  the{" "}
-                  <InlineLink href="/tours/cape-peninsula-tour">
-                    Cape Peninsula private tour
-                  </InlineLink>
-                  , scenic coastal drives, and curated{" "}
-                  <InlineLink href="/best-wine-farms-in-cape-town">
-                    Cape Winelands wine tours
-                  </InlineLink>{" "}
-                  through Stellenbosch and Franschhoek. Many clients combine
-                  chauffeur service with airport transfers, custom wine days,
-                  and multi-day route planning for a more elevated Cape Town
-                  experience.
-                </p>
+                  {tt("ChauffeurAuthoritySection.we-also-specialise-in-private")}{" "}
+                  <InlineLink href={tt.path("/tours/cape-peninsula-tour")}>
+                    {tt("ChauffeurAuthoritySection.cape-peninsula-private-tour")}</InlineLink>
+                  {tt("ChauffeurAuthoritySection.scenic-coastal-drives-and-curated")}{" "}
+                  <InlineLink href={tt.path("/best-wine-farms-in-cape-town")}>
+                    {tt("ChauffeurAuthoritySection.cape-winelands-wine-tours")}</InlineLink>{" "}
+                  {tt("ChauffeurAuthoritySection.through-stellenbosch-and-franschhoek-many")}</p>
               </RichText>
             </ExpandInner>
           </ExpandBody>

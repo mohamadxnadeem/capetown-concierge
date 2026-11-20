@@ -1,0 +1,100 @@
+{
+  "audi-a4": {
+    "slug": "motorista-particular-audi-a4-cidade-do-cabo",
+    "title": "Audi A4",
+    "short_description": "Confiança discreta. Confortável, espaçoso e sutil, para hóspedes que preferem circular pela Cidade do Cabo (Cape Town) sem chamar atenção.",
+    "highlight": "",
+    "chauffeur_service_text": "",
+    "features": [],
+    "ideal_for": [],
+    "body": "",
+    "meta": {
+      "title": "Motorista particular Cidade do Cabo | Audi A4",
+      "description": "Audi A4 com motorista particular na Cidade do Cabo (Cape Town). Confortável, espaçoso e discreto."
+    }
+  },
+  "bmw-5-series-for-hire-with-driver": {
+    "slug": "motorista-particular-bmw-serie-5-cidade-do-cabo",
+    "title": "BMW 5-Series",
+    "short_description": "O padrão executivo. O carro em que você chega a uma reunião quando a reunião importa.",
+    "highlight": "Sedã espaçoso",
+    "chauffeur_service_text": "o melhor serviço de motorista econômico",
+    "features": [],
+    "ideal_for": [],
+    "body": "",
+    "meta": {
+      "title": "Motorista particular Cidade do Cabo | BMW 5-Series",
+      "description": "BMW 5-Series com motorista particular na Cidade do Cabo (Cape Town). O padrão executivo, em um sedã espaçoso."
+    }
+  },
+  "bmw-x5-for-hire-with-driver": {
+    "slug": "motorista-particular-bmw-x5-cidade-do-cabo",
+    "title": "BMW X5",
+    "short_description": "Imponente sem teatro. Espaço para quatro pessoas e bagagem de verdade, e a altura para enfrentar Cape Point e as estradas das reservas como deve ser.",
+    "highlight": "SUV premium",
+    "chauffeur_service_text": "Um SUV de luxo de alto padrão que combina conforto refinado, desempenho potente e uma condução suave e silenciosa, perfeito para clientes que buscam uma experiência premium com motorista particular pela Cidade do Cabo.",
+    "features": [],
+    "ideal_for": [],
+    "body": "",
+    "meta": {
+      "title": "Motorista particular Cidade do Cabo | BMW X5",
+      "description": "BMW X5 com motorista particular na Cidade do Cabo (Cape Town). SUV de luxo para quatro pessoas com bagagem."
+    }
+  },
+  "8-seater-staria-van-with-driver": {
+    "slug": "van-8-lugares-hyundai-staria-motorista-cidade-do-cabo",
+    "title": "Hyundai Staria",
+    "short_description": "Um veículo premium para 8 pessoas com janelas panorâmicas, portas de correr e amplo espaço para bagagem, ideal para famílias, grupos e viagens de vários dias pela Cidade do Cabo e pela Garden Route.",
+    "highlight": "Um veículo premium para 8 pessoas com janelas panorâmicas, portas de correr e amplo espaço para bagagem, ideal para famílias, grupos e viagens de vários dias pela Cidade do Cabo e pela Garden Route.",
+    "chauffeur_service_text": "Um SUV de luxo de alto padrão que combina conforto refinado, desempenho potente e uma condução suave e silenciosa, perfeito para clientes que buscam uma experiência premium com motorista particular pela Cidade do Cabo.",
+    "features": [],
+    "ideal_for": [],
+    "body": "",
+    "meta": {
+      "title": "Motorista particular Cidade do Cabo | Van Hyundai Staria de 8 lugares",
+      "description": "Hyundai Staria de 8 lugares com motorista particular na Cidade do Cabo (Cape Town). Ideal para famílias e grupos."
+    }
+  },
+  "mercedes-benz-e-class": {
+    "slug": "motorista-particular-mercedes-benz-classe-e-cidade-do-cabo",
+    "title": "Mercedes Benz E Class",
+    "short_description": "Autoridade silenciosa. O Mercedes para hóspedes que não têm nada a provar e esperam o conforto mesmo assim.",
+    "highlight": "",
+    "chauffeur_service_text": "",
+    "features": [],
+    "ideal_for": [],
+    "body": "",
+    "meta": {
+      "title": "Motorista particular Cidade do Cabo | Mercedes Benz E Class",
+      "description": "Mercedes Benz E Class com motorista particular na Cidade do Cabo (Cape Town). Conforto com autoridade silenciosa."
+    }
+  },
+  "mercedes-v-class-private-chauffeur-service": {
+    "slug": "motorista-particular-mercedes-v-class-cidade-do-cabo",
+    "title": "Mercedes V Class",
+    "short_description": "Primeira classe na estrada. Seis poltronas individuais estilo capitão com uma mesa entre elas, para que o trajeto faça parte do dia.",
+    "highlight": "van executiva",
+    "chauffeur_service_text": "A escolha definitiva para viagens de luxo em grupo, oferecendo conforto excepcional, privacidade e uma condução suave e refinada. Perfeita para famílias, executivos ou pequenos grupos que querem uma experiência de primeira classe com motorista na Cidade do Cabo.",
+    "features": [],
+    "ideal_for": [],
+    "body": "",
+    "meta": {
+      "title": "Motorista particular Cidade do Cabo | Mercedes V Class",
+      "description": "Mercedes V Class com motorista particular na Cidade do Cabo (Cape Town). Seis poltronas individuais e uma mesa."
+    }
+  },
+  "range-rover-sport-chauffeur-service": {
+    "slug": "motorista-particular-range-rover-sport-cidade-do-cabo",
+    "title": "Range Rover Sport",
+    "short_description": "Para quem manda. Presença no portão e o veículo que os hóspedes pedem pelo nome.",
+    "highlight": "SUV premium",
+    "chauffeur_service_text": "Um SUV de luxo ousado e refinado que combina conforto excepcional, desempenho e presença inconfundível, perfeito para clientes que querem viajar com estilo e tornar cada trajeto mais elevado.",
+    "features": [],
+    "ideal_for": [],
+    "body": "",
+    "meta": {
+      "title": "Motorista particular Cidade do Cabo | Range Rover Sport",
+      "description": "Range Rover Sport com motorista particular na Cidade do Cabo (Cape Town). Presença e estilo em cada trajeto."
+    }
+  }
+}

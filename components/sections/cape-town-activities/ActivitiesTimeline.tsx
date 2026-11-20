@@ -17,6 +17,8 @@ import {
   SectionTitle,
 } from "./shared";
 
+import { useT } from "../../../lib/i18n/LocaleContext";
+import type { TFunction } from "../../../lib/i18n/messages";
 type ActivityItem = {
   title: string;
   image: string;
@@ -178,61 +180,58 @@ const RowActions = styled.div`
   gap: 12px;
 `;
 
-function getActivityAltText(title: string) {
+function getActivityAltText(title: string, tt: TFunction) {
   const key = title.toLowerCase();
 
   if (key.includes("table mountain")) {
-    return "Table Mountain in Cape Town with panoramic city and ocean views";
+    return tt("ActivitiesTimeline.table-mountain-in-cape-town");
   }
   if (key.includes("cape peninsula")) {
-    return "Cape Peninsula scenic coastal drive near Cape Town";
+    return tt("ActivitiesTimeline.cape-peninsula-scenic-coastal-drive");
   }
   if (key.includes("boulders")) {
-    return "African penguins at Boulders Beach in Cape Town";
+    return tt("ActivitiesTimeline.african-penguins-at-boulders-beach");
   }
   if (key.includes("good hope") || key.includes("cape point")) {
-    return "Cape Point and Cape of Good Hope coastal scenery near Cape Town";
+    return tt("ActivitiesTimeline.cape-point-and-cape-of");
   }
   if (key.includes("winelands") || key.includes("stellenbosch") || key.includes("franschhoek")) {
-    return "Cape Winelands vineyards near Stellenbosch and Franschhoek";
+    return tt("ActivitiesTimeline.cape-winelands-vineyards-near-stellenbosch");
   }
   if (key.includes("chapman")) {
-    return "Chapmans Peak scenic coastal drive in Cape Town";
+    return tt("ActivitiesTimeline.chapmans-peak-scenic-coastal-drive");
   }
   if (key.includes("helicopter")) {
-    return "Helicopter experience over Cape Town coastline and Table Mountain";
+    return tt("ActivitiesTimeline.helicopter-experience-over-cape-town");
   }
   if (key.includes("yacht")) {
-    return "Private yacht charter experience in Cape Town";
+    return tt("ActivitiesTimeline.private-yacht-charter-experience-in");
   }
   if (key.includes("safari")) {
-    return "Safari day trip experience near Cape Town";
+    return tt("ActivitiesTimeline.safari-day-trip-experience-near");
   }
   if (key.includes("camps bay") || key.includes("clifton")) {
-    return "Camps Bay and Clifton beach lifestyle experience in Cape Town";
+    return tt("ActivitiesTimeline.camps-bay-and-clifton-beach");
   }
   if (key.includes("kirstenbosch")) {
-    return "Kirstenbosch Botanical Gardens in Cape Town";
+    return tt("ActivitiesTimeline.kirstenbosch-botanical-gardens-in-cape");
   }
   if (key.includes("fine dining") || key.includes("restaurant")) {
-    return "Fine dining experience in Cape Town";
+    return tt("ActivitiesTimeline.fine-dining-experience-in-cape");
   }
 
-  return `${title} private experience in Cape Town`;
+  return tt("ActivitiesTimeline.private-experience-in-cape-town", { title });
 }
 
 export default function ActivitiesTimeline({ activities }: Props) {
+  const tt = useT();
   return (
     <Section>
       <Container>
         <SectionHeader>
-          <SectionTitle>Top Experiences Worth Adding to Your Itinerary</SectionTitle>
+          <SectionTitle>{tt("ActivitiesTimeline.top-experiences-worth-adding-to")}</SectionTitle>
           <SectionText>
-            These are some of the best activities to do in Cape Town for
-            first-time visitors, couples, families, and luxury travellers.
-            Each one can be enjoyed as part of a private chauffeur-driven day
-            experience or a custom multi-day itinerary.
-          </SectionText>
+            {tt("ActivitiesTimeline.these-are-some-of-the")}</SectionText>
         </SectionHeader>
 
         <ActivitiesList>
@@ -248,13 +247,13 @@ export default function ActivitiesTimeline({ activities }: Props) {
                   <ActivityImageWrap>
                     <SmartImage
                       src={activity.image}
-                      alt={getActivityAltText(activity.title)}
+                      alt={getActivityAltText(activity.title, tt)}
                       sizes="(max-width: 768px) 100vw, 360px"
                     />
                   </ActivityImageWrap>
 
                   <ActivityContent>
-                    <MobileStep>Experience {index + 1}</MobileStep>
+                    <MobileStep>{tt("ActivitiesTimeline.experience")}{" "}{index + 1}</MobileStep>
 
                     <ActivityTitle>{activity.title}</ActivityTitle>
 
@@ -265,7 +264,7 @@ export default function ActivitiesTimeline({ activities }: Props) {
                     <ActivityText>{activity.description}</ActivityText>
 
                     <Recommendation>
-                      <strong>Best booked as:</strong> {activity.idealBooking}
+                      <strong>{tt("ActivitiesTimeline.best-booked-as")}</strong> {activity.idealBooking}
                     </Recommendation>
 
                     <RowActions>
@@ -286,7 +285,7 @@ export default function ActivitiesTimeline({ activities }: Props) {
                           })
                         }
                       >
-                        <Button as="span">Plan This Experience</Button>
+                        <Button as="span">{tt("ActivitiesTimeline.plan-this-experience")}</Button>
                       </Anchor>
                     </RowActions>
                   </ActivityContent>

@@ -2,6 +2,8 @@
 
 import styled from "styled-components";
 
+import { useT } from "../../../lib/i18n/LocaleContext";
+import type { TFunction } from "../../../lib/i18n/messages";
 type Props = {
   features: string[];
 };
@@ -67,44 +69,45 @@ const FeatureText = styled.p`
   line-height: 1.75;
 `;
 
-function getBenefitDescription(feature: string) {
+function getBenefitDescription(feature: string, tt: TFunction) {
   const normalized = feature.toLowerCase();
 
   if (normalized.includes("private chauffeur")) {
-    return "Enjoy a more exclusive and seamless travel experience with a dedicated driver focused on your comfort, timing, and preferences.";
+    return tt("ChauffeurFeatures.enjoy-a-more-exclusive-and");
   }
 
   if (normalized.includes("premium travel") || normalized.includes("presentation")) {
-    return "Travel with a higher level of comfort and presentation, ideal for visitors, VIP guests, business travel, and polished airport arrivals.";
+    return tt("ChauffeurFeatures.travel-with-a-higher-level");
   }
 
   if (normalized.includes("airport")) {
-    return "Skip the stress of waiting, parking, or navigating unfamiliar routes with a reliable airport transfer experience designed around punctuality.";
+    return tt("ChauffeurFeatures.skip-the-stress-of-waiting");
   }
 
   if (normalized.includes("tour")) {
-    return "A private chauffeur service gives you the flexibility to explore Cape Town at your own pace without being tied to group schedules.";
+    return tt("ChauffeurFeatures.a-private-chauffeur-service-gives");
   }
 
   if (normalized.includes("executive")) {
-    return "Perfect for professionals who value privacy, punctuality, and a refined travel standard while moving between meetings, hotels, and events.";
+    return tt("ChauffeurFeatures.perfect-for-professionals-who-value");
   }
 
   if (normalized.includes("comfort")) {
-    return "Sit back and enjoy a smoother, more relaxed journey while your chauffeur handles the driving, route planning, and timing.";
+    return tt("ChauffeurFeatures.sit-back-and-enjoy-a");
   }
 
-  return "A private chauffeur service helps create a smoother, more comfortable, and more personalised travel experience in Cape Town.";
+  return tt("ChauffeurFeatures.a-private-chauffeur-service-helps");
 }
 
 export default function ChauffeurFeatures({ features }: Props) {
+  const tt = useT();
   const defaultBenefits = [
-    "Private chauffeur service",
-    "Premium travel presentation",
-    "Reliable airport transfers",
-    "Flexible private touring",
-    "Executive-level comfort",
-    "Stress-free local travel",
+    tt("ChauffeurFeatures.private-chauffeur-service"),
+    tt("ChauffeurFeatures.premium-travel-presentation"),
+    tt("ChauffeurFeatures.reliable-airport-transfers"),
+    tt("ChauffeurFeatures.flexible-private-touring"),
+    tt("ChauffeurFeatures.executive-level-comfort"),
+    tt("ChauffeurFeatures.stress-free-local-travel"),
   ];
 
   const items = features.length ? features : defaultBenefits;
@@ -112,19 +115,16 @@ export default function ChauffeurFeatures({ features }: Props) {
   return (
     <Card>
       <CardInner>
-        <Title>Why Travelers Choose a Private Chauffeur Service</Title>
+        <Title>{tt("ChauffeurFeatures.why-travellers-choose-a-private")}</Title>
 
         <IntroText>
-          A private chauffeur service offers more than just transport. It gives you
-          a smoother, more refined way to move through Cape Town with added comfort,
-          flexibility, privacy, and convenience throughout your journey.
-        </IntroText>
+          {tt("ChauffeurFeatures.a-private-chauffeur-service-offers")}</IntroText>
 
         <FeaturesGrid>
           {items.map((feature, index) => (
             <FeatureCard key={`${feature}-${index}`}>
               <FeatureTitle>{feature}</FeatureTitle>
-              <FeatureText>{getBenefitDescription(feature)}</FeatureText>
+              <FeatureText>{getBenefitDescription(feature, tt)}</FeatureText>
             </FeatureCard>
           ))}
         </FeaturesGrid>

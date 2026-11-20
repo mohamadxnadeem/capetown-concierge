@@ -3,6 +3,8 @@
 import { useState } from "react";
 import styled from "styled-components";
 
+import { useT } from "../../../lib/i18n/LocaleContext";
+import type { TFunction } from "../../../lib/i18n/messages";
 const Card = styled.div`
   background: ${({ theme }) => theme.colors.white};
   padding: 30px;
@@ -180,40 +182,41 @@ const IncludeText = styled.p`
   }
 `;
 
-const expectations = [
+const expectations = (tt: TFunction) => ([
   {
     icon: "🚘",
-    title: "Professional Chauffeur",
-    text: "Travel with a polished private driver focused on comfort, punctuality, and a smooth experience from start to finish.",
+    title: tt("PrivateTourWhatToExpect.professional-chauffeur"),
+    text: tt("PrivateTourWhatToExpect.travel-with-a-polished-private"),
   },
   {
     icon: "🗺️",
-    title: "Local Tour Guide",
-    text: "Enjoy local insight, scenic recommendations, and helpful context that makes the day feel more personalised.",
+    title: tt("PrivateTourWhatToExpect.local-tour-guide"),
+    text: tt("PrivateTourWhatToExpect.enjoy-local-insight-scenic-recommendations"),
   },
   {
     icon: "⛽",
-    title: "Fuel Included",
-    text: "Your tour pricing is structured for convenience, with fuel already factored in for a simpler experience.",
+    title: tt("PrivateTourWhatToExpect.fuel-included"),
+    text: tt("PrivateTourWhatToExpect.your-tour-pricing-is-structured"),
   },
   {
     icon: "🌊",
-    title: "Toll Fees Included",
-    text: "Key scenic toll routes can be included where applicable, helping keep the experience smooth and hassle-free.",
+    title: tt("PrivateTourWhatToExpect.toll-fees-included"),
+    text: tt("PrivateTourWhatToExpect.key-scenic-toll-routes-can"),
   },
   {
     icon: "📸",
-    title: "Flexible Stops",
-    text: "Pause for coffee, photos, viewpoints, or extra time at the stops you enjoy most throughout the day.",
+    title: tt("PrivateTourWhatToExpect.flexible-stops"),
+    text: tt("PrivateTourWhatToExpect.pause-for-coffee-photos-viewpoints"),
   },
   {
     icon: "✨",
-    title: "Insider Tips",
-    text: "Get access to lunch spots, hidden gems, scenic viewpoints, and practical local suggestions that elevate the tour.",
+    title: tt("PrivateTourWhatToExpect.insider-tips"),
+    text: tt("PrivateTourWhatToExpect.get-access-to-lunch-spots"),
   },
-];
+]);
 
 export default function PrivateTourWhatToExpect() {
+  const tt = useT();
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   const toggleCard = (index: number) => {
@@ -222,16 +225,13 @@ export default function PrivateTourWhatToExpect() {
 
   return (
     <Card>
-      <SectionTitle>What to Expect</SectionTitle>
+      <SectionTitle>{tt("PrivateTourWhatToExpect.what-to-expect")}</SectionTitle>
 
       <IntroText>
-        Enjoy a more comfortable, flexible, and personalised way to explore Cape
-        Town with private touring designed around your pace, preferences, and
-        travel style.
-      </IntroText>
+        {tt("PrivateTourWhatToExpect.enjoy-a-more-comfortable-flexible")}</IntroText>
 
       <IncludesGrid>
-        {expectations.map((item, index) => {
+        {expectations(tt).map((item, index) => {
           const isExpanded = openIndex === index;
 
           return (

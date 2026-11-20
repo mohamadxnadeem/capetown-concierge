@@ -5,6 +5,7 @@ import { useState } from "react";
 import { FAQItem } from "./types";
 import { useCurrency } from "../../../context/CurrencyContext";
 
+import { useT } from "../../../lib/i18n/LocaleContext";
 const SectionHeader = styled.div`
   max-width: 760px;
   margin-bottom: 28px;
@@ -101,14 +102,15 @@ type Props = {
 };
 
 export default function PrivateTourFaq({ items, lowestVehiclePrice, title }: Props) {
+  const tt = useT();
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
   const { format } = useCurrency();
 
   const vehiclePrice = lowestVehiclePrice ?? 350;
 
   const pricingFaq: FAQItem = {
-    question: "How much does this private tour cost?",
-    answer: `This tour is priced per vehicle, not per person, so your whole group travels together at one flat rate. Pricing starts from ${format(vehiclePrice)} per vehicle for the full day depending on which vehicle you choose. It is fully private, with a professional chauffeur, hotel pickup, fuel and toll fees all included. Send us a WhatsApp with your group size and preferred dates and we'll confirm exact pricing within 30 minutes.`,
+    question: tt("PrivateTourFaq.how-much-does-this-private"),
+    answer: tt("PrivateTourFaq.this-tour-is-priced-per", { vehiclePrice: format(vehiclePrice) }),
   };
 
   const allItems = [pricingFaq, ...items];
@@ -116,11 +118,10 @@ export default function PrivateTourFaq({ items, lowestVehiclePrice, title }: Pro
   return (
     <>
       <SectionHeader>
-        <SectionEyebrow>FAQ</SectionEyebrow>
-        <SectionTitle>{title || "Your Questions, Answered"}</SectionTitle>
+        <SectionEyebrow>{tt("PrivateTourFaq.faq")}</SectionEyebrow>
+        <SectionTitle>{title || tt("PrivateTourFaq.your-questions-answered")}</SectionTitle>
         <SectionText>
-          Everything you need to know before you book, from what's included and how long it takes, to flexibility and family suitability.
-        </SectionText>
+          {tt("PrivateTourFaq.everything-you-need-to-know")}</SectionText>
       </SectionHeader>
 
       <FAQList>

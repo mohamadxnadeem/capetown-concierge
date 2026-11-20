@@ -1,10 +1,12 @@
 "use client";
 
 import styled from "styled-components";
+import Link from "next/link";
 import Button from "../../common/Button";
 import { Container, Section, SectionHeader, SectionText, SectionTitle, StyledLink } from "./shared";
 import { ServiceItem } from "./types";
 
+import { useT } from "../../../lib/i18n/LocaleContext";
 const ServicesGrid = styled.div`
   display: grid;
   gap: 18px;
@@ -39,16 +41,23 @@ type Props = {
 };
 
 export default function ActivitiesServices({ items }: Props) {
+  const tt = useT();
   return (
     <Section>
       <Container>
         <SectionHeader>
-          <SectionTitle>How We Help You Experience Cape Town Better</SectionTitle>
+          <SectionTitle>{tt("ActivitiesServices.how-we-help-you-experience")}</SectionTitle>
           <SectionText>
-            Instead of trying to piece everything together yourself, we help you
-            enjoy Cape Town with private tours, chauffeur service, and a smoother
-            itinerary built around the experiences that suit you best.
-          </SectionText>
+            {tt("ActivitiesServices.instead-of-trying-to-piece")}{" "}
+            <Link href={tt.path("/tours/cape-peninsula-tour")} style={{color:"inherit",textDecoration:"underline"}}>
+              {tt("ActivitiesServices.private-cape-peninsula-tour")}</Link>{" "}
+            {tt("ActivitiesServices.and")}{" "}
+            <Link href={tt.path("/tours/winelands-chauffeur-drive")} style={{color:"inherit",textDecoration:"underline"}}>
+              {tt("ActivitiesServices.private-winelands-tour")}</Link>
+            {tt("ActivitiesServices.plus")}{" "}
+            <Link href={tt.path("/chauffeur-hire")} style={{color:"inherit",textDecoration:"underline"}}>
+              {tt("ActivitiesServices.chauffeur-hire-in-cape-town")}</Link>
+            {tt("ActivitiesServices.and-a-smoother-itinerary-built")}</SectionText>
         </SectionHeader>
 
         <ServicesGrid>
@@ -57,7 +66,7 @@ export default function ActivitiesServices({ items }: Props) {
               <ServiceTitle>{service.title}</ServiceTitle>
               <ServiceText>{service.description}</ServiceText>
 
-              <StyledLink href={service.href}>
+              <StyledLink href={tt.path(service.href)}>
                 <Button as="span" $variant="secondary">
                   {service.cta}
                 </Button>

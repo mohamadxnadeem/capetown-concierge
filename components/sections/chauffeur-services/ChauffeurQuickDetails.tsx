@@ -3,6 +3,7 @@
 import styled from "styled-components";
 import Money from "../../common/Money";
 
+import { useT } from "../../../lib/i18n/LocaleContext";
 type Props = {
   title: string;
   vehicleType?: string;
@@ -64,41 +65,42 @@ export default function ChauffeurQuickDetails({
   luggage,
   priceUsd,
 }: Props) {
+  const tt = useT();
   return (
     <Card>
       <CardInner>
-        <Title>Quick Details</Title>
+        <Title>{tt("ChauffeurQuickDetails.quick-details")}</Title>
 
         <QuickStats>
           <QuickStat>
-            <QuickStatLabel>Vehicle</QuickStatLabel>
+            <QuickStatLabel>{tt("ChauffeurQuickDetails.vehicle")}</QuickStatLabel>
             <QuickStatValue>{title}</QuickStatValue>
           </QuickStat>
 
           {vehicleType ? (
             <QuickStat>
-              <QuickStatLabel>Vehicle Type</QuickStatLabel>
+              <QuickStatLabel>{tt("ChauffeurQuickDetails.vehicle-type")}</QuickStatLabel>
               <QuickStatValue>{vehicleType}</QuickStatValue>
             </QuickStat>
           ) : null}
 
           {seats ? (
             <QuickStat>
-              <QuickStatLabel>Passenger Capacity</QuickStatLabel>
-              <QuickStatValue>{seats} Seats</QuickStatValue>
+              <QuickStatLabel>{tt("ChauffeurQuickDetails.passenger-capacity")}</QuickStatLabel>
+              <QuickStatValue>{seats} {tt("ChauffeurQuickDetails.seats")}</QuickStatValue>
             </QuickStat>
           ) : null}
 
           {luggage ? (
             <QuickStat>
-              <QuickStatLabel>Luggage Capacity</QuickStatLabel>
-              <QuickStatValue>{luggage} Bags</QuickStatValue>
+              <QuickStatLabel>{tt("ChauffeurQuickDetails.luggage-capacity")}</QuickStatLabel>
+              <QuickStatValue>{luggage} {tt("ChauffeurQuickDetails.bags")}</QuickStatValue>
             </QuickStat>
           ) : null}
 
           {priceUsd ? (
             <QuickStat>
-              <QuickStatLabel>Pricing</QuickStatLabel>
+              <QuickStatLabel>{tt("ChauffeurQuickDetails.day-rate-up-to-8")}</QuickStatLabel>
               <QuickStatValue><Money usd={priceUsd} /></QuickStatValue>
             </QuickStat>
           ) : null}

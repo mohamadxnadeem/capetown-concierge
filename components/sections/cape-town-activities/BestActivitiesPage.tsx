@@ -10,6 +10,7 @@ import TestimonialsSection from "../testimonials/TestimonialsSection";
 import TestimonialsCta from "../testimonials/TestimonialsCta";
 import FeaturedExperiences from "../FeaturedExperiences";
 
+import { useT } from "../../../lib/i18n/LocaleContext";
 type FeaturedExperienceItem = {
   title: string;
   description: string;
@@ -23,19 +24,20 @@ type Props = {
 };
 
 export default function BestActivitiesPage({ featuredExperiences = [] }: Props) {
+  const tt = useT();
   return (
     <PageWrap>
       <ActivitiesHero />
 
-      <ActivitiesTimeline activities={activities} />
+      <ActivitiesTimeline activities={activities(tt)} />
 
       <FeaturedExperiences
-        title="Best Private Tours & Experiences in Cape Town"
+        title={tt("BestActivitiesPage.best-private-tours-experiences-in")}
         description="Discover some of the most popular private experiences in Cape Town, from scenic coastal routes and Cape Peninsula highlights to wine tours, luxury activities, and curated chauffeur-driven days."
         items={featuredExperiences}
       />
 
-      <ActivitiesTravellerTypes items={travelerTypes} />
+      <ActivitiesTravellerTypes items={travelerTypes(tt)} />
 
       <TestimonialsSection />
       <TestimonialsCta />

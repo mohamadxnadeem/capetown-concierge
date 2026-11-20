@@ -16,6 +16,8 @@ import {
 } from "./shared";
 import { ItineraryDay } from "./types";
 
+import { useT } from "../../../lib/i18n/LocaleContext";
+import type { TFunction } from "../../../lib/i18n/messages";
 const List = styled.div`
   display: flex;
   flex-direction: column;
@@ -157,43 +159,43 @@ type Props = {
   items: ItineraryDay[];
 };
 
-function getItineraryAltText(day: string | number, title: string) {
-  const key = `${day} ${title}`.toLowerCase();
+function getItineraryAltText(day: string | number, title: string, tt: TFunction) {
+  const key = tt("ItineraryTimeline.text", { day, title }).toLowerCase();
 
   if (
     key.includes("arrival") ||
     key.includes("atlantic seaboard") ||
     key.includes("camps bay")
   ) {
-    return "Cape Town arrival day with Atlantic Seaboard and Camps Bay sunset";
+    return tt("ItineraryTimeline.cape-town-arrival-day-with");
   }
   if (
     key.includes("cape peninsula") ||
     key.includes("cape point") ||
     key.includes("good hope")
   ) {
-    return "Cape Peninsula private tour with Cape Point and scenic coastal views";
+    return tt("ItineraryTimeline.cape-peninsula-private-tour-with");
   }
   if (
     key.includes("wine") ||
     key.includes("stellenbosch") ||
     key.includes("franschhoek")
   ) {
-    return "Cape Winelands wine tasting day in Stellenbosch and Franschhoek";
+    return tt("ItineraryTimeline.cape-winelands-wine-tasting-day");
   }
   if (
     key.includes("table mountain") ||
     key.includes("bo-kaap") ||
     key.includes("city")
   ) {
-    return "Table Mountain and Cape Town city experience on a private itinerary";
+    return tt("ItineraryTimeline.table-mountain-and-cape-town");
   }
   if (
     key.includes("beach") ||
     key.includes("coastal") ||
     key.includes("leisure")
   ) {
-    return "Beach and coastal lifestyle day in Cape Town";
+    return tt("ItineraryTimeline.beach-and-coastal-lifestyle-day");
   }
   if (
     key.includes("helicopter") ||
@@ -201,30 +203,28 @@ function getItineraryAltText(day: string | number, title: string) {
     key.includes("safari") ||
     key.includes("luxury")
   ) {
-    return "Luxury add-on experience on a 7 day Cape Town itinerary";
+    return tt("ItineraryTimeline.luxury-add-on-experience-on");
   }
   if (
     key.includes("departure") ||
     key.includes("airport transfer") ||
     key.includes("final morning")
   ) {
-    return "Cape Town departure day with private airport transfer";
+    return tt("ItineraryTimeline.cape-town-departure-day-with");
   }
 
-  return `${title} on a 7 day Cape Town itinerary`;
+  return tt("ItineraryTimeline.on-a-7-day-cape", { title });
 }
 
 export default function ItineraryTimeline({ items }: Props) {
+  const tt = useT();
   return (
     <Section>
       <Container>
         <SectionHeader>
-          <SectionTitle>7 Day Cape Town Itinerary Breakdown</SectionTitle>
+          <SectionTitle>{tt("ItineraryTimeline.7-day-cape-town-itinerary")}</SectionTitle>
           <SectionText>
-            This itinerary balances iconic sightseeing, scenic drives, wine
-            experiences, beach time, and premium add-ons so you can experience
-            Cape Town in comfort without feeling rushed.
-          </SectionText>
+            {tt("ItineraryTimeline.this-itinerary-balances-iconic-sightseeing")}</SectionText>
         </SectionHeader>
 
         <List>
@@ -240,7 +240,7 @@ export default function ItineraryTimeline({ items }: Props) {
                   <ImageWrap>
                     <SmartImage
                       src={item.image}
-                      alt={getItineraryAltText(item.day, item.title)}
+                      alt={getItineraryAltText(item.day, item.title, tt)}
                       sizes="(max-width: 768px) 100vw, 360px"
                     />
                   </ImageWrap>
@@ -257,7 +257,7 @@ export default function ItineraryTimeline({ items }: Props) {
                     </Highlights>
 
                     <Recommendation>
-                      <strong>Best booked as:</strong> {item.bestBookedAs}
+                      <strong>{tt("ItineraryTimeline.best-booked-as")}</strong> {item.bestBookedAs}
                     </Recommendation>
 
                     <Actions>
@@ -273,13 +273,12 @@ export default function ItineraryTimeline({ items }: Props) {
                           })
                         }
                       >
-                        <Button as="span">Plan This Day</Button>
+                        <Button as="span">{tt("ItineraryTimeline.plan-this-day")}</Button>
                       </Anchor>
 
-                      <StyledLink href="/tours">
+                      <StyledLink href={tt.path("/tours")}>
                         <Button as="span" $variant="secondary">
-                          View Private Tours
-                        </Button>
+                          {tt("ItineraryTimeline.view-private-tours")}</Button>
                       </StyledLink>
                     </Actions>
                   </Content>

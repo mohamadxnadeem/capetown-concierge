@@ -12,11 +12,11 @@ import {
 } from "../../lib/whatsapp";
 import { trackWhatsAppClick } from "../../lib/tracking";
 import CurrencySelector from "./CurrencySelector";
+import LanguageSwitcher from "./LanguageSwitcher";
+import { useLocale, useT } from "../../lib/i18n/LocaleContext";
 import { brand } from "../../lib/brand";
 
-const headerWhatsappLink = buildWhatsAppLink(
-  buildGeneralWhatsAppMessage("booking a private chauffeur or tour in Cape Town")
-);
+const TELEGRAM_LINK = process.env.NEXT_PUBLIC_TELEGRAM_LINK || "";
 
 const Wrapper = styled.header`
   position: sticky;
@@ -134,6 +134,11 @@ const MobileWhatsApp = styled.a`
 `;
 
 export default function Header() {
+  const t = useT();
+  const locale = useLocale();
+  const headerWhatsappLink = buildWhatsAppLink(
+    buildGeneralWhatsAppMessage("booking a private chauffeur or tour in Cape Town", locale)
+  );
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const toggleSidebar = () => {
@@ -169,7 +174,7 @@ export default function Header() {
       <Wrapper>
         <HeaderContainer>
           <Inner>
-            <Logo href="/">
+            <Logo href={t.path("/")}>
               <LogoImage>
                 <Image
                   src="/images/logo.svg"
@@ -185,13 +190,14 @@ export default function Header() {
             </Logo>
 
             <RightSide>
+              <LanguageSwitcher />
               <CurrencySelector />
 
               <MobileWhatsApp
                 href={headerWhatsappLink}
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="Chat on WhatsApp"
+                aria-label={t("header.whatsappAria")}
                 onClick={() =>
                   trackWhatsAppClick({
                     source: "header_mobile_whatsapp",
@@ -216,8 +222,24 @@ export default function Header() {
                   })
                 }
               >
-                Book on WhatsApp
+                {t("header.bookOnWhatsapp")}
               </HeaderCta>
+
+              {locale === "ru" && TELEGRAM_LINK ? (
+                <HeaderCta
+                  href={TELEGRAM_LINK}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() =>
+                    window.gtag?.("event", "telegram_click", { source: "header_telegram" })
+                  }
+                >
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style={{ marginRight: 8 }}>
+                    <path d="M21.9 4.3 18.7 19.5c-.2 1-.9 1.3-1.7.8l-4.8-3.5-2.3 2.2c-.3.3-.5.5-1 .5l.3-4.9 8.9-8c.4-.3-.1-.5-.6-.2L6.5 13.3 1.8 11.8c-1-.3-1-1 .2-1.5L20.3 3.2c.9-.3 1.6.2 1.6 1.1z" />
+                  </svg>
+                  {t("header.telegram")}
+                </HeaderCta>
+              ) : null}
 
               <Hamburger onClick={toggleSidebar} />
             </RightSide>

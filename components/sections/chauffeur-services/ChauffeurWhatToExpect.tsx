@@ -2,6 +2,7 @@
 
 import styled from "styled-components";
 
+import { useT } from "../../../lib/i18n/LocaleContext";
 type Props = {
   html?: string;
   fallbackText: string;
@@ -66,10 +67,11 @@ const BodyText = styled.p`
 `;
 
 export default function ChauffeurWhatToExpect({ html, fallbackText }: Props) {
+  const tt = useT();
   return (
     <Card>
       <CardInner>
-        <Title>What to Expect</Title>
+        <Title>{tt("ChauffeurWhatToExpect.what-to-expect")}</Title>
 
         {html ? (
           <RichContent dangerouslySetInnerHTML={{ __html: html }} />

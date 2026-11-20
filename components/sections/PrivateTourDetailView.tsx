@@ -11,6 +11,9 @@ import {
   buildTourWhatsAppMessage,
 } from "../../lib/whatsapp";
 
+import { useT } from "../../lib/i18n/LocaleContext";
+import { enT } from "../../lib/i18n/messages";
+import type { TFunction } from "../../lib/i18n/messages";
 /* =========================
    TYPES
 ========================= */
@@ -63,54 +66,54 @@ type ReviewItem = {
    DATA
 ========================= */
 
-const faqItems: FAQItem[] = [
+const faqItems = (tt: TFunction): FAQItem[] => ([
   {
-    question: "How long does the Cape Peninsula private tour take?",
+    question: tt("PrivateTourDetailView.how-long-does-the-cape"),
     answer:
-      "Most Cape Peninsula private tours take around a full day, depending on the pace, traffic, and how many photo or sightseeing stops you would like to include.",
+      tt("PrivateTourDetailView.most-cape-peninsula-private-tours"),
   },
   {
-    question: "Is this a private tour or a shared group tour?",
+    question: tt("PrivateTourDetailView.is-this-a-private-tour"),
     answer:
-      "This is a private tour experience designed around your schedule, comfort, and preferences.",
+      tt("PrivateTourDetailView.this-is-a-private-tour"),
   },
   {
-    question: "Can the itinerary be customised?",
+    question: tt("PrivateTourDetailView.can-the-itinerary-be-customised"),
     answer:
-      "Yes. The tour can be tailored around your interests, timing, and preferred stops where possible.",
+      tt("PrivateTourDetailView.yes-the-tour-can-be"),
   },
   {
-    question: "Does the tour include chauffeur transport?",
+    question: tt("PrivateTourDetailView.does-the-tour-include-chauffeur"),
     answer:
-      "Yes. The experience is designed around private chauffeur-driven transport for a smoother and more premium touring experience.",
+      tt("PrivateTourDetailView.yes-the-experience-is-designed"),
   },
   {
-    question: "Is this tour suitable for couples and families?",
+    question: tt("PrivateTourDetailView.is-this-tour-suitable-for"),
     answer:
-      "Yes. This private tour works especially well for couples, families, and travellers looking for a more relaxed and exclusive Cape Town experience.",
+      tt("PrivateTourDetailView.yes-this-private-tour-works"),
   },
-];
+]);
 
-const reviewItems: ReviewItem[] = [
+const reviewItems = (tt: TFunction): ReviewItem[] => ([
   {
     quote:
-      "Absolutely incredible from start to finish. The route, comfort, and attention to detail made this one of the highlights of our Cape Town trip.",
-    name: "James R.",
-    subtitle: "London, UK",
+      tt("PrivateTourDetailView.absolutely-incredible-from-start-to"),
+    name: tt("PrivateTourDetailView.james-r"),
+    subtitle: tt("PrivateTourDetailView.london-uk"),
   },
   {
     quote:
-      "The perfect way to experience Cape Town privately. Everything felt smooth, premium, and beautifully organised.",
-    name: "Sophie & Daniel",
-    subtitle: "Dubai, UAE",
+      tt("PrivateTourDetailView.the-perfect-way-to-experience"),
+    name: tt("PrivateTourDetailView.sophie-daniel"),
+    subtitle: tt("PrivateTourDetailView.dubai-uae"),
   },
   {
     quote:
-      "A polished and memorable experience with amazing scenery throughout the day. Far better than a standard group tour.",
-    name: "Nadia K.",
-    subtitle: "Johannesburg, South Africa",
+      tt("PrivateTourDetailView.a-polished-and-memorable-experience"),
+    name: tt("PrivateTourDetailView.nadia-k"),
+    subtitle: tt("PrivateTourDetailView.johannesburg-south-africa"),
   },
-];
+]);
 
 /* =========================
    HELPERS
@@ -119,12 +122,12 @@ const reviewItems: ReviewItem[] = [
 function formatPriceRange(
   priceFrom?: string,
   priceTo?: string,
-  currency?: string
+  currency?: string, tt: TFunction = enT
 ) {
   if (!priceFrom && !priceTo) return "";
   const symbol = currency === "USD" || !currency ? "$" : currency === "ZAR" ? "R" : `${currency} `;
-  if (priceFrom && priceTo) return `From ${symbol}${priceFrom} - ${symbol}${priceTo}`;
-  if (priceFrom) return `From ${symbol}${priceFrom}`;
+  if (priceFrom && priceTo) return tt("PrivateTourDetailView.from", { symbol, priceFrom, symbol2: symbol, priceTo });
+  if (priceFrom) return tt("PrivateTourDetailView.from-2", { symbol, priceFrom });
   return `${symbol}${priceTo}`;
 }
 
@@ -594,6 +597,7 @@ export default function PrivateTourDetailView({
 }: {
   experience: Experience;
 }) {
+  const tt = useT();
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
 
   const safeTourTitle = experience?.title || "private tour";
@@ -616,7 +620,7 @@ export default function PrivateTourDetailView({
   const priceText = formatPriceRange(
     experience.price_from,
     experience.price_to,
-    experience.currency
+    experience.currency, tt
   );
 
   return (
@@ -628,14 +632,14 @@ export default function PrivateTourDetailView({
               {mainRotationImages.length > 1 ? (
                 <RotatingImage
                   images={mainRotationImages}
-                  alt={`${safeTourTitle} private tour in Cape Town`}
+                  alt={tt("PrivateTourDetailView.private-tour-in-cape-town", { safeTourTitle })}
                   priority
                   sizes="(max-width: 768px) 100vw, 66vw"
                 />
               ) : mainImage ? (
                 <SmartImage
                   src={mainImage}
-                  alt={`${safeTourTitle} private tour in Cape Town`}
+                  alt={tt("PrivateTourDetailView.private-tour-in-cape-town", { safeTourTitle })}
                   priority
                   sizes="(max-width: 768px) 100vw, 66vw"
                 />
@@ -648,7 +652,7 @@ export default function PrivateTourDetailView({
                   <SideImage key={img.id}>
                     <SmartImage
                       src={img.cover_photos}
-                      alt={`${safeTourTitle} tour gallery image`}
+                      alt={tt("PrivateTourDetailView.tour-gallery-image", { safeTourTitle })}
                       sizes="(max-width: 768px) 100vw, 34vw"
                     />
                   </SideImage>
@@ -660,14 +664,14 @@ export default function PrivateTourDetailView({
                       <SideImage>
                         <SmartImage
                           src={mainImage}
-                          alt={`${safeTourTitle} tour gallery image`}
+                          alt={tt("PrivateTourDetailView.tour-gallery-image", { safeTourTitle })}
                           sizes="(max-width: 768px) 100vw, 34vw"
                         />
                       </SideImage>
                       <SideImage>
                         <SmartImage
                           src={mainImage}
-                          alt={`${safeTourTitle} tour gallery image`}
+                          alt={tt("PrivateTourDetailView.tour-gallery-image", { safeTourTitle })}
                           sizes="(max-width: 768px) 100vw, 34vw"
                         />
                       </SideImage>
@@ -683,12 +687,12 @@ export default function PrivateTourDetailView({
       <Section>
         <Container>
           <SectionHeader>
-            <SectionEyebrow>Private Tour in Cape Town</SectionEyebrow>
+            <SectionEyebrow>{tt("PrivateTourDetailView.private-tour-in-cape-town-2")}</SectionEyebrow>
             <Title>{safeTourTitle}</Title>
             <SubText>
               {experience.short_description ||
                 experience.highlight ||
-                "Experience Cape Town like never before with a luxury private tour designed around comfort, flexibility, and unforgettable scenic moments."}
+                tt("PrivateTourDetailView.experience-cape-town-like-never")}
             </SubText>
 
             <QuickInfoRow>
@@ -699,7 +703,7 @@ export default function PrivateTourDetailView({
                 <QuickInfoBadge>{experience.location}</QuickInfoBadge>
               ) : null}
               {priceText ? <QuickInfoBadge>{priceText}</QuickInfoBadge> : null}
-              <QuickInfoBadge>Private Experience</QuickInfoBadge>
+              <QuickInfoBadge>{tt("PrivateTourDetailView.private-experience")}</QuickInfoBadge>
             </QuickInfoRow>
           </SectionHeader>
         </Container>
@@ -708,7 +712,7 @@ export default function PrivateTourDetailView({
       <Section>
         <Container>
           <Card>
-            <SectionTitle>Tour Overview</SectionTitle>
+            <SectionTitle>{tt("PrivateTourDetailView.tour-overview")}</SectionTitle>
             <RichContent
               dangerouslySetInnerHTML={{
                 __html: experience.body || "<p>Tour details coming soon.</p>",
@@ -722,11 +726,10 @@ export default function PrivateTourDetailView({
         <Section>
           <Container>
             <SectionHeader>
-              <SectionEyebrow>Itinerary</SectionEyebrow>
-              <SectionTitle>How the Day Flows</SectionTitle>
+              <SectionEyebrow>{tt("PrivateTourDetailView.itinerary")}</SectionEyebrow>
+              <SectionTitle>{tt("PrivateTourDetailView.how-the-day-flows")}</SectionTitle>
               <SectionText>
-                Explore how your private tour unfolds from the first stop to the final scenic moments of the day.
-              </SectionText>
+                {tt("PrivateTourDetailView.explore-how-your-private-tour")}</SectionText>
             </SectionHeader>
 
             <TimelineWrap>
@@ -746,7 +749,7 @@ export default function PrivateTourDetailView({
                           {stop.image ? (
                             <SmartImage
                               src={stop.image}
-                              alt={`${stop.title} on the ${safeTourTitle}`}
+                              alt={tt("PrivateTourDetailView.on-the", { title: stop.title, safeTourTitle })}
                               sizes="(max-width: 768px) 100vw, 220px"
                             />
                           ) : null}
@@ -754,13 +757,13 @@ export default function PrivateTourDetailView({
 
                         <div>
                           <StopEyebrow>
-                            {stop.stop_type ? `${stop.stop_type} stop` : "Tour stop"}
+                            {stop.stop_type ? tt("PrivateTourDetailView.stop", { stop_type: stop.stop_type }) : tt("PrivateTourDetailView.tour-stop")}
                           </StopEyebrow>
                           <StopTitle>{stop.title}</StopTitle>
                           <StopText>
                             {stop.short_description ||
                               stop.highlight ||
-                              "A memorable stop along your private Cape Town tour."}
+                              tt("PrivateTourDetailView.a-memorable-stop-along-your")}
                           </StopText>
 
                           <StopMetaRow>
@@ -783,29 +786,28 @@ export default function PrivateTourDetailView({
       <Section>
         <Container>
           <HighlightCard>
-            <HighlightTitle>Why This Tour Stands Out</HighlightTitle>
+            <HighlightTitle>{tt("PrivateTourDetailView.why-this-tour-stands-out")}</HighlightTitle>
             <HighlightText>
               {experience.highlight ||
-                "Enjoy a premium private touring experience designed around scenic beauty, flexibility, and memorable moments across Cape Town."}
+                tt("PrivateTourDetailView.enjoy-a-premium-private-touring")}
             </HighlightText>
 
             <CTAButtons style={{ justifyContent: "flex-start", marginTop: "22px" }}>
               <CTAAnchor
-                href={tourWhatsAppLink}
+                href={tt.path(tourWhatsAppLink)}
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <Button as="span">Book This Tour</Button>
+                <Button as="span">{tt("PrivateTourDetailView.book-this-tour")}</Button>
               </CTAAnchor>
 
               <CTAAnchor
-                href={tourWhatsAppLink}
+                href={tt.path(tourWhatsAppLink)}
                 target="_blank"
                 rel="noopener noreferrer"
               >
                 <Button as="span" $variant="secondary">
-                  Enquire on WhatsApp
-                </Button>
+                  {tt("PrivateTourDetailView.enquire-on-whatsapp")}</Button>
               </CTAAnchor>
             </CTAButtons>
           </HighlightCard>
@@ -815,15 +817,14 @@ export default function PrivateTourDetailView({
       <Section>
         <Container>
           <SectionHeader>
-            <SectionEyebrow>Client Feedback</SectionEyebrow>
-            <SectionTitle>What Guests Love About This Tour</SectionTitle>
+            <SectionEyebrow>{tt("PrivateTourDetailView.client-feedback")}</SectionEyebrow>
+            <SectionTitle>{tt("PrivateTourDetailView.what-guests-love-about-this")}</SectionTitle>
             <SectionText>
-              Social proof helps travellers feel confident before booking a private experience.
-            </SectionText>
+              {tt("PrivateTourDetailView.social-proof-helps-travellers-feel")}</SectionText>
           </SectionHeader>
 
           <ReviewsGrid>
-            {reviewItems.map((review, index) => (
+            {reviewItems(tt).map((review, index) => (
               <ReviewCard key={`${review.name}-${index}`}>
                 <QuoteMark>“</QuoteMark>
                 <ReviewQuote>{review.quote}</ReviewQuote>
@@ -840,15 +841,14 @@ export default function PrivateTourDetailView({
       <Section>
         <Container>
           <SectionHeader>
-            <SectionEyebrow>FAQ</SectionEyebrow>
-            <SectionTitle>Frequently Asked Questions</SectionTitle>
+            <SectionEyebrow>{tt("PrivateTourDetailView.faq")}</SectionEyebrow>
+            <SectionTitle>{tt("PrivateTourDetailView.frequently-asked-questions")}</SectionTitle>
             <SectionText>
-              Answering common questions improves confidence and helps strengthen the page for SEO.
-            </SectionText>
+              {tt("PrivateTourDetailView.answering-common-questions-improves-confidence")}</SectionText>
           </SectionHeader>
 
           <FAQList>
-            {faqItems.map((item, index) => {
+            {faqItems(tt).map((item, index) => {
               const isOpen = openFaqIndex === index;
 
               return (
@@ -876,29 +876,27 @@ export default function PrivateTourDetailView({
       <CTASection>
         <Container>
           <CTABox>
-            <CTAEyebrow>Ready to Book?</CTAEyebrow>
-            <CTATitle>Plan Your Private Cape Town Tour</CTATitle>
+            <CTAEyebrow>{tt("PrivateTourDetailView.ready-to-book")}</CTAEyebrow>
+            <CTATitle>{tt("PrivateTourDetailView.plan-your-private-cape-town")}</CTATitle>
             <CTAText>
-              Message us on WhatsApp to check availability, ask questions, and secure your preferred date for this experience.
-            </CTAText>
+              {tt("PrivateTourDetailView.message-us-on-whatsapp-to")}</CTAText>
 
             <CTAButtons>
               <CTAAnchor
-                href={tourWhatsAppLink}
+                href={tt.path(tourWhatsAppLink)}
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <Button as="span">Book This Tour</Button>
+                <Button as="span">{tt("PrivateTourDetailView.book-this-tour")}</Button>
               </CTAAnchor>
 
               <CTAAnchor
-                href={tourWhatsAppLink}
+                href={tt.path(tourWhatsAppLink)}
                 target="_blank"
                 rel="noopener noreferrer"
               >
                 <Button as="span" $variant="secondary">
-                  Chat on WhatsApp
-                </Button>
+                  {tt("PrivateTourDetailView.chat-on-whatsapp")}</Button>
               </CTAAnchor>
             </CTAButtons>
           </CTABox>

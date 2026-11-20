@@ -1,4 +1,6 @@
-import { Experience, FaqItem, ReviewItem } from "./types";
+import { Experience, FaqItem } from "./types";
+import { enT } from "../../../lib/i18n/messages";
+import type { TFunction } from "../../../lib/i18n/messages";
 export { buildWhatsAppLink } from "../../../lib/whatsapp";
 
 export function stripHtml(html?: string) {
@@ -22,10 +24,10 @@ export function formatCurrency(amount: number) {
   return `$${Math.round(amount)}`;
 }
 
-export function formatPrice(price?: string | number) {
+export function formatPrice(price?: string | number, tt: TFunction = enT) {
   if (price === undefined || price === null || price === "") return "";
   const num = Number(String(price).replace(/[^0-9.]/g, ""));
-  return isNaN(num) || num === 0 ? "" : `From $${Math.round(num)} per day`;
+  return isNaN(num) || num === 0 ? "" : tt("utils.from-per-day", { num: Math.round(num) });
 }
 
 export function normalizeUsdPrice(price?: string) {
@@ -37,48 +39,27 @@ export function normalizeUsdPrice(price?: string) {
     .replace(/\s+R(?=\d)/gi, " $");
 }
 
-export function buildTourFaqs(tourTitle: string): FaqItem[] {
+export function buildTourFaqs(tourTitle: string, tt: TFunction): FaqItem[] {
   return [
     {
-      question: `What is included in the ${tourTitle}?`,
+      question: tt("utils.what-is-included-in-the", { tourTitle }),
       answer:
-        "Each private tour includes a professional chauffeur-guide experience, flexible pacing, and a tailored route based on your booking and preferences.",
+        tt("utils.each-private-tour-includes-a"),
     },
     {
-      question: `Can I customise the ${tourTitle}?`,
+      question: tt("utils.can-i-customise-the", { tourTitle }),
       answer:
-        "Yes. Private tours can usually be adjusted around your interests, timing, and preferred stops, depending on availability and logistics.",
+        tt("utils.yes-private-tours-can-usually"),
     },
     {
-      question: `Is the ${tourTitle} private?`,
+      question: tt("utils.is-the-private", { tourTitle }),
       answer:
-        "Yes. This is designed as a private experience for you and your group, giving you more comfort, flexibility, and privacy throughout the day.",
+        tt("utils.yes-this-is-designed-as"),
     },
     {
-      question: `How do I book the ${tourTitle}?`,
+      question: tt("utils.how-do-i-book-the-2", { tourTitle }),
       answer:
-        "The easiest way to book is by messaging us on WhatsApp so we can confirm availability, timing, and the best setup for your day.",
+        tt("utils.the-easiest-way-to-book"),
     },
   ];
 }
-
-export const genericTourReviews: ReviewItem[] = [
-  {
-    quote:
-      "A beautifully organised private experience with great flexibility, comfort, and local insight throughout the day.",
-    name: "James R.",
-    subtitle: "London, UK",
-  },
-  {
-    quote:
-      "Everything felt smooth and personalised. We loved being able to move at our own pace and enjoy the day without stress.",
-    name: "Sophie & Daniel",
-    subtitle: "Dubai, UAE",
-  },
-  {
-    quote:
-      "Professional, comfortable, and very well planned. It felt far more premium than a standard group tour.",
-    name: "Nadia K.",
-    subtitle: "Johannesburg, South Africa",
-  },
-];
