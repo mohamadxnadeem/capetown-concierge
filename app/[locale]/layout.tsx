@@ -10,6 +10,10 @@ export const metadata: Metadata = {
   metadataBase: new URL(brand.siteUrl),
   title: brand.name,
   description: brand.tagline,
+  // Yandex Webmaster verification tag, rendered only when the env var is set.
+  ...(process.env.NEXT_PUBLIC_YANDEX_VERIFICATION
+    ? { verification: { yandex: process.env.NEXT_PUBLIC_YANDEX_VERIFICATION } }
+    : {}),
 };
 
 export const viewport: Viewport = {

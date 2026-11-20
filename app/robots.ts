@@ -1,12 +1,12 @@
 import type { MetadataRoute } from "next";
-import { brand } from "../lib/brand";
 
+// /ar/, /pt-br/ and /ru/ are deliberately NOT blocked.
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: {
       userAgent: "*",
       allow: "/",
     },
-    sitemap: `${brand.siteUrl}/sitemap.xml`,
+    sitemap: "https://www.capetown-concierge.co.za/sitemap.xml",
   };
 }
