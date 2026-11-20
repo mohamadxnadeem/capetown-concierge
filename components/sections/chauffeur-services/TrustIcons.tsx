@@ -2,24 +2,6 @@ import type { ReactNode } from "react";
 import type { TrustIconName } from "../../../lib/vehicleTrustBadges";
 
 const PATHS: Record<TrustIconName, ReactNode> = {
-  luggage: (
-    <>
-      <rect x="6" y="7" width="12" height="13" rx="2" />
-      <path d="M9 7V4h6v3M9 11v5M15 11v5" />
-    </>
-  ),
-  briefcase: (
-    <>
-      <rect x="3" y="7" width="18" height="13" rx="2" />
-      <path d="M9 7V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2M3 13h18" />
-    </>
-  ),
-  users: (
-    <>
-      <circle cx="9" cy="8" r="3.5" />
-      <path d="M2.5 20a6.5 6.5 0 0 1 13 0M16 4.8a3.5 3.5 0 0 1 0 6.4M18 14a6.5 6.5 0 0 1 3.5 6" />
-    </>
-  ),
   fuel: (
     <>
       <path d="M4 21V5a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v16M3 21h12M14 10h2a2 2 0 0 1 2 2v4a1.5 1.5 0 0 0 3 0V9l-3-3" />
