@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
+import Link from "../../common/LocaleLink";
 import styled from "styled-components";
 
 const Section = styled.section`

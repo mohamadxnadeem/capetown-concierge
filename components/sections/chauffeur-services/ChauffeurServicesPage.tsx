@@ -6,7 +6,7 @@ import TestimonialsSection from "../testimonials/TestimonialsSection";
 import TestimonialsCta from "../testimonials/TestimonialsCta";
 import styled from "styled-components";
 import Button from "../../common/Button";
-import Link from "next/link";
+import Link from "../../common/LocaleLink";
 import { trackWhatsAppClick } from "../../../lib/tracking";
 import { brand } from "../../../lib/brand";
 
