@@ -1,10 +1,12 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import styled, { keyframes, css } from "styled-components";
 import { useCurrency } from "../../context/CurrencyContext";
 import { CURRENCIES, CURRENCY_LIST, CurrencyCode } from "../../lib/currencies";
-import { useLocale, useT } from "../../lib/i18n/LocaleContext";
+import { useLocale, useT, useTl } from "../../lib/i18n/LocaleContext";
+import { useMobilePanelTop } from "../../lib/useMobilePanel";
 
 const slideDown = keyframes`
   from {
@@ -75,28 +77,28 @@ const Chevron = styled.span<{ $open: boolean }>`
 
 const DropdownWrap = styled.div`
   position: relative;
-
-  @media (max-width: 767px) {
-    position: static;
-  }
 `;
 
-const Panel = styled.div<{ $visible: boolean }>`
+const Panel = styled.div<{ $visible: boolean; $fixedTop?: number | null }>`
   position: absolute;
   top: calc(100% + 10px);
   right: 0;
   z-index: 9999;
   width: 260px;
 
-  @media (max-width: 767px) {
-    /* Anchor to the header (not the button) so the panel is always fully on screen, LTR and RTL. */
-    width: min(260px, calc(100vw - 24px));
-    max-width: calc(100vw - 24px);
-    top: calc(100% + 6px);
-    right: auto;
-    left: auto;
-    inset-inline-end: 12px;
-  }
+  ${({ $fixedTop }) =>
+    $fixedTop != null &&
+    css`
+      position: fixed;
+      top: ${$fixedTop}px;
+      left: 12px;
+      right: 12px;
+      width: auto;
+      max-width: none;
+      max-height: calc(100dvh - ${$fixedTop}px - 12px);
+      overflow-y: auto;
+      z-index: 10000;
+    `}
   border-radius: 18px;
   background: rgba(6, 32, 18, 0.97);
   backdrop-filter: blur(20px);
@@ -218,12 +220,16 @@ export default function CurrencySelector() {
   const tt = useT();
   const [open, setOpen] = useState(false);
   const wrapRef = useRef<HTMLDivElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
+  const tl = useTl();
+  const mobileTop = useMobilePanelTop(open, wrapRef);
 
   // Close on outside click
   useEffect(() => {
     if (!open) return;
     const handleClick = (e: MouseEvent) => {
-      if (wrapRef.current && !wrapRef.current.contains(e.target as Node)) {
+      const target = e.target as Node;
+      if (!wrapRef.current?.contains(target) && !panelRef.current?.contains(target)) {
         setOpen(false);
       }
     };
@@ -259,6 +265,49 @@ export default function CurrencySelector() {
     return `1 ZAR = ${rate.toFixed(4)} ${code}`;
   };
 
+  const panel = (
+    <Panel ref={panelRef} $visible={open} $fixedTop={mobileTop} role="listbox" aria-label={tl("Select currency")}>
+      <PanelHeader>
+        <PanelTitle>{tl("Select Currency")}</PanelTitle>
+      </PanelHeader>
+
+      <CurrencyList>
+        {CURRENCY_LIST.map((code) => {
+          const meta = CURRENCIES[code];
+          const isActive = code === currency;
+          const isDetected = code === detectedCurrency;
+
+          return (
+            <CurrencyRow
+              key={code}
+              $active={isActive}
+              role="option"
+              aria-selected={isActive}
+              onClick={() => {
+                setCurrency(code);
+                setOpen(false);
+              }}
+            >
+              <RowFlag>{meta.flag}</RowFlag>
+              <RowInfo>
+                <RowName>{currencyName(code)}</RowName>
+                <RowCode>
+                  {code} · {meta.symbol}
+                  {formatRate(code) ? ` · ${formatRate(code)}` : ""}
+                </RowCode>
+              </RowInfo>
+              <RowRight>
+                {isActive && <ActiveDot />}
+                {isDetected && !isActive && <AutoBadge>Auto</AutoBadge>}
+                {isDetected && isActive && <AutoBadge>Auto</AutoBadge>}
+              </RowRight>
+            </CurrencyRow>
+          );
+        })}
+      </CurrencyList>
+    </Panel>
+  );
+
   return (
     <DropdownWrap ref={wrapRef}>
       <Pill
@@ -273,46 +322,7 @@ export default function CurrencySelector() {
         <Chevron $open={open}>▼</Chevron>
       </Pill>
 
-      <Panel $visible={open} role="listbox" aria-label="Select currency">
-        <PanelHeader>
-          <PanelTitle>Select Currency</PanelTitle>
-        </PanelHeader>
-
-        <CurrencyList>
-          {CURRENCY_LIST.map((code) => {
-            const meta = CURRENCIES[code];
-            const isActive = code === currency;
-            const isDetected = code === detectedCurrency;
-
-            return (
-              <CurrencyRow
-                key={code}
-                $active={isActive}
-                role="option"
-                aria-selected={isActive}
-                onClick={() => {
-                  setCurrency(code);
-                  setOpen(false);
-                }}
-              >
-                <RowFlag>{meta.flag}</RowFlag>
-                <RowInfo>
-                  <RowName>{currencyName(code)}</RowName>
-                  <RowCode>
-                    {code} · {meta.symbol}
-                    {formatRate(code) ? ` · ${formatRate(code)}` : ""}
-                  </RowCode>
-                </RowInfo>
-                <RowRight>
-                  {isActive && <ActiveDot />}
-                  {isDetected && !isActive && <AutoBadge>Auto</AutoBadge>}
-                  {isDetected && isActive && <AutoBadge>Auto</AutoBadge>}
-                </RowRight>
-              </CurrencyRow>
-            );
-          })}
-        </CurrencyList>
-      </Panel>
+      {open && (mobileTop != null ? createPortal(panel, document.body) : panel)}
     </DropdownWrap>
   );
 }

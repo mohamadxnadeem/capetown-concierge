@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import styled, { keyframes, css } from "styled-components";
@@ -13,7 +14,8 @@ import {
   withLocalePrefix,
   type Locale,
 } from "../../lib/i18n/config";
-import { useLocale, useT } from "../../lib/i18n/LocaleContext";
+import { useLocale, useT, useTl } from "../../lib/i18n/LocaleContext";
+import { useMobilePanelTop } from "../../lib/useMobilePanel";
 import { englishSlugFor, localizedSlug, type ContentKind } from "../../lib/i18n/slugs";
 
 const slideDown = keyframes`
@@ -85,28 +87,28 @@ const Chevron = styled.span<{ $open: boolean }>`
 
 const Wrap = styled.div`
   position: relative;
-
-  @media (max-width: 767px) {
-    position: static;
-  }
 `;
 
-const Panel = styled.div<{ $visible: boolean }>`
+const Panel = styled.div<{ $visible: boolean; $fixedTop?: number | null }>`
   position: absolute;
   top: calc(100% + 10px);
   right: 0;
   z-index: 9999;
   width: 260px;
 
-  @media (max-width: 767px) {
-    /* Anchor to the header (not the button) so the panel is always fully on screen, LTR and RTL. */
-    width: min(260px, calc(100vw - 24px));
-    max-width: calc(100vw - 24px);
-    top: calc(100% + 6px);
-    right: auto;
-    left: auto;
-    inset-inline-end: 12px;
-  }
+  ${({ $fixedTop }) =>
+    $fixedTop != null &&
+    css`
+      position: fixed;
+      top: ${$fixedTop}px;
+      left: 12px;
+      right: 12px;
+      width: auto;
+      max-width: none;
+      max-height: calc(100dvh - ${$fixedTop}px - 12px);
+      overflow-y: auto;
+      z-index: 10000;
+    `}
   border-radius: 18px;
   background: rgba(6, 32, 18, 0.97);
   backdrop-filter: blur(20px);
@@ -240,11 +242,16 @@ export default function LanguageSwitcher() {
   const t = useT();
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
+  const tl = useTl();
+  const mobileTop = useMobilePanelTop(open, ref);
 
   useEffect(() => {
     if (!open) return;
     const onClick = (e: MouseEvent) => {
-      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+      const target = e.target as Node;
+      if (ref.current?.contains(target) || panelRef.current?.contains(target)) return;
+      setOpen(false);
     };
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
     document.addEventListener("mousedown", onClick);
@@ -262,6 +269,35 @@ export default function LanguageSwitcher() {
 
   const label = t("switcher.label") || "Language";
 
+  const panel = (
+    <Panel ref={panelRef} $visible={open} $fixedTop={mobileTop} role="listbox" aria-label={label}>
+      <PanelHeader>
+        <PanelTitle>{tl("Select Language")}</PanelTitle>
+      </PanelHeader>
+      <OptionList>
+        {LOCALES.map((l) => (
+          <OptionRow
+            key={l}
+            href={pathFor(l, englishPath)}
+            hrefLang={l}
+            lang={l}
+            role="option"
+            aria-selected={l === current}
+            $active={l === current}
+            tabIndex={open ? 0 : -1}
+            onClick={() => {
+              rememberChoice(l);
+              setOpen(false);
+            }}
+          >
+            <RowName>{LOCALE_LABEL[l]}</RowName>
+            {l === current ? <ActiveDot /> : <RowShort>{LOCALE_SHORT[l]}</RowShort>}
+          </OptionRow>
+        ))}
+      </OptionList>
+    </Panel>
+  );
+
   return (
     <Wrap ref={ref}>
       <Pill
@@ -276,32 +312,7 @@ export default function LanguageSwitcher() {
         <Chevron $open={open}>▼</Chevron>
       </Pill>
 
-      <Panel $visible={open} role="listbox" aria-label={label}>
-        <PanelHeader>
-          <PanelTitle>Select Language</PanelTitle>
-        </PanelHeader>
-        <OptionList>
-          {LOCALES.map((l) => (
-            <OptionRow
-              key={l}
-              href={pathFor(l, englishPath)}
-              hrefLang={l}
-              lang={l}
-              role="option"
-              aria-selected={l === current}
-              $active={l === current}
-              tabIndex={open ? 0 : -1}
-              onClick={() => {
-                rememberChoice(l);
-                setOpen(false);
-              }}
-            >
-              <RowName>{LOCALE_LABEL[l]}</RowName>
-              {l === current ? <ActiveDot /> : <RowShort>{LOCALE_SHORT[l]}</RowShort>}
-            </OptionRow>
-          ))}
-        </OptionList>
-      </Panel>
+      {open && (mobileTop != null ? createPortal(panel, document.body) : panel)}
     </Wrap>
   );
 }
