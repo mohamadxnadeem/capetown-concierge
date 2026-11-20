@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import Script from "next/script";
+import { Cormorant_Garamond } from "next/font/google";
 
 import { brand } from "../lib/brand";
 import StyledComponentsRegistry from "../lib/styled-components-registry";
@@ -9,6 +10,13 @@ import Footer from "../components/common/Footer";
 import FloatingWhatsApp from "../components/common/FloatingWhatsApp";
 import ScrollTracking from "../components/tracking/ScrollTracking";
 import EngagementTracking from "../components/tracking/EngagementTracking";
+
+const cormorant = Cormorant_Garamond({
+  subsets: ["latin"],
+  weight: ["500", "600"],
+  display: "swap",
+  variable: "--font-cormorant",
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL(brand.siteUrl),
@@ -111,7 +119,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className={cormorant.variable}>
       <head>
         <link rel="preconnect" href="https://cape-town-concierge.s3.eu-north-1.amazonaws.com" />
         <link rel="dns-prefetch" href="//wa.me" />
