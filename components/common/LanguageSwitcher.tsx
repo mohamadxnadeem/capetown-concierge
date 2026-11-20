@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import styled from "styled-components";
+import styled, { keyframes, css } from "styled-components";
 import {
   ENGLISH_ONLY_SEGMENTS,
   LOCALES,
@@ -14,14 +14,19 @@ import {
   type Locale,
 } from "../../lib/i18n/config";
 import { useLocale, useT } from "../../lib/i18n/LocaleContext";
-import { isReviewed } from "../../lib/i18n/status";
 import { englishSlugFor, localizedSlug, type ContentKind } from "../../lib/i18n/slugs";
 
-const Wrap = styled.div`
-  position: relative;
+const slideDown = keyframes`
+  from {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 `;
 
-// Same glass pill as the currency selector so the header stays consistent.
 const Pill = styled.button`
   display: inline-flex;
   align-items: center;
@@ -36,12 +41,14 @@ const Pill = styled.button`
   font-weight: 700;
   letter-spacing: 0.04em;
   cursor: pointer;
-  transition: background 0.2s ease, border-color 0.2s ease;
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
   white-space: nowrap;
+  backdrop-filter: blur(6px);
 
   &:hover {
     background: rgba(255, 255, 255, 0.2);
     border-color: rgba(255, 255, 255, 0.35);
+    transform: translateY(-1px);
   }
 
   &:focus-visible {
@@ -50,32 +57,133 @@ const Pill = styled.button`
   }
 `;
 
-const Panel = styled.div`
+const Globe = styled.span`
+  font-size: 1.15rem;
+  line-height: 1;
+
+  @media (max-width: 767px) {
+    display: none;
+  }
+`;
+
+const Code = styled.span`
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+`;
+
+const Chevron = styled.span<{ $open: boolean }>`
+  font-size: 0.6rem;
+  opacity: 0.75;
+  transition: transform 0.2s ease;
+  transform: ${({ $open }) => ($open ? "rotate(180deg)" : "rotate(0deg)")};
+
+  @media (max-width: 767px) {
+    display: none;
+  }
+`;
+
+const Wrap = styled.div`
+  position: relative;
+`;
+
+const Panel = styled.div<{ $visible: boolean }>`
   position: absolute;
   top: calc(100% + 10px);
   right: 0;
   z-index: 9999;
-  min-width: 150px;
-  border-radius: 14px;
+  width: 260px;
+
+  @media (max-width: 767px) {
+    width: min(260px, calc(100vw - 24px));
+    right: 0;
+    left: auto;
+  }
+  border-radius: 18px;
   background: rgba(6, 32, 18, 0.97);
+  backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.45),
+    0 4px 16px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
   overflow: hidden;
-  padding: 6px 0;
+  pointer-events: ${({ $visible }) => ($visible ? "auto" : "none")};
+  opacity: ${({ $visible }) => ($visible ? 1 : 0)};
+
+  ${({ $visible }) =>
+    $visible &&
+    css`
+      animation: ${slideDown} 0.2s cubic-bezier(0.16, 1, 0.3, 1) both;
+    `}
 `;
 
-const Option = styled(Link)<{ $active?: boolean }>`
-  display: block;
+const PanelHeader = styled.div`
+  padding: 14px 16px 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+`;
+
+const PanelTitle = styled.div`
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.4);
+`;
+
+const OptionList = styled.div`
+  padding: 8px 0;
+`;
+
+const OptionRow = styled(Link)<{ $active: boolean }>`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-sizing: border-box;
   padding: 10px 16px;
-  color: rgba(255, 255, 255, 0.9);
-  font-size: 0.88rem;
-  font-weight: 600;
+  background: ${({ $active }) =>
+    $active ? "rgba(11, 91, 51, 0.35)" : "transparent"};
+  border: none;
+  cursor: pointer;
+  transition: background 0.15s ease;
+  text-align: start;
   text-decoration: none;
-  background: ${({ $active }) => ($active ? "rgba(255, 255, 255, 0.1)" : "transparent")};
 
   &:hover {
+    background: ${({ $active }) =>
+      $active ? "rgba(11, 91, 51, 0.45)" : "rgba(255, 255, 255, 0.06)"};
+  }
+
+  &:focus-visible {
+    outline: none;
     background: rgba(255, 255, 255, 0.08);
   }
+`;
+
+const RowName = styled.div`
+  flex: 1;
+  min-width: 0;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.2;
+`;
+
+const RowShort = styled.div`
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: rgba(255, 255, 255, 0.4);
+  text-transform: uppercase;
+`;
+
+const ActiveDot = styled.div`
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #4ade80;
+  box-shadow: 0 0 6px rgba(74, 222, 128, 0.7);
 `;
 
 const SLUG_KINDS: Record<string, ContentKind> = {
@@ -87,6 +195,8 @@ const SLUG_KINDS: Record<string, ContentKind> = {
 function parsePath(pathname: string): { locale: Locale; englishPath: string } {
   const parts = pathname.split("/").filter(Boolean);
   let locale: Locale = "en";
+  // Server rendering can see the internal /en/... path that English pages are rewritten to.
+  if (parts[0] === "en") parts.shift();
   if (parts.length) {
     const found = LOCALES.find((l) => l !== "en" && LOCALE_PREFIX[l] === parts[0].toLowerCase());
     if (found) {
@@ -106,10 +216,15 @@ function pathFor(target: Locale, englishPath: string): string {
   return withLocalePrefix(target, "/" + parts.join("/"));
 }
 
+const COOKIE = "ctc_lang_choice";
+
+function rememberChoice(locale: Locale) {
+  document.cookie = `${COOKIE}=${locale}; path=/; max-age=31536000; SameSite=Lax`;
+}
+
 /**
- * Only offers languages that are reviewed for the current page. On an English page with no
- * reviewed translation nothing is rendered, so the English site is visually unchanged.
- * A draft page in another language still offers English.
+ * Language button that sits next to the currency selector. Always lists all four languages
+ * (draft ones stay noindex, handled elsewhere) and links to the same page in each language.
  */
 export default function LanguageSwitcher() {
   const pathname = usePathname() || "/";
@@ -134,44 +249,51 @@ export default function LanguageSwitcher() {
 
   const { englishPath } = parsePath(pathname);
   const first = englishPath.split("/").filter(Boolean)[0];
+  // English-only pages (booking, driver, ...) have no translated version to link to.
   if (first && ENGLISH_ONLY_SEGMENTS.includes(first)) return null;
 
-  const others = LOCALES.filter(
-    (l) => l !== current && (l === "en" || isReviewed(l, englishPath))
-  );
-  if (others.length === 0) return null;
-
-  const options: Locale[] = [current, ...others].sort(
-    (a, b) => LOCALES.indexOf(a) - LOCALES.indexOf(b)
-  );
+  const label = t("switcher.label") || "Language";
 
   return (
     <Wrap ref={ref}>
       <Pill
         type="button"
-        aria-haspopup="listbox"
-        aria-expanded={open}
-        aria-label={t("switcher.label")}
         onClick={() => setOpen((v) => !v)}
+        aria-label={`${label}: ${LOCALE_LABEL[current]}`}
+        aria-expanded={open}
+        aria-haspopup="listbox"
       >
-        {LOCALE_SHORT[current]}
+        <Globe aria-hidden="true">🌐</Globe>
+        <Code>{LOCALE_SHORT[current]}</Code>
+        <Chevron $open={open}>▼</Chevron>
       </Pill>
-      {open ? (
-        <Panel role="listbox" aria-label={t("switcher.label")}>
-          {options.map((l) => (
-            <Option
+
+      <Panel $visible={open} role="listbox" aria-label={label}>
+        <PanelHeader>
+          <PanelTitle>Select Language</PanelTitle>
+        </PanelHeader>
+        <OptionList>
+          {LOCALES.map((l) => (
+            <OptionRow
               key={l}
               href={pathFor(l, englishPath)}
               hrefLang={l}
               lang={l}
+              role="option"
+              aria-selected={l === current}
               $active={l === current}
-              onClick={() => setOpen(false)}
+              tabIndex={open ? 0 : -1}
+              onClick={() => {
+                rememberChoice(l);
+                setOpen(false);
+              }}
             >
-              {LOCALE_LABEL[l]}
-            </Option>
+              <RowName>{LOCALE_LABEL[l]}</RowName>
+              {l === current ? <ActiveDot /> : <RowShort>{LOCALE_SHORT[l]}</RowShort>}
+            </OptionRow>
           ))}
-        </Panel>
-      ) : null}
+        </OptionList>
+      </Panel>
     </Wrap>
   );
 }

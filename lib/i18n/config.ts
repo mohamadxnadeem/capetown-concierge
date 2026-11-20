@@ -43,7 +43,7 @@ export const LANGUAGE_FIELD: Record<Locale, string> = {
 export const LOCALE_LABEL: Record<Locale, string> = {
   en: "English",
   ar: "العربية",
-  "pt-BR": "Português",
+  "pt-BR": "Português (Brasil)",
   ru: "Русский",
 };
 
