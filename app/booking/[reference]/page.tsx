@@ -40,7 +40,7 @@ export async function generateMetadata({
   const baseMeta: Metadata = {
     title: "Booking | Cape Town Concierge",
     description:
-      "Your Cape Town Concierge booking details — vehicle, dates, pickup, and driver contact.",
+      "Your Cape Town Concierge booking details: vehicle, dates, pickup and driver contact.",
     alternates: { canonical: `${SITE_URL}/booking` },
     robots: { index: false, follow: false },
   };
@@ -55,12 +55,12 @@ export async function generateMetadata({
   const carImage = pickCoverImage(booking.car?.cover_photos) ?? FALLBACK_OG_IMAGE;
 
   const title = carTitle
-    ? `${carTitle} — Booking ${booking.booking_reference} | ${brand.name}`
+    ? `${carTitle}, Booking ${booking.booking_reference} | ${brand.name}`
     : `Booking ${booking.booking_reference} | ${brand.name}`;
 
   const description = carTitle
     ? `Your ${carTitle} chauffeur booking with ${brand.name}. Tap to view trip details, pickup, and driver contact.`
-    : `Your ${brand.name} booking details — vehicle, dates, pickup, and driver contact.`;
+    : `Your ${brand.name} booking details: vehicle, dates, pickup and driver contact.`;
 
   return {
     title,
@@ -78,7 +78,7 @@ export async function generateMetadata({
         {
           url: carImage,
           alt: carTitle
-            ? `${carTitle} — booked through ${brand.name}`
+            ? `${carTitle}, booked through ${brand.name}`
             : brand.name,
         },
       ],
@@ -97,7 +97,7 @@ export default async function BookingPage({ params }: PageProps) {
   const decoded = decodeURIComponent(reference).trim();
 
   if (!REFERENCE_PATTERN.test(decoded)) {
-    return <BookingNotFoundView reference={decoded || "—"} />;
+    return <BookingNotFoundView reference={decoded || "-"} />;
   }
 
   const result = await fetchBookingByReference(decoded);

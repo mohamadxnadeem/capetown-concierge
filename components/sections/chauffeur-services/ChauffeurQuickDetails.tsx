@@ -98,7 +98,7 @@ export default function ChauffeurQuickDetails({
 
           {priceUsd ? (
             <QuickStat>
-              <QuickStatLabel>Pricing</QuickStatLabel>
+              <QuickStatLabel>Day Rate (up to 8 hours, per vehicle)</QuickStatLabel>
               <QuickStatValue><Money usd={priceUsd} /></QuickStatValue>
             </QuickStat>
           ) : null}

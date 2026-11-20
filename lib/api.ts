@@ -19,6 +19,10 @@ export const endpoints = {
   },
   carsForHire: {
     all: () => join(`/api/cars-for-hire/`),
+    allPublic: () => join(`/api/cars-for-hire/all/`),
+  },
+  experiences: {
+    all: () => join(`/api/experiences/all/`),
   },
   bookings: {
     publicDetail: (ref: string) =>

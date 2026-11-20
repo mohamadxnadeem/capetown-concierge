@@ -112,7 +112,7 @@ export default function ChauffeurFeatures({ features }: Props) {
   return (
     <Card>
       <CardInner>
-        <Title>Why Travelers Choose a Private Chauffeur Service</Title>
+        <Title>Why Travellers Choose a Private Chauffeur Service</Title>
 
         <IntroText>
           A private chauffeur service offers more than just transport. It gives you

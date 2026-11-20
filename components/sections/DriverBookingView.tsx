@@ -378,9 +378,9 @@ function formatDateRange(start: string | null, end: string | null): string {
       !Number.isNaN(endD.getTime()) &&
       startD.getFullYear() === endD.getFullYear()
     ) {
-      return `${formatShortDate(start)} – ${formatDate(end)}`;
+      return `${formatShortDate(start)} to ${formatDate(end)}`;
     }
-    return `${formatDate(start)} – ${formatDate(end)}`;
+    return `${formatDate(start)} to ${formatDate(end)}`;
   }
   return formatDate(start || end);
 }
@@ -400,7 +400,7 @@ function describeDay(day: DriverBookingDay): string {
   const start = formatTime(day.start_time);
   const end = formatTime(day.end_time);
   const base = day.day_type_display || "";
-  if (start && end) return base ? `${base} · ${start}–${end}` : `${start}–${end}`;
+  if (start && end) return base ? `${base} · ${start} to ${end}` : `${start} to ${end}`;
   if (start) return base ? `${base} · from ${start}` : `from ${start}`;
   return base;
 }
@@ -535,7 +535,7 @@ export default function DriverBookingView({ booking }: Props) {
                       : formatDate(day.date)}
                   </EarningsLabel>
                   <EarningsAmount>
-                    {rate !== null ? formatZar(rate) : "—"}
+                    {rate !== null ? formatZar(rate) : "-"}
                   </EarningsAmount>
                 </EarningsRow>
               );
@@ -544,7 +544,7 @@ export default function DriverBookingView({ booking }: Props) {
           <TotalRow>
             <TotalLabel>Total</TotalLabel>
             <TotalAmount>
-              {hasAnyRate ? formatZar(totalDriver) : "—"}
+              {hasAnyRate ? formatZar(totalDriver) : "-"}
             </TotalAmount>
           </TotalRow>
         </Card>
