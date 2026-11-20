@@ -1,7 +1,9 @@
 "use client";
 
 import styled from "styled-components";
+import { googleRatingLabel, googleReviewCount } from "../../lib/googleReviews";
 
+import { useT } from "../../lib/i18n/LocaleContext";
 const Badge = styled.a`
   display: inline-flex;
   align-items: center;
@@ -62,20 +64,21 @@ const Label = styled.span`
 `;
 
 export default function GoogleRatingBadge() {
+  const tt = useT();
   return (
     <Badge
       href="https://share.google/PthhtCdRu9zx9H6Cb"
       target="_blank"
       rel="noopener noreferrer"
-      aria-label="Cape Town Concierge — 4.9 Google Reviews"
+      aria-label={tt("GoogleRatingBadge.cape-town-concierge-from-google", { googleRatingLabel, googleReviewCount })}
     >
-      <GoogleG>G</GoogleG>
+      <GoogleG>{tt("GoogleRatingBadge.g")}</GoogleG>
       <Info>
         <RatingRow>
-          <Score>4.9</Score>
+          <Score>{googleRatingLabel}</Score>
           <Stars>★★★★★</Stars>
         </RatingRow>
-        <Label>Google Reviews</Label>
+        <Label>{googleReviewCount} {tt("GoogleRatingBadge.google-reviews")}</Label>
       </Info>
     </Badge>
   );

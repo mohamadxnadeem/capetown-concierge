@@ -10,6 +10,7 @@ import {
   SectionText,
 } from "./shared";
 
+import { useT } from "../../../lib/i18n/LocaleContext";
 type FaqItem = {
   question: string;
   answer: string;
@@ -93,6 +94,7 @@ const Answer = styled.p`
 `;
 
 export default function WineFaq({ items }: Props) {
+  const tt = useT();
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   const toggleItem = (index: number) => {
@@ -103,11 +105,9 @@ export default function WineFaq({ items }: Props) {
     <Section>
       <Container>
         <SectionHeader>
-          <SectionTitle>Frequently Asked Questions</SectionTitle>
+          <SectionTitle>{tt("WineFaq.frequently-asked-questions")}</SectionTitle>
           <SectionText>
-            Here are some common questions about visiting wine farms in Cape
-            Town and planning a private chauffeur-driven wine experience.
-          </SectionText>
+            {tt("WineFaq.here-are-some-common-questions")}</SectionText>
         </SectionHeader>
 
         <List>

@@ -13,6 +13,7 @@ import {
 import { AddOnItem } from "./types";
 import { addOnItems } from "./data";
 
+import { useT } from "../../../lib/i18n/LocaleContext";
 const Grid = styled.div`
   display: grid;
   gap: 18px;
@@ -39,20 +40,19 @@ const CardText = styled.p`
 `;
 
 export default function ItineraryAddOns() {
+  const tt = useT();
   return (
     <Section>
       <Container>
         <SectionHeader>
-          <SectionEyebrow>Optional Upgrades</SectionEyebrow>
-          <SectionTitle>Enhance Your Cape Town Experience</SectionTitle>
+          <SectionEyebrow>{tt("ItineraryAddOns.optional-upgrades")}</SectionEyebrow>
+          <SectionTitle>{tt("ItineraryAddOns.enhance-your-cape-town-experience")}</SectionTitle>
           <SectionText>
-            If you want to elevate the trip further, these premium additions can
-            be added to your itinerary based on your interests and travel style.
-          </SectionText>
+            {tt("ItineraryAddOns.if-you-want-to-elevate")}</SectionText>
         </SectionHeader>
 
         <Grid>
-          {addOnItems.map((item: AddOnItem) => (
+          {addOnItems(tt).map((item: AddOnItem) => (
             <Card key={item.title}>
               <CardTitle>{item.title}</CardTitle>
               <CardText>{item.description}</CardText>

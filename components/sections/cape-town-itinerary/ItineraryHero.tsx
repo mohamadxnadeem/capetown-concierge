@@ -10,6 +10,7 @@ import {
   whatsappLink,
 } from "./shared";
 
+import { useT } from "../../../lib/i18n/LocaleContext";
 const Hero = styled.section`
   padding: 96px 0 72px;
   background:
@@ -87,19 +88,15 @@ const ValueItem = styled.div`
 `;
 
 export default function ItineraryHero() {
+  const tt = useT();
   return (
     <Hero>
       <Container>
         <Inner>
-          <Eyebrow>Cape Town Travel Guide</Eyebrow>
-          <Title>7 Day Cape Town Itinerary</Title>
+          <Eyebrow>{tt("ItineraryHero.cape-town-travel-guide")}</Eyebrow>
+          <Title>{tt("ItineraryHero.7-day-cape-town-itinerary")}</Title>
           <Description>
-            Discover the perfect 7 day Cape Town itinerary with a balanced mix
-            of scenic touring, wine farms, beaches, city highlights, and
-            premium private chauffeur-driven travel. Ideal for travellers who
-            want to experience Cape Town properly without wasting time planning
-            every detail themselves.
-          </Description>
+            {tt("ItineraryHero.discover-the-perfect-7-day")}</Description>
 
           <ButtonRow>
             <Anchor
@@ -113,22 +110,21 @@ export default function ItineraryHero() {
                 })
               }
             >
-              <Button as="span">Plan My 7 Day Itinerary</Button>
+              <Button as="span">{tt("ItineraryHero.plan-my-7-day-itinerary")}</Button>
             </Anchor>
 
-            <StyledLink href="/chauffeur-hire">
+            <StyledLink href={tt.path("/chauffeur-hire")}>
               <Button as="span" $variant="secondary">
-                View Chauffeur Services
-              </Button>
+                {tt("ItineraryHero.view-chauffeur-services")}</Button>
             </StyledLink>
           </ButtonRow>
 
           <ValueStrip>
-            <ValueItem>7 Day Planning Guide</ValueItem>
-            <ValueItem>Private Chauffeur Travel</ValueItem>
-            <ValueItem>Wine Farms & Tours</ValueItem>
-            <ValueItem>Flexible Itinerary</ValueItem>
-            <ValueItem>Luxury Experience</ValueItem>
+            <ValueItem>{tt("ItineraryHero.7-day-planning-guide")}</ValueItem>
+            <ValueItem>{tt("ItineraryHero.private-chauffeur-travel")}</ValueItem>
+            <ValueItem>{tt("ItineraryHero.wine-farms-tours")}</ValueItem>
+            <ValueItem>{tt("ItineraryHero.flexible-itinerary")}</ValueItem>
+            <ValueItem>{tt("ItineraryHero.luxury-experience")}</ValueItem>
           </ValueStrip>
         </Inner>
       </Container>

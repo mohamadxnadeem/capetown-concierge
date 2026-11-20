@@ -5,6 +5,7 @@ import styled, { keyframes } from "styled-components";
 import SmartImage from "../../common/SmartImage";
 import { ExperiencePhoto } from "./types";
 
+import { useT } from "../../../lib/i18n/LocaleContext";
 const cinematicPan = keyframes`
   0% {
     transform: scale(1.01) translate3d(0%, 0%, 0);
@@ -192,6 +193,7 @@ type Props = {
 };
 
 export default function PrivateTourGallery({ title, photos }: Props) {
+  const tt = useT();
   const sortedPhotos = useMemo(
     () => [...(photos || [])].sort((a, b) => a.order - b.order),
     [photos]
@@ -254,7 +256,7 @@ export default function PrivateTourGallery({ title, photos }: Props) {
   };
 
   if (!sortedPhotos.length) {
-    return <EmptyState>No tour images available yet.</EmptyState>;
+    return <EmptyState>{tt("PrivateTourGallery.no-tour-images-available-yet")}</EmptyState>;
   }
 
   return (
@@ -272,7 +274,7 @@ export default function PrivateTourGallery({ title, photos }: Props) {
             <>
               <NavButton
                 type="button"
-                aria-label="Previous image"
+                aria-label={tt("PrivateTourGallery.previous-image")}
                 $left
                 onClick={goPrev}
               >
@@ -280,7 +282,7 @@ export default function PrivateTourGallery({ title, photos }: Props) {
               </NavButton>
               <NavButton
                 type="button"
-                aria-label="Next image"
+                aria-label={tt("PrivateTourGallery.next-image")}
                 $right
                 onClick={goNext}
               >
@@ -294,7 +296,7 @@ export default function PrivateTourGallery({ title, photos }: Props) {
               {activePhoto && (
                 <SmartImage
                   src={activePhoto}
-                  alt={`${title}, photo ${activeIndex + 1} of ${sortedPhotos.length}`}
+                  alt={tt("PrivateTourGallery.photo-of", { title, v: activeIndex + 1, length: sortedPhotos.length })}
                   priority={activeIndex === 0}
                   sizes="100vw"
                 />
@@ -314,12 +316,12 @@ export default function PrivateTourGallery({ title, photos }: Props) {
               type="button"
               $active={index === activeIndex}
               onClick={() => setActiveIndex(index)}
-              aria-label={`Show ${title} image ${index + 1}`}
+              aria-label={tt("PrivateTourGallery.show-image", { title, v: index + 1 })}
             >
               {photo.cover_photos && (
                 <SmartImage
                   src={photo.cover_photos}
-                  alt={`${title}, thumbnail ${index + 1}`}
+                  alt={tt("PrivateTourGallery.thumbnail", { title, v: index + 1 })}
                   sizes="120px"
                 />
               )}

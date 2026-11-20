@@ -4,6 +4,7 @@ import { useState } from "react";
 import styled from "styled-components";
 import { FaqItem } from "./types";
 
+import { useT } from "../../../lib/i18n/LocaleContext";
 type Props = {
   items: FaqItem[];
 };
@@ -77,11 +78,12 @@ const FaqAnswerInner = styled.div`
 `;
 
 export default function ChauffeurFaq({ items }: Props) {
+  const tt = useT();
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
 
   return (
     <>
-      <Title>Frequently Asked Questions</Title>
+      <Title>{tt("ChauffeurFaq.frequently-asked-questions")}</Title>
 
       <FaqList>
         {items.map((faq, index) => {

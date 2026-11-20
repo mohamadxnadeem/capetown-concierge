@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import styled from "styled-components";
 
+import { useT } from "../../../lib/i18n/LocaleContext";
 const Section = styled.section`
   padding: 72px 0;
   background: ${({ theme }) => theme.colors.white};
@@ -167,53 +168,42 @@ const InlineLink = styled(Link)`
 `;
 
 export default function ItineraryAuthoritySection() {
+  const tt = useT();
   const [open, setOpen] = useState(false);
 
   return (
     <Section>
       <Container>
         <Header>
-          <Eyebrow>Luxury Cape Town Travel Guide</Eyebrow>
-          <Title>How to Plan the Perfect 7 Day Cape Town Itinerary</Title>
+          <Eyebrow>{tt("ItineraryAuthoritySection.luxury-cape-town-travel-guide")}</Eyebrow>
+          <Title>{tt("ItineraryAuthoritySection.how-to-plan-the-perfect")}</Title>
           <Intro>
-            A well-planned Cape Town itinerary should balance iconic
-            sightseeing, scenic drives, luxury travel, relaxation, and enough
-            flexibility to enjoy the city without feeling rushed.
-          </Intro>
+            {tt("ItineraryAuthoritySection.a-well-planned-cape-town")}</Intro>
         </Header>
 
         <Grid>
           <Card>
-            <CardTitle>See the Essentials</CardTitle>
+            <CardTitle>{tt("ItineraryAuthoritySection.see-the-essentials")}</CardTitle>
             <CardText>
-              A strong 7 day itinerary should include Table Mountain, Cape
-              Peninsula, Cape Point, Boulders Beach, and the Cape Winelands for
-              a complete first-time Cape Town experience.
-            </CardText>
+              {tt("ItineraryAuthoritySection.a-strong-7-day-itinerary")}</CardText>
           </Card>
 
           <Card>
-            <CardTitle>Travel in Comfort</CardTitle>
+            <CardTitle>{tt("ItineraryAuthoritySection.travel-in-comfort")}</CardTitle>
             <CardText>
-              Using a private chauffeur makes it easier to enjoy long scenic
-              routes, flexible timing, wine tastings, and premium day planning
-              without the stress of driving.
-            </CardText>
+              {tt("ItineraryAuthoritySection.using-a-private-chauffeur-makes")}</CardText>
           </Card>
 
           <Card>
-            <CardTitle>Leave Space for Luxury</CardTitle>
+            <CardTitle>{tt("ItineraryAuthoritySection.leave-space-for-luxury")}</CardTitle>
             <CardText>
-              The best itineraries also include time for beaches, fine dining,
-              sunset stops, and optional upgrades like helicopter rides, yacht
-              charters, or spa experiences.
-            </CardText>
+              {tt("ItineraryAuthoritySection.the-best-itineraries-also-include")}</CardText>
           </Card>
         </Grid>
 
         <ExpandWrap>
           <ExpandButton type="button" onClick={() => setOpen((v) => !v)}>
-            <ExpandTitle>Why this 7 day Cape Town itinerary works so well</ExpandTitle>
+            <ExpandTitle>{tt("ItineraryAuthoritySection.why-this-7-day-cape")}</ExpandTitle>
             <ExpandIcon $open={open}>+</ExpandIcon>
           </ExpandButton>
 
@@ -221,44 +211,25 @@ export default function ItineraryAuthoritySection() {
             <ExpandInner>
               <RichText>
                 <p>
-                  Planning a 7 day Cape Town itinerary gives you enough time to
-                  see the city properly without rushing through the experience.
-                  The key is to group activities in the right order, allowing
-                  for scenic routes, iconic attractions, and enough downtime to
-                  enjoy the city at a comfortable pace. For most travellers, a
-                  strong itinerary should include arrival and city highlights, a{" "}
-                  <InlineLink href="/tours/cape-peninsula-tour">
-                    Cape Peninsula day
-                  </InlineLink>
+                  {tt("ItineraryAuthoritySection.planning-a-7-day-cape")}{" "}
+                  <InlineLink href={tt.path("/tours/cape-peninsula-tour")}>
+                    {tt("ItineraryAuthoritySection.private-cape-peninsula-tour")}</InlineLink>
                   , a{" "}
-                  <InlineLink href="/best-wine-farms-in-cape-town">
-                    Cape Winelands experience
-                  </InlineLink>
-                  , leisure time around the Atlantic Seaboard, and at least one
-                  premium add-on such as a helicopter ride, yacht charter, or
-                  custom scenic drive.
-                </p>
+                  <InlineLink href={tt.path("/best-wine-farms-in-cape-town")}>
+                    {tt("ItineraryAuthoritySection.cape-winelands-experience")}</InlineLink>
+                  {" "}{tt("ItineraryAuthoritySection.or-a")}{" "}
+                  <InlineLink href={tt.path("/tours/winelands-chauffeur-drive")}>
+                    {tt("ItineraryAuthoritySection.private-winelands-tour")}</InlineLink>
+                  {tt("ItineraryAuthoritySection.leisure-time-around-the-atlantic")}</p>
 
                 <p>
-                  One of the best ways to experience Cape Town in 7 days is with
-                  a private chauffeur or curated day planning service. This
-                  gives you much more flexibility, especially when combining
-                  routes like Table Mountain, Bo-Kaap, Camps Bay, Chapman’s
-                  Peak, Cape Point, and Stellenbosch. It also means you can
-                  enjoy wine tastings, photo stops, and scenic lunches without
-                  worrying about navigation, parking, or time pressure. For
-                  couples, families, and luxury travellers, this creates a far
-                  more seamless and elevated overall experience.
-                </p>
+                  {tt("ItineraryAuthoritySection.one-of-the-best-ways")}{" "}
+                  <InlineLink href={tt.path("/chauffeur-hire")}>
+                    {tt("ItineraryAuthoritySection.private-chauffeur-in-cape-town")}</InlineLink>{" "}
+                  {tt("ItineraryAuthoritySection.or-curated-day-planning-service")}</p>
 
                 <p>
-                  The best Cape Town itinerary is not just about seeing as much
-                  as possible. It is about combining the right experiences in
-                  the right rhythm. A thoughtful 7 day plan helps you enjoy the
-                  city’s natural beauty, famous landmarks, beaches, wine farms,
-                  and private tours in a way that feels premium, memorable, and
-                  well paced from start to finish.
-                </p>
+                  {tt("ItineraryAuthoritySection.the-best-cape-town-itinerary")}</p>
               </RichText>
             </ExpandInner>
           </ExpandBody>

@@ -3,6 +3,7 @@
 import styled from "styled-components";
 import Button from "../../common/Button";
 
+import { useT } from "../../../lib/i18n/LocaleContext";
 const Wrapper = styled.div`
   margin-top: 34px;
   padding: 26px;
@@ -39,16 +40,15 @@ export default function ChauffeurMidCta({
   whatsappLink,
   vehicleTitle,
 }: Props) {
+  const tt = useT();
   return (
     <Wrapper>
-      <Title>Ready to Travel with the {vehicleTitle}?</Title>
+      <Title>{tt("ChauffeurMidCta.ready-to-travel-with-the")}{" "}{vehicleTitle}?</Title>
       <Text>
-        Check availability, ask questions, and plan your airport transfer, private tour,
-        or chauffeur booking in minutes.
-      </Text>
+        {tt("ChauffeurMidCta.check-availability-ask-questions-and")}</Text>
 
       <CTA href={whatsappLink} target="_blank" rel="noopener noreferrer">
-        <Button as="span">Check Availability on WhatsApp</Button>
+        <Button as="span">{tt("ChauffeurMidCta.check-availability-on-whatsapp")}</Button>
       </CTA>
     </Wrapper>
   );

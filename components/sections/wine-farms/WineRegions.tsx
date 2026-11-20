@@ -11,6 +11,7 @@ import {
   InfoCard,
 } from "./shared";
 
+import { useT } from "../../../lib/i18n/LocaleContext";
 const Grid = styled.div`
   display: grid;
   gap: 18px;
@@ -48,57 +49,40 @@ const Highlight = styled.div`
 `;
 
 export default function WineRegions() {
+  const tt = useT();
   return (
     <Section>
       <Container>
         <SectionHeader>
-          <SectionEyebrow>Wine Regions Guide</SectionEyebrow>
-          <SectionTitle>Stellenbosch vs Franschhoek vs Constantia</SectionTitle>
+          <SectionEyebrow>{tt("WineRegions.wine-regions-guide")}</SectionEyebrow>
+          <SectionTitle>{tt("WineRegions.stellenbosch-vs-franschhoek-vs-constantia")}</SectionTitle>
           <SectionText>
-            Each wine region offers a different kind of experience. The right
-            choice depends on whether you want variety, luxury dining, scenery,
-            or a shorter day close to Cape Town.
-          </SectionText>
+            {tt("WineRegions.each-wine-region-offers-a")}</SectionText>
         </SectionHeader>
 
         <Grid>
           <RegionCard>
-            <RegionTitle>Stellenbosch</RegionTitle>
+            <RegionTitle>{tt("WineRegions.stellenbosch")}</RegionTitle>
             <RegionText>
-              Stellenbosch offers the widest variety of estates and is ideal for
-              travellers who want a full wine day with iconic vineyards,
-              excellent tastings, and beautiful mountain scenery.
-            </RegionText>
+              {tt("WineRegions.stellenbosch-offers-the-widest-variety")}</RegionText>
             <Highlight>
-              <strong>Best for:</strong> First-time visitors, wine lovers, and
-              full-day private wine tours.
-            </Highlight>
+              <strong>{tt("WineRegions.best-for")}</strong> {tt("WineRegions.first-time-visitors-wine-lovers")}</Highlight>
           </RegionCard>
 
           <RegionCard>
-            <RegionTitle>Franschhoek</RegionTitle>
+            <RegionTitle>{tt("WineRegions.franschhoek")}</RegionTitle>
             <RegionText>
-              Franschhoek is known for a more refined and luxury feel, with
-              elegant estates, exceptional food, and a slower, more romantic
-              atmosphere.
-            </RegionText>
+              {tt("WineRegions.franschhoek-is-known-for-a")}</RegionText>
             <Highlight>
-              <strong>Best for:</strong> Couples, luxury travellers, and premium
-              wine-and-lunch experiences.
-            </Highlight>
+              <strong>{tt("WineRegions.best-for")}</strong> {tt("WineRegions.couples-luxury-travellers-and-premium")}</Highlight>
           </RegionCard>
 
           <RegionCard>
-            <RegionTitle>Constantia</RegionTitle>
+            <RegionTitle>{tt("WineRegions.constantia")}</RegionTitle>
             <RegionText>
-              Constantia is the closest wine region to Cape Town and works well
-              for shorter outings, more relaxed half-day experiences, or pairing
-              wine tasting with other city and coastal stops.
-            </RegionText>
+              {tt("WineRegions.constantia-is-the-closest-wine")}</RegionText>
             <Highlight>
-              <strong>Best for:</strong> Shorter itineraries, easy access, and
-              combining wine estates with Cape Town sightseeing.
-            </Highlight>
+              <strong>{tt("WineRegions.best-for")}</strong> {tt("WineRegions.shorter-itineraries-easy-access-and")}</Highlight>
           </RegionCard>
         </Grid>
       </Container>

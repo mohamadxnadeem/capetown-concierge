@@ -2,6 +2,9 @@
 
 import { useState } from "react";
 import styled from "styled-components";
+import { useLocale, useT } from "../../lib/i18n/LocaleContext";
+import { LANGUAGE_FIELD } from "../../lib/i18n/config";
+import type { TFunction } from "../../lib/i18n/messages";
 
 const Wrap = styled.div`
   background: ${({ theme }) => theme.colors.backgroundSoft};
@@ -127,6 +130,59 @@ const SuccessMsg = styled.div`
   font-size: 1rem;
 `;
 
+const CheckGroup = styled.fieldset`
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+`;
+
+const CheckLegend = styled.legend`
+  padding: 0;
+  margin-bottom: 8px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: ${({ theme }) => theme.colors.text};
+`;
+
+const CheckRow = styled.label`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 0;
+  font-size: 0.92rem;
+  color: ${({ theme }) => theme.colors.text};
+  cursor: pointer;
+
+  input {
+    width: 18px;
+    height: 18px;
+    accent-color: ${({ theme }) => theme.colors.primary};
+  }
+`;
+
+const PrivacyNote = styled.p`
+  margin: 14px 0 0;
+  font-size: 0.8rem;
+  color: ${({ theme }) => theme.colors.textMuted};
+`;
+
+const FULL_SERVICES = [
+  "Private chauffeured drives",
+  "Day tours",
+  "Multi-day trip",
+  "Airport transfer",
+  "Other",
+];
+
+const FULL_SERVICE_KEYS: Record<string, string> = {
+  "Private chauffeured drives": "enquiry.svc.chauffeur",
+  "Day tours": "enquiry.svc.dayTours",
+  "Multi-day trip": "enquiry.svc.multiDay",
+  "Airport transfer": "enquiry.svc.airport",
+  Other: "enquiry.svc.other",
+};
+
 const CONTACT_EMAIL = "zaid@capetown-concierge.co.za";
 
 type FormState = {
@@ -137,23 +193,39 @@ type FormState = {
   date: string;
   groupSize: string;
   message: string;
+  arrival: string;
+  departure: string;
+  services: string[];
 };
 
 type Errors = Partial<Record<keyof FormState, string>>;
 
-function validate(form: FormState): Errors {
+function validate(form: FormState, full: boolean, t: TFunction): Errors {
   const errors: Errors = {};
-  if (!form.name.trim()) errors.name = "Full name is required.";
+  if (!form.name.trim()) errors.name = t("enquiry.err.name");
   if (!form.email.trim()) {
-    errors.email = "Email address is required.";
+    errors.email = t("enquiry.err.emailRequired");
   } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
-    errors.email = "Please enter a valid email address.";
+    errors.email = t("enquiry.err.emailInvalid");
   }
-  if (!form.service) errors.service = "Please select a service type.";
+  if (full) {
+    if (!form.services.length) errors.services = t("enquiry.err.services");
+  } else if (!form.service) {
+    errors.service = t("enquiry.err.service");
+  }
   return errors;
 }
 
-export default function EnquiryForm() {
+type EnquiryFormProps = {
+  /** "full" adds arrival and departure dates and multi-select services. Default keeps the original form. */
+  variant?: "simple" | "full";
+};
+
+export default function EnquiryForm({ variant = "simple" }: EnquiryFormProps) {
+  const full = variant === "full";
+  const t = useT();
+  const locale = useLocale();
+  const language = LANGUAGE_FIELD[locale];
   const [form, setForm] = useState<FormState>({
     name: "",
     email: "",
@@ -162,6 +234,9 @@ export default function EnquiryForm() {
     date: "",
     groupSize: "",
     message: "",
+    arrival: "",
+    departure: "",
+    services: [],
   });
   const [errors, setErrors] = useState<Errors>({});
   const [submitted, setSubmitted] = useState(false);
@@ -177,22 +252,36 @@ export default function EnquiryForm() {
     }
   }
 
+  function toggleService(svc: string) {
+    setForm((prev) => ({
+      ...prev,
+      services: prev.services.includes(svc)
+        ? prev.services.filter((x) => x !== svc)
+        : [...prev.services, svc],
+    }));
+    if (errors.services) setErrors((prev) => ({ ...prev, services: undefined }));
+  }
+
   async function handleSubmit() {
-    const newErrors = validate(form);
+    const newErrors = validate(form, full, t);
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       return;
     }
     setSubmitting(true);
     try {
+      const serviceText = full ? form.services.join(", ") : form.service;
       const body = [
         `Name: ${form.name}`,
         `Email: ${form.email}`,
-        form.phone ? `Phone: ${form.phone}` : null,
-        `Service: ${form.service}`,
-        form.date ? `Travel Date: ${form.date}` : null,
-        form.groupSize ? `Group Size: ${form.groupSize}` : null,
+        form.phone ? `Phone/WhatsApp: ${form.phone}` : null,
+        `Service: ${serviceText}`,
+        !full && form.date ? `Travel Date: ${form.date}` : null,
+        full && form.arrival ? `Arrival Date: ${form.arrival}` : null,
+        full && form.departure ? `Departure Date: ${form.departure}` : null,
+        form.groupSize ? (full ? `Guests: ${form.groupSize}` : `Group Size: ${form.groupSize}`) : null,
         form.message ? `Message: ${form.message}` : null,
+        locale !== "en" ? `Language: ${language}` : null,
       ]
         .filter(Boolean)
         .join("\n");
@@ -203,7 +292,8 @@ export default function EnquiryForm() {
         body: JSON.stringify({
           name: form.name,
           email: form.email,
-          subject: `New Enquiry — ${form.service}`,
+          subject: `[${language}] New Enquiry: ${serviceText}`,
+          language,
           message: body,
           _captcha: "false",
         }),
@@ -220,21 +310,21 @@ export default function EnquiryForm() {
   if (submitted) {
     return (
       <Wrap>
-        <SuccessMsg>Thanks — we&apos;ll be in touch within 30 minutes.</SuccessMsg>
+        <SuccessMsg>{t("enquiry.success")}</SuccessMsg>
       </Wrap>
     );
   }
 
   return (
     <Wrap>
-      <FormTitle>Send an Enquiry</FormTitle>
+      <FormTitle>{t("enquiry.title")}</FormTitle>
       <FormSubtitle>
-        Prefer email? Fill in your details and we&apos;ll get back to you within 30 minutes.
+        {t("enquiry.subtitle")}
       </FormSubtitle>
 
       <FieldGrid>
         <div>
-          <Label htmlFor="enq-name">Full Name *</Label>
+          <Label htmlFor="enq-name">{t("enquiry.name")}</Label>
           <Input
             id="enq-name"
             name="name"
@@ -242,13 +332,13 @@ export default function EnquiryForm() {
             autoComplete="name"
             value={form.name}
             onChange={handleChange}
-            placeholder="Jane Smith"
+            placeholder={t("enquiry.namePlaceholder")}
           />
           {errors.name && <ErrorMsg>{errors.name}</ErrorMsg>}
         </div>
 
         <div>
-          <Label htmlFor="enq-email">Email Address *</Label>
+          <Label htmlFor="enq-email">{t("enquiry.email")}</Label>
           <Input
             id="enq-email"
             name="email"
@@ -256,13 +346,13 @@ export default function EnquiryForm() {
             autoComplete="email"
             value={form.email}
             onChange={handleChange}
-            placeholder="jane@example.com"
+            placeholder={t("enquiry.emailPlaceholder")}
           />
           {errors.email && <ErrorMsg>{errors.email}</ErrorMsg>}
         </div>
 
         <div>
-          <Label htmlFor="enq-phone">Phone (with country code)</Label>
+          <Label htmlFor="enq-phone">{full ? t("enquiry.phoneFull") : t("enquiry.phone")}</Label>
           <Input
             id="enq-phone"
             name="phone"
@@ -270,31 +360,82 @@ export default function EnquiryForm() {
             autoComplete="tel"
             value={form.phone}
             onChange={handleChange}
-            placeholder="+1 555 000 0000"
+            placeholder={t("enquiry.phonePlaceholder")}
           />
         </div>
 
+        {full && (
+          <>
+            <div>
+              <Label htmlFor="enq-arrival">{t("enquiry.arrival")}</Label>
+              <Input id="enq-arrival" name="arrival" type="date" value={form.arrival} onChange={handleChange} />
+            </div>
+            <div>
+              <Label htmlFor="enq-departure">{t("enquiry.departure")}</Label>
+              <Input
+                id="enq-departure"
+                name="departure"
+                type="date"
+                min={form.arrival || undefined}
+                value={form.departure}
+                onChange={handleChange}
+              />
+            </div>
+            <div>
+              <Label htmlFor="enq-group">{t("enquiry.guests")}</Label>
+              <Input
+                id="enq-group"
+                name="groupSize"
+                type="number"
+                min="1"
+                max="50"
+                value={form.groupSize}
+                onChange={handleChange}
+                placeholder={t("enquiry.guestsPlaceholder")}
+              />
+            </div>
+            <FullWidth>
+              <CheckGroup>
+                <CheckLegend>{t("enquiry.needs")}</CheckLegend>
+                {FULL_SERVICES.map((svc) => (
+                  <CheckRow key={svc}>
+                    <input
+                      type="checkbox"
+                      checked={form.services.includes(svc)}
+                      onChange={() => toggleService(svc)}
+                    />
+                    {t(FULL_SERVICE_KEYS[svc])}
+                  </CheckRow>
+                ))}
+                {errors.services && <ErrorMsg>{errors.services}</ErrorMsg>}
+              </CheckGroup>
+            </FullWidth>
+          </>
+        )}
+
+        {!full && (
+          <>
         <div>
-          <Label htmlFor="enq-service">Service Type *</Label>
+          <Label htmlFor="enq-service">{t("enquiry.serviceType")}</Label>
           <Select
             id="enq-service"
             name="service"
             value={form.service}
             onChange={handleChange}
           >
-            <option value="">Select a service…</option>
-            <option value="Airport Transfer">Airport Transfer</option>
-            <option value="Full-Day Chauffeur">Full-Day Chauffeur</option>
-            <option value="Private Tour">Private Tour</option>
-            <option value="Winelands Tour">Winelands Tour</option>
-            <option value="Safari Day Trip">Safari Day Trip</option>
-            <option value="Other">Other</option>
+            <option value="">{t("enquiry.selectService")}</option>
+            <option value="Airport Transfer">{t("enquiry.opt.airport")}</option>
+            <option value="Full-Day Chauffeur">{t("enquiry.opt.fullDay")}</option>
+            <option value="Private Tour">{t("enquiry.opt.privateTour")}</option>
+            <option value="Winelands Tour">{t("enquiry.opt.winelands")}</option>
+            <option value="Safari Day Trip">{t("enquiry.opt.safari")}</option>
+            <option value="Other">{t("enquiry.opt.other")}</option>
           </Select>
           {errors.service && <ErrorMsg>{errors.service}</ErrorMsg>}
         </div>
 
         <div>
-          <Label htmlFor="enq-date">Travel Date</Label>
+          <Label htmlFor="enq-date">{t("enquiry.travelDate")}</Label>
           <Input
             id="enq-date"
             name="date"
@@ -305,7 +446,7 @@ export default function EnquiryForm() {
         </div>
 
         <div>
-          <Label htmlFor="enq-group">Group Size</Label>
+          <Label htmlFor="enq-group">{t("enquiry.groupSize")}</Label>
           <Input
             id="enq-group"
             name="groupSize"
@@ -314,25 +455,31 @@ export default function EnquiryForm() {
             max="50"
             value={form.groupSize}
             onChange={handleChange}
-            placeholder="2"
+            placeholder={t("enquiry.guestsPlaceholder")}
           />
         </div>
 
+          </>
+        )}
+
         <FullWidth>
-          <Label htmlFor="enq-message">Message</Label>
+          <Label htmlFor="enq-message">{t("enquiry.message")}</Label>
           <Textarea
             id="enq-message"
             name="message"
             value={form.message}
             onChange={handleChange}
-            placeholder="Any specific requests or questions…"
+            placeholder={t("enquiry.messagePlaceholder")}
           />
         </FullWidth>
       </FieldGrid>
 
       <SubmitButton onClick={handleSubmit} disabled={submitting}>
-        {submitting ? "Sending…" : "Send Enquiry"}
+        {submitting ? t("enquiry.sending") : t("enquiry.send")}
       </SubmitButton>
+      {full ? (
+        <PrivacyNote>{t("enquiry.privacyNote")}</PrivacyNote>
+      ) : null}
     </Wrap>
   );
 }

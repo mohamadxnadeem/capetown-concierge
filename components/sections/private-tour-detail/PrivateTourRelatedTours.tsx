@@ -7,6 +7,8 @@ import SmartImage from "../../common/SmartImage";
 import { RelatedTour } from "./types";
 import { getTourSeo, slugFromHref } from "../../../lib/tourSeo";
 
+import { useT } from "../../../lib/i18n/LocaleContext";
+import type { TFunction } from "../../../lib/i18n/messages";
 /* ===== styles unchanged ===== */
 
 const SectionHeader = styled.div`
@@ -111,37 +113,36 @@ type Props = {
   bundleWhatsappLink: string;
 };
 
-const TOUR_COPY: Record<string, string> = {
-  "Cape Peninsula Private Tour": "Two oceans, wild penguins, and the most dramatic coastal drive in Africa. All in one fully private day.",
-  "City and Table Mountain Tour": "Cape Town's most iconic landmarks explored privately — Table Mountain, Bo-Kaap, Camps Bay and the Waterfront.",
-  "Romantic Stellenbosch Winelands Experience": "A private drive through South Africa's most celebrated wine country — rolling vineyards, Cape Dutch estates, and world-class tastings.",
-  "Sunset Safari Day Trip": "The Big 5, golden-hour game drives, and a full day at Aquila Private Game Reserve — private transport and meals included.",
-};
+const TOUR_COPY = (tt: TFunction): Record<string, string> => ({
+  "Cape Peninsula Private Tour": tt("PrivateTourRelatedTours.two-oceans-wild-penguins-and"),
+  "City and Table Mountain Tour": tt("PrivateTourRelatedTours.cape-town-s-most-iconic"),
+  "Romantic Stellenbosch Winelands Experience": tt("PrivateTourRelatedTours.a-private-drive-through-south"),
+  "Sunset Safari Day Trip": tt("PrivateTourRelatedTours.the-big-5-golden-hour"),
+});
 
 export default function PrivateTourRelatedTours({
   items,
   bundleWhatsappLink,
 }: Props) {
+  const tt = useT();
   if (!items.length) return null;
 
   return (
     <>
       <SectionHeader>
-        <SectionEyebrow>More Experiences</SectionEyebrow>
-        <SectionTitle>More of Cape Town, Done Privately</SectionTitle>
+        <SectionEyebrow>{tt("PrivateTourRelatedTours.more-experiences")}</SectionEyebrow>
+        <SectionTitle>{tt("PrivateTourRelatedTours.more-of-cape-town-done")}</SectionTitle>
         <SectionText>
-          Every tour is fully private, chauffeur-driven, and built around your schedule. Explore more — or bundle three tours and ask us about a group rate.
-        </SectionText>
+          {tt("PrivateTourRelatedTours.every-tour-is-fully-private")}</SectionText>
       </SectionHeader>
 
       <OfferCard>
-        <OfferTitle>Bundle &amp; Save</OfferTitle>
+        <OfferTitle>{tt("PrivateTourRelatedTours.bundle-save")}</OfferTitle>
         <OfferText>
-          Book any 3 private tours together and ask us about a group rate. It’s the perfect option for travellers who want to see more of Cape Town without compromising on comfort or flexibility.
-        </OfferText>
+          {tt("PrivateTourRelatedTours.book-any-3-private-tours")}</OfferText>
 
         <OfferCta href={bundleWhatsappLink} target="_blank">
-          <Button as="span">Get 3-Tour Offer on WhatsApp</Button>
+          <Button as="span">{tt("PrivateTourRelatedTours.get-3-tour-offer-on")}</Button>
         </OfferCta>
       </OfferCard>
 
@@ -155,7 +156,7 @@ export default function PrivateTourRelatedTours({
               {item.image ? (
                 <SmartImage
                   src={item.image}
-                  alt={seo?.imageAlt || `${item.title} private tour from Cape Town`}
+                  alt={seo?.imageAlt || tt("PrivateTourRelatedTours.private-tour-from-cape-town", { title: item.title })}
                   sizes="(max-width: 768px) 100vw, 33vw"
                 />
               ) : null}
@@ -165,12 +166,12 @@ export default function PrivateTourRelatedTours({
               <CardTitle>{name}</CardTitle>
 
               <CardText>
-                {TOUR_COPY[item.title] || item.description || "Discover another premium private tour experience in Cape Town."}
+                {TOUR_COPY(tt)[item.title] || item.description || tt("PrivateTourRelatedTours.discover-another-premium-private-tour")}
               </CardText>
 
-              <Link href={item.href} aria-label={`Read more about the ${name}`}>
+              <Link href={tt.path(item.href)} aria-label={tt("PrivateTourRelatedTours.read-more-about-the", { name })}>
                 <Button as="span" $variant="secondary">
-                  See the {name}
+                  {tt("PrivateTourRelatedTours.see-the")}{" "}{name}
                 </Button>
               </Link>
             </CardBody>

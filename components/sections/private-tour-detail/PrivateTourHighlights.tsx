@@ -2,6 +2,8 @@
 
 import styled from "styled-components";
 
+import { useT } from "../../../lib/i18n/LocaleContext";
+import type { TFunction } from "../../../lib/i18n/messages";
 const Wrapper = styled.div`
   background: linear-gradient(
     135deg,
@@ -69,26 +71,26 @@ type HighlightItem = {
   body: string;
 };
 
-const DEFAULT_TITLE = "Why Guests Choose a Private Tour Over a Group Bus";
+const DEFAULT_TITLE = (tt: TFunction) => (tt("PrivateTourHighlights.why-guests-choose-a-private"));
 
-const DEFAULT_ITEMS: HighlightItem[] = [
+const DEFAULT_ITEMS = (tt: TFunction): HighlightItem[] => ([
   {
-    heading: "No Shared Vehicle. Ever.",
-    body: "Your group books the entire vehicle. No strangers, no compromises, no waiting for 20 people to get back on board. It’s your day — completely.",
+    heading: tt("PrivateTourHighlights.no-shared-vehicle-ever"),
+    body: tt("PrivateTourHighlights.your-group-books-the-entire"),
   },
   {
-    heading: "A Chauffeur Who Knows the Peninsula",
-    body: "Your driver has done this route dozens of times. They know where the light is best for photos, which viewpoints the buses skip, and when to suggest lingering a little longer. It’s like having a local friend with a luxury car.",
+    heading: tt("PrivateTourHighlights.a-chauffeur-who-knows-the"),
+    body: tt("PrivateTourHighlights.your-driver-has-done-this"),
   },
   {
-    heading: "Your Schedule, Not Ours",
-    body: "Spend 20 minutes at one stop or two hours — it’s your call. We build the day around what matters to you, not a preset timetable designed for the lowest common denominator.",
+    heading: tt("PrivateTourHighlights.your-schedule-not-ours"),
+    body: tt("PrivateTourHighlights.spend-20-minutes-at-one"),
   },
   {
-    heading: "Everything Taken Care Of",
-    body: "Hotel pickup, cold water in the car, toll fees, fuel, local guidance — it’s all included. You focus on the experience. We handle everything else.",
+    heading: tt("PrivateTourHighlights.everything-taken-care-of"),
+    body: tt("PrivateTourHighlights.hotel-pickup-cold-water-in"),
   },
-];
+]);
 
 type Props = {
   tourTitle?: string;
@@ -97,10 +99,11 @@ type Props = {
 };
 
 export default function PrivateTourHighlights({ tourTitle, title, items }: Props) {
-  const resolvedItems = items || DEFAULT_ITEMS;
+  const tt = useT();
+  const resolvedItems = items || DEFAULT_ITEMS(tt);
   return (
     <Wrapper>
-      <Title>{title || DEFAULT_TITLE}</Title>
+      <Title>{title || DEFAULT_TITLE(tt)}</Title>
 
       <Grid>
         {resolvedItems.map((item) => (

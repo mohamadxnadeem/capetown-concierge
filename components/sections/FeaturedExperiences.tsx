@@ -7,6 +7,8 @@ import Container from "../common/Container";
 import SmartImage from "../common/SmartImage";
 import Money from "../common/Money";
 
+import { useT } from "../../lib/i18n/LocaleContext";
+import type { TFunction } from "../../lib/i18n/messages";
 type ExperienceItem = {
   title: string;
   description: string;
@@ -14,6 +16,8 @@ type ExperienceItem = {
   image?: string;
   alt?: string;
   priceUsd?: number;
+  /** Unit after the price, for example "per vehicle". Defaults to "per day". */
+  priceSuffix?: string;
 };
 
 type FeaturedExperiencesProps = {
@@ -21,6 +25,9 @@ type FeaturedExperiencesProps = {
   title?: string;
   description?: string;
   items?: ExperienceItem[];
+  id?: string;
+  footerLabel?: string;
+  footerHref?: string;
 };
 
 const Wrapper = styled.section`
@@ -225,6 +232,33 @@ const InlineArrow = styled.span`
   font-weight: 700;
 `;
 
+const FooterLinkRow = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: 32px;
+`;
+
+const FooterLink = styled(Link)`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 46px;
+  padding: 0 18px;
+  border-radius: 14px;
+  background: ${({ theme }) => theme.colors.primary};
+  color: ${({ theme }) => theme.colors.white};
+  font-weight: 700;
+  font-size: 0.95rem;
+  text-decoration: none;
+  box-shadow: ${({ theme }) => theme.shadows.soft};
+  transition: background 0.2s ease, transform 0.2s ease;
+
+  &:hover {
+    background: ${({ theme }) => theme.colors.primaryDark};
+    transform: translateY(-1px);
+  }
+`;
+
 const EmptyState = styled.div`
   padding: 28px;
   border-radius: ${({ theme }) => theme.radius.lg};
@@ -234,8 +268,8 @@ const EmptyState = styled.div`
   box-shadow: ${({ theme }) => theme.shadows.soft};
 `;
 
-function getExperienceAltText(title: string) {
-  return `Private ${title} in Cape Town with Professional Driver`;
+function getExperienceAltText(title: string, tt: TFunction) {
+  return tt("FeaturedExperiences.private-in-cape-town-with", { title });
 }
 
 export default function FeaturedExperiences({
@@ -243,7 +277,11 @@ export default function FeaturedExperiences({
   title = "Explore Signature Private Tours in Cape Town",
   description = "Discover some of our most requested private tours, scenic routes, and curated full-day experiences across Cape Town and beyond.",
   items = [],
+  id,
+  footerLabel,
+  footerHref,
 }: FeaturedExperiencesProps) {
+  const tt = useT();
   const sliderRef = useRef<HTMLDivElement | null>(null);
 
   const scrollByAmount = (direction: "left" | "right") => {
@@ -258,11 +296,11 @@ export default function FeaturedExperiences({
   };
 
   return (
-    <Wrapper>
+    <Wrapper id={id}>
       <Container>
         <TopBar>
           <Intro>
-            <Eyebrow>{eyebrow}</Eyebrow>
+            {eyebrow ? <Eyebrow>{eyebrow}</Eyebrow> : null}
             <Title>{title}</Title>
             <Description>{description}</Description>
           </Intro>
@@ -271,14 +309,14 @@ export default function FeaturedExperiences({
             <Controls>
               <ArrowButton
                 type="button"
-                aria-label="Scroll private tours left"
+                aria-label={tt("FeaturedExperiences.scroll-private-tours-left")}
                 onClick={() => scrollByAmount("left")}
               >
                 ←
               </ArrowButton>
               <ArrowButton
                 type="button"
-                aria-label="Scroll private tours right"
+                aria-label={tt("FeaturedExperiences.scroll-private-tours-right")}
                 onClick={() => scrollByAmount("right")}
               >
                 →
@@ -288,28 +326,28 @@ export default function FeaturedExperiences({
         </TopBar>
 
         {!items.length ? (
-          <EmptyState>No private tours loaded yet.</EmptyState>
+          <EmptyState>{tt("FeaturedExperiences.no-private-tours-loaded-yet")}</EmptyState>
         ) : (
           <Slider ref={sliderRef}>
             {items.map((item, index) => (
-              <Card key={`${item.title}-${index}`} href={item.href} aria-label={`View details: ${item.title}`}>
+              <Card key={`${item.title}-${index}`} href={tt.path(item.href)} aria-label={tt("FeaturedExperiences.view-details", { title: item.title })}>
                 <CardImageWrap>
                   {item.image ? (
                     <SmartImage
                       src={item.image}
-                      alt={item.alt || getExperienceAltText(item.title)}
+                      alt={item.alt || getExperienceAltText(item.title, tt)}
                       sizes="(max-width: 768px) 85vw, (max-width: 1200px) 48vw, 32vw"
                     />
                   ) : null}
                 </CardImageWrap>
 
                 <CardContent>
-                  <Badge>{item.priceUsd ? <Money usd={item.priceUsd} /> : "Private Tour"}</Badge>
+                  <Badge>{item.priceUsd ? <Money usd={item.priceUsd} suffix={item.priceSuffix} /> : tt("FeaturedExperiences.private-tour")}</Badge>
                   <CardTitle>{item.title}</CardTitle>
                   <CardText>{item.description}</CardText>
 
                   <CardFooter>
-                    <ViewButton>View Tour</ViewButton>
+                    <ViewButton>{tt("FeaturedExperiences.view-tour")}</ViewButton>
                     <InlineArrow>→</InlineArrow>
                   </CardFooter>
                 </CardContent>
@@ -317,6 +355,12 @@ export default function FeaturedExperiences({
             ))}
           </Slider>
         )}
+
+        {footerHref && footerLabel && items.length ? (
+          <FooterLinkRow>
+            <FooterLink href={tt.path(footerHref)}>{footerLabel}</FooterLink>
+          </FooterLinkRow>
+        ) : null}
       </Container>
     </Wrapper>
   );

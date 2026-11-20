@@ -4,6 +4,7 @@ import styled from "styled-components";
 import SmartImage from "../../common/SmartImage";
 import { ExperienceStop } from "./types";
 
+import { useT } from "../../../lib/i18n/LocaleContext";
 const SectionHeader = styled.div`
   max-width: 760px;
   margin-bottom: 28px;
@@ -169,13 +170,14 @@ type Props = {
 };
 
 export default function PrivateTourItinerary({ title, location, stops, sectionTitle, sectionSubheading }: Props) {
+  const tt = useT();
   if (!stops.length) return null;
 
   return (
     <>
       <SectionHeader>
-        <SectionEyebrow>Your Itinerary</SectionEyebrow>
-        <SectionTitle>{sectionTitle || "Every Stop, Yours to Explore"}</SectionTitle>
+        <SectionEyebrow>{tt("PrivateTourItinerary.your-itinerary")}</SectionEyebrow>
+        <SectionTitle>{sectionTitle || tt("PrivateTourItinerary.every-stop-yours-to-explore")}</SectionTitle>
         {sectionSubheading ? (
           <SectionText>{sectionSubheading}</SectionText>
         ) : null}
@@ -198,7 +200,7 @@ export default function PrivateTourItinerary({ title, location, stops, sectionTi
                     {stop.image ? (
                       <SmartImage
                         src={stop.image}
-                        alt={`${stop.title} on the ${title}`}
+                        alt={tt("PrivateTourItinerary.on-the", { title: stop.title, title2: title })}
                         sizes="(max-width: 768px) 100vw, 220px"
                       />
                     ) : null}
@@ -206,7 +208,7 @@ export default function PrivateTourItinerary({ title, location, stops, sectionTi
 
                   <div>
                     <StopEyebrow>
-                      {stop.stop_type ? `${stop.stop_type} stop` : "Tour stop"}
+                      {stop.stop_type ? tt("PrivateTourItinerary.stop", { stop_type: stop.stop_type }) : tt("PrivateTourItinerary.tour-stop")}
                     </StopEyebrow>
                     <StopTitle>
                       {stop.title}
@@ -214,7 +216,7 @@ export default function PrivateTourItinerary({ title, location, stops, sectionTi
                     <StopText>
                       {stop.short_description ||
                         stop.highlight ||
-                        `One of the standout moments on this private tour. Your chauffeur will give you as much time here as you need.`}
+                        tt("PrivateTourItinerary.one-of-the-standout-moments")}
                     </StopText>
 
                     <StopMetaRow>

@@ -4,6 +4,7 @@ import styled from "styled-components";
 import Button from "../../common/Button";
 import { trackWhatsAppClick } from "../../../lib/tracking";
 
+import { useT } from "../../../lib/i18n/LocaleContext";
 const Bar = styled.div`
   position: fixed;
   left: 16px;
@@ -58,11 +59,12 @@ type Props = {
 };
 
 export default function PrivateTourStickyBar({ title, whatsappLink }: Props) {
+  const tt = useT();
   return (
     <Bar>
       <Copy>
         <Title>{title}</Title>
-        <Subtext>Private tour • Check availability now</Subtext>
+        <Subtext>{tt("PrivateTourStickyBar.private-tour-check-availability-now")}</Subtext>
       </Copy>
 
       <CTAAnchor
@@ -77,7 +79,7 @@ export default function PrivateTourStickyBar({ title, whatsappLink }: Props) {
           })
         }
       >
-        <Button as="span">Book on WhatsApp</Button>
+        <Button as="span">{tt("PrivateTourStickyBar.book-on-whatsapp")}</Button>
       </CTAAnchor>
     </Bar>
   );

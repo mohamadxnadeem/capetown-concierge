@@ -14,6 +14,8 @@ import {
 } from "./shared";
 import { trackWhatsAppClick } from "../../../lib/tracking";
 
+import { useT } from "../../../lib/i18n/LocaleContext";
+import type { TFunction } from "../../../lib/i18n/messages";
 type WineFarmItem = {
   title: string;
   image: string;
@@ -165,56 +167,52 @@ type Props = {
   items: WineFarmItem[];
 };
 
-function getWineFarmAltText(title: string) {
+function getWineFarmAltText(title: string, tt: TFunction) {
   const key = title.toLowerCase();
 
   if (key.includes("delaire") || key.includes("graff")) {
-    return "Delaire Graff Estate luxury wine farm in Stellenbosch near Cape Town with vineyard views and fine dining";
+    return tt("WineTimeline.delaire-graff-estate-luxury-wine");
   }
   if (key.includes("babylonstoren")) {
-    return "Babylonstoren wine farm and gardens in the Cape Winelands near Cape Town";
+    return tt("WineTimeline.babylonstoren-wine-farm-and-gardens");
   }
   if (key.includes("boschendal")) {
-    return "Boschendal wine estate and picnic setting in the Cape Winelands near Cape Town";
+    return tt("WineTimeline.boschendal-wine-estate-and-picnic");
   }
   if (key.includes("tokara")) {
-    return "Tokara Wine Estate vineyard views in Stellenbosch near Cape Town";
+    return tt("WineTimeline.tokara-wine-estate-vineyard-views");
   }
   if (key.includes("groot constantia")) {
-    return "Groot Constantia historic wine estate near Cape Town in Constantia";
+    return tt("WineTimeline.groot-constantia-historic-wine-estate");
   }
   if (key.includes("waterford")) {
-    return "Waterford Estate wine tasting experience in Stellenbosch near Cape Town";
+    return tt("WineTimeline.waterford-estate-wine-tasting-experience");
   }
   if (key.includes("vredenheim") || key.includes("wild cat")) {
-    return "Vredenheim wine estate and wild cat experience near Cape Town";
+    return tt("WineTimeline.vredenheim-wine-estate-and-wild");
   }
   if (key.includes("spier")) {
-    return "Spier Wine Farm in the Cape Winelands near Cape Town";
+    return tt("WineTimeline.spier-wine-farm-in-the");
   }
   if (key.includes("postcard")) {
-    return "Postcard Cafe vineyard views and scenic lunch stop in Stellenbosch near Cape Town";
+    return tt("WineTimeline.postcard-cafe-vineyard-views-and");
   }
   if (key.includes("lanzerac")) {
-    return "Lanzerac Wine Estate luxury wine tasting in Stellenbosch near Cape Town";
+    return tt("WineTimeline.lanzerac-wine-estate-luxury-wine");
   }
 
-  return `${title} wine farm in the Cape Winelands near Cape Town`;
+  return tt("WineTimeline.wine-farm-in-the-cape", { title });
 }
 
 export default function WineTimeline({ items }: Props) {
+  const tt = useT();
   return (
     <Section>
       <Container>
         <SectionHeader>
-          <SectionTitle>Top 10 Wine Farms in Cape Town</SectionTitle>
+          <SectionTitle>{tt("WineTimeline.top-10-wine-farms-in")}</SectionTitle>
           <SectionText>
-            Explore some of the best wine farms near Cape Town, from luxury
-            Stellenbosch estates and Franschhoek favourites to family-friendly
-            vineyards and scenic lunch stops. This guide helps you choose the
-            right wine farms for a private chauffeur-driven wine tour in the
-            Cape Winelands.
-          </SectionText>
+            {tt("WineTimeline.explore-some-of-the-best")}</SectionText>
         </SectionHeader>
 
         <List>
@@ -230,7 +228,7 @@ export default function WineTimeline({ items }: Props) {
                   <ImageWrap>
                     <SmartImage
                       src={item.image}
-                      alt={getWineFarmAltText(item.title)}
+                      alt={getWineFarmAltText(item.title, tt)}
                       sizes="(max-width: 768px) 100vw, 360px"
                     />
                   </ImageWrap>
@@ -255,7 +253,7 @@ export default function WineTimeline({ items }: Props) {
                     <Text>{item.description}</Text>
 
                     <Recommendation>
-                      <strong>Best booked as:</strong> {item.ideal}
+                      <strong>{tt("WineTimeline.best-booked-as")}</strong> {item.ideal}
                     </Recommendation>
 
                     <Anchor
@@ -270,7 +268,7 @@ export default function WineTimeline({ items }: Props) {
                         })
                       }
                     >
-                      <Button as="span">Plan This Wine Stop</Button>
+                      <Button as="span">{tt("WineTimeline.plan-this-wine-stop")}</Button>
                     </Anchor>
                   </Content>
                 </Inner>
