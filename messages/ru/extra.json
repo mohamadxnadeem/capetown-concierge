@@ -19,5 +19,6 @@
   "vehicle.type.sedan": "седан",
   "vehicle.type.suv": "внедорожник",
   "vehicle.type.van": "минивэн",
-  "vehicle.type.vehicle": "автомобиль"
+  "vehicle.type.vehicle": "автомобиль",
+  "currency.aria": "Валюта: {name}. Нажмите, чтобы изменить."
 }

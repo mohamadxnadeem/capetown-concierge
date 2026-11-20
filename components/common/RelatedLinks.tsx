@@ -1,6 +1,6 @@
 "use client";
 
-import { useT } from "../../lib/i18n/LocaleContext";
+import { useT, useTl } from "../../lib/i18n/LocaleContext";
 import Link from "next/link";
 import styled from "styled-components";
 import Container from "./Container";
@@ -47,15 +47,16 @@ export default function RelatedLinks({
   links: RelatedLink[];
 }) {
   const tt = useT();
+  const tl = useTl();
   return (
     <Wrap>
       <Container>
-        <Title>{title}</Title>
-        {text ? <Text>{text}</Text> : null}
+        <Title>{tl(title)}</Title>
+        {text ? <Text>{tl(text)}</Text> : null}
         <List>
           {links.map((link) => (
             <li key={link.href}>
-              <Link href={tt.path(link.href)}>{link.label}</Link>
+              <Link href={tt.path(link.href)}>{tl(link.label)}</Link>
             </li>
           ))}
         </List>

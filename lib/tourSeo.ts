@@ -5,6 +5,7 @@
 
 import type { Locale } from "./i18n/config";
 import { getContent } from "./i18n/slugs";
+import { tl } from "./i18n/literals";
 
 export type TourSeo = {
   slug: string;
@@ -110,16 +111,29 @@ export function getTourSeo(slug?: string, locale: Locale = "en"): TourSeo | unde
   const base = slug ? TOUR_SEO[slug.toLowerCase()] : undefined;
   if (!base || locale === "en") return base;
   const entry = getContent(locale, "tours", base.slug);
-  if (!entry) return base;
+  // Fields without a tours.json entry go through messages/<locale>/literals.json, then fall back to English.
+  const lit: TourSeo = {
+    ...base,
+    title: tl(locale, base.title),
+    description: tl(locale, base.description),
+    h1: tl(locale, base.h1),
+    cardName: tl(locale, base.cardName),
+    imageAlt: tl(locale, base.imageAlt),
+    guideLabel: tl(locale, base.guideLabel),
+    duration: tl(locale, base.duration),
+    highlights: tl(locale, base.highlights),
+    suits: tl(locale, base.suits),
+  };
+  if (!entry) return lit;
   const pick = (v: string | undefined, fallback: string) => (v && v.trim() ? v : fallback);
   return {
-    ...base,
-    title: pick(entry.meta?.title, base.title),
-    description: pick(entry.meta?.description, base.description),
-    h1: pick(entry.title, base.h1),
-    cardName: pick(entry.title, base.cardName),
-    imageAlt: pick(entry.title, base.imageAlt),
-    duration: pick(entry.duration, base.duration),
+    ...lit,
+    title: pick(entry.meta?.title, lit.title),
+    description: pick(entry.meta?.description, lit.description),
+    h1: pick(entry.title, lit.h1),
+    cardName: pick(entry.title, lit.cardName),
+    imageAlt: pick(entry.title, lit.imageAlt),
+    duration: pick(entry.duration, lit.duration),
   };
 }
 

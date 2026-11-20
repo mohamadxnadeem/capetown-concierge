@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import styled, { keyframes, css } from "styled-components";
 import { useCurrency } from "../../context/CurrencyContext";
 import { CURRENCIES, CURRENCY_LIST, CurrencyCode } from "../../lib/currencies";
+import { useLocale, useT } from "../../lib/i18n/LocaleContext";
 
 const slideDown = keyframes`
   from {
@@ -213,6 +214,8 @@ const AutoBadge = styled.span`
 
 export default function CurrencySelector() {
   const { currency, detectedCurrency, setCurrency, rates } = useCurrency();
+  const locale = useLocale();
+  const tt = useT();
   const [open, setOpen] = useState(false);
   const wrapRef = useRef<HTMLDivElement>(null);
 
@@ -239,6 +242,15 @@ export default function CurrencySelector() {
   }, [open]);
 
   const current = CURRENCIES[currency];
+  const currencyName = (code: CurrencyCode) => {
+    if (locale === "en") return CURRENCIES[code].name;
+    try {
+      const n = new Intl.DisplayNames([locale], { type: "currency" }).of(code);
+      return n ? n.charAt(0).toUpperCase() + n.slice(1) : CURRENCIES[code].name;
+    } catch {
+      return CURRENCIES[code].name;
+    }
+  };
 
   const formatRate = (code: CurrencyCode) => {
     if (code === "ZAR") return "";
@@ -252,7 +264,7 @@ export default function CurrencySelector() {
       <Pill
         type="button"
         onClick={() => setOpen((v) => !v)}
-        aria-label={`Currency: ${current.name}. Click to change.`}
+        aria-label={locale === "en" ? `Currency: ${current.name}. Click to change.` : tt("currency.aria", { name: currencyName(currency) })}
         aria-expanded={open}
         aria-haspopup="listbox"
       >
@@ -285,7 +297,7 @@ export default function CurrencySelector() {
               >
                 <RowFlag>{meta.flag}</RowFlag>
                 <RowInfo>
-                  <RowName>{meta.name}</RowName>
+                  <RowName>{currencyName(code)}</RowName>
                   <RowCode>
                     {code} · {meta.symbol}
                     {formatRate(code) ? ` · ${formatRate(code)}` : ""}

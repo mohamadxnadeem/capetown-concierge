@@ -19,5 +19,6 @@
   "vehicle.type.sedan": "sedã",
   "vehicle.type.suv": "SUV",
   "vehicle.type.van": "van",
-  "vehicle.type.vehicle": "veículo"
+  "vehicle.type.vehicle": "veículo",
+  "currency.aria": "Moeda: {name}. Clique para alterar."
 }
