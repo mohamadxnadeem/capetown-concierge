@@ -13,7 +13,8 @@ import { TourHubIntro, TourHubFaq } from "../../../components/sections/tours-hub
 import { HUB_FAQS, HUB_LINKS } from "../../../lib/tourHub";
 import { TOUR_ORDER, TOUR_SEO, getTourSeo } from "../../../lib/tourSeo";
 import { localizeMetadata } from "../../../lib/i18n/metadata";
-import { localeFromParam } from "../../../lib/i18n/config";
+import { localeFromParam, type Locale } from "../../../lib/i18n/config";
+import { getContent, overlayContent } from "../../../lib/i18n/slugs";
 import { withInLanguage } from "../../../lib/seo";
 
 import { serverT, setRequestLocale } from "../../../lib/i18n/server";
@@ -119,7 +120,7 @@ function truncateText(text: string, maxLength: number) {
   return `${text.slice(0, maxLength).trim()}...`;
 }
 
-async function getAllExperiences(tt: TFunction): Promise<FeaturedExperienceItem[]> {
+async function getAllExperiences(tt: TFunction, locale: Locale): Promise<FeaturedExperienceItem[]> {
   try {
     const res = await fetch(
       "https://web-production-1ab9.up.railway.app/api/experiences/all/",
@@ -130,8 +131,9 @@ async function getAllExperiences(tt: TFunction): Promise<FeaturedExperienceItem[
 
     return (data
       .map((item) => {
-        const exp = item?.experience || item;
-        if (!exp?.title) return null;
+        const base = item?.experience || item;
+        if (!base?.title) return null;
+        const exp = overlayContent(base, getContent(locale, "tours", String(base.slug ?? "")));
 
         const featuredPhoto =
           exp.cover_photos?.find((p) => p.is_featured)?.cover_photos ||
@@ -145,14 +147,14 @@ async function getAllExperiences(tt: TFunction): Promise<FeaturedExperienceItem[
           truncateText(plainText, 140) ||
           tt("tours.discover-a-premium-private-tour");
 
-        const seo = getTourSeo(exp.slug);
+        const seo = getTourSeo(exp.slug, locale);
 
         return {
-          title: seo?.cardName || exp.title,
+          title: seo?.cardName || exp.title || "",
           description,
           href: exp.slug ? `/tours/${exp.slug}` : "/tours",
           image: featuredPhoto,
-          alt: seo?.imageAlt || tt("tours.private-from-cape-town-with", { title: exp.title }),
+          alt: seo?.imageAlt || tt("tours.private-from-cape-town-with", { title: exp.title ?? "" }),
           price: formatApiPrice(exp.price, tt),
         };
       }) as Array<FeaturedExperienceItem | null>)
@@ -218,7 +220,7 @@ export default async function PrivateToursLandingPage({ params }: { params: Prom
   setRequestLocale(locale);
   const tt = serverT();
   const [experiences, lowestVehiclePrice] = await Promise.all([
-    getAllExperiences(tt),
+    getAllExperiences(tt, locale),
     getLowestVehiclePrice(),
   ]);
 
@@ -243,7 +245,7 @@ export default async function PrivateToursLandingPage({ params }: { params: Prom
         itemListElement: TOUR_ORDER.map((slug, index) => ({
           "@type": "ListItem",
           position: index + 1,
-          name: TOUR_SEO[slug].cardName,
+          name: getTourSeo(slug, locale)?.cardName ?? TOUR_SEO[slug].cardName,
           url: `${SITE_URL}/tours/${slug}`,
         })),
       },

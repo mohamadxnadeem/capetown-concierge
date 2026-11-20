@@ -4,7 +4,8 @@ import ChauffeurServicesPage from "../../../components/sections/chauffeur-servic
 import { brand } from "../../../lib/brand";
 import { businessRef, vehicleHref } from "../../../lib/seo";
 import { localizeMetadata } from "../../../lib/i18n/metadata";
-import { localeFromParam } from "../../../lib/i18n/config";
+import { localeFromParam, type Locale } from "../../../lib/i18n/config";
+import { getContent, overlayContent } from "../../../lib/i18n/slugs";
 import { withInLanguage } from "../../../lib/seo";
 
 import { serverT, setRequestLocale } from "../../../lib/i18n/server";
@@ -63,7 +64,7 @@ const CARD_ALT_PATTERNS = (tt: TFunction): Array<(title: string) => string> => (
   (t) => tt("chauffeur-hire.with-a-private-chauffeur-cape", { t }),
 ]);
 
-async function getVehicles(tt: TFunction): Promise<FeaturedVehicleItem[]> {
+async function getVehicles(tt: TFunction, locale: Locale): Promise<FeaturedVehicleItem[]> {
   try {
     const response = await fetch(
       "https://web-production-1ab9.up.railway.app/api/cars-for-hire/all/",
@@ -78,20 +79,22 @@ async function getVehicles(tt: TFunction): Promise<FeaturedVehicleItem[]> {
       : [];
     return (
       sourceArray.map((item: CarsApiItem, index: number) => {
-        const car = item?.car || item;
-        if (!car?.title) return null;
+        const rawCar = item?.car || item;
+        if (!rawCar?.title) return null;
+        const car = overlayContent(rawCar, getContent(locale, "vehicles", String(rawCar.slug ?? "")));
         const imageArray = car.cover_photos || car.images || [];
         const featuredPhoto =
           imageArray.find((photo: CarPhoto) => photo?.is_featured)?.cover_photos ||
           imageArray[0]?.cover_photos ||
           "";
         return {
-          title: car.title,
+          title: car.title ?? rawCar.title,
           description:
-            (car.title === "Hyundai Staria" && car.number_of_seats
+            (locale !== "en" ? getContent(locale, "vehicles", String(rawCar.slug ?? ""))?.short_description?.trim() : undefined) ||
+            (rawCar.title === "Hyundai Staria" && car.number_of_seats
               ? tt("chauffeur-hire.a-premium-seat-people-carrier", { number_of_seats: car.number_of_seats })
               : undefined) ||
-            CHAUFFEUR_VEHICLE_DESC(tt)[car.title] ||
+            CHAUFFEUR_VEHICLE_DESC(tt)[rawCar.title] ||
             car.short_description ||
             car.highlight ||
             truncateText(stripHtml(car.body || ""), 140) ||
@@ -101,7 +104,7 @@ async function getVehicles(tt: TFunction): Promise<FeaturedVehicleItem[]> {
               ? vehicleHref(car.slug)
               : "/chauffeur-hire",
           image: featuredPhoto,
-          alt: CARD_ALT_PATTERNS(tt)[index % CARD_ALT_PATTERNS(tt).length](car.title),
+          alt: CARD_ALT_PATTERNS(tt)[index % CARD_ALT_PATTERNS(tt).length](car.title ?? rawCar.title),
           seats: car.number_of_seats,
           priceUsd: car.price ? Number(String(car.price).replace(/[^0-9.]/g, "")) || undefined : undefined,
         };
@@ -173,7 +176,7 @@ export default async function ChauffeurServicesLandingPage({ params }: { params:
   const locale = localeFromParam(localeParam);
   setRequestLocale(locale);
   const tt = serverT();
-  const vehicles = await getVehicles(tt);
+  const vehicles = await getVehicles(tt, locale);
 
   const areaServed = [
     { "@type": "City", name: tt("chauffeur-hire.cape-town") },

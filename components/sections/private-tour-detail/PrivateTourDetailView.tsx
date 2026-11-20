@@ -32,7 +32,7 @@ import {
   RelatedTour,
 } from "./types";
 
-import { useT } from "../../../lib/i18n/LocaleContext";
+import { useLocale, useT } from "../../../lib/i18n/LocaleContext";
 const PageWrap = styled.main`
   background: ${({ theme }) => theme.colors.background};
 `;
@@ -57,6 +57,7 @@ export default function PrivateTourDetailView({
   slug,
 }: Props) {
   const tt = useT();
+  const locale = useLocale();
   const safeTourTitle = experience?.title || "private tour";
 
   const content = getTourContent(slug || experience?.slug, tt);
@@ -65,7 +66,7 @@ export default function PrivateTourDetailView({
   const midCtaWhatsappLink = `https://wa.me/27636746131?text=${encodeURIComponent(`Hi, I'd like to book the ${safeTourTitle}. Please assist.`)}`;
   const bundleWhatsAppLink = `https://wa.me/27636746131?text=${encodeURIComponent(`Hi, I'd like to enquire about private tours in Cape Town including the ${safeTourTitle}. Please assist.`)}`;
 
-  const seo = getTourSeo(slug || experience?.slug);
+  const seo = getTourSeo(slug || experience?.slug, locale);
   const heading = seo?.h1 || safeTourTitle;
 
   const stops = [...(experience.stops || [])]

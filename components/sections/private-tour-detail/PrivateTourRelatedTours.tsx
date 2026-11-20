@@ -7,7 +7,7 @@ import SmartImage from "../../common/SmartImage";
 import { RelatedTour } from "./types";
 import { getTourSeo, slugFromHref } from "../../../lib/tourSeo";
 
-import { useT } from "../../../lib/i18n/LocaleContext";
+import { useLocale, useT } from "../../../lib/i18n/LocaleContext";
 import type { TFunction } from "../../../lib/i18n/messages";
 /* ===== styles unchanged ===== */
 
@@ -125,6 +125,7 @@ export default function PrivateTourRelatedTours({
   bundleWhatsappLink,
 }: Props) {
   const tt = useT();
+  const locale = useLocale();
   if (!items.length) return null;
 
   return (
@@ -148,7 +149,7 @@ export default function PrivateTourRelatedTours({
 
       <Grid>
         {items.map((item, index) => {
-          const seo = getTourSeo(slugFromHref(item.href));
+          const seo = getTourSeo(slugFromHref(item.href), locale);
           const name = seo?.cardName || item.title;
           return (
           <Card key={`${item.title}-${index}`}>

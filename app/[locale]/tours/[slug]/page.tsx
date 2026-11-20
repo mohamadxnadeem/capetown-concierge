@@ -478,7 +478,7 @@ export default async function PrivateTourDetailPage({ params }: PageProps) {
   // Tours are priced at the chosen vehicle's full-day rate; the database tour price is never shown.
   const priceZarForSchema = lowestVehiclePrice;
 
-  const seo = getTourSeo(slug);
+  const seo = getTourSeo(slug, locale);
   const tourName = seo?.cardName || experience.title || "private tour";
   const tourKeyword = tourName;
   const pageDescription = seo?.description || getPageDescription(experience);

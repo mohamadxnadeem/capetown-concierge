@@ -5,9 +5,9 @@ import styled from "styled-components";
 import Container from "../../common/Container";
 import Money from "../../common/Money";
 import { HUB_INTRO, HUB_FAQS } from "../../../lib/tourHub";
-import { TOUR_ORDER, TOUR_SEO } from "../../../lib/tourSeo";
+import { TOUR_ORDER, TOUR_SEO, getTourSeo } from "../../../lib/tourSeo";
 
-import { useT } from "../../../lib/i18n/LocaleContext";
+import { useLocale, useT } from "../../../lib/i18n/LocaleContext";
 const Section = styled.section`
   padding: 48px 0;
 `;
@@ -96,6 +96,7 @@ const FaqItem = styled.details`
 
 export function TourHubIntro({ lowestVehiclePrice }: { lowestVehiclePrice?: number }) {
   const tt = useT();
+  const locale = useLocale();
   return (
     <Section id="compare">
       <Container>
@@ -105,7 +106,7 @@ export function TourHubIntro({ lowestVehiclePrice }: { lowestVehiclePrice?: numb
         ))}
         <Grid>
           {TOUR_ORDER.map((slug) => {
-            const tour = TOUR_SEO[slug];
+            const tour = getTourSeo(slug, locale) ?? TOUR_SEO[slug];
             return (
               <Card key={slug}>
                 <H3>{tour.cardName}</H3>

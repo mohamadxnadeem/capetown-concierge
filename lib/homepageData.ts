@@ -1,5 +1,7 @@
 import { endpoints } from "./api";
 import { vehicleHref } from "./seo";
+import type { Locale } from "./i18n/config";
+import { getContent, overlayContent } from "./i18n/slugs";
 
 import type { TFunction } from "./i18n/messages";
 /**
@@ -144,7 +146,7 @@ function byHomepageOrder<T extends { homepage_order?: number }>(a: T, b: T) {
   return (a.homepage_order ?? 0) - (b.homepage_order ?? 0);
 }
 
-export async function fetchHomepageData(tt: TFunction): Promise<HomepageData> {
+export async function fetchHomepageData(tt: TFunction, locale: Locale = "en"): Promise<HomepageData> {
   const [carItems, tourItems] = await Promise.all([
     getJson(endpoints.carsForHire.allPublic(), 300),
     getJson(endpoints.experiences.all(), 300),
@@ -177,7 +179,8 @@ export async function fetchHomepageData(tt: TFunction): Promise<HomepageData> {
   ];
 
   const cleanedTitles: { from: string; to: string }[] = [];
-  const vehicles: HomeVehicle[] = chosenCars.map((c) => {
+  const vehicles: HomeVehicle[] = chosenCars.map((raw) => {
+    const c = overlayContent(raw, getContent(locale, "vehicles", String(raw.slug ?? "")));
     const title = cleanVehicleTitle(c.title as string);
     if (title !== c.title) cleanedTitles.push({ from: c.title as string, to: title });
     return {
@@ -198,7 +201,8 @@ export async function fetchHomepageData(tt: TFunction): Promise<HomepageData> {
     hasTourFlags ? tours.filter((t) => t.homepage_featured === true).sort(byHomepageOrder) : tours
   ).filter((t) => parseDurationHours(t.duration) >= 8);
 
-  const homeTours: HomeTour[] = chosenTours.map((t) => {
+  const homeTours: HomeTour[] = chosenTours.map((rawTour) => {
+    const t = overlayContent(rawTour, getContent(locale, "tours", String(rawTour.slug ?? "")));
     const name = tourDisplayName(t.title as string);
     return {
       title: name,

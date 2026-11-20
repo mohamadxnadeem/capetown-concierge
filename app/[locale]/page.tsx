@@ -73,7 +73,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
   const locale = localeFromParam(localeParam);
   setRequestLocale(locale);
   const tt = serverT();
-  const { vehicles, tours, lowestVehiclePrice, heroImages } = await fetchHomepageData(tt);
+  const { vehicles, tours, lowestVehiclePrice, heroImages } = await fetchHomepageData(tt, locale);
   const multiDayReviews = reviewsWithTag("multi-day");
 
   const tourItems = tours.map((t) => ({

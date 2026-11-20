@@ -3,6 +3,9 @@
 // headings and metadata so Google sees one consistent name per tour.
 // Do not change the slugs: they are live URLs.
 
+import type { Locale } from "./i18n/config";
+import { getContent } from "./i18n/slugs";
+
 export type TourSeo = {
   slug: string;
   /** Page <title> */
@@ -99,8 +102,25 @@ export const TOUR_ORDER = [
   "big-5-safari-from-cape-town",
 ];
 
-export function getTourSeo(slug?: string): TourSeo | undefined {
-  return slug ? TOUR_SEO[slug.toLowerCase()] : undefined;
+/**
+ * Tour SEO copy. For a translated locale, any non-empty translation from
+ * messages/<locale>/tours.json replaces the English field; everything else falls back to English.
+ */
+export function getTourSeo(slug?: string, locale: Locale = "en"): TourSeo | undefined {
+  const base = slug ? TOUR_SEO[slug.toLowerCase()] : undefined;
+  if (!base || locale === "en") return base;
+  const entry = getContent(locale, "tours", base.slug);
+  if (!entry) return base;
+  const pick = (v: string | undefined, fallback: string) => (v && v.trim() ? v : fallback);
+  return {
+    ...base,
+    title: pick(entry.meta?.title, base.title),
+    description: pick(entry.meta?.description, base.description),
+    h1: pick(entry.title, base.h1),
+    cardName: pick(entry.title, base.cardName),
+    imageAlt: pick(entry.title, base.imageAlt),
+    duration: pick(entry.duration, base.duration),
+  };
 }
 
 export function slugFromHref(href: string): string {
