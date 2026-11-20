@@ -1,4 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
+import { CURRENCY_COOKIE, CURRENCY_MANUAL_COOKIE, currencyForCountry } from "./lib/currencies";
 
 /**
  * Locale routing.
@@ -40,7 +41,31 @@ function preferredPrefix(header: string | null): string | null {
   return null;
 }
 
+/**
+ * Currency follows location, language follows the URL. They are independent.
+ * Sets ctc_currency from the visitor's country only if there is no cookie yet,
+ * so a manual choice (ctc_currency_manual=1) is never overwritten.
+ */
+function withCurrency(request: NextRequest, response: NextResponse): NextResponse {
+  if (request.method !== "GET") return response;
+  if (request.cookies.get(CURRENCY_COOKIE) || request.cookies.get(CURRENCY_MANUAL_COOKIE)) {
+    return response;
+  }
+  const country = request.headers.get("x-vercel-ip-country");
+  if (!country) return response; // local or unknown: the client falls back to /api/geo
+  response.cookies.set(CURRENCY_COOKIE, currencyForCountry(country), {
+    path: "/",
+    maxAge: 60 * 60 * 24 * 30,
+    sameSite: "lax",
+  });
+  return response;
+}
+
 export function proxy(request: NextRequest) {
+  return withCurrency(request, route(request));
+}
+
+function route(request: NextRequest) {
   const { pathname, search } = request.nextUrl;
   const segments = pathname.split("/");
   const first = segments[1] ?? "";
