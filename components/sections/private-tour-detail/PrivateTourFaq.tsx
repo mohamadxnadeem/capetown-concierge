@@ -3,7 +3,7 @@
 import styled from "styled-components";
 import { useState } from "react";
 import { FAQItem } from "./types";
-import { useCurrency } from "../../../context/CurrencyContext";
+import { useMoneyFormat } from "../../common/Money";
 
 import { useT } from "../../../lib/i18n/LocaleContext";
 const SectionHeader = styled.div`
@@ -104,7 +104,7 @@ type Props = {
 export default function PrivateTourFaq({ items, lowestVehiclePrice, title }: Props) {
   const tt = useT();
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
-  const { format } = useCurrency();
+  const format = useMoneyFormat();
 
   const vehiclePrice = lowestVehiclePrice ?? 350;
 

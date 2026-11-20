@@ -11,6 +11,7 @@ import {
 } from "../../../lib/whatsapp";
 import { trackWhatsAppClick } from "../../../lib/tracking";
 import { useCurrency } from "../../../context/CurrencyContext";
+import { useMoneyFormat } from "../../common/Money";
 
 import { useT } from "../../../lib/i18n/LocaleContext";
 import type { TFunction } from "../../../lib/i18n/messages";
@@ -277,7 +278,8 @@ export default function PrivateTourVehicles({ items, tourTitle, title }: Props) 
   const tt = useT();
   const sliderRef = useRef<HTMLDivElement | null>(null);
   const autoScrollRef = useRef<NodeJS.Timeout | null>(null);
-  const { rates, format } = useCurrency();
+  const { rates } = useCurrency();
+  const format = useMoneyFormat();
 
   const scrollByAmount = (direction: "left" | "right") => {
     if (!sliderRef.current) return;

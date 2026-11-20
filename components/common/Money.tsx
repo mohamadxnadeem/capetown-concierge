@@ -11,6 +11,13 @@ interface MoneyProps {
   prefix?: string;
 }
 
+/** Price formatter for the page language. Same amounts and currency logic as useCurrency().format. */
+export function useMoneyFormat(): (usd: number) => string {
+  const { currency, rates } = useCurrency();
+  const locale = useLocale();
+  return (usd: number) => formatMoneyLocale(usd, currency, rates, locale);
+}
+
 export default function Money({ usd, suffix = "per day", prefix = "From " }: MoneyProps) {
   const { currency, rates, isReady } = useCurrency();
   const locale = useLocale();
