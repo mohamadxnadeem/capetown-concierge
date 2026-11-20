@@ -6,6 +6,7 @@ import {
   LOCALE_PREFIX,
   type Locale,
 } from "./lib/i18n/config";
+import { CHOICE_COOKIE, SUGGEST_COOKIE, isBot, suggestedLocale } from "./lib/i18n/suggest";
 import { englishSlugFor, type ContentKind } from "./lib/i18n/slugs";
 
 /**
@@ -39,7 +40,21 @@ export function proxy(request: NextRequest) {
   if (!locale) {
     const url = request.nextUrl.clone();
     url.pathname = "/en" + (pathname === "/" ? "" : pathname);
-    return NextResponse.rewrite(url);
+    const res = NextResponse.rewrite(url);
+    // Language suggestion for the client banner: only real browsers, no saved choice, and only
+    // on pages that have translations. English visitors get no cookie and identical HTML.
+    if (
+      request.method === "GET" &&
+      !request.cookies.has(CHOICE_COOKIE) &&
+      !(first && ENGLISH_ONLY_SEGMENTS.includes(first)) &&
+      !isBot(request.headers.get("user-agent"))
+    ) {
+      const suggest = suggestedLocale(request.headers.get("accept-language"));
+      if (suggest) {
+        res.cookies.set(SUGGEST_COOKIE, suggest, { path: "/", maxAge: 86400, sameSite: "lax" });
+      }
+    }
+    return res;
   }
 
   const rest = parts.slice(1);

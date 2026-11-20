@@ -14,6 +14,7 @@ import Providers from "./Providers";
 import Header from "./Header";
 import Footer from "./Footer";
 import FloatingWhatsApp from "./FloatingWhatsApp";
+import LanguageBanner from "./LanguageBanner";
 import ScrollTracking from "../tracking/ScrollTracking";
 import EngagementTracking from "../tracking/EngagementTracking";
 
@@ -61,6 +62,7 @@ export default function SiteDocument({
             {children}
             <Footer />
             <FloatingWhatsApp />
+            <LanguageBanner />
             </LocaleProvider>
           </Providers>
         </StyledComponentsRegistry>

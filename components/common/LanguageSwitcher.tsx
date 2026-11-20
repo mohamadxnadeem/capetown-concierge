@@ -200,7 +200,7 @@ const SLUG_KINDS: Record<string, ContentKind> = {
 };
 
 /** Splits a browser path into its locale and the English path of the page. */
-function parsePath(pathname: string): { locale: Locale; englishPath: string } {
+export function parsePath(pathname: string): { locale: Locale; englishPath: string } {
   const parts = pathname.split("/").filter(Boolean);
   let locale: Locale = "en";
   // Server rendering can see the internal /en/... path that English pages are rewritten to.
@@ -217,7 +217,7 @@ function parsePath(pathname: string): { locale: Locale; englishPath: string } {
   return { locale, englishPath: "/" + parts.join("/") };
 }
 
-function pathFor(target: Locale, englishPath: string): string {
+export function pathFor(target: Locale, englishPath: string): string {
   const parts = englishPath.split("/").filter(Boolean);
   const kind = SLUG_KINDS[parts[0] ?? ""];
   if (kind && parts[1]) parts[1] = localizedSlug(target, kind, parts[1]);
