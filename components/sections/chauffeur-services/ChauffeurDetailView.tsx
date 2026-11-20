@@ -22,6 +22,8 @@ import ChauffeurIdealFor from "./ChauffeurIdealFor";
 import ChauffeurFaq from "./ChauffeurFaq";
 import ChauffeurRelatedVehicles from "./ChauffeurRelatedVehicles";
 import ChauffeurFinalCta from "./ChauffeurFinalCta";
+import TrustBadges from "./TrustBadges";
+import { getVehicleBadge } from "../../../lib/vehicleTrustBadges";
 import TestimonialsSection from "../testimonials/TestimonialsSection";
 import TestimonialsCta from "../testimonials/TestimonialsCta";
 
@@ -383,6 +385,8 @@ export default function ChauffeurDetailView({
         images={heroRotationImages}
         whatsappLink={mainWhatsAppLink}
       />
+
+      <TrustBadges vehicleBadge={getVehicleBadge(car.slug)} />
 
       {!!galleryImages.length && (
         <Section>
