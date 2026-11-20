@@ -19,6 +19,7 @@ import ChauffeurHero from "./ChauffeurHero";
 import ChauffeurWhatToExpect from "./ChauffeurWhatToExpect";
 import ChauffeurGallery from "./ChauffeurGallery";
 import ChauffeurQuickDetails from "./ChauffeurQuickDetails";
+import ChauffeurDateEnquiry from "./ChauffeurDateEnquiry";
 import ChauffeurDiscountTable from "./ChauffeurDiscountTable";
 import ChauffeurFeatures from "./ChauffeurFeatures";
 import ChauffeurIdealFor from "./ChauffeurIdealFor";
@@ -389,6 +390,7 @@ export default function ChauffeurDetailView({
                   luggage={car.luggage_capacity}
                   priceUsd={priceUsd}
                 />
+                <ChauffeurDateEnquiry vehicle={safeTitle} />
               </div>
             </TwoColGrid>
           </Container>
