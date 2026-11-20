@@ -342,15 +342,15 @@ const CrossLinkCard = styled(Link)`
 
 const AREA_BLURBS: Partial<Record<VillaArea, string>> = {
   camps_bay:
-    "Cape Town's beachfront postcode. Mountain-backed villas overlooking the Atlantic — most with a pool, many within a short walk of the promenade. Ideal for guests who want sea views and easy access to restaurants and beach clubs.",
+    "Cape Town's beachfront postcode. Mountain-backed villas overlooking the Atlantic, most with a pool, many within a short walk of the promenade. Ideal for guests who want sea views and easy access to restaurants and beach clubs.",
   clifton:
     "Four cove beaches and some of the most sought-after villa addresses in the country. Sheltered, sunset-facing, and intensely private. Perfect for honeymoons, milestone trips, and clients who want presence and quiet in equal measure.",
   bantry_bay:
     "Quieter neighbour to Camps Bay with sweeping ocean views and modern architectural villas. Excellent value if you want the Atlantic Seaboard look without the Camps Bay tariff.",
   constantia:
-    "Cape Town's old-money valley — sprawling estates, oak-lined lanes, and the original Cape vineyards on the doorstep. Best for families, wine-focused trips, and longer stays where you want garden, pool, and space.",
+    "Cape Town's old-money valley of sprawling estates, oak-lined lanes, and the original Cape vineyards on the doorstep. Best for families, wine-focused trips, and longer stays where you want garden, pool, and space.",
   franschhoek:
-    "The Winelands village — French-Huguenot heritage, fine-dining institutions, and farm villas within walking distance of cellar doors. Pair with a chauffeured wine-tour day.",
+    "The Winelands village of French-Huguenot heritage, fine-dining institutions, and farm villas within walking distance of cellar doors. Pair with a chauffeured wine-tour day.",
   stellenbosch:
     "University town in the heart of the Winelands. Vineyard villas with mountain backdrops, a 30-minute hop from the city, and the densest cluster of world-class restaurants outside Cape Town itself.",
 };
@@ -394,7 +394,7 @@ export default function VillasLandingPage({ villas }: Props) {
             <Title>Luxury Villa Rentals in Cape Town</Title>
             <HeroLead>
               A hand-picked collection of luxury villas across Cape Town&apos;s
-              most sought-after addresses — Camps Bay, Clifton, Bantry Bay,
+              most sought-after addresses: Camps Bay, Clifton, Bantry Bay,
               Constantia, Franschhoek, and Stellenbosch. Every stay comes with
               full concierge support, optional chauffeur add-ons, and the local
               connections to make a Cape Town holiday feel effortless.
@@ -427,7 +427,7 @@ export default function VillasLandingPage({ villas }: Props) {
           <SectionLead>
             A luxury villa rental in Cape Town with us is closer to a private
             boutique hotel than a self-catering booking. Every property in the
-            collection is personally vetted — sea or mountain views, chef-grade
+            collection is personally vetted for sea or mountain views, chef-grade
             kitchens, properly staffed (or staff-on-call), and within easy reach
             of the city, the Winelands, and the beaches. From the moment you
             land we coordinate the airport meet-and-greet, stock the fridge to
@@ -437,7 +437,7 @@ export default function VillasLandingPage({ villas }: Props) {
           </SectionLead>
           <SectionLead>
             Most clients pair the villa with a multi-day chauffeur so the cars
-            and drivers are dedicated to you — touring the Cape Peninsula one
+            and drivers are dedicated to you, touring the Cape Peninsula one
             day, tasting in Franschhoek the next, dinner in town in the
             evening. It&apos;s a way to see Cape Town without ever planning the
             logistics yourself.
@@ -471,7 +471,7 @@ export default function VillasLandingPage({ villas }: Props) {
                       {photo ? (
                         <SmartImage
                           src={photo}
-                          alt={`${villa.name} — luxury villa rental in ${area}`}
+                          alt={`${villa.name}, luxury villa rental in ${area}`}
                           sizes="(max-width: 768px) 100vw, 33vw"
                         />
                       ) : null}
@@ -504,8 +504,8 @@ export default function VillasLandingPage({ villas }: Props) {
         <Container>
           <SectionHeading>Where we have villas</SectionHeading>
           <SectionLead>
-            A quick orientation to Cape Town&apos;s luxury villa neighbourhoods
-            — what each area is best for and the kind of stay you should expect.
+            A quick orientation to Cape Town&apos;s luxury villa neighbourhoods:
+            what each area is best for and the kind of stay you should expect.
           </SectionLead>
           <AreaGrid>
             {(Object.entries(AREA_BLURBS) as [VillaArea, string][])
@@ -537,7 +537,7 @@ export default function VillasLandingPage({ villas }: Props) {
             <FaqItem>
               <summary>Can I add a chauffeur to my villa stay?</summary>
               <p>
-                Yes — most guests pair the villa with multi-day chauffeur hire.
+                Yes, most guests pair the villa with multi-day chauffeur hire.
                 See{" "}
                 <Link href="/chauffeur-hire" style={{ color: "#0b5b33" }}>
                   /chauffeur-hire
@@ -549,7 +549,7 @@ export default function VillasLandingPage({ villas }: Props) {
             <FaqItem>
               <summary>Are villas suitable for kids and families?</summary>
               <p>
-                Many are — Constantia and Franschhoek estates in particular
+                Many are. Constantia and Franschhoek estates in particular
                 have the space, gardens, and pools families want. Tell us how
                 old your kids are and we&apos;ll filter the options to villas
                 with cribs, child-safe pool covers, and family-friendly layouts.
@@ -568,7 +568,7 @@ export default function VillasLandingPage({ villas }: Props) {
               <summary>What about peak vs off-peak rates?</summary>
               <p>
                 Cape Town&apos;s peak season runs December through mid-January
-                and over Easter — villa rates roughly double over those weeks.
+                and over Easter. Villa rates roughly double over those weeks.
                 February, March, October, and November are exceptional value
                 with weather that often outshines summer.
               </p>
@@ -576,7 +576,7 @@ export default function VillasLandingPage({ villas }: Props) {
             <FaqItem>
               <summary>How do I confirm a booking?</summary>
               <p>
-                Message us with your dates, party size, and preferred area —
+                Message us with your dates, party size, and preferred area and
                 we&apos;ll come back within 30 minutes with availability and a
                 quote. A deposit secures the dates; balance is due before
                 arrival.
@@ -605,7 +605,7 @@ export default function VillasLandingPage({ villas }: Props) {
             <CrossLinkCard href="/tours">
               <strong>Explore day tours →</strong>
               <p>
-                Private, chauffeur-driven Cape Town day tours — Cape Point,
+                Private, chauffeur-driven Cape Town day tours: Cape Point,
                 Winelands, Table Mountain, and Garden Route extensions.
               </p>
             </CrossLinkCard>

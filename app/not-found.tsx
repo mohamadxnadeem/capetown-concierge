@@ -66,7 +66,7 @@ const Secondary = styled(Link)`
 export default function NotFound() {
   return (
     <Wrap>
-      <Eyebrow>404 — Page not found</Eyebrow>
+      <Eyebrow>404: Page not found</Eyebrow>
       <Title>This page doesn't exist</Title>
       <Body>
         The page you're looking for has moved or doesn't exist. Head back to

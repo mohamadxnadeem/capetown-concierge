@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { brand } from "../../lib/brand";
+import { businessRef, vehicleHref } from "../../lib/seo";
 import { buildWhatsAppLink } from "../../lib/whatsapp";
 import HeroBanner from "../../components/sections/HeroBanner";
 import WhyChooseUs from "../../components/sections/WhyChooseUs";
@@ -14,7 +16,7 @@ const WHATSAPP = "https://wa.me/27636746131?text=Hi%2C+I%27d+like+to+book+an+air
 const OG_IMAGE = `${SITE_URL}/images/og-cape-town-concierge.jpg`;
 
 export const metadata: Metadata = {
-  title: "Airport Transfers Cape Town | Luxury Meet & Greet",
+  title: "Private Airport Transfers Cape Town (CPT) | Meet & Greet",
   description:
     "Private luxury airport transfers to & from Cape Town International. Flight tracking, meet & greet, 24/7 availability. Get an instant quote on WhatsApp.",
   alternates: {
@@ -41,7 +43,7 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "Airport Transfers Cape Town | Luxury Meet & Greet",
+    title: "Private Airport Transfers Cape Town (CPT) | Meet & Greet",
     description:
       "Private luxury airport transfers to & from Cape Town International. Flight tracking, meet & greet, 24/7 availability. Get an instant quote on WhatsApp.",
     url: `${SITE_URL}/airport-transfers-cape-town`,
@@ -53,13 +55,13 @@ export const metadata: Metadata = {
         url: OG_IMAGE,
         width: 1200,
         height: 630,
-        alt: "Cape Town Concierge — Luxury Chauffeur Service",
+        alt: "Cape Town Concierge private airport transfers in Cape Town",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Airport Transfers Cape Town | Luxury Meet & Greet",
+    title: "Private Airport Transfers Cape Town (CPT) | Meet & Greet",
     description:
       "Private luxury airport transfers to & from Cape Town International. Flight tracking, meet & greet, 24/7 availability. Get an instant quote on WhatsApp.",
     images: [OG_IMAGE],
@@ -109,8 +111,7 @@ function truncateText(text: string, maxLength: number) {
 }
 
 const AIRPORT_VEHICLE_DESC: Record<string, string> = {
-  "Hyundai Staria": "A premium 9-seat people carrier with generous legroom — perfect for families or groups arriving with luggage who want a spacious, comfortable ride into the city.",
-  "BMW X5": "A luxury SUV with a refined interior and serious boot space — ideal for couples or small groups who want a more elevated arrival experience.",
+    "BMW X5": "A luxury SUV with a refined interior and serious boot space, ideal for couples or small groups who want a more elevated arrival experience.",
 };
 
 async function getVehicles(): Promise<FeaturedVehicleItem[]> {
@@ -138,6 +139,9 @@ async function getVehicles(): Promise<FeaturedVehicleItem[]> {
           "";
         const plainText = stripHtml(car.body || "");
         const description =
+          (car.title === "Hyundai Staria" && car.number_of_seats
+            ? `A premium ${car.number_of_seats}-seat people carrier with generous legroom, perfect for families or groups arriving with luggage who want a spacious, comfortable ride into the city.`
+            : undefined) ||
           AIRPORT_VEHICLE_DESC[car.title] ||
           car.short_description ||
           car.highlight ||
@@ -146,7 +150,7 @@ async function getVehicles(): Promise<FeaturedVehicleItem[]> {
         return {
           title: car.title,
           description,
-          href: car.slug ? `/chauffeur-hire/${car.slug}` : "/chauffeur-hire",
+          href: vehicleHref(car.slug),
           image,
           alt: `${car.title} airport transfer Cape Town`,
           seats: car.number_of_seats,
@@ -163,22 +167,22 @@ const whyItems = [
   {
     title: "Meet & Greet at Arrivals",
     description:
-      "Your chauffeur tracks your flight in real time and meets you in the arrivals hall with a name board — no waiting around trying to find your ride.",
+      "Your chauffeur tracks your flight in real time and meets you in the arrivals hall with a name board, no waiting around trying to find your ride.",
   },
   {
     title: "24/7 Availability",
     description:
-      "Early morning, last flight of the night, or anything in between — we operate around the clock for all Cape Town International arrivals and departures.",
+      "Early morning, last flight of the night, or anything in between. We operate around the clock for all Cape Town International arrivals and departures.",
   },
   {
     title: "No Hidden Fees",
     description:
-      "Your quoted price covers the vehicle, chauffeur, fuel, parking, and toll fees. What you see is what you pay — no surprises after a long flight.",
+      "Your quoted price covers the vehicle, chauffeur, fuel, parking, and toll fees. What you see is what you pay. No surprises after a long flight.",
   },
   {
     title: "The Right Vehicle for Your Group",
     description:
-      "From executive sedans for solo travellers to the 14-seat Mercedes Sprinter for large groups — we match the vehicle to your party size and luggage. Just tell us what you need.",
+      "From executive sedans for solo travellers to the 14-seat Mercedes Sprinter for large groups. We match the vehicle to your party size and luggage. Just tell us what you need.",
   },
 ];
 
@@ -190,7 +194,7 @@ export default async function AirportTransfersCapeTownPage() {
     "@graph": [
       {
         "@type": "WebPage",
-        name: "Airport Transfers Cape Town | Luxury Private Chauffeur Service",
+        name: "Private Airport Transfers Cape Town (CPT) | Meet & Greet",
         url: `${SITE_URL}/airport-transfers-cape-town`,
         description:
           "Book a luxury airport transfer in Cape Town. Professional chauffeur, meet & greet at arrivals, 24/7 availability.",
@@ -200,24 +204,7 @@ export default async function AirportTransfersCapeTownPage() {
         "@type": "Service",
         name: "Airport Transfers Cape Town",
         serviceType: "Airport Transfer",
-        provider: {
-          "@type": "LocalBusiness",
-          name: brand.name,
-          url: SITE_URL,
-          telephone: brand.phone,
-          address: {
-            "@type": "PostalAddress",
-            addressLocality: brand.address.locality,
-            addressRegion: brand.address.region,
-            addressCountry: brand.address.country,
-          },
-          geo: {
-            "@type": "GeoCoordinates",
-            latitude: brand.geo.lat,
-            longitude: brand.geo.lng,
-          },
-          priceRange: "$$$$",
-        },
+        provider: businessRef,
         areaServed: [
           { "@type": "City", name: "Cape Town" },
           { "@type": "Airport", name: "Cape Town International Airport" },
@@ -235,7 +222,7 @@ export default async function AirportTransfersCapeTownPage() {
             name: "How much does an airport transfer in Cape Town cost?",
             acceptedAnswer: {
               "@type": "Answer",
-              text: "Airport transfer pricing in Cape Town depends on your vehicle choice, pickup location, and drop-off destination. Contact us via WhatsApp for a fast, personalised quote — we typically respond within 30 minutes.",
+              text: "Airport transfer pricing in Cape Town depends on your vehicle choice, pickup location, and drop-off destination. Contact us via WhatsApp for a fast, personalised quote. We typically respond within 30 minutes.",
             },
           },
           {
@@ -267,7 +254,7 @@ export default async function AirportTransfersCapeTownPage() {
             name: "What is included in a Cape Town airport transfer?",
             acceptedAnswer: {
               "@type": "Answer",
-              text: "Your transfer includes a professionally presented chauffeur, premium vehicle with fuel, flight tracking, meet and greet with name board, and luggage assistance. There are no hidden fees — parking and tolls are included.",
+              text: "Your transfer includes a professionally presented chauffeur, premium vehicle with fuel, flight tracking, meet and greet with name board, and luggage assistance. There are no hidden fees, and parking and tolls are included.",
             },
           },
           {
@@ -311,16 +298,16 @@ export default async function AirportTransfersCapeTownPage() {
       />
 
       <HeroBanner
-        eyebrow="Airport Transfers Cape Town"
-        title="Luxury Airport Transfers in Cape Town"
-        description="Your chauffeur meets you at arrivals, tracks your flight in real time, and has you at your hotel in a premium vehicle — without the queues, the metered taxis, or the guesswork."
+        eyebrow="Airport Transfers Cape Town (CPT)"
+        title="Private VIP Airport Transfers in Cape Town (CPT)"
+        description="Private airport transfers to and from Cape Town International (CPT). Your driver meets you at arrivals, tracks your flight in real time, and has you at your hotel in a premium vehicle, without the queues, the metered taxis, or the guesswork."
         primaryCtaLabel="Book Your Transfer"
         primaryCtaHref={WHATSAPP}
         image="/images/car.jpg"
         imageAlt="Luxury airport transfer Cape Town with professional chauffeur meet and greet service"
       />
 
-      <TestimonialsSection />
+      <TestimonialsSection tags={["airport-transfers"]} />
       <TestimonialsCta />
 
       <FeaturedVehicles
@@ -330,7 +317,7 @@ export default async function AirportTransfersCapeTownPage() {
         items={vehicles}
       />
       <div style={{textAlign:"center",padding:"0 0 24px",fontSize:"0.9rem",color:"#6c7a74"}}>
-        Also available for <a href="/chauffeur-hire" style={{color:"inherit",textDecoration:"underline"}}>chauffeur hire in Cape Town</a> across the day, week or a full multi-city trip.
+        Need a driver beyond the airport? You can also <Link href="/chauffeur-hire" style={{color:"inherit",textDecoration:"underline"}}>hire a private driver</Link> across the day, week or a full multi-city trip.
       </div>
 
       <WhyChooseUs
@@ -351,17 +338,17 @@ export default async function AirportTransfersCapeTownPage() {
           {
             question: "What happens if my flight is delayed?",
             answer:
-              "We track your flight in real time. If your flight is delayed, your chauffeur will adjust their arrival time accordingly — at no extra charge.",
+              "We track your flight in real time. If your flight is delayed, your chauffeur will adjust their arrival time accordingly, at no extra charge.",
           },
           {
             question: "How far is Cape Town Airport from the city centre?",
             answer:
-              "Cape Town International Airport is approximately 20km from the city centre, typically a 20–30 minute drive depending on traffic.",
+              "Cape Town International Airport is approximately 20km from the city centre, typically a 20 to 30 minute drive depending on traffic.",
           },
           {
             question: "Is payment required upfront?",
             answer:
-              "Yes, payment is confirmed at the time of booking. Your quoted price is fixed and inclusive — no surprises on the day.",
+              "Yes, payment is confirmed at the time of booking. Your quoted price is fixed and inclusive. No surprises on the day.",
           },
           {
             question: "Can I book a return airport transfer at the same time?",

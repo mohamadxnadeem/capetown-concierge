@@ -8,6 +8,8 @@ import SmartImage from "../../common/SmartImage";
 type Props = {
   images: CarPhoto[];
   title?: string;
+  /** Vehicle name, used for image alt text only. */
+  altName?: string;
 };
 
 const fadeIn = keyframes`
@@ -154,7 +156,7 @@ const ThumbButton = styled.button<{ $active: boolean }>`
   }
 `;
 
-export default function ChauffeurGallery({ images, title = "Vehicle Gallery" }: Props) {
+export default function ChauffeurGallery({ images, title = "Vehicle Gallery", altName = "Luxury vehicle" }: Props) {
   const galleryImages = useMemo(
     () => [...images].sort((a, b) => (a.order || 0) - (b.order || 0)),
     [images]
@@ -204,7 +206,7 @@ export default function ChauffeurGallery({ images, title = "Vehicle Gallery" }: 
               {activeImage && (
                 <SmartImage
                   src={activeImage}
-                  alt=""
+                  alt={`${altName} chauffeur Cape Town - photo ${activeImageIndex + 1}`}
                   priority
                   sizes="(max-width: 1200px) 100vw, 60vw"
                 />
@@ -228,7 +230,7 @@ export default function ChauffeurGallery({ images, title = "Vehicle Gallery" }: 
               {image.cover_photos && (
                 <SmartImage
                   src={image.cover_photos}
-                  alt=""
+                  alt={`${altName} chauffeur Cape Town - photo ${index + 1}`}
                   sizes="108px"
                 />
               )}

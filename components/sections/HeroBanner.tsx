@@ -21,6 +21,10 @@ type HeroBannerProps = {
   images?: string[];
   imageAlt?: string;
   imageAlts?: string[];
+  /** Render the secondary CTA button (off by default so other pages are unchanged). */
+  showSecondaryCta?: boolean;
+  /** Extra content under the buttons, for example a rating badge. */
+  children?: React.ReactNode;
 };
 
 const Wrapper = styled.section`
@@ -104,6 +108,10 @@ const ButtonRow = styled.div`
   gap: 12px;
 `;
 
+const ExtraRow = styled.div`
+  margin-top: 22px;
+`;
+
 const StyledLink = styled(Link)`
   display: inline-flex;
 `;
@@ -139,6 +147,8 @@ export default function HeroBanner({
   images,
   imageAlt = "Luxury chauffeur fleet in Cape Town including premium private transport vehicles",
   imageAlts,
+  showSecondaryCta = false,
+  children,
 }: HeroBannerProps) {
   const handlePrimaryClick = makeClickHandler(primaryCtaHref, primaryCtaLabel, primaryCtaOnClick);
   const handleSecondaryClick = makeClickHandler(secondaryCtaHref, secondaryCtaLabel, secondaryCtaOnClick);
@@ -180,7 +190,19 @@ export default function HeroBanner({
                 <Button as="span">{primaryCtaLabel}</Button>
               </StyledLink>
             )}
+            {showSecondaryCta ? (
+              isExternal(secondaryCtaHref) ? (
+                <StyledAnchor href={secondaryCtaHref} target="_blank" rel="noopener noreferrer" onClick={handleSecondaryClick}>
+                  <Button as="span" $variant="secondary">{secondaryCtaLabel}</Button>
+                </StyledAnchor>
+              ) : (
+                <StyledLink href={secondaryCtaHref} onClick={handleSecondaryClick}>
+                  <Button as="span" $variant="secondary">{secondaryCtaLabel}</Button>
+                </StyledLink>
+              )
+            ) : null}
           </ButtonRow>
+          {children ? <ExtraRow>{children}</ExtraRow> : null}
         </Inner>
       </Content>
     </Wrapper>

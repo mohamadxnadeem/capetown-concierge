@@ -127,6 +127,51 @@ const SuccessMsg = styled.div`
   font-size: 1rem;
 `;
 
+const CheckGroup = styled.fieldset`
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+`;
+
+const CheckLegend = styled.legend`
+  padding: 0;
+  margin-bottom: 8px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: ${({ theme }) => theme.colors.text};
+`;
+
+const CheckRow = styled.label`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 0;
+  font-size: 0.92rem;
+  color: ${({ theme }) => theme.colors.text};
+  cursor: pointer;
+
+  input {
+    width: 18px;
+    height: 18px;
+    accent-color: ${({ theme }) => theme.colors.primary};
+  }
+`;
+
+const PrivacyNote = styled.p`
+  margin: 14px 0 0;
+  font-size: 0.8rem;
+  color: ${({ theme }) => theme.colors.textMuted};
+`;
+
+const FULL_SERVICES = [
+  "Private chauffeured drives",
+  "Day tours",
+  "Multi-day trip",
+  "Airport transfer",
+  "Other",
+];
+
 const CONTACT_EMAIL = "zaid@capetown-concierge.co.za";
 
 type FormState = {
@@ -137,11 +182,14 @@ type FormState = {
   date: string;
   groupSize: string;
   message: string;
+  arrival: string;
+  departure: string;
+  services: string[];
 };
 
 type Errors = Partial<Record<keyof FormState, string>>;
 
-function validate(form: FormState): Errors {
+function validate(form: FormState, full: boolean): Errors {
   const errors: Errors = {};
   if (!form.name.trim()) errors.name = "Full name is required.";
   if (!form.email.trim()) {
@@ -149,11 +197,21 @@ function validate(form: FormState): Errors {
   } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
     errors.email = "Please enter a valid email address.";
   }
-  if (!form.service) errors.service = "Please select a service type.";
+  if (full) {
+    if (!form.services.length) errors.services = "Please choose at least one service.";
+  } else if (!form.service) {
+    errors.service = "Please select a service type.";
+  }
   return errors;
 }
 
-export default function EnquiryForm() {
+type EnquiryFormProps = {
+  /** "full" adds arrival and departure dates and multi-select services. Default keeps the original form. */
+  variant?: "simple" | "full";
+};
+
+export default function EnquiryForm({ variant = "simple" }: EnquiryFormProps) {
+  const full = variant === "full";
   const [form, setForm] = useState<FormState>({
     name: "",
     email: "",
@@ -162,6 +220,9 @@ export default function EnquiryForm() {
     date: "",
     groupSize: "",
     message: "",
+    arrival: "",
+    departure: "",
+    services: [],
   });
   const [errors, setErrors] = useState<Errors>({});
   const [submitted, setSubmitted] = useState(false);
@@ -177,21 +238,34 @@ export default function EnquiryForm() {
     }
   }
 
+  function toggleService(svc: string) {
+    setForm((prev) => ({
+      ...prev,
+      services: prev.services.includes(svc)
+        ? prev.services.filter((x) => x !== svc)
+        : [...prev.services, svc],
+    }));
+    if (errors.services) setErrors((prev) => ({ ...prev, services: undefined }));
+  }
+
   async function handleSubmit() {
-    const newErrors = validate(form);
+    const newErrors = validate(form, full);
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       return;
     }
     setSubmitting(true);
     try {
+      const serviceText = full ? form.services.join(", ") : form.service;
       const body = [
         `Name: ${form.name}`,
         `Email: ${form.email}`,
-        form.phone ? `Phone: ${form.phone}` : null,
-        `Service: ${form.service}`,
-        form.date ? `Travel Date: ${form.date}` : null,
-        form.groupSize ? `Group Size: ${form.groupSize}` : null,
+        form.phone ? `Phone/WhatsApp: ${form.phone}` : null,
+        `Service: ${serviceText}`,
+        !full && form.date ? `Travel Date: ${form.date}` : null,
+        full && form.arrival ? `Arrival Date: ${form.arrival}` : null,
+        full && form.departure ? `Departure Date: ${form.departure}` : null,
+        form.groupSize ? (full ? `Guests: ${form.groupSize}` : `Group Size: ${form.groupSize}`) : null,
         form.message ? `Message: ${form.message}` : null,
       ]
         .filter(Boolean)
@@ -203,7 +277,7 @@ export default function EnquiryForm() {
         body: JSON.stringify({
           name: form.name,
           email: form.email,
-          subject: `New Enquiry — ${form.service}`,
+          subject: `New Enquiry: ${serviceText}`,
           message: body,
           _captcha: "false",
         }),
@@ -220,7 +294,7 @@ export default function EnquiryForm() {
   if (submitted) {
     return (
       <Wrap>
-        <SuccessMsg>Thanks — we&apos;ll be in touch within 30 minutes.</SuccessMsg>
+        <SuccessMsg>Thanks, we&apos;ll be in touch within 30 minutes.</SuccessMsg>
       </Wrap>
     );
   }
@@ -262,7 +336,7 @@ export default function EnquiryForm() {
         </div>
 
         <div>
-          <Label htmlFor="enq-phone">Phone (with country code)</Label>
+          <Label htmlFor="enq-phone">{full ? "Phone / WhatsApp (with country code)" : "Phone (with country code)"}</Label>
           <Input
             id="enq-phone"
             name="phone"
@@ -274,6 +348,57 @@ export default function EnquiryForm() {
           />
         </div>
 
+        {full && (
+          <>
+            <div>
+              <Label htmlFor="enq-arrival">Arrival Date</Label>
+              <Input id="enq-arrival" name="arrival" type="date" value={form.arrival} onChange={handleChange} />
+            </div>
+            <div>
+              <Label htmlFor="enq-departure">Departure Date</Label>
+              <Input
+                id="enq-departure"
+                name="departure"
+                type="date"
+                min={form.arrival || undefined}
+                value={form.departure}
+                onChange={handleChange}
+              />
+            </div>
+            <div>
+              <Label htmlFor="enq-group">Guests</Label>
+              <Input
+                id="enq-group"
+                name="groupSize"
+                type="number"
+                min="1"
+                max="50"
+                value={form.groupSize}
+                onChange={handleChange}
+                placeholder="2"
+              />
+            </div>
+            <FullWidth>
+              <CheckGroup>
+                <CheckLegend>What do you need? *</CheckLegend>
+                {FULL_SERVICES.map((svc) => (
+                  <CheckRow key={svc}>
+                    <input
+                      type="checkbox"
+                      checked={form.services.includes(svc)}
+                      onChange={() => toggleService(svc)}
+                    />
+                    {svc}
+                  </CheckRow>
+                ))}
+                {errors.services && <ErrorMsg>{errors.services}</ErrorMsg>}
+              </CheckGroup>
+            </FullWidth>
+          </>
+        )}
+
+        {!full && (
+          <>
         <div>
           <Label htmlFor="enq-service">Service Type *</Label>
           <Select
@@ -318,6 +443,9 @@ export default function EnquiryForm() {
           />
         </div>
 
+          </>
+        )}
+
         <FullWidth>
           <Label htmlFor="enq-message">Message</Label>
           <Textarea
@@ -333,6 +461,9 @@ export default function EnquiryForm() {
       <SubmitButton onClick={handleSubmit} disabled={submitting}>
         {submitting ? "Sending…" : "Send Enquiry"}
       </SubmitButton>
+      {full ? (
+        <PrivacyNote>Your details are used only to plan your trip and are never shared.</PrivacyNote>
+      ) : null}
     </Wrap>
   );
 }
