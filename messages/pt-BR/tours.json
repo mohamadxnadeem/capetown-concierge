@@ -40,7 +40,7 @@
     "title": "Passeio privativo pela Península do Cabo saindo da Cidade do Cabo",
     "short_description": "Dois oceanos, pinguins selvagens e o trajeto costeiro mais dramático da África. Tudo em um dia totalmente privativo saindo da Cidade do Cabo (Cape Town).",
     "highlight": "Cape Point",
-    "card_summary": "Um dia privativo pela Península do Cabo, com pinguins, Cape Point e o trajeto costeiro mais dramático da África.",
+    "card_summary": "",
     "duration": "8 horas",
     "location": "Cidade do Cabo",
     "body": "<h3>Viva o passeio panorâmico mais popular da Cidade do Cabo</h3>\r\n\r\n<p>&nbsp;</p>\r\n\r\n<p>Viaje até o extremo do continente africano pela rota costeira mais deslumbrante da Cidade do Cabo. O passeio pela Península do Cabo leva você até o lendário Cape Point, onde o Atlântico e o Índico se encontram, com vistas dramáticas do oceano, charmosas cidades litorâneas e paradas inesquecíveis para fotos pelo caminho.</p>\r\n\r\n<p>&nbsp;</p>\r\n\r\n<p><strong>Destaques que você vai adorar:</strong></p>\r\n\r\n<p>&nbsp;</p>\r\n\r\n<p>- 🌸 Visite a tranquila Chart Farm e aproveite a beleza local</p>\r\n\r\n<p>- 🚗 Percorra a mundialmente famosa Boyes Drive</p>\r\n\r\n<p>- 🐧 Conheça os pinguins africanos em Boulders Beach</p>\r\n\r\n<p>- 🌊 Explore Cape Point e o Cabo da Boa Esperança</p>\r\n\r\n<p>- 🏞️ Aprecie vistas panorâmicas na Chapman&rsquo;s Peak Drive</p>\r\n\r\n<p>- 🌅 Termine o dia com o pôr do sol em Camps Bay</p>\r\n\r\n<p>&nbsp;</p>\r\n\r\n<p>Cada parada foi pensada para render aquele momento perfeito &ldquo;digno do Instagram&rdquo; enquanto você descobre a verdadeira beleza do litoral da Cidade do Cabo.</p>",
@@ -88,7 +88,7 @@
     "title": "Passeio privativo pelas vinícolas da Cidade do Cabo | Stellenbosch e Franschhoek",
     "short_description": "Um passeio privativo pela região vinícola mais famosa da África do Sul, com vinhedos ondulantes, propriedades em estilo Cape Dutch e degustações de classe mundial, sem van compartilhada e sem horário fixo.",
     "highlight": "Vinícolas",
-    "card_summary": "Um dia privativo pelas vinícolas de Stellenbosch e Franschhoek, com motorista particular e sem horário fixo.",
+    "card_summary": "",
     "duration": "8 horas",
     "location": "Stellenbosch",
     "body": "<p>Se você gosta de saborear vinho e aprecia boas vistas, reserve conosco seu passeio pelas vinícolas com motorista e levaremos você às 3 principais vinícolas que precisa visitar se for sua primeira vez na Cidade do Cabo</p>\r\n\r\n<p>&nbsp;</p>",
@@ -124,7 +124,7 @@
     "title": "Passeio privativo pela Cidade do Cabo e Table Mountain",
     "short_description": "Os marcos mais icônicos da Cidade do Cabo (Cape Town). Table Mountain, Bo-Kaap, Camps Bay e o Waterfront. Explorados de forma privativa, no seu ritmo, com um motorista exclusivo durante o dia.",
     "highlight": "Table Mountain",
-    "card_summary": "Um dia privativo pelos marcos da Cidade do Cabo: Table Mountain, Bo-Kaap, Camps Bay e o Waterfront, no seu ritmo.",
+    "card_summary": "",
     "duration": "8 horas",
     "location": "Cidade do Cabo",
     "body": "<p>Se é sua primeira vez na Cidade do Cabo, você simplesmente não pode perder este passeio, pois vai visitar a icônica Table Mountain pelo melhor teleférico do mundo e, quem sabe, até de helicóptero, se não tiver medo de voar!&nbsp;</p>\r\n\r\n<h3>&nbsp;</h3>\r\n\r\n<p><strong>Como seria o seu dia:</strong></p>\r\n\r\n<p>- Café da manhã ou café na Truth Coffee&nbsp;</p>\r\n\r\n<p>- Visita ao vibrante e colorido Bo Kaap,</p>\r\n\r\n<p>- Subida à icônica Table Mountain pelo melhor teleférico do mundo,</p>\r\n\r\n<p>- Signal Hill,</p>\r\n\r\n<p>- Exploração do Jardim Botânico de Kirstenbosch,&nbsp;</p>\r\n\r\n<p>- Exploração do V and A Waterfront</p>\r\n\r\n<p>&nbsp;</p>",
@@ -167,8 +167,8 @@
       }
     ],
     "meta": {
-      "title": "Passeio privativo Cidade do Cabo e Table Mountain",
-      "description": "Passeio privativo pela Cidade do Cabo (Cape Town) e Table Mountain, com motorista particular."
+      "title": "",
+      "description": ""
     }
   }
 }
