@@ -111,7 +111,7 @@ export function SpecialismsSection() {
             <SpecCard key={c.title}>
               <SpecTitle>{c.title}</SpecTitle>
               <SpecText>{c.text}</SpecText>
-              <TextLink href={c.href}>{c.label}</TextLink>
+              <TextLink href={tt.path(c.href)}>{c.label}</TextLink>
             </SpecCard>
           ))}
         </Cards>

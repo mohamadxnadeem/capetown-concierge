@@ -90,7 +90,7 @@ export default function ChauffeurRelatedVehicles({ items }: Props) {
 
       <RelatedGrid>
         {items.map((vehicle, index) => (
-          <RelatedCard key={`${vehicle.title}-${index}`} href={vehicle.href}>
+          <RelatedCard key={`${vehicle.title}-${index}`} href={tt.path(vehicle.href)}>
             <RelatedImageWrap>
               {vehicle.image && (
                 <SmartImage

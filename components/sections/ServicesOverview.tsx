@@ -166,7 +166,7 @@ export default function ServicesOverview({
 
         <Grid>
           {services.map((service) => (
-            <Card key={service.title} href={service.href}>
+            <Card key={service.title} href={tt.path(service.href)}>
               <div>
                 <IconWrap>
                   <IconDot />

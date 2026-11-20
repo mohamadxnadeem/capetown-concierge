@@ -134,7 +134,7 @@ export default function ContactContent() {
 
         <Detail>
           {tt("ContactContent.you-can-also-reach-us")}{" "}
-          <a href={`mailto:${brand.contactEmail}`}>
+          <a href={tt.path(`mailto:${brand.contactEmail}`)}>
             {brand.contactEmail}
           </a>
         </Detail>

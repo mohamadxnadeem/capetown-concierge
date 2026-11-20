@@ -194,9 +194,9 @@ export default function CancellationPolicyContent() {
         <ContactBlock>
           <strong>{tt("CancellationPolicyContent.cape-town-concierge")}</strong>
           <br />
-          {tt("CancellationPolicyContent.whatsapp")}{" "}<a href={`https://wa.me/${brand.whatsappNumber}`}>{brand.phone}</a>
+          {tt("CancellationPolicyContent.whatsapp")}{" "}<a href={tt.path(`https://wa.me/${brand.whatsappNumber}`)}>{brand.phone}</a>
           <br />
-          {tt("CancellationPolicyContent.email")}{" "}<a href={`mailto:${brand.contactEmail}`}>{brand.contactEmail}</a>
+          {tt("CancellationPolicyContent.email")}{" "}<a href={tt.path(`mailto:${brand.contactEmail}`)}>{brand.contactEmail}</a>
           <br />
           {tt("CancellationPolicyContent.please-include-your-booking-reference")}</ContactBlock>
 

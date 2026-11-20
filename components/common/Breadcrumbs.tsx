@@ -1,5 +1,6 @@
 "use client";
 
+import { useT } from "../../lib/i18n/LocaleContext";
 import Link from "next/link";
 import styled from "styled-components";
 import Container from "./Container";
@@ -33,6 +34,7 @@ export type Crumb = { label: string; href?: string };
 
 /** Visible breadcrumbs. Keep the matching BreadcrumbList JSON-LD in the page. */
 export default function Breadcrumbs({ items }: { items: Crumb[] }) {
+  const tt = useT();
   return (
     <Container>
       <Nav aria-label="Breadcrumb">
@@ -42,7 +44,7 @@ export default function Breadcrumbs({ items }: { items: Crumb[] }) {
             return (
               <Item key={`${item.label}-${index}`}>
                 {item.href && !isLast ? (
-                  <Link href={item.href}>{item.label}</Link>
+                  <Link href={tt.path(item.href)}>{item.label}</Link>
                 ) : (
                   <span aria-current={isLast ? "page" : undefined}>{item.label}</span>
                 )}

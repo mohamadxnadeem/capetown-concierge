@@ -201,11 +201,11 @@ export default function PrivacyContent() {
         <ContactBlock>
           <strong>{tt("PrivacyContent.cape-town-concierge")}</strong>
           <br />
-          {tt("PrivacyContent.email")}{" "}<a href={`mailto:${brand.contactEmail}`}>{brand.contactEmail}</a>
+          {tt("PrivacyContent.email")}{" "}<a href={tt.path(`mailto:${brand.contactEmail}`)}>{brand.contactEmail}</a>
           <br />
-          {tt("PrivacyContent.whatsapp")}{" "}<a href={`https://wa.me/${brand.whatsappNumber}`}>{brand.phone}</a>
+          {tt("PrivacyContent.whatsapp")}{" "}<a href={tt.path(`https://wa.me/${brand.whatsappNumber}`)}>{brand.phone}</a>
           <br />
-          {tt("PrivacyContent.website")}{" "}<a href={brand.siteUrl}>{brand.siteUrl.replace(/^https?:\/\//, "")}</a>
+          {tt("PrivacyContent.website")}{" "}<a href={tt.path(brand.siteUrl)}>{brand.siteUrl.replace(/^https?:\/\//, "")}</a>
         </ContactBlock>
       </Article>
     </Wrapper>

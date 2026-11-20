@@ -6,6 +6,8 @@ const KINDS: Record<string, ContentKind> = { tours: "tours", "chauffeur-hire": "
 /** Locale-aware internal link. English returns the path untouched. Query and hash are kept. */
 export function localePath(locale: Locale, path: string): string {
   if (locale === "en" || !path.startsWith("/") || path.startsWith("//")) return path;
+  const first = path.split("/")[1]?.split(/[?#]/)[0]?.toLowerCase();
+  if (first && ["ar", "pt-br", "ru"].includes(first)) return path;
   const m = path.match(/^([^?#]*)([?#].*)?$/);
   const base = m?.[1] ?? path;
   const rest = m?.[2] ?? "";

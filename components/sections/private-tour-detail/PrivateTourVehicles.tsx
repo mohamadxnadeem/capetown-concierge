@@ -388,7 +388,7 @@ export default function PrivateTourVehicles({ items, tourTitle, title }: Props) 
                   </CardText>
 
                   <CTAAnchor
-                    href={vehicleLink}
+                    href={tt.path(vehicleLink)}
                     target="_blank"
                     rel="noopener noreferrer"
                     onClick={() =>

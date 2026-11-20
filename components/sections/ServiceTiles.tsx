@@ -131,7 +131,7 @@ export default function ServiceTiles({ tiles }: Props) {
       <Container>
         <Grid>
           {tiles.map((tile) => (
-            <Tile key={tile.href} href={tile.href}>
+            <Tile key={tile.href} href={tt.path(tile.href)}>
               <ImageLayer>
                 <RotatingImage
                   images={tile.images}

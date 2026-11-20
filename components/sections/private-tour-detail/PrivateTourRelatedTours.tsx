@@ -169,7 +169,7 @@ export default function PrivateTourRelatedTours({
                 {TOUR_COPY(tt)[item.title] || item.description || tt("PrivateTourRelatedTours.discover-another-premium-private-tour")}
               </CardText>
 
-              <Link href={item.href} aria-label={tt("PrivateTourRelatedTours.read-more-about-the", { name })}>
+              <Link href={tt.path(item.href)} aria-label={tt("PrivateTourRelatedTours.read-more-about-the", { name })}>
                 <Button as="span" $variant="secondary">
                   {tt("PrivateTourRelatedTours.see-the")}{" "}{name}
                 </Button>

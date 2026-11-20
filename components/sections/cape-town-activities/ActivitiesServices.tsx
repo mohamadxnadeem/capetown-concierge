@@ -66,7 +66,7 @@ export default function ActivitiesServices({ items }: Props) {
               <ServiceTitle>{service.title}</ServiceTitle>
               <ServiceText>{service.description}</ServiceText>
 
-              <StyledLink href={service.href}>
+              <StyledLink href={tt.path(service.href)}>
                 <Button as="span" $variant="secondary">
                   {service.cta}
                 </Button>

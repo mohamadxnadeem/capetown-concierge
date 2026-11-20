@@ -175,7 +175,7 @@ export default function PrivateTourReviews({ reviews }: Props) {
 
       <GoogleRow>
         <GoogleButton
-          href={GOOGLE_REVIEWS_URL}
+          href={tt.path(GOOGLE_REVIEWS_URL)}
           target="_blank"
           rel="noopener noreferrer"
           aria-label={tt("PrivateTourReviews.read-all-reviews-on-google")}

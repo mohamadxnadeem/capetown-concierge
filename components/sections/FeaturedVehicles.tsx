@@ -369,7 +369,7 @@ export default function FeaturedVehicles({
         ) : (
           <Slider ref={sliderRef}>
             {items.map((item, index) => (
-              <Card key={`${item.title}-${index}`} href={item.href}>
+              <Card key={`${item.title}-${index}`} href={tt.path(item.href)}>
                 <VehicleImageCard
                   image={item.image}
                   title={item.title}
@@ -399,7 +399,7 @@ export default function FeaturedVehicles({
 
         {footerHref && footerLabel && items.length ? (
           <FooterLinkRow>
-            <FooterLink href={footerHref}>{footerLabel}</FooterLink>
+            <FooterLink href={tt.path(footerHref)}>{footerLabel}</FooterLink>
           </FooterLinkRow>
         ) : null}
       </Container>

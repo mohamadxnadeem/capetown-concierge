@@ -51,7 +51,7 @@ export default async function ReviewsPage({ params }: { params: Promise<{ locale
           {tt("reviews.client-reviews")}</h1>
         <Lead>
           {googleSummaryText}.{" "}
-          <TextLink href={GOOGLE_REVIEWS_URL} target="_blank" rel="noopener noreferrer">
+          <TextLink href={tt.path(GOOGLE_REVIEWS_URL)} target="_blank" rel="noopener noreferrer">
             {tt("reviews.read-all-reviews-on-google")}</TextLink>
         </Lead>
         <ReviewGrid reviews={reviews} />

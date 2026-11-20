@@ -91,7 +91,7 @@ export default function HomeEnquiry() {
             <WaTitle>{tt("HomeEnquiry.enquire-on-whatsapp")}</WaTitle>
             <WaText>{tt("HomeEnquiry.tell-us-your-dates-and")}</WaText>
             <Anchor
-              href={href}
+              href={tt.path(href)}
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => trackWhatsAppClick({ source: "homepage_enquiry", label: "Enquire on WhatsApp" })}

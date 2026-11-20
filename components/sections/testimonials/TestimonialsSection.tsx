@@ -465,7 +465,7 @@ export default function TestimonialsSection({
 
         <SliderFooter>
           <GoogleButton
-            href={GOOGLE_REVIEWS_URL}
+            href={tt.path(GOOGLE_REVIEWS_URL)}
             target="_blank"
             rel="noopener noreferrer"
             aria-label={tt("TestimonialsSection.read-all-reviews-on-google")}
@@ -473,7 +473,7 @@ export default function TestimonialsSection({
             <GoogleG>{tt("TestimonialsSection.g")}</GoogleG>
             <GoogleStars>★★★★★</GoogleStars>
             {googleRatingLabel} {tt("TestimonialsSection.from")}{" "}{googleReviewCount} {tt("TestimonialsSection.google-reviews-read-all-reviews")}</GoogleButton>
-          {readAllHref ? <ReadAllLink href={readAllHref}>{tt("TestimonialsSection.read-all-reviews")}</ReadAllLink> : null}
+          {readAllHref ? <ReadAllLink href={tt.path(readAllHref)}>{tt("TestimonialsSection.read-all-reviews")}</ReadAllLink> : null}
         </SliderFooter>
       </Container>
     </Section>

@@ -794,7 +794,7 @@ export default function PrivateTourDetailView({
 
             <CTAButtons style={{ justifyContent: "flex-start", marginTop: "22px" }}>
               <CTAAnchor
-                href={tourWhatsAppLink}
+                href={tt.path(tourWhatsAppLink)}
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -802,7 +802,7 @@ export default function PrivateTourDetailView({
               </CTAAnchor>
 
               <CTAAnchor
-                href={tourWhatsAppLink}
+                href={tt.path(tourWhatsAppLink)}
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -883,7 +883,7 @@ export default function PrivateTourDetailView({
 
             <CTAButtons>
               <CTAAnchor
-                href={tourWhatsAppLink}
+                href={tt.path(tourWhatsAppLink)}
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -891,7 +891,7 @@ export default function PrivateTourDetailView({
               </CTAAnchor>
 
               <CTAAnchor
-                href={tourWhatsAppLink}
+                href={tt.path(tourWhatsAppLink)}
                 target="_blank"
                 rel="noopener noreferrer"
               >

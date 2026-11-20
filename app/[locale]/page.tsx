@@ -107,7 +107,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
         serviceType: "Private Chauffeured Drives",
         name: "Private Chauffeured Drives",
         provider,
-        areaServed,
+        areaServed: areaServed(tt),
         description:
           "Airport transfers, business travel, dinners and as-directed hire by the hour or day in Cape Town. Always private, never shared.",
       },
@@ -116,7 +116,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
         serviceType: "Day Tours",
         name: "Day Tours",
         provider,
-        areaServed,
+        areaServed: areaServed(tt),
         description:
           "Full-day private tours of the Cape Peninsula, Winelands, city and safari, with your chauffeur as your guide, at your own pace.",
       },
@@ -125,7 +125,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
         serviceType: "Multi-Day Trips",
         name: "Multi-Day Trips",
         provider,
-        areaServed,
+        areaServed: areaServed(tt),
         description:
           "The same chauffeur and vehicle for your whole stay, with each day planned around you, from Cape Town and the Winelands to Hermanus and the Garden Route.",
       },

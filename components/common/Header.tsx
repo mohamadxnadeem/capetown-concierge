@@ -174,7 +174,7 @@ export default function Header() {
       <Wrapper>
         <HeaderContainer>
           <Inner>
-            <Logo href="/">
+            <Logo href={t.path("/")}>
               <LogoImage>
                 <Image
                   src="/images/logo.svg"

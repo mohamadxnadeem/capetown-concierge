@@ -124,7 +124,7 @@ export default function TrustBadges() {
           {badges.map((badge) => (
             <Item key={badge.title}>
               {badge.href ? (
-                <CardLink href={badge.href}>
+                <CardLink href={tt.path(badge.href)}>
                   <Body badge={badge} />
                 </CardLink>
               ) : (

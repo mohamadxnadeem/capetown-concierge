@@ -330,7 +330,7 @@ export default function FeaturedExperiences({
         ) : (
           <Slider ref={sliderRef}>
             {items.map((item, index) => (
-              <Card key={`${item.title}-${index}`} href={item.href} aria-label={tt("FeaturedExperiences.view-details", { title: item.title })}>
+              <Card key={`${item.title}-${index}`} href={tt.path(item.href)} aria-label={tt("FeaturedExperiences.view-details", { title: item.title })}>
                 <CardImageWrap>
                   {item.image ? (
                     <SmartImage
@@ -358,7 +358,7 @@ export default function FeaturedExperiences({
 
         {footerHref && footerLabel && items.length ? (
           <FooterLinkRow>
-            <FooterLink href={footerHref}>{footerLabel}</FooterLink>
+            <FooterLink href={tt.path(footerHref)}>{footerLabel}</FooterLink>
           </FooterLinkRow>
         ) : null}
       </Container>

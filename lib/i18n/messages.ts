@@ -43,14 +43,15 @@ export function hasTranslation(locale: Locale, ns: Namespace, key: string) {
 
 export type TFunction = ((key: string, vars?: Record<string, string | number>) => string) & {
   /** Prefixes an internal path with the locale (and maps tour and vehicle slugs). English is unchanged. */
-  path: (path: string) => string;
+  path: <T extends string | null | undefined>(path: T) => T;
 };
 
 /** Server or client safe. Namespace "common" by default. */
 export function getT(locale: Locale, ns: Namespace = "common"): TFunction {
   const t = ((key: string, vars?: Record<string, string | number>) =>
     translate(locale, ns, key, vars)) as TFunction;
-  t.path = (path: string) => localePath(locale, path);
+  t.path = (<T extends string | null | undefined>(path: T): T =>
+    (typeof path === "string" ? localePath(locale, path) : path) as T);
   return t;
 }
 
