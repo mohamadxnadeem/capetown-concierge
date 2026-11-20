@@ -9,6 +9,7 @@ import { buildWhatsAppLink, buildGeneralWhatsAppMessage } from "../../../lib/wha
 import { trackWhatsAppClick } from "../../../lib/tracking";
 import { MULTI_DAY_INTRO, MULTI_DAY_STEPS } from "../../../lib/multiDay";
 import type { GoogleReview } from "../../../lib/googleReviews";
+import ReviewsNote from "../../common/ReviewsNote";
 import { ReviewCard } from "../testimonials/TestimonialsSection";
 
 import { useT } from "../../../lib/i18n/LocaleContext";
@@ -175,11 +176,14 @@ const ReviewGridWrap = styled.div`
 export function ReviewGrid({ reviews }: { reviews: GoogleReview[] }) {
   const tt = useT();
   return (
-    <ReviewGridWrap>
-      {reviews.map((r) => (
-        <ReviewCard key={r.id} review={r} />
-      ))}
-    </ReviewGridWrap>
+    <>
+      <ReviewsNote />
+      <ReviewGridWrap>
+        {reviews.map((r) => (
+          <ReviewCard key={r.id} review={r} />
+        ))}
+      </ReviewGridWrap>
+    </>
   );
 }
 

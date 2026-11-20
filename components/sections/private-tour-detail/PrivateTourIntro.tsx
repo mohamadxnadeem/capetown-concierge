@@ -1,7 +1,7 @@
 "use client";
 
 import styled from "styled-components";
-import { googleSummaryText } from "../../../lib/googleReviews";
+import { googleSummary } from "../../../lib/googleReviews";
 import Money from "../../common/Money";
 
 import { useT } from "../../../lib/i18n/LocaleContext";
@@ -142,7 +142,7 @@ export default function PrivateTourIntro({
       </SubText>
 
       <TrustBar>
-        <TrustBadge>⭐ {googleSummaryText}</TrustBadge>
+        <TrustBadge>⭐ {googleSummary(tt)}</TrustBadge>
         {trustBadges.map((badge) => (
           <TrustBadge key={badge}>{badge}</TrustBadge>
         ))}

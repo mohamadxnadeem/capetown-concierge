@@ -1,0 +1,23 @@
+{
+  "reviews.summary": "{rating} на основе {count} отзывов Google",
+  "reviews.translated-note": "Отзывы переведены с английского",
+  "vehicle.seo-keyword": "{name} с водителем в Кейптауне",
+  "vehicle.meta-title-price": "{name} с водителем в Кейптауне | от {rate}/день",
+  "vehicle.meta-title-plain": "{name} с водителем в Кейптауне | {brand}",
+  "vehicle.meta-desc-price": "{name} с водителем в Кейптауне от {rate} в день. Трансферы из аэропорта, поездки по Полуострову и винным землям, топливо включено. Пишите в WhatsApp.",
+  "vehicle.meta-desc": "{name} с водителем в Кейптауне. Трансферы из аэропорта, поездки по Полуострову и винным землям, топливо включено. Пишите в WhatsApp.",
+  "vehicle.bag": "чемодан",
+  "vehicle.bags": "чемоданов",
+  "vehicle.bags-few": "чемодана",
+  "vehicle.your-party": "вашу компанию",
+  "vehicle.and-1-bag": " и {n} чемодан",
+  "vehicle.and-n-bags": " и {n} чемодана",
+  "vehicle.and-join": " и ",
+  "vehicle.for-up-to-passengers": " на {seats} пассажиров",
+  "vehicle.from-rate-per-vehicle-day-fuel": ", от {rate} за автомобиль в день, топливо включено",
+  "vehicle.from-rate-per-day-fuel": ", от {rate} в день, топливо включено",
+  "vehicle.type.sedan": "седан",
+  "vehicle.type.suv": "внедорожник",
+  "vehicle.type.van": "минивэн",
+  "vehicle.type.vehicle": "автомобиль"
+}

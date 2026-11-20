@@ -1,0 +1,23 @@
+{
+  "reviews.summary": "{rating} from {count} Google reviews",
+  "reviews.translated-note": "Reviews translated from English",
+  "vehicle.seo-keyword": "{name} Chauffeur Cape Town",
+  "vehicle.meta-title-price": "{name} Chauffeur Cape Town | From {rate}/day",
+  "vehicle.meta-title-plain": "{name} Chauffeur Cape Town | {brand}",
+  "vehicle.meta-desc-price": "{name} chauffeur in Cape Town from {rate} per day. Airport transfers, Peninsula and Winelands tours, fuel included. Enquire on WhatsApp.",
+  "vehicle.meta-desc": "{name} chauffeur in Cape Town. Airport transfers, Peninsula and Winelands tours, fuel included. Enquire on WhatsApp.",
+  "vehicle.bag": "bag",
+  "vehicle.bags": "bags",
+  "vehicle.bags-few": "bags",
+  "vehicle.your-party": "your party",
+  "vehicle.and-1-bag": " and {n} bag",
+  "vehicle.and-n-bags": " and {n} bags",
+  "vehicle.and-join": " and ",
+  "vehicle.for-up-to-passengers": " for up to {seats} passengers",
+  "vehicle.from-rate-per-vehicle-day-fuel": ", from {rate} per vehicle per day with fuel included",
+  "vehicle.from-rate-per-day-fuel": ", from {rate} per day with fuel included",
+  "vehicle.type.sedan": "sedan",
+  "vehicle.type.suv": "suv",
+  "vehicle.type.van": "van",
+  "vehicle.type.vehicle": "vehicle"
+}

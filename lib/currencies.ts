@@ -1,3 +1,6 @@
+import type { Locale } from "./i18n/config";
+import { formatNumber } from "./i18n/numbers";
+
 export type CurrencyCode = "USD" | "GBP" | "EUR" | "ZAR" | "AUD" | "CAD";
 
 export interface CurrencyMeta {
@@ -63,6 +66,17 @@ export function convertFromUsd(
   rates: Record<CurrencyCode, number>
 ): number {
   return Math.round(usd * rates[currency]);
+}
+
+export function formatMoneyLocale(
+  usd: number,
+  currency: CurrencyCode,
+  rates: Record<CurrencyCode, number>,
+  locale: Locale
+): string {
+  const amount = convertFromUsd(usd, currency, rates);
+  const { symbol } = CURRENCIES[currency];
+  return `${symbol}${formatNumber(locale, amount)}`;
 }
 
 export function formatMoney(

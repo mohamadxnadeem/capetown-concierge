@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import styled from "styled-components";
+import { useTl } from "../../lib/i18n/LocaleContext";
 import Container from "../common/Container";
 
 type FaqItem = {
@@ -118,12 +119,13 @@ export default function FaqSection({
 }: FaqSectionProps) {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
+  const tl = useTl();
   return (
     <Wrapper>
       <Container>
         <Header>
-          <Eyebrow>{eyebrow}</Eyebrow>
-          <Title>{title}</Title>
+          <Eyebrow>{tl(eyebrow)}</Eyebrow>
+          <Title>{tl(title)}</Title>
         </Header>
 
         <FaqList>
@@ -137,12 +139,12 @@ export default function FaqSection({
                   aria-expanded={isOpen}
                   aria-controls={`faq-answer-${index}`}
                 >
-                  <FaqQuestion>{faq.question}</FaqQuestion>
+                  <FaqQuestion>{tl(faq.question)}</FaqQuestion>
                   <FaqIcon $open={isOpen}>+</FaqIcon>
                 </FaqButton>
 
                 <FaqAnswerWrap $open={isOpen} id={`faq-answer-${index}`}>
-                  <FaqAnswerInner>{faq.answer}</FaqAnswerInner>
+                  <FaqAnswerInner>{tl(faq.answer)}</FaqAnswerInner>
                 </FaqAnswerWrap>
               </FaqItemWrap>
             );

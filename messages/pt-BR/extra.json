@@ -1,0 +1,23 @@
+{
+  "reviews.summary": "{rating} de {count} avaliações no Google",
+  "reviews.translated-note": "Avaliações traduzidas do inglês",
+  "vehicle.seo-keyword": "{name} com Motorista na Cidade do Cabo",
+  "vehicle.meta-title-price": "{name} com Motorista na Cidade do Cabo | A partir de {rate}/dia",
+  "vehicle.meta-title-plain": "{name} com Motorista na Cidade do Cabo | {brand}",
+  "vehicle.meta-desc-price": "{name} com motorista na Cidade do Cabo a partir de {rate} por dia. Transfers de aeroporto, passeios pela Península e pelas Winelands, combustível incluído. Fale conosco no WhatsApp.",
+  "vehicle.meta-desc": "{name} com motorista na Cidade do Cabo. Transfers de aeroporto, passeios pela Península e pelas Winelands, combustível incluído. Fale conosco no WhatsApp.",
+  "vehicle.bag": "mala",
+  "vehicle.bags": "malas",
+  "vehicle.bags-few": "malas",
+  "vehicle.your-party": "o seu grupo",
+  "vehicle.and-1-bag": " e {n} mala",
+  "vehicle.and-n-bags": " e {n} malas",
+  "vehicle.and-join": " e ",
+  "vehicle.for-up-to-passengers": " para até {seats} passageiros",
+  "vehicle.from-rate-per-vehicle-day-fuel": ", a partir de {rate} por veículo por dia, com combustível incluído",
+  "vehicle.from-rate-per-day-fuel": ", a partir de {rate} por dia, com combustível incluído",
+  "vehicle.type.sedan": "sedã",
+  "vehicle.type.suv": "SUV",
+  "vehicle.type.van": "van",
+  "vehicle.type.vehicle": "veículo"
+}

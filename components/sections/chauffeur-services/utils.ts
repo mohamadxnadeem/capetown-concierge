@@ -3,6 +3,7 @@ export { buildWhatsAppLink } from "../../../lib/whatsapp";
 import { brand } from "../../../lib/brand";
 
 import { enT } from "../../../lib/i18n/messages";
+import { formatNumber, numberTag } from "../../../lib/i18n/numbers";
 import type { TFunction } from "../../../lib/i18n/messages";
 export function stripHtml(html?: string) {
   if (!html) return "";
@@ -19,15 +20,15 @@ export function getPrimaryImage(car: Car) {
   );
 }
 
-export function formatCurrency(amount: number) {
+export function formatCurrency(amount: number, tt: TFunction = enT) {
   if (!amount || Number.isNaN(amount)) return "";
-  return `R${Math.round(amount).toLocaleString()}`;
+  return `R${Math.round(amount).toLocaleString(tt.locale === "en" ? undefined : numberTag(tt.locale))}`;
 }
 
 export function formatPrice(price?: string | number, tt: TFunction = enT) {
   if (price === undefined || price === null || price === "") return "";
   const num = Number(String(price).replace(/[^0-9.]/g, ""));
-  return isNaN(num) || num === 0 ? "" : tt("utils.from-r-per-day", { toLocaleString: Math.round(num).toLocaleString() });
+  return isNaN(num) || num === 0 ? "" : tt("utils.from-r-per-day", { toLocaleString: formatNumber(tt.locale, Math.round(num)) });
 }
 
 export function getBaseDailyRate(
@@ -65,29 +66,29 @@ export function getVehicleName(car: Car): string {
   return raw || "Luxury Vehicle";
 }
 
-export function getSeoKeyword(car: Car): string {
+export function getSeoKeyword(car: Car, tt: TFunction = enT): string {
   if (car.seo_keyword) return car.seo_keyword;
-  return `${getVehicleName(car)} Chauffeur Cape Town`;
+  return tt("vehicle.seo-keyword", { name: getVehicleName(car) });
 }
 
 // "R7,850" from the live record, or "" when there is no price
-export function getDayRate(car: Car): string {
+export function getDayRate(car: Car, tt: TFunction = enT): string {
   const raw = car.price ?? car.price_from;
   const num = Number(String(raw ?? "").replace(/[^0-9.]/g, ""));
   if (!num || Number.isNaN(num)) return "";
-  return `R${Math.round(num).toLocaleString("en-US")}`;
+  return `R${formatNumber(tt.locale, Math.round(num))}`;
 }
 
 function seatsText(car: Car, tt: TFunction) {
-  return car.number_of_seats ? tt("utils.up-to-passengers", { number_of_seats: car.number_of_seats }) : "your party";
+  return car.number_of_seats ? tt("utils.up-to-passengers", { number_of_seats: car.number_of_seats }) : tt("vehicle.your-party");
 }
 
 // One list, used by the visible FAQ and by the FAQPage JSON-LD.
 export function buildFaqs(car: Car, tt: TFunction): FaqItem[] {
   const name = getVehicleName(car);
-  const rate = getDayRate(car);
+  const rate = getDayRate(car, tt);
   const luggage = car.luggage_capacity
-    ? tt("utils.and-space-for", { luggage_capacity: car.luggage_capacity, bags: car.luggage_capacity === 1 ? "bag" : "bags" })
+    ? tt("utils.and-space-for", { luggage_capacity: car.luggage_capacity, bags: bagsWord(car.luggage_capacity, tt) })
     : "";
 
   return [
@@ -136,22 +137,41 @@ export function buildFaqs(car: Car, tt: TFunction): FaqItem[] {
   ];
 }
 
-export function getVehicleMetaTitle(car: Car): string {
+export function getVehicleMetaTitle(car: Car, tt: TFunction = enT): string {
   if (car.meta_title) return car.meta_title;
   const name = getVehicleName(car);
-  const rate = getDayRate(car);
-  const withPrice = rate ? `${name} Chauffeur Cape Town | From ${rate}/day` : "";
+  const rate = getDayRate(car, tt);
+  const withPrice = rate ? tt("vehicle.meta-title-price", { name, rate }) : "";
   if (withPrice && withPrice.length <= 60) return withPrice;
-  const plain = `${name} Chauffeur Cape Town | ${brand.name}`;
-  return plain.length <= 60 ? plain : `${name} Chauffeur Cape Town`;
+  const plain = tt("vehicle.meta-title-plain", { name, brand: brand.name });
+  return plain.length <= 60 ? plain : tt("vehicle.seo-keyword", { name });
 }
 
-export function getVehicleMetaDescription(car: Car): string {
+export function getVehicleMetaDescription(car: Car, tt: TFunction = enT): string {
   if (car.meta_description) return car.meta_description;
   const name = getVehicleName(car);
-  const rate = getDayRate(car);
+  const rate = getDayRate(car, tt);
   const raw = rate
-    ? `${name} chauffeur in Cape Town from ${rate} per day. Airport transfers, Peninsula and Winelands tours, fuel included. Enquire on WhatsApp.`
-    : `${name} chauffeur in Cape Town. Airport transfers, Peninsula and Winelands tours, fuel included. Enquire on WhatsApp.`;
+    ? tt("vehicle.meta-desc-price", { name, rate })
+    : tt("vehicle.meta-desc", { name });
   return raw.length <= 160 ? raw : raw.slice(0, 157).trimEnd() + "...";
+}
+
+/** "sedan" becomes the translated word. Unknown types stay as they are. */
+export function vehicleTypeLabel(car: Car, tt: TFunction = enT): string {
+  const type = car.vehicle_type ? car.vehicle_type.toLowerCase() : "vehicle";
+  const key = `vehicle.type.${type}`;
+  const v = tt(key);
+  return v === key ? type : v;
+}
+
+function bagsWord(n: number, tt: TFunction): string {
+  if (n === 1) return tt("vehicle.bag");
+  if (tt.locale === "ru") {
+    const m10 = n % 10;
+    const m100 = n % 100;
+    if (m10 === 1 && m100 !== 11) return tt("vehicle.bag");
+    if (m10 >= 2 && m10 <= 4 && (m100 < 12 || m100 > 14)) return tt("vehicle.bags-few");
+  }
+  return tt("vehicle.bags");
 }

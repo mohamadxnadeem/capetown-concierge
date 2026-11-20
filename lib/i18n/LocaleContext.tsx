@@ -4,6 +4,7 @@ import { createContext, useCallback, useContext, useMemo } from "react";
 import type { Locale } from "./config";
 import { withLocalePrefix } from "./config";
 import { getT, type TFunction } from "./messages";
+import { tl } from "./literals";
 
 const LocaleContext = createContext<Locale>("en");
 
@@ -30,4 +31,10 @@ export function useT(): TFunction {
 export function useLocalePath(): (path: string) => string {
   const locale = useLocale();
   return useCallback((path: string) => withLocalePrefix(locale, path), [locale]);
+}
+
+/** Translates an English literal (prop or API text) through messages/<locale>/literals.json. */
+export function useTl(): (text: string | undefined | null) => string {
+  const locale = useLocale();
+  return useCallback((text) => (text ? tl(locale, text) : ""), [locale]);
 }

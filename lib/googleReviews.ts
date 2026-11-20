@@ -106,3 +106,8 @@ export function reviewsWithTag(tag: string): GoogleReview[] {
 export function allEligibleReviews(): GoogleReview[] {
   return [...eligibleReviews].sort(byNewest);
 }
+
+/** For example "5.0 from 62 Google reviews", in the page language. */
+export function googleSummary(tt: (key: string, vars?: Record<string, string | number>) => string): string {
+  return tt("reviews.summary", { rating: googleRatingLabel, count: googleReviewCount });
+}

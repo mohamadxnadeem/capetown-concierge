@@ -7,7 +7,7 @@ import Container from "../common/Container";
 import SmartImage from "../common/SmartImage";
 import Money from "../common/Money";
 
-import { useT } from "../../lib/i18n/LocaleContext";
+import { useT, useTl } from "../../lib/i18n/LocaleContext";
 import type { TFunction } from "../../lib/i18n/messages";
 type ExperienceItem = {
   title: string;
@@ -295,14 +295,15 @@ export default function FeaturedExperiences({
     });
   };
 
+  const tl = useTl();
   return (
     <Wrapper id={id}>
       <Container>
         <TopBar>
           <Intro>
-            {eyebrow ? <Eyebrow>{eyebrow}</Eyebrow> : null}
-            <Title>{title}</Title>
-            <Description>{description}</Description>
+            {eyebrow ? <Eyebrow>{tl(eyebrow)}</Eyebrow> : null}
+            <Title>{tl(title)}</Title>
+            <Description>{tl(description)}</Description>
           </Intro>
 
           {!!items.length && (
@@ -344,7 +345,7 @@ export default function FeaturedExperiences({
                 <CardContent>
                   <Badge>{item.priceUsd ? <Money usd={item.priceUsd} suffix={item.priceSuffix} /> : tt("FeaturedExperiences.private-tour")}</Badge>
                   <CardTitle>{item.title}</CardTitle>
-                  <CardText>{item.description}</CardText>
+                  <CardText>{tl(item.description)}</CardText>
 
                   <CardFooter>
                     <ViewButton>{tt("FeaturedExperiences.view-tour")}</ViewButton>
@@ -358,7 +359,7 @@ export default function FeaturedExperiences({
 
         {footerHref && footerLabel && items.length ? (
           <FooterLinkRow>
-            <FooterLink href={tt.path(footerHref)}>{footerLabel}</FooterLink>
+            <FooterLink href={tt.path(footerHref)}>{tl(footerLabel)}</FooterLink>
           </FooterLinkRow>
         ) : null}
       </Container>

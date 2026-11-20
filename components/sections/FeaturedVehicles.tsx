@@ -7,7 +7,7 @@ import Container from "../common/Container";
 import Money from "../common/Money";
 import SmartImage from "../common/SmartImage";
 
-import { useT } from "../../lib/i18n/LocaleContext";
+import { useT, useTl } from "../../lib/i18n/LocaleContext";
 import type { TFunction } from "../../lib/i18n/messages";
 type VehicleItem = {
   title: string;
@@ -334,14 +334,15 @@ export default function FeaturedVehicles({
     });
   };
 
+  const tl = useTl();
   return (
     <Wrapper id={id}>
       <Container>
         <TopBar>
           <Intro>
-            {eyebrow ? <Eyebrow>{eyebrow}</Eyebrow> : null}
-            <Title>{title}</Title>
-            <Description>{description}</Description>
+            {eyebrow ? <Eyebrow>{tl(eyebrow)}</Eyebrow> : null}
+            <Title>{tl(title)}</Title>
+            <Description>{tl(description)}</Description>
           </Intro>
 
           {!!items.length && (
@@ -373,7 +374,7 @@ export default function FeaturedVehicles({
                 <VehicleImageCard
                   image={item.image}
                   title={item.title}
-                  alt={item.alt}
+                  alt={item.alt ? tl(item.alt) : item.alt}
                 />
 
                 <CardContent>
@@ -385,7 +386,7 @@ export default function FeaturedVehicles({
                   </MetaRow>
 
                   <CardTitle>{item.title}</CardTitle>
-                  <CardText>{item.description}</CardText>
+                  <CardText>{tl(item.description)}</CardText>
 
                   <CardFooter>
                     <ViewButton>{tt("FeaturedVehicles.view-vehicle")}</ViewButton>
@@ -399,7 +400,7 @@ export default function FeaturedVehicles({
 
         {footerHref && footerLabel && items.length ? (
           <FooterLinkRow>
-            <FooterLink href={tt.path(footerHref)}>{footerLabel}</FooterLink>
+            <FooterLink href={tt.path(footerHref)}>{tl(footerLabel)}</FooterLink>
           </FooterLinkRow>
         ) : null}
       </Container>

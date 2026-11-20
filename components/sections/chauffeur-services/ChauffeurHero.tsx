@@ -8,7 +8,7 @@ import RotatingImage from "../../common/RotatingImage";
 import { trackWhatsAppClick } from "../../../lib/tracking";
 import Money from "../../common/Money";
 
-import { useT } from "../../../lib/i18n/LocaleContext";
+import { useT, useTl } from "../../../lib/i18n/LocaleContext";
 type Props = {
   title: string;
   description: string;
@@ -145,6 +145,7 @@ export default function ChauffeurHero({
   whatsappLink,
 }: Props) {
   const tt = useT();
+  const tl = useTl();
   const rotation = (images ?? []).filter(Boolean);
   return (
     <Hero>
@@ -165,7 +166,7 @@ export default function ChauffeurHero({
             <HeroTitle>{title}</HeroTitle>
             <HeroText>{description}</HeroText>
             <HeroMeta>
-              {vehicleType && <HeroMetaItem>{vehicleType}</HeroMetaItem>}
+              {vehicleType && <HeroMetaItem>{tl(vehicleType)}</HeroMetaItem>}
               {seats && <HeroMetaItem>{seats} {tt("ChauffeurHero.seats")}</HeroMetaItem>}
               {luggage && <HeroMetaItem>{luggage} {tt("ChauffeurHero.luggage")}</HeroMetaItem>}
               {priceUsd ? <HeroMetaItem><Money usd={priceUsd} /></HeroMetaItem> : null}

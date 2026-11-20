@@ -1,0 +1,23 @@
+{
+  "reviews.summary": "{rating} من {count} تقييمًا على Google",
+  "reviews.translated-note": "المراجعات مترجمة من الإنجليزية",
+  "vehicle.seo-keyword": "سائق خاص بسيارة {name} في كيب تاون",
+  "vehicle.meta-title-price": "سائق {name} في كيب تاون | من {rate} لليوم",
+  "vehicle.meta-title-plain": "سائق {name} في كيب تاون | {brand}",
+  "vehicle.meta-desc-price": "سائق خاص بسيارة {name} في كيب تاون من {rate} لليوم. التوصيل من وإلى المطار وجولات شبه الجزيرة ومنطقة النبيذ، والوقود مشمول. استفسر عبر واتساب.",
+  "vehicle.meta-desc": "سائق خاص بسيارة {name} في كيب تاون. التوصيل من وإلى المطار وجولات شبه الجزيرة ومنطقة النبيذ، والوقود مشمول. استفسر عبر واتساب.",
+  "vehicle.bag": "حقيبة",
+  "vehicle.bags": "حقائب",
+  "vehicle.bags-few": "حقائب",
+  "vehicle.your-party": "مجموعتك",
+  "vehicle.and-1-bag": " و{n} حقيبة",
+  "vehicle.and-n-bags": " و{n} حقائب",
+  "vehicle.and-join": " و ",
+  "vehicle.for-up-to-passengers": " تتسع لما يصل إلى {seats} ركاب",
+  "vehicle.from-rate-per-vehicle-day-fuel": "، ابتداءً من {rate} للسيارة في اليوم والوقود مشمول",
+  "vehicle.from-rate-per-day-fuel": "، ابتداءً من {rate} في اليوم والوقود مشمول",
+  "vehicle.type.sedan": "سيدان",
+  "vehicle.type.suv": "SUV",
+  "vehicle.type.van": "فان",
+  "vehicle.type.vehicle": "سيارة"
+}

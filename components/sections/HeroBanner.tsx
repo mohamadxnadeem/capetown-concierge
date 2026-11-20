@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import styled from "styled-components";
+import { useTl } from "../../lib/i18n/LocaleContext";
 import Button from "../common/Button";
 import SmartImage from "../common/SmartImage";
 import RotatingImage from "../common/RotatingImage";
@@ -156,19 +157,20 @@ export default function HeroBanner({
   const rotation = (images ?? []).filter(Boolean);
   const single = image && !rotation.length ? image : null;
 
+  const tl = useTl();
   return (
     <Wrapper>
       <ImageLayer>
         {rotation.length > 0 ? (
           <RotatingImage
             images={rotation}
-            alt={imageAlt}
-            alts={imageAlts}
+            alt={tl(imageAlt)}
+            alts={imageAlts?.map((a) => tl(a))}
             sizes="100vw"
             priority
           />
         ) : single ? (
-          <SmartImage src={single} alt={imageAlt} priority quality={90} sizes="100vw" />
+          <SmartImage src={single} alt={tl(imageAlt)} priority quality={90} sizes="100vw" />
         ) : null}
       </ImageLayer>
 
@@ -176,28 +178,28 @@ export default function HeroBanner({
 
       <Content>
         <Inner>
-          <Eyebrow>{eyebrow}</Eyebrow>
-          <Title>{title}</Title>
-          <Description>{description}</Description>
+          <Eyebrow>{tl(eyebrow)}</Eyebrow>
+          <Title>{tl(title)}</Title>
+          <Description>{tl(description)}</Description>
 
           <ButtonRow>
             {isExternal(primaryCtaHref) ? (
               <StyledAnchor href={primaryCtaHref} target="_blank" rel="noopener noreferrer" onClick={handlePrimaryClick}>
-                <Button as="span">{primaryCtaLabel}</Button>
+                <Button as="span">{tl(primaryCtaLabel)}</Button>
               </StyledAnchor>
             ) : (
               <StyledLink href={primaryCtaHref} onClick={handlePrimaryClick}>
-                <Button as="span">{primaryCtaLabel}</Button>
+                <Button as="span">{tl(primaryCtaLabel)}</Button>
               </StyledLink>
             )}
             {showSecondaryCta ? (
               isExternal(secondaryCtaHref) ? (
                 <StyledAnchor href={secondaryCtaHref} target="_blank" rel="noopener noreferrer" onClick={handleSecondaryClick}>
-                  <Button as="span" $variant="secondary">{secondaryCtaLabel}</Button>
+                  <Button as="span" $variant="secondary">{tl(secondaryCtaLabel)}</Button>
                 </StyledAnchor>
               ) : (
                 <StyledLink href={secondaryCtaHref} onClick={handleSecondaryClick}>
-                  <Button as="span" $variant="secondary">{secondaryCtaLabel}</Button>
+                  <Button as="span" $variant="secondary">{tl(secondaryCtaLabel)}</Button>
                 </StyledLink>
               )
             ) : null}

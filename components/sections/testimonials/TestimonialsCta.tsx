@@ -4,7 +4,7 @@ import styled from "styled-components";
 import Button from "../../common/Button";
 import { buildWhatsAppLink, buildGeneralWhatsAppMessage } from "../../../lib/whatsapp";
 import { trackWhatsAppClick } from "../../../lib/tracking";
-import { googleSummaryText } from "../../../lib/googleReviews";
+import { googleSummary } from "../../../lib/googleReviews";
 
 import { useT } from "../../../lib/i18n/LocaleContext";
 const whatsappLink = "https://wa.me/27636746131?text=Hi%2C+I%27d+like+to+book+a+luxury+chauffeur+or+private+tour+in+Cape+Town.+Please+assist.";
@@ -61,7 +61,7 @@ export default function TestimonialsCta() {
           {tt("TestimonialsCta.message-us-on-whatsapp-and")}</Text>
 
         <TrustRow>
-          <TrustItem>⭐ {googleSummaryText}</TrustItem>
+          <TrustItem>⭐ {googleSummary(tt)}</TrustItem>
           <TrustItem>{tt("TestimonialsCta.private-chauffeur")}</TrustItem>
           <TrustItem>{tt("TestimonialsCta.custom-itinerary")}</TrustItem>
           <TrustItem>{tt("TestimonialsCta.responds-in-30-min")}</TrustItem>

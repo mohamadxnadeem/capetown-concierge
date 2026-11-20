@@ -1,6 +1,7 @@
 import * as React from "react";
 import type { Locale } from "./config";
 import { getT, type TFunction } from "./messages";
+import { tl } from "./literals";
 
 // `cache` only exists in the server (RSC) build of React. Fall back to a plain store otherwise.
 const cache: <T extends () => unknown>(fn: T) => T =
@@ -20,4 +21,10 @@ export function getRequestLocale(): Locale {
 /** Translator for server components. Needs setRequestLocale() to have run in the page. */
 export function serverT(): TFunction {
   return getT(getRequestLocale());
+}
+
+/** Server translator for English literals (props, API text). See lib/i18n/literals.ts. */
+export function serverTl(): (text: string | undefined | null) => string {
+  const locale = getRequestLocale();
+  return (text) => (text ? tl(locale, text) : "");
 }

@@ -10,6 +10,7 @@ import {
   buildFaqs,
   buildWhatsAppLink,
   getDayRate,
+  vehicleTypeLabel,
   getVehicleName,
   getBaseDailyRate,
   getPrimaryImage,
@@ -58,25 +59,25 @@ type Props = {
 function buildAuthorityCards(car: Car, tt: TFunction) {
   const name = getVehicleName(car);
   const seats = car.number_of_seats;
-  const rate = getDayRate(car);
-  const type = car.vehicle_type ? car.vehicle_type.toLowerCase() : "vehicle";
+  const rate = getDayRate(car, tt);
+  const type = vehicleTypeLabel(car, tt);
   const idealFor = car.ideal_for;
 
   const card1 = {
     title: tt("ChauffeurDetailView.chauffeur-cape-town-private-polished", { name }),
     text: seats
-      ? tt("ChauffeurDetailView.a-with-room-for-up", { type, seats, bags: car.luggage_capacity ? ` and ${car.luggage_capacity} ${car.luggage_capacity === 1 ? "bag" : "bags"}` : "" })
+      ? tt("ChauffeurDetailView.a-with-room-for-up", { type, seats, bags: car.luggage_capacity ? tt(car.luggage_capacity === 1 || (tt.locale === "ru" && car.luggage_capacity % 10 === 1 && car.luggage_capacity % 100 !== 11) ? "vehicle.and-1-bag" : "vehicle.and-n-bags", { n: car.luggage_capacity }) : "" })
       : tt("ChauffeurDetailView.a-chosen-for-comfort-presence", { type }),
   };
 
   const primaryUse =
     idealFor && idealFor.length > 0
-      ? idealFor.slice(0, 2).join(" and ").toLowerCase()
+      ? idealFor.slice(0, 2).join(tt("vehicle.and-join")).toLowerCase()
       : tt("ChauffeurDetailView.airport-transfers-and-private-touring");
 
   const card2 = {
     title: tt("ChauffeurDetailView.full-day-hire-your-itinerary"),
-    text: tt("ChauffeurDetailView.perfect-for-the-cape-peninsula", { primaryUse, included: rate ? `, from ${rate} per vehicle per day with fuel included` : "", FULL_DAY_HOURS_LINE: FULL_DAY_HOURS_LINE(tt) }),
+    text: tt("ChauffeurDetailView.perfect-for-the-cape-peninsula", { primaryUse, included: rate ? tt("vehicle.from-rate-per-vehicle-day-fuel", { rate }) : "", FULL_DAY_HOURS_LINE: FULL_DAY_HOURS_LINE(tt) }),
   };
 
   const card3 = {
@@ -92,10 +93,10 @@ function buildAuthorityCards(car: Car, tt: TFunction) {
  */
 function buildAuthorityBody(car: Car, tt: TFunction): string[] {
   const name = getVehicleName(car);
-  const type = car.vehicle_type ? car.vehicle_type.toLowerCase() : "vehicle";
+  const type = vehicleTypeLabel(car, tt);
   const seats = car.number_of_seats;
 
-  const para1 = tt("ChauffeurDetailView.choosing-a-chauffeur-in-cape", { name, name2: name, type, passengers: seats ? ` for up to ${seats} passengers` : "" });
+  const para1 = tt("ChauffeurDetailView.choosing-a-chauffeur-in-cape", { name, name2: name, type, passengers: seats ? tt("vehicle.for-up-to-passengers", { seats }) : "" });
 
   const para2 = tt("ChauffeurDetailView.our-travellers-use-the-for", { name });
 
@@ -346,8 +347,8 @@ export default function ChauffeurDetailView({
 
   // Intro sentence under the H1
   // Uses short_description from CMS if available, otherwise generates
-  const dayRate = getDayRate(car);
-  const authorityIntro = tt("ChauffeurDetailView.looking-for-a-chauffeur-in", { car: getVehicleName(car), car2: getVehicleName(car), included: dayRate ? `, from ${dayRate} per day with fuel included` : "", FULL_DAY_HOURS_LINE: FULL_DAY_HOURS_LINE(tt) });
+  const dayRate = getDayRate(car, tt);
+  const authorityIntro = tt("ChauffeurDetailView.looking-for-a-chauffeur-in", { car: getVehicleName(car), car2: getVehicleName(car), included: dayRate ? tt("vehicle.from-rate-per-day-fuel", { rate: dayRate }) : "", FULL_DAY_HOURS_LINE: FULL_DAY_HOURS_LINE(tt) });
 
   // Expand body — uses car.body from CMS if available, otherwise generates
   // vehicle-specific paragraphs (no more generic identical text)

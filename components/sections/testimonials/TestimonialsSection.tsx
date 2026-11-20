@@ -11,7 +11,9 @@ import {
   type GoogleReview,
 } from "../../../lib/googleReviews";
 
-import { useT } from "../../../lib/i18n/LocaleContext";
+import { useLocale, useT } from "../../../lib/i18n/LocaleContext";
+import { reviewText, reviewDateLabel, languageName } from "../../../lib/i18n/reviews";
+import ReviewsNote from "../../common/ReviewsNote";
 const DEFAULT_COUNT = 27;
 const LONG_REVIEW_CHARS = 280;
 
@@ -321,7 +323,10 @@ const SliderFooter = styled.div`
 
 export function ReviewCard({ review }: { review: GoogleReview }) {
   const tt = useT();
-  const isLong = review.text.length > LONG_REVIEW_CHARS;
+  const locale = useLocale();
+  const text = reviewText(locale, review.id, review.text);
+  const dateLabel = reviewDateLabel(locale, review.date, review.date_label);
+  const isLong = text.length > LONG_REVIEW_CHARS;
   const [expanded, setExpanded] = useState(false);
   const initial = Array.from(review.reviewer_name.trim())[0] || "G";
 
@@ -334,7 +339,7 @@ export function ReviewCard({ review }: { review: GoogleReview }) {
           <Name>{review.reviewer_name}</Name>
           <VerifiedBadge>
             <CardGoogle>
-              <GoogleG>{tt("TestimonialsSection.g")}</GoogleG>{tt("TestimonialsSection.google-review")}{review.date_label ? tt("TestimonialsSection.text", { date_label: review.date_label }) : ""}
+              <GoogleG>{tt("TestimonialsSection.g")}</GoogleG>{tt("TestimonialsSection.google-review")}{dateLabel ? tt("TestimonialsSection.text", { date_label: dateLabel }) : ""}
             </CardGoogle>
           </VerifiedBadge>
         </ClientMeta>
@@ -344,7 +349,7 @@ export function ReviewCard({ review }: { review: GoogleReview }) {
         <StarRating count={review.rating} />
       </Stars>
 
-      <Review data-clamped={isLong && !expanded ? "true" : "false"}>{review.text}</Review>
+      <Review data-clamped={isLong && !expanded ? "true" : "false"}>{text}</Review>
 
       {isLong ? (
         <ReadMore type="button" aria-expanded={expanded} onClick={() => setExpanded((v) => !v)}>
@@ -353,7 +358,7 @@ export function ReviewCard({ review }: { review: GoogleReview }) {
       ) : null}
 
       {review.translated_from ? (
-        <TranslatedNote>{tt("TestimonialsSection.translated-from")}{" "}{review.translated_from}</TranslatedNote>
+        <TranslatedNote>{tt("TestimonialsSection.translated-from")}{" "}{languageName(locale, review.translated_from)}</TranslatedNote>
       ) : null}
     </Card>
   );
@@ -432,6 +437,7 @@ export default function TestimonialsSection({
           <Title>{tt("TestimonialsSection.trusted-by-travellers-visiting-cape")}</Title>
           <Description>
             {tt("TestimonialsSection.real-feedback-from-clients-who")}</Description>
+          <ReviewsNote />
         </Header>
 
         <TopBar>

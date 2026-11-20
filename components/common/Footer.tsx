@@ -4,7 +4,7 @@ import styled from "styled-components";
 import Link from "next/link";
 import Container from "./Container";
 import GoogleRatingBadge from "./GoogleRatingBadge";
-import { googleSummaryText } from "../../lib/googleReviews";
+import { googleSummary } from "../../lib/googleReviews";
 import { trackWhatsAppClick } from "../../lib/tracking";
 import { buildWhatsAppLink, buildGeneralWhatsAppMessage } from "../../lib/whatsapp";
 import { buildLocalizedGeneralMessage } from "../../lib/whatsapp";
@@ -353,7 +353,7 @@ export default function Footer() {
         ) : null}
 
         <TrustRow>
-          <TrustBadge>⭐ {googleSummaryText}</TrustBadge>
+          <TrustBadge>⭐ {googleSummary(t)}</TrustBadge>
           <TrustBadge>✔ {t("footer.trustLicensed")}</TrustBadge>
           <TrustBadge>✔ {t("footer.trustPdp")}</TrustBadge>
           <TrustBadge>✔ {t("footer.trustPrivate")}</TrustBadge>

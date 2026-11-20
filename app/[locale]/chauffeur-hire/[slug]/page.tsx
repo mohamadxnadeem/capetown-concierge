@@ -13,6 +13,9 @@ import {
   getVehicleMetaTitle,
 } from "../../../../components/sections/chauffeur-services/utils";
 
+import { formatNumber } from "../../../../lib/i18n/numbers";
+import type { Locale } from "../../../../lib/i18n/config";
+import { getT } from "../../../../lib/i18n/messages";
 import { serverT, setRequestLocale } from "../../../../lib/i18n/server";
 import { enT } from "../../../../lib/i18n/messages";
 import type { TFunction } from "../../../../lib/i18n/messages";
@@ -84,7 +87,16 @@ function formatPrice(price?: string | number, tt: TFunction = enT) {
   if (price === undefined || price === null || price === "") return "";
   const num = Number(String(price).replace(/[^0-9.]/g, ""));
   if (isNaN(num) || num === 0) return "";
-  return tt("slug.from-r-per-day-2", { toLocaleString: Math.round(num).toLocaleString() });
+  return tt("slug.from-r-per-day-2", { toLocaleString: formatNumber(tt.locale, Math.round(num)) });
+}
+
+/** Overlays the translated vehicle copy (messages/<locale>/vehicles.json). English falls back. */
+function withVehicleContent(car: Car, locale: Locale, englishSlug?: string): Car {
+  const entry = getContent(locale, "vehicles", (englishSlug || car.slug || "").toLowerCase());
+  const out = overlayContent(car, entry);
+  if (entry?.meta?.title?.trim()) out.meta_title = entry.meta.title;
+  if (entry?.meta?.description?.trim()) out.meta_description = entry.meta.description;
+  return out;
 }
 
 function getNumericPriceValue(
@@ -161,24 +173,24 @@ function getPrimaryImage(car: Car) {
 // Old: generic "Luxury [name] chauffeur service in Cape Town for VIP transport"
 // New: Uses the exact SEO keyword — stronger ranking signal for Google Images
 // ─────────────────────────────────────────────
-function getVehicleImageAlt(car: Car) {
-  return getSeoKeyword(car);
+function getVehicleImageAlt(car: Car, tt: TFunction = enT) {
+  return getSeoKeyword(car, tt);
 }
 
 function getFormattedDailyRate(car: Car, tt: TFunction) {
   return formatPrice(car.price, tt);
 }
 
-function getPageTitle(car: Car) {
-  return getVehicleMetaTitle(car);
+function getPageTitle(car: Car, tt: TFunction = enT) {
+  return getVehicleMetaTitle(car, tt);
 }
 
-function getPageDescription(car: Car) {
-  return getVehicleMetaDescription(car);
+function getPageDescription(car: Car, tt: TFunction = enT) {
+  return getVehicleMetaDescription(car, tt);
 }
 
 function getShortVehicleDescription(car: Car, tt: TFunction) {
-  const keyword = getSeoKeyword(car);
+  const keyword = getSeoKeyword(car, tt);
   const rate = getFormattedDailyRate(car, tt);
   return (
     car.short_description ||
@@ -193,7 +205,9 @@ function getShortVehicleDescription(car: Car, tt: TFunction) {
 function mapRelatedVehicles(cars: Car[], currentSlug: string, tt: TFunction): RelatedVehicle[] {
   return cars
     .filter((car) => car.slug && car.slug.toLowerCase() !== currentSlug.toLowerCase())
-    .map((car) => ({
+    .map((rawCar) => {
+      const car = withVehicleContent(rawCar, tt.locale);
+      return {
       title: car.title || "Vehicle",
       image: getPrimaryImage(car),
       description:
@@ -204,7 +218,8 @@ function mapRelatedVehicles(cars: Car[], currentSlug: string, tt: TFunction): Re
       seats: car.number_of_seats,
       price: formatPrice(car.price, tt),
       href: vehicleHref(car.slug),
-    }));
+    };
+    });
 }
 
 // ─────────────────────────────────────────────
@@ -236,9 +251,11 @@ export async function generateStaticParams() {
 // METADATA
 // ─────────────────────────────────────────────
 async function baseGenerateMetadata({ params }: PageProps): Promise<Metadata> {
-  const { slug } = await params;
+  const { slug, locale: localeParam } = await params;
+  const tt = getT(localeFromParam(localeParam));
   const vehicles = normalizeCars(await getAllVehicles());
-  const car = getVehicleBySlug(vehicles, slug);
+  const carRaw = getVehicleBySlug(vehicles, slug);
+  const car = carRaw ? withVehicleContent(carRaw, tt.locale) : carRaw;
 
   if (!car) {
     const ogImage = `${SITE_URL}/images/og-cape-town-concierge.jpg`;
@@ -255,11 +272,11 @@ async function baseGenerateMetadata({ params }: PageProps): Promise<Metadata> {
     };
   }
 
-  const title = getPageTitle(car);
-  const description = getPageDescription(car);
+  const title = getPageTitle(car, tt);
+  const description = getPageDescription(car, tt);
   const image = getPrimaryImage(car);
   const canonicalUrl = `${SITE_URL}/chauffeur-hire/${slug.toLowerCase()}`;
-  const keyword = getSeoKeyword(car);
+  const keyword = getSeoKeyword(car, tt);
   const ogImage = `${SITE_URL}/images/og-cape-town-concierge.jpg`;
 
   return {
@@ -297,7 +314,7 @@ async function baseGenerateMetadata({ params }: PageProps): Promise<Metadata> {
         {
           url: image || ogImage,
           alt: image
-            ? getVehicleImageAlt(car)
+            ? getVehicleImageAlt(car, tt)
             : "Cape Town Concierge | Luxury Chauffeur Service",
         },
       ],
@@ -332,16 +349,16 @@ export default async function ChauffeurServiceDetailPage({ params }: PageProps) 
   const carBase = getVehicleBySlug(vehicles, slug);
 
   if (!carBase) notFound();
-  const car = overlayContent(carBase, getContent(locale, "vehicles", slug.toLowerCase()));
+  const car = withVehicleContent(carBase, locale, slug.toLowerCase());
 
   const relatedVehicles = mapRelatedVehicles(vehicles, slug, tt);
   const image = getPrimaryImage(car);
   const ogImage = `${SITE_URL}/images/og-cape-town-concierge.jpg`;
   const schemaImage = image || ogImage;
   const canonicalUrl = `${SITE_URL}${localizedPath(locale, "", { kind: "vehicles", slug: slug.toLowerCase() })}`;
-  const pageTitle = getPageTitle(car);
-  const pageDescription = getPageDescription(car);
-  const keyword = getSeoKeyword(car);
+  const pageTitle = getPageTitle(car, tt);
+  const pageDescription = getPageDescription(car, tt);
+  const keyword = getSeoKeyword(car, tt);
   const numericPrice = car.price;
   const vehicleFaqs = buildFaqs(car, tt);
 

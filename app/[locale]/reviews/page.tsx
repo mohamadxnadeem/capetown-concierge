@@ -4,6 +4,7 @@ import { Band, Lead, ReviewGrid, TextLink } from "../../../components/sections/h
 import {
   GOOGLE_REVIEWS_URL,
   allEligibleReviews,
+  googleSummary,
   googleSummaryText,
 } from "../../../lib/googleReviews";
 import { brand } from "../../../lib/brand";
@@ -50,7 +51,7 @@ export default async function ReviewsPage({ params }: { params: Promise<{ locale
         <h1 style={{ margin: "0 0 12px", fontSize: "clamp(2.2rem, 6vw, 3.4rem)", lineHeight: 1.08 }}>
           {tt("reviews.client-reviews")}</h1>
         <Lead>
-          {googleSummaryText}.{" "}
+          {googleSummary(tt)}.{" "}
           <TextLink href={tt.path(GOOGLE_REVIEWS_URL)} target="_blank" rel="noopener noreferrer">
             {tt("reviews.read-all-reviews-on-google")}</TextLink>
         </Lead>

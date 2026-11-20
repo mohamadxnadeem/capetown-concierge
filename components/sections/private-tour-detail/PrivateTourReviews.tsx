@@ -5,11 +5,13 @@ import {
   GOOGLE_REVIEWS_URL,
   googleRatingLabel,
   googleReviewCount,
-  googleSummaryText,
+  googleSummary,
   type GoogleReview,
 } from "../../../lib/googleReviews";
 
-import { useT } from "../../../lib/i18n/LocaleContext";
+import { useLocale, useT } from "../../../lib/i18n/LocaleContext";
+import { reviewText, reviewDateLabel, languageName } from "../../../lib/i18n/reviews";
+import ReviewsNote from "../../common/ReviewsNote";
 const SectionHeader = styled.div`
   max-width: 760px;
   margin-bottom: 28px;
@@ -144,6 +146,7 @@ type Props = {
 
 export default function PrivateTourReviews({ reviews }: Props) {
   const tt = useT();
+  const locale = useLocale();
   return (
     <>
       <SectionHeader>
@@ -153,20 +156,21 @@ export default function PrivateTourReviews({ reviews }: Props) {
           {tt("PrivateTourReviews.real-clients-real-experiences-our")}</SectionText>
       </SectionHeader>
 
-      <VerifiedLine>{googleSummaryText}</VerifiedLine>
+      <VerifiedLine>{googleSummary(tt)}</VerifiedLine>
+      <ReviewsNote />
 
       <ReviewsGrid>
         {reviews.map((review) => (
           <ReviewCard key={review.id}>
             <QuoteMark>"</QuoteMark>
-            <ReviewQuote>{review.text}</ReviewQuote>
+            <ReviewQuote>{reviewText(locale, review.id, review.text)}</ReviewQuote>
             <ReviewFooter>
               <ReviewName>{review.reviewer_name}</ReviewName>
               <ReviewSubtitle>
-                {tt("PrivateTourReviews.google-review")}{review.date_label ? tt("PrivateTourReviews.text", { date_label: review.date_label }) : ""}
+                {tt("PrivateTourReviews.google-review")}{reviewDateLabel(locale, review.date, review.date_label) ? tt("PrivateTourReviews.text", { date_label: reviewDateLabel(locale, review.date, review.date_label) || "" }) : ""}
               </ReviewSubtitle>
               {review.translated_from ? (
-                <ReviewSubtitle>{tt("PrivateTourReviews.translated-from")}{" "}{review.translated_from}</ReviewSubtitle>
+                <ReviewSubtitle>{tt("PrivateTourReviews.translated-from")}{" "}{languageName(locale, review.translated_from)}</ReviewSubtitle>
               ) : null}
             </ReviewFooter>
           </ReviewCard>

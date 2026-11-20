@@ -3,7 +3,7 @@
 import styled from "styled-components";
 import Money from "../../common/Money";
 
-import { useT } from "../../../lib/i18n/LocaleContext";
+import { useT, useTl } from "../../../lib/i18n/LocaleContext";
 type Props = {
   title: string;
   vehicleType?: string;
@@ -66,6 +66,7 @@ export default function ChauffeurQuickDetails({
   priceUsd,
 }: Props) {
   const tt = useT();
+  const tl = useTl();
   return (
     <Card>
       <CardInner>
@@ -80,7 +81,7 @@ export default function ChauffeurQuickDetails({
           {vehicleType ? (
             <QuickStat>
               <QuickStatLabel>{tt("ChauffeurQuickDetails.vehicle-type")}</QuickStatLabel>
-              <QuickStatValue>{vehicleType}</QuickStatValue>
+              <QuickStatValue>{tl(vehicleType)}</QuickStatValue>
             </QuickStat>
           ) : null}
 

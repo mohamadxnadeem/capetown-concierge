@@ -1,6 +1,7 @@
 "use client";
 
 import styled from "styled-components";
+import { useTl } from "../../lib/i18n/LocaleContext";
 import Container from "../common/Container";
 
 type TrustItem = {
@@ -120,13 +121,14 @@ export default function WhyChooseUs({
   description = "We combine professional service, luxury presentation, and local insight to create seamless private travel experiences in Cape Town.",
   items,
 }: WhyChooseUsProps) {
+  const tl = useTl();
   return (
     <Wrapper>
       <Container>
         <Intro>
-          <Eyebrow>{eyebrow}</Eyebrow>
-          <Title>{title}</Title>
-          <Description>{description}</Description>
+          <Eyebrow>{tl(eyebrow)}</Eyebrow>
+          <Title>{tl(title)}</Title>
+          <Description>{tl(description)}</Description>
         </Intro>
 
         <Grid>
@@ -135,8 +137,8 @@ export default function WhyChooseUs({
               <IconWrap>
                 <IconMark />
               </IconWrap>
-              <CardTitle>{item.title}</CardTitle>
-              <CardText>{item.description}</CardText>
+              <CardTitle>{tl(item.title)}</CardTitle>
+              <CardText>{tl(item.description)}</CardText>
             </Card>
           ))}
         </Grid>
