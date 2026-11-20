@@ -4,7 +4,8 @@ import styled from "styled-components";
 import SmartImage from "../../common/SmartImage";
 import { ExperienceStop } from "./types";
 
-import { useT } from "../../../lib/i18n/LocaleContext";
+import { useT, useTl } from "../../../lib/i18n/LocaleContext";
+import type { TFunction } from "../../../lib/i18n/messages";
 const SectionHeader = styled.div`
   max-width: 760px;
   margin-bottom: 28px;
@@ -171,6 +172,7 @@ type Props = {
 
 export default function PrivateTourItinerary({ title, location, stops, sectionTitle, sectionSubheading }: Props) {
   const tt = useT();
+  const tl = useTl();
   if (!stops.length) return null;
 
   return (
@@ -208,7 +210,7 @@ export default function PrivateTourItinerary({ title, location, stops, sectionTi
 
                   <div>
                     <StopEyebrow>
-                      {stop.stop_type ? tt("PrivateTourItinerary.stop", { stop_type: stop.stop_type }) : tt("PrivateTourItinerary.tour-stop")}
+                      {stop.stop_type ? tt("PrivateTourItinerary.stop", { stop_type: stopTypeLabel(tt, stop.stop_type) }) : tt("PrivateTourItinerary.tour-stop")}
                     </StopEyebrow>
                     <StopTitle>
                       {stop.title}
@@ -221,9 +223,9 @@ export default function PrivateTourItinerary({ title, location, stops, sectionTi
 
                     <StopMetaRow>
                       {stop.estimated_time ? (
-                        <StopMeta>{stop.estimated_time}</StopMeta>
+                        <StopMeta>{tl(stop.estimated_time)}</StopMeta>
                       ) : null}
-                      {stop.highlight ? <StopMeta>{stop.highlight}</StopMeta> : null}
+                      {stop.highlight ? <StopMeta>{tl(stop.highlight)}</StopMeta> : null}
                     </StopMetaRow>
                   </div>
                 </StopTop>
@@ -234,4 +236,9 @@ export default function PrivateTourItinerary({ title, location, stops, sectionTi
       </TimelineWrap>
     </>
   );
+}
+function stopTypeLabel(tt: TFunction, type: string): string {
+  const key = `tour.stop-type.${type}`;
+  const v = tt(key);
+  return v === key ? type : v;
 }

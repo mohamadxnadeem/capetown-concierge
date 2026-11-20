@@ -187,7 +187,7 @@ export default function PrivateTourDetailView({
         title={tt("PrivateTourDetailView.plan-your-cape-town-trip")}
         text="More ideas and guides to help you plan private days out in Cape Town."
         links={[
-          ...(seo ? [{ href: seo.guideHref, label: `Read our guide: ${seo.guideLabel}` }] : []),
+          ...(seo ? [{ href: seo.guideHref, label: tt("tour.read-guide", { label: seo.guideLabel }) }] : []),
           { href: "/tours", label: "Compare all our best private tours in Cape Town" },
           { href: "/chauffeur-hire", label: "Hire a private chauffeur in Cape Town by the day" },
         ]}

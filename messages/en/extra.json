@@ -20,5 +20,10 @@
   "vehicle.type.suv": "suv",
   "vehicle.type.van": "van",
   "vehicle.type.vehicle": "vehicle",
-  "currency.aria": "Currency: {name}. Click to change."
+  "currency.aria": "Currency: {name}. Click to change.",
+  "tour.stop-type.main": "main",
+  "tour.stop-type.meal": "meal",
+  "tour.stop-type.optional": "optional",
+  "tour.stop-type.pickup": "pickup",
+  "tour.read-guide": "Read our guide: {label}"
 }

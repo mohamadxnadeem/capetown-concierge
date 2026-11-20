@@ -20,5 +20,10 @@
   "vehicle.type.suv": "SUV",
   "vehicle.type.van": "فان",
   "vehicle.type.vehicle": "سيارة",
-  "currency.aria": "العملة: {name}. اضغط للتغيير."
+  "currency.aria": "العملة: {name}. اضغط للتغيير.",
+  "tour.stop-type.main": "رئيسية",
+  "tour.stop-type.meal": "وجبة",
+  "tour.stop-type.optional": "اختيارية",
+  "tour.stop-type.pickup": "استقبال",
+  "tour.read-guide": "اقرأ دليلنا: {label}"
 }

@@ -20,5 +20,10 @@
   "vehicle.type.suv": "SUV",
   "vehicle.type.van": "van",
   "vehicle.type.vehicle": "veículo",
-  "currency.aria": "Moeda: {name}. Clique para alterar."
+  "currency.aria": "Moeda: {name}. Clique para alterar.",
+  "tour.stop-type.main": "principal",
+  "tour.stop-type.meal": "refeição",
+  "tour.stop-type.optional": "opcional",
+  "tour.stop-type.pickup": "embarque",
+  "tour.read-guide": "Leia o nosso guia: {label}"
 }

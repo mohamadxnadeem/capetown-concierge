@@ -20,5 +20,10 @@
   "vehicle.type.suv": "внедорожник",
   "vehicle.type.van": "минивэн",
   "vehicle.type.vehicle": "автомобиль",
-  "currency.aria": "Валюта: {name}. Нажмите, чтобы изменить."
+  "currency.aria": "Валюта: {name}. Нажмите, чтобы изменить.",
+  "tour.stop-type.main": "основная",
+  "tour.stop-type.meal": "обед",
+  "tour.stop-type.optional": "по желанию",
+  "tour.stop-type.pickup": "встреча",
+  "tour.read-guide": "Читайте наш путеводитель: {label}"
 }

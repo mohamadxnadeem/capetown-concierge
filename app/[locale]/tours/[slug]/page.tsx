@@ -4,6 +4,7 @@ import { brand } from "../../../../lib/brand";
 import { businessRef, withInLanguage } from "../../../../lib/seo";
 import { localizeMetadata, localizedPath } from "../../../../lib/i18n/metadata";
 import { localeFromParam } from "../../../../lib/i18n/config";
+import { formatNumber } from "../../../../lib/i18n/numbers";
 import { getContent, overlayContent } from "../../../../lib/i18n/slugs";
 import PrivateTourDetailView from "../../../../components/sections/private-tour-detail/PrivateTourDetailView";
 import { getTourContent } from "../../../../lib/tourPageContent";
@@ -118,7 +119,7 @@ function toZarNum(val: string | number): number {
 function formatVehiclePrice(price?: string | number, tt: TFunction = enT) {
   if (price === undefined || price === null || price === "") return "";
   const num = toZarNum(price);
-  return num === 0 ? "" : tt("slug.from-r-per-day", { toLocaleString: num.toLocaleString() });
+  return num === 0 ? "" : tt("slug.from-r-per-day", { toLocaleString: formatNumber(tt.locale, num) });
 }
 
 function truncateText(text?: string, maxLength = 140) {
@@ -249,6 +250,7 @@ function mapRelatedTours(
   return allExperiences
     .map((item) => item.experience)
     .filter((tour) => tour.slug && tour.slug !== currentSlug)
+    .map((rawTour) => overlayContent(rawTour, getContent(tt.locale, "tours", (rawTour.slug || "").toLowerCase())))
     .map((tour) => ({
       title: tour.title || tt("slug.private-tour"),
       description:
@@ -266,7 +268,8 @@ function mapVehicles(items: CarsApiItem[], tt: TFunction): TourVehicle[] {
   return items
     .map((item) => item?.car || item)
     .filter((car) => car?.title)
-    .map((car) => {
+    .map((rawCar) => {
+      const car = overlayContent(rawCar, getContent(tt.locale, "vehicles", (rawCar.slug || "").toLowerCase()));
       const imageArray = car.cover_photos || car.images || [];
       const sortedImages = [...imageArray].sort(
         (a, b) => (a.order || 0) - (b.order || 0)
