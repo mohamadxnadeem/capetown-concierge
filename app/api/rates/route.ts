@@ -1,22 +1,37 @@
 import { NextResponse } from "next/server";
+import { CURRENCY_LIST, FALLBACK_RATES } from "../../../lib/currencies";
 
 export const runtime = "edge";
-export const revalidate = 3600;
+export const revalidate = 86400;
+
+const SOURCE = "https://open.er-api.com/v6/latest/ZAR";
+
+// Last good rates kept in memory (per server instance) in case the source fails.
+let lastGood: { rates: Record<string, number>; updated: string } | null = null;
 
 export async function GET() {
   try {
-    const res = await fetch(
-      "https://api.frankfurter.app/latest?from=ZAR&to=GBP,EUR,USD,AUD,CAD",
-      { next: { revalidate: 3600 } }
-    );
-    if (!res.ok) {
-      return NextResponse.json({ error: "upstream error" }, { status: 502 });
+    const res = await fetch(SOURCE, { next: { revalidate: 86400 } });
+    if (res.ok) {
+      const data = await res.json();
+      if (data?.result === "success" && data.rates) {
+        const rates: Record<string, number> = { ZAR: 1 };
+        for (const code of CURRENCY_LIST) {
+          const r = data.rates[code];
+          if (typeof r === "number" && r > 0) rates[code] = r;
+        }
+        if (Object.keys(rates).length > 3) {
+          lastGood = { rates, updated: data.time_last_update_utc ?? "" };
+        }
+      }
     }
-    const data = await res.json();
-    return NextResponse.json(data, {
-      headers: { "Cache-Control": "public, s-maxage=3600, stale-while-revalidate=86400" },
-    });
   } catch {
-    return NextResponse.json({ error: "fetch failed" }, { status: 502 });
+    // fall through to cached or fallback rates
   }
+  const body = lastGood
+    ? { base: "ZAR", source: "live", ...lastGood }
+    : { base: "ZAR", source: "fallback", rates: FALLBACK_RATES, updated: "" };
+  return NextResponse.json(body, {
+    headers: { "Cache-Control": "public, s-maxage=86400, stale-while-revalidate=604800" },
+  });
 }

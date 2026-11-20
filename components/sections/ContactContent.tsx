@@ -3,11 +3,12 @@
 import { useState } from "react";
 import styled from "styled-components";
 import { trackWhatsAppClick } from "../../lib/tracking";
-import { buildWhatsAppLink, buildGeneralWhatsAppMessage } from "../../lib/whatsapp";
+import { buildLocaleWhatsAppLink } from "../../lib/whatsapp";
+import { useLocale, useT } from "../i18n/LocaleProvider";
+import TelegramButton from "../common/TelegramButton";
 import { brand } from "../../lib/brand";
 import EnquiryForm from "./EnquiryForm";
 
-const WHATSAPP = "https://wa.me/27636746131?text=Hi%2C+I%27d+like+to+book+a+luxury+chauffeur+or+private+tour+in+Cape+Town.+Please+assist.";
 
 const Wrapper = styled.main`
   min-height: calc(100vh - 82px);
@@ -110,6 +111,9 @@ const Detail = styled.p`
 `;
 
 export default function ContactContent() {
+  const locale = useLocale();
+  const t = useT();
+  const WHATSAPP = buildLocaleWhatsAppLink(locale);
   return (
     <Wrapper>
       <Card>
@@ -128,8 +132,11 @@ export default function ContactContent() {
           rel="noopener noreferrer"
           onClick={() => trackWhatsAppClick({ source: "contact_page", label: "Chat on WhatsApp" })}
         >
-          💬&nbsp; Chat on WhatsApp
+          💬&nbsp; {t("header.chatWhatsapp")}
         </WhatsAppButton>
+        <div style={{ marginTop: "12px" }}>
+          <TelegramButton source="contact_telegram" />
+        </div>
 
         <ResponseBadge>⚡ We typically respond within 30 minutes</ResponseBadge>
 

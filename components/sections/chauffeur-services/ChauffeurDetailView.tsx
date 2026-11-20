@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import styled from "styled-components";
-import Link from "next/link";
+import Link from "../../common/LocaleLink";
 import Container from "../../common/Container";
 import { Car, RelatedVehicle } from "./types";
 import {

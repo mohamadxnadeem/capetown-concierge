@@ -1,8 +1,10 @@
 "use client";
 
-import Link from "next/link";
+import Link from "./LocaleLink";
 import styled from "styled-components";
 import { brand } from "../../lib/brand";
+import { useT } from "../i18n/LocaleProvider";
+import LanguageSwitcher from "../i18n/LanguageSwitcher";
 
 const Overlay = styled.div<{ $isOpen: boolean }>`
   position: fixed;
@@ -94,50 +96,44 @@ type SidebarProps = {
 };
 
 export default function Sidebar({ isOpen, onClose }: SidebarProps) {
+  const t = useT();
   return (
     <>
       <Overlay $isOpen={isOpen} onClick={onClose} />
       <Drawer $isOpen={isOpen}>
         <TopRow>
           <Title>{brand.name}</Title>
-          <CloseButton onClick={onClose} aria-label="Close menu">
+          <CloseButton onClick={onClose} aria-label={t("nav.closeMenu")}>
             ×
           </CloseButton>
         </TopRow>
 
         <Nav>
           <NavLink href="/" onClick={onClose}>
-            Home
-          </NavLink>
-          <NavLink href="/villas" onClick={onClose}>
-            Luxury Villas
-          </NavLink>
-          <NavLink href="/hotels" onClick={onClose}>
-            Luxury Hotels
+            {t("nav.home")}
           </NavLink>
           <NavLink href="/chauffeur-hire" onClick={onClose}>
-            Chauffeur Hire
+            {t("nav.chauffeurHire")}
           </NavLink>
           <NavLink href="/tours" onClick={onClose}>
-            Day Tours
+            {t("nav.dayTours")}
           </NavLink>
           <NavLink href="/airport-transfers-cape-town" onClick={onClose}>
-            Airport Transfers
+            {t("nav.airportTransfers")}
           </NavLink>
           <NavLink href="/best-wine-farms-in-cape-town" onClick={onClose}>
-            Wine Farms
+            {t("nav.wineFarms")}
           </NavLink>
           <NavLink href="/best-activities-to-do-in-cape-town" onClick={onClose}>
-            Experiences
+            {t("nav.experiences")}
           </NavLink>
           <NavLink href="/7-day-cape-town-itinerary" onClick={onClose}>
-            7 Day Itinerary
+            {t("nav.itinerary")}
           </NavLink>
         </Nav>
 
-        <FooterNote>
-          Premium chauffeur services, private tours, and curated Cape Town travel.
-        </FooterNote>
+        <LanguageSwitcher />
+        <FooterNote>{t("nav.sidebarNote")}</FooterNote>
       </Drawer>
     </>
   );

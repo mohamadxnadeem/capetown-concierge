@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import Link from "../../common/LocaleLink";
 import styled from "styled-components";
 import Container from "../../common/Container";
 import Money from "../../common/Money";

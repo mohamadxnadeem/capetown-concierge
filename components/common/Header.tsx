@@ -1,22 +1,19 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
+import Link from "./LocaleLink";
 import Image from "next/image";
 import styled from "styled-components";
 import Sidebar from "./Sidebar";
 import Hamburger from "./Hamburger";
-import {
-  buildGeneralWhatsAppMessage,
-  buildWhatsAppLink,
-} from "../../lib/whatsapp";
+import { buildLocaleWhatsAppLink } from "../../lib/whatsapp";
 import { trackWhatsAppClick } from "../../lib/tracking";
 import CurrencySelector from "./CurrencySelector";
 import { brand } from "../../lib/brand";
+import { useLocale, useT } from "../i18n/LocaleProvider";
+import LanguageSwitcher from "../i18n/LanguageSwitcher";
+import TelegramButton from "./TelegramButton";
 
-const headerWhatsappLink = buildWhatsAppLink(
-  buildGeneralWhatsAppMessage("booking a private chauffeur or tour in Cape Town")
-);
 
 const Wrapper = styled.header`
   position: sticky;
@@ -134,6 +131,9 @@ const MobileWhatsApp = styled.a`
 `;
 
 export default function Header() {
+  const locale = useLocale();
+  const t = useT();
+  const headerWhatsappLink = buildLocaleWhatsAppLink(locale);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const toggleSidebar = () => {
@@ -185,13 +185,14 @@ export default function Header() {
             </Logo>
 
             <RightSide>
+              <LanguageSwitcher />
               <CurrencySelector />
 
               <MobileWhatsApp
                 href={headerWhatsappLink}
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="Chat on WhatsApp"
+                aria-label={t("header.chatWhatsapp")}
                 onClick={() =>
                   trackWhatsAppClick({
                     source: "header_mobile_whatsapp",
@@ -216,8 +217,9 @@ export default function Header() {
                   })
                 }
               >
-                Book on WhatsApp
+                {t("header.bookWhatsapp")}
               </HeaderCta>
+              <TelegramButton source="header_telegram" />
 
               <Hamburger onClick={toggleSidebar} />
             </RightSide>
