@@ -3,6 +3,7 @@
 import { useState } from "react";
 import styled from "styled-components";
 import EnquiryForm from "./EnquiryForm";
+import { useT } from "../i18n/LocaleProvider";
 
 const Wrap = styled.section`
   padding: 40px 0 56px;
@@ -51,6 +52,7 @@ const FormWrap = styled.div<{ $open: boolean }>`
 `;
 
 export default function HomepageEnquiryCollapsible() {
+  const t = useT();
   const [open, setOpen] = useState(false);
 
   return (
@@ -61,7 +63,7 @@ export default function HomepageEnquiryCollapsible() {
           aria-expanded={open}
           type="button"
         >
-          <span>Prefer email? Send an enquiry</span>
+          <span>{t("form.toggle")}</span>
           <Arrow $open={open}>▼</Arrow>
         </ToggleButton>
 

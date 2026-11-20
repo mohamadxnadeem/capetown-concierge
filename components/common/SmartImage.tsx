@@ -77,7 +77,7 @@ const Sheen = styled.div<{ $visible: boolean }>`
     content: "";
     position: absolute;
     top: -10%;
-    left: 0;
+    inset-inline-start: 0;
     width: 55%;
     height: 120%;
     transform: translateX(-140%) skewX(-12deg);

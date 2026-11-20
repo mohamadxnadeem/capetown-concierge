@@ -122,7 +122,7 @@ const Swatch = styled.span<{ $bg: string; $fg?: string }>`
   height: 14px;
   border-radius: 4px;
   background: ${({ $bg }) => $bg};
-  margin-right: 6px;
+  margin-inline-end: 6px;
   vertical-align: middle;
   border: 1px solid ${({ theme }) => theme.colors.border};
 `;

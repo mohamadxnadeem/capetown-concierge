@@ -166,6 +166,7 @@ const SeeAll = styled(Link)`
 `;
 
 const Controls = styled.div`
+  direction: ltr; /* arrows keep physical left/right so they match the scroll direction */
   display: flex;
   gap: 10px;
 `;

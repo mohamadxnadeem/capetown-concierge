@@ -28,6 +28,10 @@ const GlobalStyles = createGlobalStyle`
     position: relative;
   }
 
+  html[dir="rtl"] body {
+    font-family: var(--font-arabic), Arial, Helvetica, sans-serif;
+  }
+
   a {
     color: inherit;
     text-decoration: none;

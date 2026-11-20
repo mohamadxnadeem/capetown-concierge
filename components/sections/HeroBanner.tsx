@@ -1,7 +1,8 @@
 "use client";
 
-import Link from "next/link";
+import Link from "../common/LocaleLink";
 import styled from "styled-components";
+import { useT } from "../i18n/LocaleProvider";
 import Button from "../common/Button";
 import SmartImage from "../common/SmartImage";
 import RotatingImage from "../common/RotatingImage";
@@ -51,7 +52,7 @@ const Content = styled.div`
   position: absolute;
   z-index: 2;
   bottom: 0;
-  left: 0;
+  inset-inline-start: 0;
   width: 100%;
   padding: 40px 20px;
 
@@ -129,10 +130,10 @@ export default function HeroBanner({
   eyebrow = "Luxury Travel in Cape Town",
   title,
   description,
-  primaryCtaLabel = "Book Now",
+  primaryCtaLabel: primaryCtaLabelProp,
   primaryCtaHref = "/chauffeur-hire",
   primaryCtaOnClick,
-  secondaryCtaLabel = "Explore Services",
+  secondaryCtaLabel: secondaryCtaLabelProp,
   secondaryCtaHref = "/chauffeur-hire",
   secondaryCtaOnClick,
   image,
@@ -140,6 +141,9 @@ export default function HeroBanner({
   imageAlt = "Luxury chauffeur fleet in Cape Town including premium private transport vehicles",
   imageAlts,
 }: HeroBannerProps) {
+  const t = useT();
+  const primaryCtaLabel = primaryCtaLabelProp ?? t("hero.bookNow");
+  const secondaryCtaLabel = secondaryCtaLabelProp ?? t("hero.exploreServices");
   const handlePrimaryClick = makeClickHandler(primaryCtaHref, primaryCtaLabel, primaryCtaOnClick);
   const handleSecondaryClick = makeClickHandler(secondaryCtaHref, secondaryCtaLabel, secondaryCtaOnClick);
 

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
+import Link from "../../common/LocaleLink";
 import styled from "styled-components";
 
 const Section = styled.section`
@@ -104,7 +104,7 @@ const ExpandButton = styled.button`
   justify-content: space-between;
   gap: 16px;
   cursor: pointer;
-  text-align: left;
+  text-align: start;
 
   &:hover {
     background: rgba(11, 91, 51, 0.03);

@@ -78,7 +78,7 @@ const IncludeCard = styled.button<{ $expanded: boolean }>`
     cursor: default;
     flex-direction: row;
     align-items: flex-start;
-    text-align: left;
+    text-align: start;
     gap: 10px;
     padding: 14px;
     transform: none;

@@ -84,6 +84,7 @@ const CarouselWrap = styled.div`
 `;
 
 const Controls = styled.div`
+  direction: ltr; /* arrows keep physical left/right so they match the scroll direction */
   display: flex;
   justify-content: flex-end;
   gap: 10px;
@@ -294,12 +295,13 @@ export default function PrivateTourVehicles({ items, tourTitle, title }: Props) 
       if (!slider) return;
 
       const maxScrollLeft = slider.scrollWidth - slider.clientWidth;
-      const nextPosition = slider.scrollLeft + slider.clientWidth * 0.85;
+      const sign = getComputedStyle(slider).direction === "rtl" ? -1 : 1; // scrollLeft is negative in RTL
+      const nextPosition = Math.abs(slider.scrollLeft) + slider.clientWidth * 0.85;
 
       if (nextPosition >= maxScrollLeft - 10) {
         slider.scrollTo({ left: 0, behavior: "smooth" });
       } else {
-        slider.scrollBy({ left: slider.clientWidth * 0.85, behavior: "smooth" });
+        slider.scrollBy({ left: sign * slider.clientWidth * 0.85, behavior: "smooth" });
       }
     }, 4500);
 

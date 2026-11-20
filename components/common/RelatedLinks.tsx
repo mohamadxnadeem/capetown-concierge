@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import Link from "./LocaleLink";
 import styled from "styled-components";
 import Container from "./Container";
 
@@ -22,7 +22,7 @@ const Text = styled.p`
 
 const List = styled.ul`
   margin: 0;
-  padding-left: 18px;
+  padding-inline-start: 18px;
   display: grid;
   gap: 8px;
 

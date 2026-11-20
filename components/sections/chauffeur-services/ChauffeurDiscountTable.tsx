@@ -49,7 +49,7 @@ const Table = styled.table`
 `;
 
 const Th = styled.th`
-  text-align: left;
+  text-align: start;
   padding: 14px 12px;
   color: ${({ theme }) => theme.colors.heading};
   font-size: 0.9rem;
