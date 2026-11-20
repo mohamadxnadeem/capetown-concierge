@@ -5,6 +5,7 @@ import Button from "../../common/Button";
 import { trackWhatsAppClick } from "../../../lib/tracking";
 import { Anchor, Container, whatsappLink } from "./shared";
 
+import { useT } from "../../../lib/i18n/LocaleContext";
 const FinalCta = styled.section`
   padding: 84px 0;
   background: linear-gradient(135deg, ${({ theme }) => theme.colors.primary} 0%, ${({ theme }) => theme.colors.primaryDark} 100%);
@@ -31,16 +32,14 @@ const FinalCtaText = styled.p`
 `;
 
 export default function ActivitiesFinalCta() {
+  const tt = useT();
   return (
     <FinalCta>
       <Container>
         <FinalCtaInner>
-          <FinalCtaTitle>Want the Best of Cape Town Planned for You?</FinalCtaTitle>
+          <FinalCtaTitle>{tt("ActivitiesFinalCta.want-the-best-of-cape")}</FinalCtaTitle>
           <FinalCtaText>
-            Message us on WhatsApp and we can help you build a private Cape Town
-            itinerary with the right activities, the right pacing, and the right
-            chauffeur-driven experience for your stay.
-          </FinalCtaText>
+            {tt("ActivitiesFinalCta.message-us-on-whatsapp-and")}</FinalCtaText>
 
           <Anchor
             href={whatsappLink}
@@ -53,7 +52,7 @@ export default function ActivitiesFinalCta() {
               })
             }
           >
-            <Button as="span">Start Planning on WhatsApp</Button>
+            <Button as="span">{tt("ActivitiesFinalCta.start-planning-on-whatsapp")}</Button>
           </Anchor>
         </FinalCtaInner>
       </Container>

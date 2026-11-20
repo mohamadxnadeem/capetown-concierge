@@ -7,6 +7,7 @@ import { buildWhatsAppLink, buildGeneralWhatsAppMessage } from "../../lib/whatsa
 import { brand } from "../../lib/brand";
 import EnquiryForm from "./EnquiryForm";
 
+import { useT } from "../../lib/i18n/LocaleContext";
 const WHATSAPP = "https://wa.me/27636746131?text=Hi%2C+I%27d+like+to+book+a+luxury+chauffeur+or+private+tour+in+Cape+Town.+Please+assist.";
 
 const Wrapper = styled.main`
@@ -110,17 +111,14 @@ const Detail = styled.p`
 `;
 
 export default function ContactContent() {
+  const tt = useT();
   return (
     <Wrapper>
       <Card>
         <Eyebrow>{brand.name}</Eyebrow>
-        <Heading>Get in Touch</Heading>
+        <Heading>{tt("ContactContent.get-in-touch")}</Heading>
         <Body>
-          The fastest way to book a chauffeur service, airport transfer, or
-          private tour in Cape Town is via WhatsApp. We typically respond within
-          30 minutes and can confirm availability and pricing on the same
-          message.
-        </Body>
+          {tt("ContactContent.the-fastest-way-to-book")}</Body>
 
         <WhatsAppButton
           href={WHATSAPP}
@@ -128,16 +126,15 @@ export default function ContactContent() {
           rel="noopener noreferrer"
           onClick={() => trackWhatsAppClick({ source: "contact_page", label: "Chat on WhatsApp" })}
         >
-          💬&nbsp; Chat on WhatsApp
-        </WhatsAppButton>
+          {tt("ContactContent.chat-on-whatsapp")}</WhatsAppButton>
 
-        <ResponseBadge>⚡ We typically respond within 30 minutes</ResponseBadge>
+        <ResponseBadge>{tt("ContactContent.we-typically-respond-within-30")}</ResponseBadge>
 
         <Divider />
 
         <Detail>
-          You can also reach us by email at{" "}
-          <a href={`mailto:${brand.contactEmail}`}>
+          {tt("ContactContent.you-can-also-reach-us")}{" "}
+          <a href={tt.path(`mailto:${brand.contactEmail}`)}>
             {brand.contactEmail}
           </a>
         </Detail>

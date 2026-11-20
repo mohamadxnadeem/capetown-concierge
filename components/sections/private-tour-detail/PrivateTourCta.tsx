@@ -4,6 +4,7 @@ import styled from "styled-components";
 import Button from "../../common/Button";
 import { trackWhatsAppClick } from "../../../lib/tracking";
 
+import { useT } from "../../../lib/i18n/LocaleContext";
 const CTASection = styled.section`
   padding: 84px 0;
   background: linear-gradient(135deg, ${({ theme }) => theme.colors.primary} 0%, ${({ theme }) => theme.colors.primaryDark} 100%);
@@ -57,12 +58,13 @@ type Props = {
 };
 
 export default function PrivateTourCta({ whatsappLink, title, body }: Props) {
+  const tt = useT();
   return (
     <CTASection>
       <CTABox>
-        <CTATitle>{title || "Ready to book? Here's how it works"}</CTATitle>
+        <CTATitle>{title || tt("PrivateTourCta.ready-to-book-here-s")}</CTATitle>
         <CTAText>
-          {body || "Send us a WhatsApp with your travel dates and group size. We'll confirm availability and send you a price within 30 minutes. No deposit is required to hold a date while you decide — just message us and we'll take it from there."}
+          {body || tt("PrivateTourCta.send-us-a-whatsapp-with")}
         </CTAText>
 
         <CTAButtons>
@@ -77,7 +79,7 @@ export default function PrivateTourCta({ whatsappLink, title, body }: Props) {
               })
             }
           >
-            <Button as="span">Reserve My Date on WhatsApp</Button>
+            <Button as="span">{tt("PrivateTourCta.reserve-my-date-on-whatsapp")}</Button>
           </CTAAnchor>
 
           <CTAAnchor
@@ -92,8 +94,7 @@ export default function PrivateTourCta({ whatsappLink, title, body }: Props) {
             }
           >
             <Button as="span" $variant="secondary">
-              Get a Price for My Group
-            </Button>
+              {tt("PrivateTourCta.get-a-price-for-my")}</Button>
           </CTAAnchor>
         </CTAButtons>
       </CTABox>

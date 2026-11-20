@@ -7,6 +7,8 @@ import {
 } from "./utils";
 import Money from "../../common/Money";
 
+import { useT } from "../../../lib/i18n/LocaleContext";
+import type { TFunction } from "../../../lib/i18n/messages";
 type Props = {
   baseRate: number;
 };
@@ -69,38 +71,37 @@ const Strong = styled.span`
   font-weight: 700;
 `;
 
-const bands = [
+const bands = (tt: TFunction) => ([
   { label: "1 day", days: 1 },
   { label: "2 days", days: 2 },
   { label: "3 days", days: 3 },
   { label: "4 days", days: 4 },
-  { label: "5+ days", days: 5 },
-];
+  { label: tt("ChauffeurDiscountTable.5-days"), days: 5 },
+]);
 
 export default function ChauffeurDiscountTable({ baseRate }: Props) {
+  const tt = useT();
   if (!baseRate) return null;
 
   return (
     <Card>
       <CardInner>
-        <Title>Multi-Day Savings</Title>
+        <Title>{tt("ChauffeurDiscountTable.multi-day-savings")}</Title>
         <Text>
-          The longer you book, the lower your daily rate becomes. Book 5 days or more
-          and enjoy up to 20% off the standard daily rate.
-        </Text>
+          {tt("ChauffeurDiscountTable.the-longer-you-book-the")}</Text>
 
         <TableWrap>
           <Table>
             <thead>
               <tr>
-                <Th>Booking Length</Th>
-                <Th>Standard Rate</Th>
-                <Th>Discount</Th>
-                <Th>Your Daily Rate</Th>
+                <Th>{tt("ChauffeurDiscountTable.booking-length")}</Th>
+                <Th>{tt("ChauffeurDiscountTable.standard-rate")}</Th>
+                <Th>{tt("ChauffeurDiscountTable.discount")}</Th>
+                <Th>{tt("ChauffeurDiscountTable.your-daily-rate")}</Th>
               </tr>
             </thead>
             <tbody>
-              {bands.map((band) => {
+              {bands(tt).map((band) => {
                 const discount = getDiscountPercent(band.days);
                 const discountedRate = calculateDiscountedRate(baseRate, discount);
 
@@ -110,7 +111,7 @@ export default function ChauffeurDiscountTable({ baseRate }: Props) {
                       <Strong>{band.label}</Strong>
                     </Td>
                     <Td><Money usd={baseRate} prefix="" suffix="" /></Td>
-                    <Td>{discount}% off</Td>
+                    <Td>{discount}{tt("ChauffeurDiscountTable.off")}</Td>
                     <Td>
                       <Strong><Money usd={discountedRate} prefix="" suffix="" /></Strong>
                     </Td>

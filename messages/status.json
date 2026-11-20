@@ -1,0 +1,120 @@
+{
+  "_doc": "Per page and language: draft or reviewed. Anything missing is a draft. Only reviewed pages are indexed, listed in the sitemap, given hreflang and offered in the language switcher. Keys are English paths.",
+  "pages": {
+    "/": {
+      "ar": "draft",
+      "pt-BR": "draft",
+      "ru": "draft"
+    },
+    "/chauffeur-hire": {
+      "ar": "draft",
+      "pt-BR": "draft",
+      "ru": "draft"
+    },
+    "/tours": {
+      "ar": "draft",
+      "pt-BR": "draft",
+      "ru": "draft"
+    },
+    "/reviews": {
+      "ar": "draft",
+      "pt-BR": "draft",
+      "ru": "draft"
+    },
+    "/airport-transfers-cape-town": {
+      "ar": "draft",
+      "pt-BR": "draft",
+      "ru": "draft"
+    },
+    "/best-wine-farms-in-cape-town": {
+      "ar": "draft",
+      "pt-BR": "draft",
+      "ru": "draft"
+    },
+    "/best-activities-to-do-in-cape-town": {
+      "ar": "draft",
+      "pt-BR": "draft",
+      "ru": "draft"
+    },
+    "/7-day-cape-town-itinerary": {
+      "ar": "draft",
+      "pt-BR": "draft",
+      "ru": "draft"
+    },
+    "/multi-day-chauffeur-cape-town": {
+      "ar": "draft",
+      "pt-BR": "draft",
+      "ru": "draft"
+    },
+    "/contact": {
+      "ar": "draft",
+      "pt-BR": "draft",
+      "ru": "draft"
+    },
+    "/cancellation-policy": {
+      "ar": "draft",
+      "pt-BR": "draft",
+      "ru": "draft"
+    },
+    "/privacy": {
+      "ar": "draft",
+      "pt-BR": "draft",
+      "ru": "draft"
+    },
+    "/tours/big-5-safari-from-cape-town": {
+      "ar": "draft",
+      "pt-BR": "draft",
+      "ru": "draft"
+    },
+    "/tours/cape-peninsula-tour": {
+      "ar": "draft",
+      "pt-BR": "draft",
+      "ru": "draft"
+    },
+    "/tours/winelands-chauffeur-drive": {
+      "ar": "draft",
+      "pt-BR": "draft",
+      "ru": "draft"
+    },
+    "/tours/cape-town-city-tour": {
+      "ar": "draft",
+      "pt-BR": "draft",
+      "ru": "draft"
+    },
+    "/chauffeur-hire/audi-a4": {
+      "ar": "draft",
+      "pt-BR": "draft",
+      "ru": "draft"
+    },
+    "/chauffeur-hire/bmw-5-series-for-hire-with-driver": {
+      "ar": "draft",
+      "pt-BR": "draft",
+      "ru": "draft"
+    },
+    "/chauffeur-hire/bmw-x5-for-hire-with-driver": {
+      "ar": "draft",
+      "pt-BR": "draft",
+      "ru": "draft"
+    },
+    "/chauffeur-hire/8-seater-staria-van-with-driver": {
+      "ar": "draft",
+      "pt-BR": "draft",
+      "ru": "draft"
+    },
+    "/chauffeur-hire/mercedes-benz-e-class": {
+      "ar": "draft",
+      "pt-BR": "draft",
+      "ru": "draft"
+    },
+    "/chauffeur-hire/mercedes-v-class-private-chauffeur-service": {
+      "ar": "draft",
+      "pt-BR": "draft",
+      "ru": "draft"
+    },
+    "/chauffeur-hire/range-rover-sport-chauffeur-service": {
+      "ar": "draft",
+      "pt-BR": "draft",
+      "ru": "draft"
+    }
+  }
+}

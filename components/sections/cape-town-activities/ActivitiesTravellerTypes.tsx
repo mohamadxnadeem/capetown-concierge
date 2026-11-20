@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { Container, Section, SectionHeader, SectionText, SectionTitle } from "./shared";
 import { TravelerTypeItem } from "./types";
 
+import { useT } from "../../../lib/i18n/LocaleContext";
 const TravellerGrid = styled.div`
   display: grid;
   gap: 18px;
@@ -41,16 +42,14 @@ type Props = {
 };
 
 export default function ActivitiesTravellerTypes({ items }: Props) {
+  const tt = useT();
   return (
     <Section>
       <Container>
         <SectionHeader>
-          <SectionTitle>Best Cape Town Activities by Travel Style</SectionTitle>
+          <SectionTitle>{tt("ActivitiesTravellerTypes.best-cape-town-activities-by")}</SectionTitle>
           <SectionText>
-            Whether you are planning a honeymoon, a family holiday, or a luxury
-            Cape Town escape, these experiences can be shaped around the kind of
-            trip you want to have.
-          </SectionText>
+            {tt("ActivitiesTravellerTypes.whether-you-are-planning-a")}</SectionText>
         </SectionHeader>
 
         <TravellerGrid>

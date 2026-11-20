@@ -3,6 +3,7 @@
 import styled from "styled-components";
 import Button from "../../common/Button";
 
+import { useT } from "../../../lib/i18n/LocaleContext";
 const CTASection = styled.section`
   padding: 84px 0;
   background: linear-gradient(135deg, ${({ theme }) => theme.colors.primary} 0%, ${({ theme }) => theme.colors.primaryDark} 100%);
@@ -54,19 +55,18 @@ type Props = {
 };
 
 export default function ChauffeurCta({ whatsappLink }: Props) {
+  const tt = useT();
   return (
     <CTASection>
       <CTABox>
-        <CTAEyebrow>Ready to Book?</CTAEyebrow>
-        <CTATitle>Plan Your Chauffeur Booking in Cape Town</CTATitle>
+        <CTAEyebrow>{tt("ChauffeurCta.ready-to-book")}</CTAEyebrow>
+        <CTATitle>{tt("ChauffeurCta.plan-your-chauffeur-booking-in")}</CTATitle>
         <CTAText>
-          Message us on WhatsApp to check availability, ask questions, and secure your
-          preferred vehicle for your dates.
-        </CTAText>
+          {tt("ChauffeurCta.message-us-on-whatsapp-to")}</CTAText>
 
         <CTAButtons>
           <CTAAnchor href={whatsappLink} target="_blank" rel="noopener noreferrer">
-            <Button as="span">Book on WhatsApp</Button>
+            <Button as="span">{tt("ChauffeurCta.book-on-whatsapp")}</Button>
           </CTAAnchor>
         </CTAButtons>
       </CTABox>

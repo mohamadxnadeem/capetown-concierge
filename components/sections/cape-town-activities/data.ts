@@ -1,68 +1,69 @@
 import { ActivityItem, ServiceItem, TravelerTypeItem } from "./types";
 
-export const activities: ActivityItem[] = [
+import type { TFunction } from "../../../lib/i18n/messages";
+export const activities = (tt: TFunction): ActivityItem[] => ([
   {
-    title: "Table Mountain",
+    title: tt("data.table-mountain"),
     image: "/images/activities/tablemountain.jpg",
     description:
-      "One of Cape Town’s most iconic experiences, with panoramic views over the city, ocean, and mountains. It is one of the first things most visitors want to do.",
-    bestFor: "First-time visitors, couples, photographers",
+      tt("data.one-of-cape-town-s"),
+    bestFor: tt("data.first-time-visitors-couples-photographers"),
     idealBooking:
-      "Best paired with a private city tour or chauffeur-driven day itinerary.",
+      tt("data.best-paired-with-a-private"),
   },
   {
-    title: "Cape Peninsula Tour",
+    title: tt("data.cape-peninsula-tour"),
     image: "/images/activities/capepoint.jpg",
     description:
-      "A full scenic day covering dramatic coastlines, Cape Point, the Cape of Good Hope, Chapman’s Peak Drive, and unforgettable viewpoints along the route.",
-    bestFor: "First-time visitors, couples, families",
+      tt("data.a-full-scenic-day-covering"),
+    bestFor: tt("data.first-time-visitors-couples-families"),
     idealBooking:
-      "Perfect as a private full-day tour with a chauffeur and flexible stops.",
+      tt("data.perfect-as-a-private-full"),
   },
   {
-    title: "Boulders Beach Penguins",
+    title: tt("data.boulders-beach-penguins"),
     image: "/images/activities/boulders.jpg",
     description:
-      "A unique wildlife experience where you can see African penguins up close in one of the Cape’s most memorable beach settings.",
-    bestFor: "Families, couples, wildlife lovers",
+      tt("data.a-unique-wildlife-experience-where"),
+    bestFor: tt("data.families-couples-wildlife-lovers"),
     idealBooking:
-      "Usually best included as part of a Cape Peninsula private tour.",
+      tt("data.usually-best-included-as-part"),
   },
   {
-    title: "Cape of Good Hope & Cape Point",
+    title: tt("data.cape-of-good-hope-cape"),
     image: "/images/activities/capeofgoodhope.jpg",
     description:
-      "Enjoy rugged cliffs, ocean scenery, and one of the Cape’s most famous landmarks as part of a dramatic and scenic private day experience.",
-    bestFor: "Nature lovers, couples, explorers",
+      tt("data.enjoy-rugged-cliffs-ocean-scenery"),
+    bestFor: tt("data.nature-lovers-couples-explorers"),
     idealBooking:
-      "Works best with a private guide and chauffeur for a relaxed full-day route.",
+      tt("data.works-best-with-a-private"),
   },
   {
-    title: "Winelands in Stellenbosch & Franschhoek",
+    title: tt("data.winelands-in-stellenbosch-franschhoek"),
     image: "/images/activities/winelands.jpg",
     description:
-      "Discover beautiful wine estates, tastings, mountain scenery, and exceptional food in one of South Africa’s most loved luxury day experiences.",
-    bestFor: "Couples, groups, luxury travellers",
+      tt("data.discover-beautiful-wine-estates-tastings"),
+    bestFor: tt("data.couples-groups-luxury-travellers"),
     idealBooking:
-      "Best done with a chauffeur so you can fully enjoy the tastings.",
+      tt("data.best-done-with-a-chauffeur"),
   },
   {
-    title: "Chapman’s Peak Drive",
+    title: tt("data.chapman-s-peak-drive"),
     image: "/images/activities/chapmans.jpg",
     description:
-      "One of the world’s most scenic coastal drives, with dramatic mountain and ocean views that are best enjoyed without the stress of driving yourself.",
-    bestFor: "Couples, photographers, luxury travellers",
+      tt("data.one-of-the-world-s"),
+    bestFor: tt("data.couples-photographers-luxury-travellers"),
     idealBooking:
-      "Ideal as part of a chauffeur-driven coastal route or peninsula day tour.",
+      tt("data.ideal-as-part-of-a"),
   },
   {
-    title: "Helicopter Ride Over Cape Town",
+    title: tt("data.helicopter-ride-over-cape-town"),
     image: "/images/activities/helicopter.jpg",
     description:
-      "A premium aerial experience offering unforgettable views of Table Mountain, the coastline, and the Atlantic seaboard from above.",
-    bestFor: "Luxury travellers, special occasions, couples",
+      tt("data.a-premium-aerial-experience-offering"),
+    bestFor: tt("data.luxury-travellers-special-occasions-couples"),
     idealBooking:
-      "Perfect with private chauffeur transfers before and after the flight.",
+      tt("data.perfect-with-private-chauffeur-transfers"),
   },
   // {
   //   title: "Private Yacht Charter",
@@ -74,75 +75,75 @@ export const activities: ActivityItem[] = [
   //     "Best paired with private chauffeur transfers and a custom itinerary.",
   // },
   {
-    title: "Safari Day Trip",
+    title: tt("data.safari-day-trip"),
     image: "/images/activities/safari.jpg",
     description:
-      "Add a Big Five wildlife experience to your stay with a premium day trip to a nearby safari reserve outside Cape Town.",
-    bestFor: "Families, first-time visitors, luxury travellers",
+      tt("data.add-a-big-five-wildlife"),
+    bestFor: tt("data.families-first-time-visitors-luxury"),
     idealBooking:
-      "Great as a full-day private experience with all transport arranged.",
+      tt("data.great-as-a-full-day"),
   },
   {
-    title: "Camps Bay & Clifton",
+    title: tt("data.camps-bay-clifton"),
     image: "/images/activities/campsbay.jpg",
     description:
-      "Relax along Cape Town’s most famous beach strip with stylish restaurants, ocean views, palm-lined roads, and unforgettable sunsets.",
-    bestFor: "Couples, lifestyle travellers, groups",
+      tt("data.relax-along-cape-town-s"),
+    bestFor: tt("data.couples-lifestyle-travellers-groups"),
     idealBooking:
-      "A great stop on a private city, coastal, or sunset chauffeur itinerary.",
+      tt("data.a-great-stop-on-a"),
   },
   {
-    title: "Kirstenbosch Botanical Gardens",
+    title: tt("data.kirstenbosch-botanical-gardens"),
     image: "/images/activities/kirstenbosch.jpg",
     description:
-      "A beautiful and slower-paced Cape Town experience with lush gardens, mountain backdrops, and peaceful walking routes.",
-    bestFor: "Families, couples, nature lovers",
+      tt("data.a-beautiful-and-slower-paced"),
+    bestFor: tt("data.families-couples-nature-lovers"),
     idealBooking:
-      "Easy to include in a tailored private day itinerary.",
+      tt("data.easy-to-include-in-a"),
   },
   {
-    title: "Fine Dining Experiences",
+    title: tt("data.fine-dining-experiences"),
     image: "/images/activities/finedining.jpg",
     description:
-      "Cape Town is one of the best food cities in the world, making luxury dining a standout experience for couples and premium travellers.",
-    bestFor: "Couples, luxury travellers, food lovers",
+      tt("data.cape-town-is-one-of"),
+    bestFor: tt("data.couples-luxury-travellers-food-lovers"),
     idealBooking:
-      "Best enjoyed with chauffeur service for a seamless evening out.",
+      tt("data.best-enjoyed-with-chauffeur-service"),
   },
-];
+]);
 
-export const travelerTypes: TravelerTypeItem[] = [
+export const travelerTypes = (tt: TFunction): TravelerTypeItem[] => ([
   {
-    title: "For Couples",
-    text: "Wine estates, sunsets in Camps Bay, private yacht charters, helicopter rides, and scenic peninsula touring.",
+    title: tt("data.for-couples"),
+    text: tt("data.wine-estates-sunsets-in-camps"),
   },
   {
-    title: "For Families",
-    text: "Penguins at Boulders Beach, Table Mountain, safari day trips, Kirstenbosch, and flexible private tours.",
+    title: tt("data.for-families"),
+    text: tt("data.penguins-at-boulders-beach-table"),
   },
   {
-    title: "For Luxury Travellers",
-    text: "Private chauffeur service, helicopter flights, yacht experiences, wine tours, and curated custom itineraries.",
+    title: tt("data.for-luxury-travellers"),
+    text: tt("data.private-chauffeur-service-helicopter-flights"),
   },
   {
-    title: "For First-Time Visitors",
-    text: "Table Mountain, Cape Peninsula, Chapman’s Peak, Cape Point, and the Winelands in one seamless itinerary.",
+    title: tt("data.for-first-time-visitors"),
+    text: tt("data.table-mountain-cape-peninsula-chapman"),
   },
-];
+]);
 
-export const services: ServiceItem[] = [
+export const services = (tt: TFunction): ServiceItem[] => ([
   {
-    title: "Private Tours",
+    title: tt("data.private-tours"),
     description:
-      "Explore Cape Town with a private chauffeur-driven experience tailored around your pace, preferred stops, and travel style.",
+      tt("data.explore-cape-town-with-a"),
     href: "/tours",
-    cta: "Explore Private Tours",
+    cta: tt("data.explore-private-tours"),
   },
   {
-    title: "Chauffeur Services",
+    title: tt("data.chauffeur-services"),
     description:
-      "Travel in comfort with private chauffeur service for full-day hire, scenic touring, airport transfers, and premium transport.",
+      tt("data.travel-in-comfort-with-private"),
     href: "/chauffeur-hire",
-    cta: "View Chauffeur Options",
+    cta: tt("data.view-chauffeur-options"),
   },
-];
+]);

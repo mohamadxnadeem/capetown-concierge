@@ -11,6 +11,7 @@ import {
 } from "./shared";
 import { FaqItem } from "./types";
 
+import { useT } from "../../../lib/i18n/LocaleContext";
 const List = styled.div`
   display: flex;
   flex-direction: column;
@@ -85,17 +86,16 @@ type Props = {
 };
 
 export default function ItineraryFaq({ items }: Props) {
+  const tt = useT();
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   return (
     <Section>
       <Container>
         <SectionHeader>
-          <SectionTitle>Frequently Asked Questions</SectionTitle>
+          <SectionTitle>{tt("ItineraryFaq.frequently-asked-questions")}</SectionTitle>
           <SectionText>
-            Common questions about planning a 7 day Cape Town itinerary and
-            arranging private chauffeur-driven travel.
-          </SectionText>
+            {tt("ItineraryFaq.common-questions-about-planning-a")}</SectionText>
         </SectionHeader>
 
         <List>

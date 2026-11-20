@@ -4,7 +4,9 @@ import styled from "styled-components";
 import Button from "../../common/Button";
 import { buildWhatsAppLink, buildGeneralWhatsAppMessage } from "../../../lib/whatsapp";
 import { trackWhatsAppClick } from "../../../lib/tracking";
+import { googleSummaryText } from "../../../lib/googleReviews";
 
+import { useT } from "../../../lib/i18n/LocaleContext";
 const whatsappLink = "https://wa.me/27636746131?text=Hi%2C+I%27d+like+to+book+a+luxury+chauffeur+or+private+tour+in+Cape+Town.+Please+assist.";
 
 const Section = styled.section`
@@ -49,21 +51,20 @@ const Anchor = styled.a`
 `;
 
 export default function TestimonialsCta() {
+  const tt = useT();
   return (
     <Section>
       <Container>
-        <Title>Ready to Experience Cape Town Like This?</Title>
+        <Title>{tt("TestimonialsCta.ready-to-experience-cape-town")}</Title>
 
         <Text>
-          Message us on WhatsApp and we’ll plan your entire trip — from chauffeur
-          drives and tours to wine farms and luxury experiences.
-        </Text>
+          {tt("TestimonialsCta.message-us-on-whatsapp-and")}</Text>
 
         <TrustRow>
-          <TrustItem>⭐ 4.9 Rated</TrustItem>
-          <TrustItem>Private Chauffeur</TrustItem>
-          <TrustItem>Custom Itinerary</TrustItem>
-          <TrustItem>Responds in 30 min</TrustItem>
+          <TrustItem>⭐ {googleSummaryText}</TrustItem>
+          <TrustItem>{tt("TestimonialsCta.private-chauffeur")}</TrustItem>
+          <TrustItem>{tt("TestimonialsCta.custom-itinerary")}</TrustItem>
+          <TrustItem>{tt("TestimonialsCta.responds-in-30-min")}</TrustItem>
         </TrustRow>
 
         <Anchor
@@ -77,7 +78,7 @@ export default function TestimonialsCta() {
             })
           }
         >
-          <Button as="span">Get in Touch on WhatsApp</Button>
+          <Button as="span">{tt("TestimonialsCta.get-in-touch-on-whatsapp")}</Button>
         </Anchor>
       </Container>
     </Section>

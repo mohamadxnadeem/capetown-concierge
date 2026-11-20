@@ -7,6 +7,7 @@ import Money from "../../common/Money";
 import { HUB_INTRO, HUB_FAQS } from "../../../lib/tourHub";
 import { TOUR_ORDER, TOUR_SEO } from "../../../lib/tourSeo";
 
+import { useT } from "../../../lib/i18n/LocaleContext";
 const Section = styled.section`
   padding: 48px 0;
 `;
@@ -94,11 +95,12 @@ const FaqItem = styled.details`
 `;
 
 export function TourHubIntro({ lowestVehiclePrice }: { lowestVehiclePrice?: number }) {
+  const tt = useT();
   return (
     <Section id="compare">
       <Container>
-        <H2>Compare our private tours in Cape Town</H2>
-        {HUB_INTRO.map((text) => (
+        <H2>{tt("TourHubSections.compare-our-private-tours-in")}</H2>
+        {HUB_INTRO(tt).map((text) => (
           <P key={text}>{text}</P>
         ))}
         <Grid>
@@ -109,33 +111,32 @@ export function TourHubIntro({ lowestVehiclePrice }: { lowestVehiclePrice?: numb
                 <H3>{tour.cardName}</H3>
                 <Facts>
                   <div>
-                    <dt>Duration</dt>
+                    <dt>{tt("TourHubSections.duration")}</dt>
                     <dd>{tour.duration}</dd>
                   </div>
                   <div>
-                    <dt>Highlights</dt>
+                    <dt>{tt("TourHubSections.highlights")}</dt>
                     <dd>{tour.highlights}</dd>
                   </div>
                   <div>
-                    <dt>Best for</dt>
+                    <dt>{tt("TourHubSections.best-for")}</dt>
                     <dd>{tour.suits}</dd>
                   </div>
                   <div>
-                    <dt>Price</dt>
+                    <dt>{tt("TourHubSections.price")}</dt>
                     <dd>
                       {lowestVehiclePrice ? (
                         <>
-                          Priced per vehicle, for your whole group. Vehicles start{" "}
-                          <Money usd={lowestVehiclePrice} prefix="from " suffix="" />. Message us for your exact quote.
-                        </>
+                          {tt("TourHubSections.priced-per-vehicle-for-your")}{" "}
+                          <Money usd={lowestVehiclePrice} prefix="from " suffix="" />{tt("TourHubSections.message-us-for-your-exact")}</>
                       ) : (
-                        "Priced per vehicle, for your whole group. Message us for your exact quote."
+                        tt("TourHubSections.priced-per-vehicle-for-your-2")
                       )}
                     </dd>
                   </div>
                 </Facts>
-                <CardLink href={`/tours/${slug}`} aria-label={`Read more about the ${tour.cardName}`}>
-                  See the {tour.cardName}
+                <CardLink href={tt.path(`/tours/${slug}`)} aria-label={tt("TourHubSections.read-more-about-the", { cardName: tour.cardName })}>
+                  {tt("TourHubSections.see-the")}{" "}{tour.cardName}
                 </CardLink>
               </Card>
             );
@@ -147,11 +148,12 @@ export function TourHubIntro({ lowestVehiclePrice }: { lowestVehiclePrice?: numb
 }
 
 export function TourHubFaq() {
+  const tt = useT();
   return (
     <Section>
       <Container>
-        <H2>Private tours in Cape Town: your questions, answered</H2>
-        {HUB_FAQS.map((faq) => (
+        <H2>{tt("TourHubSections.private-tours-in-cape-town")}</H2>
+        {HUB_FAQS(tt).map((faq) => (
           <FaqItem key={faq.question}>
             <summary>{faq.question}</summary>
             <p>{faq.answer}</p>
