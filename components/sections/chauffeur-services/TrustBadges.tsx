@@ -7,10 +7,6 @@ import {
   type TrustBadge,
 } from "../../../lib/vehicleTrustBadges";
 
-type Props = {
-  vehicleBadge?: TrustBadge;
-};
-
 const Wrap = styled.section`
   padding: 32px 0 0;
 `;
@@ -116,10 +112,8 @@ function Body({ badge }: { badge: TrustBadge }) {
   );
 }
 
-export default function TrustBadges({ vehicleBadge }: Props) {
-  const badges = vehicleBadge
-    ? [vehicleBadge, ...SHARED_TRUST_BADGES]
-    : SHARED_TRUST_BADGES;
+export default function TrustBadges() {
+  const badges = SHARED_TRUST_BADGES;
 
   return (
     <Wrap aria-label="Why book with us">
