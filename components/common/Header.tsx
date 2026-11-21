@@ -55,20 +55,40 @@ const Logo = styled(Link)`
   text-decoration: none;
 `;
 
+// Same box sizes as before. The logo is a tightly cropped, high-resolution PNG
+// (served by next/image as sharp 2x/3x WebP/AVIF), sized to match the previous
+// on-screen size exactly: 21px tall on phones, 31px on tablets, 38px on desktop.
 const LogoImage = styled.div`
   position: relative;
   width: 165px;
   height: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.35));
+
+  img {
+    display: block;
+    width: auto;
+    height: 21px;
+  }
 
   @media (min-width: ${({ theme }) => theme.breakpoints.sm}) {
     width: 240px;
     height: 65px;
+
+    img {
+      height: 31px;
+    }
   }
 
   @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
     width: 300px;
     height: 80px;
+
+    img {
+      height: 38px;
+    }
   }
 `;
 
@@ -177,14 +197,13 @@ export default function Header() {
             <Logo href={t.path("/")}>
               <LogoImage>
                 <Image
-                  src="/images/logo.svg"
+                  src="/images/logo-header.png"
                   alt={brand.name}
-                  fill
+                  width={642}
+                  height={328}
                   priority
-                  style={{
-                    objectFit: "contain",
-                    transform: "scale(1.15)",
-                  }}
+                  quality={90}
+                  sizes="(min-width: 1024px) 75px, (min-width: 768px) 61px, 42px"
                 />
               </LogoImage>
             </Logo>
