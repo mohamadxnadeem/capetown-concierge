@@ -83,6 +83,28 @@ const nextConfig: NextConfig = {
         destination: "/chauffeur-hire/:slug",
         permanent: true,
       },
+      // Retired pages that still collect Google clicks or impressions (Search Console, Nov 2026).
+      // Each one goes to the closest live page instead of a 404.
+      {
+        source: "/7-day-garden-route-itinerary",
+        destination: "/multi-day-chauffeur-cape-town",
+        permanent: true,
+      },
+      {
+        source: "/tours/table-mountain-tour",
+        destination: "/tours/cape-town-city-tour",
+        permanent: true,
+      },
+      {
+        source: "/private-tours/sunset-safari-experience",
+        destination: "/tours/big-5-safari-from-cape-town",
+        permanent: true,
+      },
+      {
+        source: "/tours/sunset-safari-experience",
+        destination: "/tours/big-5-safari-from-cape-town",
+        permanent: true,
+      },
       // IA rename: private-tours → tours
       {
         source: "/private-tours",

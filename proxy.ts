@@ -21,12 +21,27 @@ const SLUG_KINDS: Record<string, ContentKind> = {
   "chauffeur-hire": "vehicles",
 };
 
+const CASE_SENSITIVE_SEGMENTS = ["booking", "booking-confirmation", "driver", "proposal"];
+
 const PREFIXED = LOCALES.filter((l) => l !== "en");
 
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const parts = pathname.split("/").filter(Boolean);
   const first = parts[0]?.toLowerCase();
+
+  // SEO: one URL per page. Any path with capital letters gets a permanent redirect to its
+  // lowercase version (e.g. /chauffeur-hire/Mercedes-v-class-... -> lowercase), so Google stops
+  // counting the capitalised copies separately. Booking, confirmation and driver links carry
+  // case-sensitive references, so they are left exactly as they are.
+  if (
+    pathname !== pathname.toLowerCase() &&
+    !CASE_SENSITIVE_SEGMENTS.includes(first ?? "")
+  ) {
+    const url = request.nextUrl.clone();
+    url.pathname = pathname.toLowerCase();
+    return NextResponse.redirect(url, 301);
+  }
 
   // English is served from the root only. /en/... is not a public URL.
   if (first === "en") {
