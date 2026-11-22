@@ -45,7 +45,9 @@ async function getVehicleSlugs(): Promise<string[]> {
       .map((item) => item?.car?.slug || item?.slug)
       .filter((slug): slug is string => Boolean(slug))
       .map((slug) => slug.toLowerCase());
-    return Array.from(new Set([...apiSlugs, ...FALLBACK_VEHICLE_SLUGS]));
+    // Use the live API list only, so removed or hidden vehicles never stay in the sitemap.
+    // The fallback list is used only when the API is unreachable or empty.
+    return apiSlugs.length ? Array.from(new Set(apiSlugs)) : FALLBACK_VEHICLE_SLUGS;
   } catch {
     return FALLBACK_VEHICLE_SLUGS;
   }
@@ -63,7 +65,7 @@ async function getExperienceSlugs(): Promise<string[]> {
       .map((item) => item?.experience?.slug || item?.slug)
       .filter((slug): slug is string => Boolean(slug))
       .map((slug) => slug.toLowerCase());
-    return Array.from(new Set([...apiSlugs, ...FALLBACK_TOUR_SLUGS]));
+    return apiSlugs.length ? Array.from(new Set(apiSlugs)) : FALLBACK_TOUR_SLUGS;
   } catch {
     return FALLBACK_TOUR_SLUGS;
   }
@@ -121,6 +123,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
     {
       url: `${SITE_URL}/airport-transfers-cape-town`,
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 0.9,
+    },
+    {
+      url: `${SITE_URL}/multi-day-chauffeur-cape-town`,
       lastModified: new Date(),
       changeFrequency: "weekly",
       priority: 0.9,
