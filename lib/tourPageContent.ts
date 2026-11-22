@@ -234,8 +234,8 @@ const SAFARI: TourPageContent = {
   ],
   itineraryTitle: "Your Big 5 Safari Day, from Hotel Pickup to Game Drive",
   itinerarySubheading:
-    "No shared game vehicles with strangers and no rigid schedule. Your chauffeur collects you from your hotel, drives you to Aquila and brings you back to Cape Town the same night.",
-  highlightsTitle: "Why Choose a Private Safari Day Trip from Cape Town",
+    "This private safari day tour from Cape Town has no shared game vehicles with strangers and no rigid schedule. Your chauffeur collects you from your hotel, drives you to Aquila and brings you back to Cape Town the same night.",
+  highlightsTitle: "Why this is the best safari day trip from Cape Town",
   highlights: [
     {
       heading: "Private Transport, Both Ways",
@@ -251,19 +251,29 @@ const SAFARI: TourPageContent = {
     },
     {
       heading: "A Safari Without a Multi-Day Trip",
-      body: "The Big 5 are not in Cape Town itself. Aquila is about two hours away, so you can see them on a single private day and be back at your hotel the same night.",
+      body: "The Big 5 are not in Cape Town itself. Aquila is about two hours away, so a Big 5 safari day trip from Cape Town works as a single private day, with no overnight stay and you are back at your hotel the same night.",
     },
   ],
-  midCtaTitle: "Ready for a Big 5 Safari Day from Cape Town?",
+  midCtaTitle: "Ready for a Big 5 Safari Day Trip from Cape Town?",
   midCtaBody:
     "You can do a Big 5 safari and be back in Cape Town the same night. Message us and we'll sort the transport, the timing and everything in between.",
   midCtaButtonLabel: "Check Availability: We Respond in 30 Minutes",
   ctaTitle: "Ready to book? Here's how it works",
   ctaBody: SHARED_CTA_BODY,
-  faqTitle: "Big 5 Safari Day Trip: Your Questions, Answered",
+  faqTitle: "Safari Day Trip from Cape Town: Your Questions, Answered",
   inclusionsTitle: "What's included in your safari day trip",
   vehiclesTitle: "Your vehicle for the safari day trip",
   faqItems: [
+    {
+      question: "What is the best safari day trip from Cape Town?",
+      answer:
+        "Our private Big 5 safari day trip to Aquila Private Game Reserve is a popular choice because it is fully private. You travel in your own luxury vehicle with a chauffeur, with hotel pickup, a golden-hour game drive and the drive back to Cape Town the same night. Aquila is about 2 hours from the city, so no overnight stay is needed.",
+    },
+    {
+      question: "Can you see the Big 5 on a day trip from Cape Town?",
+      answer:
+        "Yes. Aquila's Big 5 are lion, elephant, rhino, buffalo and leopard, and you can visit on a single day from Cape Town. Sightings vary by day, as with any wildlife experience.",
+    },
     {
       question: "How far is Aquila from Cape Town?",
       answer:

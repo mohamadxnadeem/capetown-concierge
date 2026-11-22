@@ -75,11 +75,11 @@ export const TOUR_SEO: Record<string, TourSeo> = {
   },
   "big-5-safari-from-cape-town": {
     slug: "big-5-safari-from-cape-town",
-    title: "Private Big 5 Safari from Cape Town | Aquila Day Trip",
+    title: "Best Safari Day Trip from Cape Town | Private Big 5 Tour",
     description:
-      "A private Big 5 day trip from Cape Town to Aquila with hotel pickup, a luxury vehicle and a golden-hour game drive. Book on WhatsApp.",
-    h1: "Private Big 5 Safari from Cape Town (Aquila Day Trip)",
-    cardName: "Private Big 5 Safari from Cape Town",
+      "Private Big 5 safari day tour from Cape Town to Aquila. Hotel pickup, golden-hour game drive, back the same night. Book on WhatsApp.",
+    h1: "Private Big 5 Safari Day Trip from Cape Town (Aquila)",
+    cardName: "Private Big 5 Safari Day Trip from Cape Town",
     imageAlt: "Private Big 5 safari day trip from Cape Town to Aquila game reserve",
     guideHref: "/best-activities-to-do-in-cape-town",
     guideLabel: "Best activities to do in Cape Town",

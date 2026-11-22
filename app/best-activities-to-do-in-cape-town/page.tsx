@@ -252,7 +252,7 @@ export default async function BestActivitiesToDoInCapeTownPage() {
         links={[
           { href: "/tours", label: "Compare the best private tours in Cape Town" },
           { href: "/tours/cape-peninsula-tour", label: "Cape Point private tour from Cape Town" },
-          { href: "/tours/big-5-safari-from-cape-town", label: "Private Big 5 safari from Cape Town" },
+          { href: "/tours/big-5-safari-from-cape-town", label: "Private Big 5 safari day trip from Cape Town" },
           { href: "/tours/cape-town-city-tour", label: "Private Cape Town city and Table Mountain tour" },
         ]}
       />
